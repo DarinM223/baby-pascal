@@ -121,9 +121,14 @@ public class Block {
         int i = leaders.removeFirst();
         List<Range> ranges = new ArrayList<>();
         while (i < code.size()) {
-            Integer smallest = leaders.removeFirst();
-            int next = smallest == null ? code.size() : smallest;
+            int next;
+            try {
+                next = leaders.removeFirst();
+            } catch (NoSuchElementException e) {
+                next = code.size();
+            }
             ranges.add(new Range(i, next - 1));
+            i = next;
         }
         return ranges;
     }
