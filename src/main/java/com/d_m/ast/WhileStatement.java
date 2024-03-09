@@ -13,4 +13,9 @@ public record WhileStatement(Expression test, List<Statement> body) implements S
             statement.check(venv, fenv);
         }
     }
+
+    @Override
+    public <T> T accept(StatementVisitor<T> visitor) {
+        return visitor.visit(this);
+    }
 }

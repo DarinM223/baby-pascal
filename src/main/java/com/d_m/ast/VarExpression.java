@@ -7,4 +7,9 @@ public record VarExpression(String name) implements Expression {
     public Type check(Map<String, Type> venv, Map<String, FunctionType> fenv) throws CheckException {
         return venv.get(name);
     }
+
+    @Override
+    public <T> T accept(ExpressionVisitor<T> visitor) {
+        return visitor.visit(this);
+    }
 }

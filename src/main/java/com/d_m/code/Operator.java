@@ -22,21 +22,6 @@ public enum Operator {
     CALL,
     ASSIGN,
     LOAD,
-    NOP;
+    NOP
 
-    public Operator fromBinaryOp(BinaryOp op) {
-        return switch (op) {
-            case ADD -> ADD;
-            case SUB -> SUB;
-            case MUL -> MUL;
-            case AND -> AND;
-            case OR -> OR;
-            case EQ -> EQ;
-            case NEQ -> NE;
-            case LT -> LT;
-            case LE -> LE;
-            case GT -> GT;
-            case GE -> GE;
-        };
-    }
 }

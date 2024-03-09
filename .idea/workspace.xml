@@ -4,18 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add basic type checking">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/Address.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/ConstantAddress.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/EmptyAddress.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/NameAddress.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/Operator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/Quad.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/TempAddress.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/util/Fresh.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/util/Symbol.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add three address code types">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/ExpressionVisitor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/StatementVisitor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/normalize/ExpressionVisitor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/normalize/ShortCircuitException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/normalize/ShortCircuitVisitor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/normalize/StatementVisitor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/util/Label.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/AssignStatement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/AssignStatement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/BinaryOp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/BinaryOp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/BinaryOpExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/BinaryOpExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/BoolExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/BoolExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/CallExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/CallExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/CallStatement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/CallStatement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Expression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Expression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/IfStatement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/IfStatement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/IntExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/IntExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Statement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Statement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/UnaryOp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/UnaryOp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/UnaryOpExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/UnaryOpExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/VarExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/VarExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/WhileStatement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/WhileStatement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/Operator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/Operator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,8 +41,8 @@
       <list>
         <option value="Record" />
         <option value="Enum" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -54,12 +68,21 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true"
+    "kotlin-language-version-configured": "true",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.d_m.code" />
+    </key>
     <key name="MoveInnerDialog.RECENTS_KEY">
       <recent name="com.d_m.ast" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.d_m.code.normalize" />
     </key>
   </component>
   <component name="RunManager">
@@ -81,6 +104,14 @@
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-21.0.1-openjdk-21.0.1-4caba194b151-e47b9c39" />
+        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-78a6f59c" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -107,12 +138,21 @@
       <option name="project" value="LOCAL" />
       <updated>1709922504996</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Add three address code types">
+      <option name="closed" value="true" />
+      <created>1709926923270</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1709926923270</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit: Add AST classes" />
     <MESSAGE value="Add basic type checking" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add basic type checking" />
+    <MESSAGE value="Add three address code types" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add three address code types" />
   </component>
 </project>
