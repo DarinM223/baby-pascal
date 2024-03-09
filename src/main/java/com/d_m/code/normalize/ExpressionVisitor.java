@@ -54,11 +54,12 @@ public class ExpressionVisitor implements com.d_m.ast.ExpressionVisitor<Address>
     public Address visit(CallExpression callExpression) {
         for (Expression expression : callExpression.arguments()) {
             Address address = expression.accept(this);
-            result.add(new Quad(Operator.PARAM, address, new EmptyAddress(), new EmptyAddress()));
+            result.add(new Quad(Operator.PARAM, new EmptyAddress(), address, new EmptyAddress()));
         }
         Address temp = new TempAddress(fresh.fresh());
+        Address functionName = new NameAddress(symbol.getSymbol(callExpression.functionName()));
         Address numArgs = new ConstantAddress(callExpression.arguments().size());
-        result.add(new Quad(Operator.CALL, temp, numArgs, new EmptyAddress()));
+        result.add(new Quad(Operator.CALL, temp, functionName, numArgs));
         return temp;
     }
 }

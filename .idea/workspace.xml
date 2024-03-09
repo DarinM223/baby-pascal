@@ -4,32 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add three address code types">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/ExpressionVisitor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/StatementVisitor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/normalize/ExpressionVisitor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/normalize/ShortCircuitException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/normalize/ShortCircuitVisitor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/normalize/StatementVisitor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/util/Label.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Attempt three address code normalization">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/AssignStatement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/AssignStatement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/BinaryOp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/BinaryOp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/BinaryOpExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/BinaryOpExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/BoolExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/BoolExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/CallExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/CallExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/CallStatement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/CallStatement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Expression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Expression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/IfStatement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/IfStatement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/IntExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/IntExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Statement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Statement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/UnaryOp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/UnaryOp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/UnaryOpExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/UnaryOpExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/VarExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/VarExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/WhileStatement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/WhileStatement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/Operator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/Operator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/normalize/ExpressionVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/normalize/ExpressionVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/normalize/ShortCircuitVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/normalize/ShortCircuitVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/normalize/StatementVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/normalize/StatementVisitor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,13 +126,22 @@
       <option name="project" value="LOCAL" />
       <updated>1709926923270</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Attempt three address code normalization">
+      <option name="closed" value="true" />
+      <created>1709944738085</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1709944738085</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit: Add AST classes" />
     <MESSAGE value="Add basic type checking" />
     <MESSAGE value="Add three address code types" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add three address code types" />
+    <MESSAGE value="Attempt three address code normalization" />
+    <option name="LAST_COMMIT_MESSAGE" value="Attempt three address code normalization" />
   </component>
 </project>

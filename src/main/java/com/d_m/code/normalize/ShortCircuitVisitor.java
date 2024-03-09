@@ -1,21 +1,19 @@
 package com.d_m.code.normalize;
 
 import com.d_m.ast.*;
-import com.d_m.ast.ExpressionVisitor;
 import com.d_m.code.*;
 import com.d_m.util.Label;
 
 import java.util.List;
-import java.util.Objects;
 
-public class ShortCircuitVisitor implements ExpressionVisitor<Void> {
+public class ShortCircuitVisitor implements com.d_m.ast.ExpressionVisitor<Void> {
     private final Label label;
     private List<Quad> result;
-    private com.d_m.code.normalize.ExpressionVisitor exprVisitor;
+    private ExpressionVisitor exprVisitor;
     private int trueLabel;
     private int falseLabel;
 
-    public ShortCircuitVisitor(Label label, List<Quad> result, com.d_m.code.normalize.ExpressionVisitor exprVisitor, int trueLabel, int falseLabel) {
+    public ShortCircuitVisitor(Label label, List<Quad> result, ExpressionVisitor exprVisitor, int trueLabel, int falseLabel) {
         this.label = label;
         this.result = result;
         this.exprVisitor = exprVisitor;
@@ -64,7 +62,7 @@ public class ShortCircuitVisitor implements ExpressionVisitor<Void> {
                 Address addr1 = binaryOpExpression.expr1().accept(exprVisitor);
                 Address addr2 = binaryOpExpression.expr2().accept(exprVisitor);
                 result.add(new Quad(binaryOpExpression.op().toOperator(), new ConstantAddress(trueLabel), addr1, addr2));
-                result.add(new Quad(Operator.GOTO, new EmptyAddress(), new EmptyAddress(), new ConstantAddress(falseLabel)));
+                result.add(new Quad(Operator.GOTO, new EmptyAddress(), new ConstantAddress(falseLabel), new EmptyAddress()));
             }
         }
         return null;

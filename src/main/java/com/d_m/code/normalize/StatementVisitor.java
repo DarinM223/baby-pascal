@@ -32,7 +32,7 @@ public class StatementVisitor implements com.d_m.ast.StatementVisitor<Void> {
         for (Statement statement : whileStatement.body()) {
             statement.accept(new StatementVisitor(symbol, label, exprVisitor, result, beginLabel));
         }
-        result.add(new Quad(Operator.GOTO, new ConstantAddress(beginLabel), new EmptyAddress(), new EmptyAddress()));
+        result.add(new Quad(Operator.GOTO, new EmptyAddress(), new ConstantAddress(beginLabel), new EmptyAddress()));
         return null;
     }
 
@@ -52,7 +52,7 @@ public class StatementVisitor implements com.d_m.ast.StatementVisitor<Void> {
             for (Statement statement : ifStatement.then()) {
                 statement.accept(this);
             }
-            result.add(new Quad(Operator.GOTO, new ConstantAddress(nextLabel), new EmptyAddress(), new EmptyAddress()));
+            result.add(new Quad(Operator.GOTO, new EmptyAddress(), new ConstantAddress(nextLabel), new EmptyAddress()));
             label.label(falseLabel);
             for (Statement statement : ifStatement.els()) {
                 statement.accept(this);
@@ -73,10 +73,11 @@ public class StatementVisitor implements com.d_m.ast.StatementVisitor<Void> {
     public Void visit(CallStatement callStatement) {
         for (Expression expression : callStatement.arguments()) {
             Address address = expression.accept(exprVisitor);
-            result.add(new Quad(Operator.PARAM, address, new EmptyAddress(), new EmptyAddress()));
+            result.add(new Quad(Operator.PARAM, new EmptyAddress(), address, new EmptyAddress()));
         }
+        Address functionName = new NameAddress(symbol.getSymbol(callStatement.functionName()));
         Address numArgs = new ConstantAddress(callStatement.arguments().size());
-        result.add(new Quad(Operator.CALL, new EmptyAddress(), numArgs, new EmptyAddress()));
+        result.add(new Quad(Operator.CALL, new EmptyAddress(), functionName, numArgs));
         return null;
     }
 }
