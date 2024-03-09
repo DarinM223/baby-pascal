@@ -22,6 +22,11 @@ public enum Operator {
     CALL,
     ASSIGN,
     LOAD,
-    NOP
+    NOP,
+    PHI,
+    PCOPY;
 
+    public boolean isComparison() {
+        return this == EQ || this == NE || this == GT || this == GE || this == LT || this == LE;
+    }
 }

@@ -29,12 +29,13 @@ public class ThreeAddressCode {
             statement.accept(stmtVisitor);
             label.label(next);
         }
-        for (Quad quad : results) {
-            if (quad.getInput1() instanceof ConstantAddress(int l) && quad.getOp() == Operator.GOTO) {
-                quad.setInput1(new ConstantAddress(label.lookup(l)));
-            } else if (quad.getResult() instanceof ConstantAddress(int r)) {
-                switch (quad.getOp()) {
-                    case EQ, NE, GT, GE, LT, LE -> quad.setResult(new ConstantAddress(label.lookup(r)));
+        for (int i = 0; i < results.size(); i++) {
+            switch (results.get(i)) {
+                case Quad(Operator op, var r, ConstantAddress(int l), var b) when op == Operator.GOTO ->
+                        results.set(i, new Quad(Operator.GOTO, r, new ConstantAddress(label.lookup(l)), b));
+                case Quad(Operator op, ConstantAddress(int r), var a, var b) when op.isComparison() ->
+                        results.set(i, new Quad(op, new ConstantAddress(label.lookup(r)), a, b));
+                default -> {
                 }
             }
         }
