@@ -44,4 +44,9 @@ public class Quad {
     public void setInput2(Address input2) {
         this.input2 = input2;
     }
+
+    @Override
+    public String toString() {
+        return result + " <- " + input1 + " " + op + " " + input2;
+    }
 }

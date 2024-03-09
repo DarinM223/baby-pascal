@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Label implements Fresh {
-    private int labelCounter = -1;
+    private int labelCounter = 0;
     private final Map<Integer, Integer> labelTable = new HashMap<>();
     private final List<Quad> result;
 
@@ -25,12 +25,11 @@ public class Label implements Fresh {
 
     @Override
     public int fresh() {
-        labelCounter += 1;
-        return labelCounter;
+        return labelCounter++;
     }
 
     @Override
     public void reset() {
-        labelCounter = -1;
+        labelCounter = 0;
     }
 }
