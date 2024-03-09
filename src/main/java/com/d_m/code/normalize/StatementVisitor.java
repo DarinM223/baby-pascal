@@ -63,8 +63,8 @@ public class StatementVisitor implements com.d_m.ast.StatementVisitor<Void> {
 
     @Override
     public Void visit(AssignStatement assignStatement) {
-        Address name = new NameAddress(symbol.getSymbol(assignStatement.name()));
         Address address = assignStatement.expr().accept(exprVisitor);
+        Address name = new NameAddress(symbol.getSymbol(assignStatement.name()));
         result.add(new Quad(Operator.ASSIGN, name, address, new EmptyAddress()));
         return null;
     }

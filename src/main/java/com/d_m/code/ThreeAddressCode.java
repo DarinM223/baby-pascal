@@ -30,10 +30,11 @@ public class ThreeAddressCode {
             label.label(next);
         }
         for (Quad quad : results) {
-            if (quad.getInput1() instanceof ConstantAddress(int l)) {
+            if (quad.getInput1() instanceof ConstantAddress(int l) && quad.getOp() == Operator.GOTO) {
+                quad.setInput1(new ConstantAddress(label.lookup(l)));
+            } else if (quad.getResult() instanceof ConstantAddress(int r)) {
                 switch (quad.getOp()) {
-                    case GOTO -> quad.setInput1(new ConstantAddress(label.lookup(l)));
-                    case EQ, NE, GT, GE, LT, LE -> quad.setResult(new ConstantAddress(label.lookup(l)));
+                    case EQ, NE, GT, GE, LT, LE -> quad.setResult(new ConstantAddress(label.lookup(r)));
                 }
             }
         }

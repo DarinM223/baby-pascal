@@ -4,18 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fix ordering of quads">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/util/FreshImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/util/SymbolImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/code/ThreeAddressCodeTest.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add a unit test for normalize()">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/ConstantAddress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/ConstantAddress.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/EmptyAddress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/EmptyAddress.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/NameAddress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/NameAddress.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/Quad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/Quad.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/TempAddress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/TempAddress.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/util/Label.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/util/Label.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/normalize/StatementVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/normalize/StatementVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/code/ThreeAddressCodeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/code/ThreeAddressCodeTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,7 +168,15 @@
       <option name="project" value="LOCAL" />
       <updated>1709952643238</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Add a unit test for normalize()">
+      <option name="closed" value="true" />
+      <created>1709955825967</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1709955825967</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -184,6 +185,18 @@
     <MESSAGE value="Add three address code types" />
     <MESSAGE value="Attempt three address code normalization" />
     <MESSAGE value="Fix ordering of quads" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix ordering of quads" />
+    <MESSAGE value="Add a unit test for normalize()" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add a unit test for normalize()" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java</url>
+          <line>31</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
