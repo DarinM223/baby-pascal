@@ -3,6 +3,7 @@ package com.d_m.cfg;
 import com.d_m.code.ConstantAddress;
 import com.d_m.code.Operator;
 import com.d_m.code.Quad;
+import com.d_m.util.Pair;
 
 import java.util.*;
 
@@ -12,14 +13,16 @@ public class Block {
     private final Map<Integer, Block> successors;
     private final Block entry;
     private Block exit;
+    private final GenKillInfo genKill;
 
     public Block(List<Quad> code) {
         this.code = List.of();
-        predecessors = Map.of();
-        successors = new HashMap<>();
-        entry = this;
-        exit = new Block(List.of(), new HashMap<>(), Map.of(), this, null);
-        exit.exit = exit;
+        this.predecessors = Map.of();
+        this.successors = new HashMap<>();
+        this.entry = this;
+        this.exit = new Block(List.of(), new HashMap<>(), Map.of(), this, null);
+        this.exit.exit = exit;
+        this.genKill = new GenKillInfo(this.code);
 
         List<Range> ranges = makeRanges(code, identifyLeaders(code));
         Blocks blocks = new Blocks(code, entry, exit);
@@ -41,6 +44,27 @@ public class Block {
         }
         blocks.addLink(Blocks.ENTRY, 0);
         blocks.addLink(ranges.getLast().i(), Blocks.EXIT);
+    }
+
+    public Iterable<Block> blocks() {
+        BitSet seen = new BitSet();
+        Queue<Pair<Integer, Block>> blocks = new LinkedList<>();
+        blocks.add(new Pair<>(Blocks.ENTRY, entry));
+        List<Block> results = new ArrayList<>();
+        while (!blocks.isEmpty()) {
+            var pair = blocks.poll();
+            if (seen.get(pair.a())) {
+                continue;
+            }
+
+            Block block = pair.b();
+            for (var entry : block.successors.entrySet()) {
+                blocks.add(new Pair<>(entry.getKey(), entry.getValue()));
+            }
+            results.add(block);
+            seen.set(pair.a());
+        }
+        return results;
     }
 
     private static class Blocks {
@@ -93,6 +117,7 @@ public class Block {
         this.successors = successors;
         this.entry = entry;
         this.exit = exit;
+        this.genKill = new GenKillInfo(code);
     }
 
     private static SortedSet<Integer> identifyLeaders(List<Quad> code) {
