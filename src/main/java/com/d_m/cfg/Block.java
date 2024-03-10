@@ -13,8 +13,8 @@ public class Block {
     private final Map<Integer, Block> successors;
     private final Block entry;
     private Block exit;
-    private final GenKillInfo genKill;
-    private final LivenessInfo live;
+    public final GenKillInfo genKill;
+    public final LivenessInfo live;
 
     public Block(List<Quad> code) {
         this.code = List.of();

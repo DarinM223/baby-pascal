@@ -17,7 +17,7 @@ public class DataflowTest {
     }
 
     @org.junit.jupiter.api.Test
-    void genKill() {
+    void genKillAndLiveness() {
         List<Quad> example = List.of(
                 new Quad(Operator.SUB, new NameAddress(I.i()), new ConstantAddress(1), new NameAddress(M.i())),
                 new Quad(Operator.ASSIGN, new NameAddress(J.i()), new NameAddress(N.i()), new EmptyAddress()),
@@ -29,7 +29,24 @@ public class DataflowTest {
                 new Quad(Operator.ASSIGN, new NameAddress(I.i()), new NameAddress(U3.i()), new EmptyAddress()),
                 new Quad(Operator.LT, new ConstantAddress(3), new NameAddress(I.i()), new ConstantAddress(5))
         );
-        Block block = new Block(example);
-        System.out.println(block);
+        Block cfg = new Block(example);
+        StringBuilder builder = new StringBuilder();
+        for (Block block : cfg.blocks()) {
+            builder.append(block.genKill.gen);
+            builder.append(block.genKill.kill);
+            builder.append(block.genKill.genBlock);
+            builder.append(block.genKill.killBlock);
+            builder.append(block.live.liveIn);
+            builder.append(block.live.liveOut);
+            builder.append('\n');
+        }
+        String expected = """
+                [][]{}{}{4, 5, 6, 7, 8}{4, 5, 6, 7, 8}
+                [{4}, {5}, {6}][{2}, {3}, {1}]{4, 5, 6}{1, 2, 3}{4, 5, 6, 7, 8}{2, 3, 7, 8}
+                [{2}, {3}, {3}][{2}, {3}, {}]{2, 3}{2, 3}{2, 3, 7, 8}{2, 3, 7, 8}
+                [{7}][{1}]{7}{1}{2, 3, 7, 8}{2, 3, 7, 8}
+                [{8}, {2}][{2}, {}]{2, 8}{2}{2, 3, 7, 8}{2, 3, 7, 8}
+                """;
+        assertEquals(builder.toString(), expected);
     }
 }

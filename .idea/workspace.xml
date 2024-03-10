@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Calculates liveness when building control flow graph">
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/DataflowTest.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start dataflow unit test for gen/kill">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/DataflowTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/DataflowTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +44,7 @@
   "keyToString": {
     "Application.Main.executor": "Run",
     "JUnit.BlockTest.createBlocks.executor": "Run",
+    "JUnit.DataflowTest.genKill.executor": "Run",
     "JUnit.ThreeAddressCodeTest.normalize.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -74,7 +76,7 @@
       <recent name="com.d_m.code" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.DataflowTest.genKill">
+  <component name="RunManager" selected="JUnit.DataflowTest.genKillAndLiveness">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.d_m.Main" />
       <module name="baby-pascal" />
@@ -120,6 +122,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="DataflowTest.genKillAndLiveness" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="baby-pascal" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.d_m.cfg.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.d_m.cfg" />
+      <option name="MAIN_CLASS_NAME" value="com.d_m.cfg.DataflowTest" />
+      <option name="METHOD_NAME" value="genKillAndLiveness" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ThreeAddressCodeTest.normalize" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="baby-pascal" />
       <extension name="coverage">
@@ -138,6 +156,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.DataflowTest.genKillAndLiveness" />
         <item itemvalue="JUnit.DataflowTest.genKill" />
         <item itemvalue="JUnit.BlockTest.createBlocks" />
         <item itemvalue="Application.Main" />
@@ -258,7 +277,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710089823684</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Start dataflow unit test for gen/kill">
+      <option name="closed" value="true" />
+      <created>1710092557410</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1710092557410</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -274,7 +301,8 @@
     <MESSAGE value="Blocks calculate gen/kill info" />
     <MESSAGE value="blocks() handles entry and exit indices and adds assert for unit test creating blocks" />
     <MESSAGE value="Calculates liveness when building control flow graph" />
-    <option name="LAST_COMMIT_MESSAGE" value="Calculates liveness when building control flow graph" />
+    <MESSAGE value="Start dataflow unit test for gen/kill" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start dataflow unit test for gen/kill" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
