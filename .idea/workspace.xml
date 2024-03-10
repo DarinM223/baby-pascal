@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Attempt to make block unit test more reliable by substituting in object hashcodes">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Blocks include their id, predecessors and successors are sets, fix block tests">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/BlockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/BlockTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/DataflowTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/DataflowTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -329,7 +327,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710099402592</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Blocks include their id, predecessors and successors are sets, fix block tests">
+      <option name="closed" value="true" />
+      <created>1710108673901</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1710108673901</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -348,7 +354,8 @@
     <MESSAGE value="Start dataflow unit test for gen/kill" />
     <MESSAGE value="Add assert for dataflow unit test" />
     <MESSAGE value="Attempt to make block unit test more reliable by substituting in object hashcodes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Attempt to make block unit test more reliable by substituting in object hashcodes" />
+    <MESSAGE value="Blocks include their id, predecessors and successors are sets, fix block tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="Blocks include their id, predecessors and successors are sets, fix block tests" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

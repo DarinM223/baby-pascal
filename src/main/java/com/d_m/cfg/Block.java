@@ -3,7 +3,6 @@ package com.d_m.cfg;
 import com.d_m.code.ConstantAddress;
 import com.d_m.code.Operator;
 import com.d_m.code.Quad;
-import com.d_m.util.Pair;
 
 import java.util.*;
 
@@ -61,27 +60,24 @@ public class Block implements Comparable<Block> {
 
     public List<Block> blocks() {
         BitSet seen = new BitSet();
-        Queue<Pair<Integer, Block>> blocks = new LinkedList<>();
-        blocks.add(new Pair<>(Blocks.ENTRY, entry));
+        Queue<Block> blocks = new LinkedList<>();
+        blocks.add(entry);
         List<Block> results = new ArrayList<>();
         boolean seenEntry = false;
         while (!blocks.isEmpty()) {
-            var pair = blocks.poll();
-            if (((pair.a() == Blocks.ENTRY) && seenEntry) ||
-                    pair.a() == Blocks.EXIT ||
-                    (pair.a() >= 0 && seen.get(pair.a()))) {
+            Block block = blocks.poll();
+            if (((block.id == Blocks.ENTRY) && seenEntry) ||
+                    block.id == Blocks.EXIT ||
+                    (block.id >= 0 && seen.get(block.id))) {
                 continue;
             }
 
-            Block block = pair.b();
-            for (Block successor : block.successors) {
-                blocks.add(new Pair<>(successor.id, successor));
-            }
+            blocks.addAll(block.successors);
             results.add(block);
-            if (pair.a() == Blocks.ENTRY) {
+            if (block.id == Blocks.ENTRY) {
                 seenEntry = true;
-            } else if (pair.a() >= 0) {
-                seen.set(pair.a());
+            } else if (block.id >= 0) {
+                seen.set(block.id);
             }
         }
         results.add(exit);
@@ -105,8 +101,8 @@ public class Block implements Comparable<Block> {
     }
 
     public String pretty() {
-        return "{\ncode:\n" + code + "\npredecessors:\n"
-                + predecessors.stream().map(Block::getId).sorted().toList()
+        return "{\ncode:\n" + code
+                + "\npredecessors:\n" + predecessors.stream().map(Block::getId).sorted().toList()
                 + "\nsuccessors:\n" + successors.stream().map(Block::getId).sorted().toList()
                 + "\n}\n";
     }
