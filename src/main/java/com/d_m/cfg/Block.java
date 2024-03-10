@@ -14,6 +14,7 @@ public class Block {
     private final Block entry;
     private Block exit;
     private final GenKillInfo genKill;
+    private final LivenessInfo live;
 
     public Block(List<Quad> code) {
         this.code = List.of();
@@ -23,6 +24,7 @@ public class Block {
         this.exit = new Block(List.of(), new HashMap<>(), Map.of(), this, null);
         this.exit.exit = exit;
         this.genKill = new GenKillInfo(this.code);
+        this.live = new LivenessInfo();
 
         List<Range> ranges = makeRanges(code, identifyLeaders(code));
         Blocks blocks = new Blocks(code, entry, exit);
@@ -44,6 +46,15 @@ public class Block {
         }
         blocks.addLink(Blocks.ENTRY, 0);
         blocks.addLink(ranges.getLast().i(), Blocks.EXIT);
+
+        // Calculate liveness for all the blocks.
+        boolean changed;
+        do {
+            changed = false;
+            for (Block block : this.blocks()) {
+                changed = changed || block.livenessRound();
+            }
+        } while (changed);
     }
 
     public List<Block> blocks() {
@@ -72,6 +83,22 @@ public class Block {
             }
         }
         return results;
+    }
+
+    private boolean livenessRound() {
+        BitSet liveIn = (BitSet) live.liveOut.clone();
+        liveIn.andNot(genKill.killBlock);
+        liveIn.or(genKill.genBlock);
+        BitSet liveOut = new BitSet();
+        for (Block successor : successors.values()) {
+            liveOut.or(successor.live.liveIn);
+        }
+        boolean same = liveIn.equals(live.liveIn) && liveOut.equals(live.liveOut);
+        if (!same) {
+            this.live.liveIn = liveIn;
+            this.live.liveOut = liveOut;
+        }
+        return !same;
     }
 
     public String pretty() {
@@ -129,6 +156,7 @@ public class Block {
         this.entry = entry;
         this.exit = exit;
         this.genKill = new GenKillInfo(code);
+        this.live = new LivenessInfo();
     }
 
     private static SortedSet<Integer> identifyLeaders(List<Quad> code) {

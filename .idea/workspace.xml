@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Blocks calculate gen/kill info">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="blocks() handles entry and exit indices and adds assert for unit test creating blocks">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/LivenessInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/BlockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/BlockTest.java" afterDir="false" />
@@ -20,8 +21,8 @@
         <option value="Enum" />
         <option value="Interface" />
         <option value="JUnit5 Test Class" />
-        <option value="Class" />
         <option value="Record" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -226,7 +227,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710023924206</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="blocks() handles entry and exit indices and adds assert for unit test creating blocks">
+      <option name="closed" value="true" />
+      <created>1710086892391</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1710086892391</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -240,7 +249,8 @@
     <MESSAGE value="Create control flow graph using identifying leaders" />
     <MESSAGE value="Construct example for unit test" />
     <MESSAGE value="Blocks calculate gen/kill info" />
-    <option name="LAST_COMMIT_MESSAGE" value="Blocks calculate gen/kill info" />
+    <MESSAGE value="blocks() handles entry and exit indices and adds assert for unit test creating blocks" />
+    <option name="LAST_COMMIT_MESSAGE" value="blocks() handles entry and exit indices and adds assert for unit test creating blocks" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
