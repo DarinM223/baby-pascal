@@ -46,14 +46,17 @@ public class Block {
         blocks.addLink(ranges.getLast().i(), Blocks.EXIT);
     }
 
-    public Iterable<Block> blocks() {
+    public List<Block> blocks() {
         BitSet seen = new BitSet();
         Queue<Pair<Integer, Block>> blocks = new LinkedList<>();
         blocks.add(new Pair<>(Blocks.ENTRY, entry));
         List<Block> results = new ArrayList<>();
+        boolean seenEntry = false;
         while (!blocks.isEmpty()) {
             var pair = blocks.poll();
-            if (seen.get(pair.a())) {
+            if (((pair.a() == Blocks.ENTRY) && seenEntry) ||
+                    pair.a() == Blocks.EXIT ||
+                    (pair.a() >= 0 && seen.get(pair.a()))) {
                 continue;
             }
 
@@ -62,9 +65,17 @@ public class Block {
                 blocks.add(new Pair<>(entry.getKey(), entry.getValue()));
             }
             results.add(block);
-            seen.set(pair.a());
+            if (pair.a() == Blocks.ENTRY) {
+                seenEntry = true;
+            } else if (pair.a() >= 0) {
+                seen.set(pair.a());
+            }
         }
         return results;
+    }
+
+    public String pretty() {
+        return "{\ncode:\n" + code + "\npredecessors:\n" + predecessors + "\nsuccessors:\n" + successors + "\n}\n";
     }
 
     private static class Blocks {
