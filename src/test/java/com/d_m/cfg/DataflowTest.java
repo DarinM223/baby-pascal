@@ -32,12 +32,12 @@ public class DataflowTest {
         Block cfg = new Block(example);
         StringBuilder builder = new StringBuilder();
         for (Block block : cfg.blocks()) {
-            builder.append(block.genKill.gen);
-            builder.append(block.genKill.kill);
-            builder.append(block.genKill.genBlock);
-            builder.append(block.genKill.killBlock);
-            builder.append(block.live.liveIn);
-            builder.append(block.live.liveOut);
+            builder.append(block.getGenKill().gen);
+            builder.append(block.getGenKill().kill);
+            builder.append(block.getGenKill().genBlock);
+            builder.append(block.getGenKill().killBlock);
+            builder.append(block.getLive().liveIn);
+            builder.append(block.getLive().liveOut);
             builder.append('\n');
         }
         String expected = """

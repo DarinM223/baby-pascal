@@ -6,6 +6,7 @@ import com.d_m.code.Quad;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
+import java.util.Objects;
 
 public class GenKillInfo {
     public final List<BitSet> gen;
@@ -41,5 +42,18 @@ public class GenKillInfo {
             killBlock.andNot(gen.get(i));
             killBlock.or(kill.get(i));
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GenKillInfo that = (GenKillInfo) o;
+        return Objects.equals(gen, that.gen) && Objects.equals(kill, that.kill) && Objects.equals(genBlock, that.genBlock) && Objects.equals(killBlock, that.killBlock);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(gen, kill, genBlock, killBlock);
     }
 }

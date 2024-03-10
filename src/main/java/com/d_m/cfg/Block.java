@@ -13,8 +13,8 @@ public class Block {
     private final Map<Integer, Block> successors;
     private final Block entry;
     private Block exit;
-    public final GenKillInfo genKill;
-    public final LivenessInfo live;
+    private final GenKillInfo genKill;
+    private final LivenessInfo live;
 
     public Block(List<Quad> code) {
         this.code = List.of();
@@ -103,6 +103,34 @@ public class Block {
 
     public String pretty() {
         return "{\ncode:\n" + code + "\npredecessors:\n" + predecessors + "\nsuccessors:\n" + successors + "\n}\n";
+    }
+
+    public List<Quad> getCode() {
+        return code;
+    }
+
+    public Map<Integer, Block> getPredecessors() {
+        return predecessors;
+    }
+
+    public Map<Integer, Block> getSuccessors() {
+        return successors;
+    }
+
+    public Block getEntry() {
+        return entry;
+    }
+
+    public Block getExit() {
+        return exit;
+    }
+
+    public GenKillInfo getGenKill() {
+        return genKill;
+    }
+
+    public LivenessInfo getLive() {
+        return live;
     }
 
     private static class Blocks {
