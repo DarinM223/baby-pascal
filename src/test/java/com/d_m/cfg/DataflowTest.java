@@ -5,7 +5,7 @@ import com.d_m.code.*;
 import java.util.List;
 
 import static com.d_m.cfg.DataflowTest.Constants.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DataflowTest {
     enum Constants {
@@ -31,7 +31,9 @@ public class DataflowTest {
         );
         Block cfg = new Block(example);
         StringBuilder builder = new StringBuilder();
-        for (Block block : cfg.blocks()) {
+        List<Block> blocks = cfg.blocks();
+        blocks.sort(null);
+        for (Block block : blocks) {
             builder.append(block.getGenKill().gen);
             builder.append(block.getGenKill().kill);
             builder.append(block.getGenKill().genBlock);
@@ -41,6 +43,7 @@ public class DataflowTest {
             builder.append('\n');
         }
         String expected = """
+                [][]{}{}{}{}
                 [][]{}{}{4, 5, 6, 7, 8}{4, 5, 6, 7, 8}
                 [{4}, {5}, {6}][{2}, {3}, {1}]{4, 5, 6}{1, 2, 3}{4, 5, 6, 7, 8}{2, 3, 7, 8}
                 [{2}, {3}, {3}][{2}, {3}, {}]{2, 3}{2, 3}{2, 3, 7, 8}{2, 3, 7, 8}

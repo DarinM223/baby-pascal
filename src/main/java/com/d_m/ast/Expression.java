@@ -1,8 +1,5 @@
 package com.d_m.ast;
 
-import com.d_m.code.Address;
-import com.d_m.util.Symbol;
-
 import java.util.Map;
 
 public interface Expression {

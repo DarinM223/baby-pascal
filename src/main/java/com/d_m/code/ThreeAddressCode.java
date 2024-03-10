@@ -1,14 +1,14 @@
 package com.d_m.code;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.d_m.ast.Statement;
 import com.d_m.code.normalize.ExpressionVisitor;
 import com.d_m.code.normalize.StatementVisitor;
 import com.d_m.util.Fresh;
 import com.d_m.util.Label;
 import com.d_m.util.Symbol;
-import com.d_m.ast.Statement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ThreeAddressCode {
     private final Fresh fresh;

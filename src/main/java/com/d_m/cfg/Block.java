@@ -7,21 +7,23 @@ import com.d_m.util.Pair;
 
 import java.util.*;
 
-public class Block {
+public class Block implements Comparable<Block> {
+    private final int id;
     private final List<Quad> code;
-    private final Map<Integer, Block> predecessors;
-    private final Map<Integer, Block> successors;
+    private final Set<Block> predecessors;
+    private final Set<Block> successors;
     private final Block entry;
     private Block exit;
     private final GenKillInfo genKill;
     private final LivenessInfo live;
 
     public Block(List<Quad> code) {
+        this.id = Blocks.ENTRY;
         this.code = List.of();
-        this.predecessors = Map.of();
-        this.successors = new HashMap<>();
+        this.predecessors = Set.of();
+        this.successors = new HashSet<>();
         this.entry = this;
-        this.exit = new Block(List.of(), new HashMap<>(), Map.of(), this, null);
+        this.exit = new Block(Blocks.EXIT, List.of(), new HashSet<>(), Set.of(), this, null);
         this.exit.exit = exit;
         this.genKill = new GenKillInfo(this.code);
         this.live = new LivenessInfo();
@@ -72,8 +74,8 @@ public class Block {
             }
 
             Block block = pair.b();
-            for (var entry : block.successors.entrySet()) {
-                blocks.add(new Pair<>(entry.getKey(), entry.getValue()));
+            for (Block successor : block.successors) {
+                blocks.add(new Pair<>(successor.id, successor));
             }
             results.add(block);
             if (pair.a() == Blocks.ENTRY) {
@@ -82,6 +84,7 @@ public class Block {
                 seen.set(pair.a());
             }
         }
+        results.add(exit);
         return results;
     }
 
@@ -90,7 +93,7 @@ public class Block {
         liveIn.andNot(genKill.killBlock);
         liveIn.or(genKill.genBlock);
         BitSet liveOut = new BitSet();
-        for (Block successor : successors.values()) {
+        for (Block successor : successors) {
             liveOut.or(successor.live.liveIn);
         }
         boolean same = liveIn.equals(live.liveIn) && liveOut.equals(live.liveOut);
@@ -102,18 +105,21 @@ public class Block {
     }
 
     public String pretty() {
-        return "{\ncode:\n" + code + "\npredecessors:\n" + predecessors + "\nsuccessors:\n" + successors + "\n}\n";
+        return "{\ncode:\n" + code + "\npredecessors:\n"
+                + predecessors.stream().map(Block::getId).sorted().toList()
+                + "\nsuccessors:\n" + successors.stream().map(Block::getId).sorted().toList()
+                + "\n}\n";
     }
 
     public List<Quad> getCode() {
         return code;
     }
 
-    public Map<Integer, Block> getPredecessors() {
+    public Set<Block> getPredecessors() {
         return predecessors;
     }
 
-    public Map<Integer, Block> getSuccessors() {
+    public Set<Block> getSuccessors() {
         return successors;
     }
 
@@ -131,6 +137,15 @@ public class Block {
 
     public LivenessInfo getLive() {
         return live;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public int compareTo(Block o) {
+        return Integer.compare(this.id, o.id);
     }
 
     private static class Blocks {
@@ -153,16 +168,16 @@ public class Block {
 
         public void newBlock(Range range) {
             List<Quad> newCode = code.subList(range.i(), range.j() + 1);
-            Block block = new Block(newCode, new HashMap<>(), new HashMap<>(), entry, exit);
             int key = range.i();
+            Block block = new Block(key, newCode, new HashSet<>(), new HashSet<>(), entry, exit);
             blocks.put(key, block);
         }
 
         public void addLink(int i, int j) {
             Block blockI = this.blocks.get(i);
             Block blockJ = this.blocks.get(j);
-            blockI.successors.put(j, blockJ);
-            blockJ.predecessors.put(i, blockI);
+            blockI.successors.add(blockJ);
+            blockJ.predecessors.add(blockI);
         }
 
         public void addNextIndex(int i, int endIndex) {
@@ -177,7 +192,8 @@ public class Block {
         }
     }
 
-    private Block(List<Quad> code, Map<Integer, Block> predecessors, Map<Integer, Block> successors, Block entry, Block exit) {
+    private Block(int id, List<Quad> code, Set<Block> predecessors, Set<Block> successors, Block entry, Block exit) {
+        this.id = id;
         this.code = code;
         this.predecessors = predecessors;
         this.successors = successors;

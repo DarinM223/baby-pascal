@@ -1,7 +1,5 @@
 package com.d_m.code;
 
-import com.d_m.ast.BinaryOp;
-
 public enum Operator {
     NEG,
     NOT,
