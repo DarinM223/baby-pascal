@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Don't tuple block id with block in queue for blocks()">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LengauerTarjan.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Port Lengauer-Tarjan from Appel's pseudocode into Java">
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LengauerTarjanTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,9 +18,9 @@
       <list>
         <option value="Enum" />
         <option value="Interface" />
-        <option value="JUnit5 Test Class" />
         <option value="Record" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -41,27 +39,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.All tests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BlockTest.createBlocks.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BlockTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DataflowTest.genKill.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DataflowTest.genKillAndLiveness.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ThreeAddressCodeTest.normalize.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "JUnit.All tests.executor": "Run",
+    "JUnit.BlockTest.createBlocks.executor": "Run",
+    "JUnit.BlockTest.executor": "Run",
+    "JUnit.DataflowTest.genKill.executor": "Run",
+    "JUnit.DataflowTest.genKillAndLiveness.executor": "Run",
+    "JUnit.LengauerTarjanTest.idom.executor": "Run",
+    "JUnit.ThreeAddressCodeTest.normalize.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.d_m.code" />
@@ -76,6 +75,7 @@
       <recent name="com.d_m.code.normalize" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.d_m.dom" />
       <recent name="com.d_m.cfg" />
       <recent name="com.d_m.code" />
     </key>
@@ -158,17 +158,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ThreeAddressCodeTest.normalize" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="LengauerTarjanTest.idom" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="baby-pascal" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.d_m.code.*" />
+          <option name="PATTERN" value="com.d_m.dom.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.d_m.code" />
-      <option name="MAIN_CLASS_NAME" value="com.d_m.code.ThreeAddressCodeTest" />
-      <option name="METHOD_NAME" value="normalize" />
+      <option name="PACKAGE_NAME" value="com.d_m.dom" />
+      <option name="MAIN_CLASS_NAME" value="com.d_m.dom.LengauerTarjanTest" />
+      <option name="METHOD_NAME" value="idom" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -177,18 +177,18 @@
     <list>
       <item itemvalue="Application.Main" />
       <item itemvalue="JUnit.All tests" />
+      <item itemvalue="JUnit.LengauerTarjanTest.idom" />
       <item itemvalue="JUnit.BlockTest" />
       <item itemvalue="JUnit.BlockTest.createBlocks" />
       <item itemvalue="JUnit.DataflowTest.genKillAndLiveness" />
-      <item itemvalue="JUnit.ThreeAddressCodeTest.normalize" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.LengauerTarjanTest.idom" />
         <item itemvalue="JUnit.BlockTest" />
         <item itemvalue="JUnit.DataflowTest.genKillAndLiveness" />
         <item itemvalue="JUnit.BlockTest.createBlocks" />
         <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.ThreeAddressCodeTest.normalize" />
       </list>
     </recent_temporary>
   </component>
@@ -345,7 +345,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710109707932</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Port Lengauer-Tarjan from Appel's pseudocode into Java">
+      <option name="closed" value="true" />
+      <created>1710291599407</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1710291599407</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -366,7 +374,8 @@
     <MESSAGE value="Attempt to make block unit test more reliable by substituting in object hashcodes" />
     <MESSAGE value="Blocks include their id, predecessors and successors are sets, fix block tests" />
     <MESSAGE value="Don't tuple block id with block in queue for blocks()" />
-    <option name="LAST_COMMIT_MESSAGE" value="Don't tuple block id with block in queue for blocks()" />
+    <MESSAGE value="Port Lengauer-Tarjan from Appel's pseudocode into Java" />
+    <option name="LAST_COMMIT_MESSAGE" value="Port Lengauer-Tarjan from Appel's pseudocode into Java" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
