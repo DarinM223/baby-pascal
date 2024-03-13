@@ -49,10 +49,11 @@ public class Block implements Comparable<Block> {
         blocks.addLink(ranges.getLast().i(), Blocks.EXIT);
 
         // Calculate liveness for all the blocks.
+        List<Block> iterations = this.blocks();
         boolean changed;
         do {
             changed = false;
-            for (Block block : this.blocks()) {
+            for (Block block : iterations) {
                 changed = changed || block.livenessRound();
             }
         } while (changed);
