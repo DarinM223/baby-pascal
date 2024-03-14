@@ -116,4 +116,29 @@ class LengauerTarjanTest {
                 """;
         assertEquals(result.toString(), expected);
     }
+
+    @Test
+    void domTreeLevel() {
+        StringBuilder result = new StringBuilder();
+        for (Block block : blocks) {
+            result.append("level(");
+            result.append(block.getId());
+            result.append(") = ");
+            result.append(block.getDominatorTreeLevel());
+            result.append("\n");
+        }
+        String expected = """
+                level(-2) = 5
+                level(-1) = 0
+                level(0) = 1
+                level(3) = 2
+                level(4) = 3
+                level(5) = 3
+                level(6) = 4
+                level(7) = 4
+                level(11) = 5
+                level(15) = 4
+                """;
+        assertEquals(result.toString(), expected);
+    }
 }

@@ -1,12 +1,10 @@
 package com.d_m.dom;
 
 import com.d_m.cfg.Block;
+import com.d_m.util.Pair;
 import com.google.common.collect.*;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LengauerTarjan {
     private int N;
@@ -69,6 +67,19 @@ public class LengauerTarjan {
             try {
                 domTree.put(idom(block).getId(), block);
             } catch (NullPointerException ignored) {
+            }
+        }
+
+        // Set dominator tree level for blocks.
+        Queue<Pair<Integer, Block>> worklist = new LinkedList<>();
+        worklist.add(new Pair<>(0, graph.getEntry()));
+        while (!worklist.isEmpty()) {
+            var pair = worklist.poll();
+            int level = pair.a();
+            Block block = pair.b();
+            block.setDominatorTreeLevel(level);
+            for (Block domChild : domTree.get(block.getId())) {
+                worklist.add(new Pair<>(level + 1, domChild));
             }
         }
     }

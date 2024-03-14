@@ -15,6 +15,7 @@ public class Block implements Comparable<Block> {
     private Block exit;
     private final GenKillInfo genKill;
     private final LivenessInfo live;
+    private int dominatorTreeLevel;
 
     public Block(List<Quad> code) {
         this.id = Blocks.ENTRY;
@@ -26,6 +27,7 @@ public class Block implements Comparable<Block> {
         this.exit.exit = exit;
         this.genKill = new GenKillInfo(this.code);
         this.live = new LivenessInfo();
+        this.dominatorTreeLevel = -1;
 
         List<Range> ranges = makeRanges(code, identifyLeaders(code));
         Blocks blocks = new Blocks(code, entry, exit);
@@ -145,6 +147,14 @@ public class Block implements Comparable<Block> {
         return Integer.compare(this.id, o.id);
     }
 
+    public int getDominatorTreeLevel() {
+        return dominatorTreeLevel;
+    }
+
+    public void setDominatorTreeLevel(int dominatorTreeLevel) {
+        this.dominatorTreeLevel = dominatorTreeLevel;
+    }
+
     private static class Blocks {
         private List<Quad> code;
         private Map<Integer, Block> blocks;
@@ -198,6 +208,7 @@ public class Block implements Comparable<Block> {
         this.exit = exit;
         this.genKill = new GenKillInfo(code);
         this.live = new LivenessInfo();
+        this.dominatorTreeLevel = -1;
     }
 
     private static SortedSet<Integer> identifyLeaders(List<Quad> code) {
