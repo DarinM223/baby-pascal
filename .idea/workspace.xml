@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Port Lengauer-Tarjan from Appel's pseudocode into Java">
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LengauerTarjanTest.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add unit test for idom()">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LengauerTarjan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LengauerTarjan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LengauerTarjanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LengauerTarjanTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -353,7 +354,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710291599407</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Add unit test for idom()">
+      <option name="closed" value="true" />
+      <created>1710295122889</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1710295122889</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -375,12 +384,12 @@
     <MESSAGE value="Blocks include their id, predecessors and successors are sets, fix block tests" />
     <MESSAGE value="Don't tuple block id with block in queue for blocks()" />
     <MESSAGE value="Port Lengauer-Tarjan from Appel's pseudocode into Java" />
-    <option name="LAST_COMMIT_MESSAGE" value="Port Lengauer-Tarjan from Appel's pseudocode into Java" />
+    <MESSAGE value="Add unit test for idom()" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add unit test for idom()" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
       <pinned-members>
-        <PinnedItemInfo parentTag="java.util.HashMap$Node" memberName="key" />
         <PinnedItemInfo parentTag="com.d_m.cfg.Block" memberName="successors" />
         <PinnedItemInfo parentTag="com.d_m.cfg.Block" memberName="code" />
       </pinned-members>

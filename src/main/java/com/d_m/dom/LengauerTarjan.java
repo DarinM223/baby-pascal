@@ -3,6 +3,7 @@ package com.d_m.dom;
 import com.d_m.cfg.Block;
 import com.google.common.collect.*;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ public class LengauerTarjan {
     private final Map<Integer, Integer> best;
     private final Map<Integer, Block> idom;
     private final Block[] vertex;
+    private final Multimap<Integer, Block> domTree;
 
     public LengauerTarjan(Block graph) {
         List<Block> blocks = graph.blocks();
@@ -28,6 +30,7 @@ public class LengauerTarjan {
         best = new HashMap<>(size);
         idom = new HashMap<>(size);
         vertex = new Block[size];
+        domTree = ArrayListMultimap.create();
         Multimap<Integer, Integer> bucket = TreeMultimap.create();
         Map<Integer, Integer> samedom = new HashMap<>(size);
         dfs(null, graph);
@@ -60,10 +63,30 @@ public class LengauerTarjan {
                 idom.put(n, idom.get(samedom.get(n)));
             }
         }
+
+        // Calculate dominator tree from idom.
+        for (Block block : blocks) {
+            try {
+                domTree.put(idom(block).getId(), block);
+            } catch (NullPointerException ignored) {
+            }
+        }
     }
 
     public Block idom(Block block) {
         return idom.get(block.getId());
+    }
+
+    public boolean idoms(Block block1, Block block2) {
+        try {
+            return block1.getId() == idom(block2).getId();
+        } catch (NullPointerException ignored) {
+            return false;
+        }
+    }
+
+    public Collection<Block> domChildren(Block block) {
+        return domTree.get(block.getId());
     }
 
     private int ancestorWithLowestSemi(int v) {

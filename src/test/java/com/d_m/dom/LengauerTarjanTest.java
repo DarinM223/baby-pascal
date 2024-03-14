@@ -8,6 +8,7 @@ import com.d_m.util.Fresh;
 import com.d_m.util.FreshImpl;
 import com.d_m.util.Symbol;
 import com.d_m.util.SymbolImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -40,17 +41,23 @@ class LengauerTarjanTest {
         );
     }
 
-    @Test
-    void idom() {
+    LengauerTarjan dominators;
+    List<Block> blocks;
+
+    @BeforeEach
+    void setUp() {
         Fresh fresh = new FreshImpl();
         Symbol symbol = new SymbolImpl(fresh);
         ThreeAddressCode threeAddressCode = new ThreeAddressCode(fresh, symbol);
         List<Quad> code = threeAddressCode.normalize(figure_19_4());
         Block cfg = new Block(code);
-        LengauerTarjan dominators = new LengauerTarjan(cfg);
-        List<Block> blocks = cfg.blocks();
+        dominators = new LengauerTarjan(cfg);
+        blocks = cfg.blocks();
         blocks.sort(null);
+    }
 
+    @Test
+    void idom() {
         StringBuilder result = new StringBuilder();
         for (Block block : blocks) {
             result.append("idom(");
@@ -75,6 +82,37 @@ class LengauerTarjanTest {
                 idom(7) = 5
                 idom(11) = 6
                 idom(15) = 4
+                """;
+        assertEquals(result.toString(), expected);
+    }
+
+    @Test
+    void domChildren() {
+        StringBuilder result = new StringBuilder();
+        for (Block block : blocks) {
+            result.append("children(");
+            result.append(block.getId());
+            result.append(") = [");
+            var childrenIterator = dominators.domChildren(block).stream().sorted().iterator();
+            while (childrenIterator.hasNext()) {
+                result.append(childrenIterator.next().getId());
+                if (childrenIterator.hasNext()) {
+                    result.append(", ");
+                }
+            }
+            result.append("]\n");
+        }
+        String expected = """
+                children(-2) = []
+                children(-1) = [0]
+                children(0) = [3]
+                children(3) = [4, 5]
+                children(4) = [15]
+                children(5) = [6, 7]
+                children(6) = [11]
+                children(7) = []
+                children(11) = []
+                children(15) = [-2]
                 """;
         assertEquals(result.toString(), expected);
     }
