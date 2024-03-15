@@ -89,11 +89,38 @@ public class LengauerTarjan {
     }
 
     public boolean idoms(Block block1, Block block2) {
-        try {
-            return block1.getId() == idom(block2).getId();
-        } catch (NullPointerException ignored) {
+        return block1.equals(idom(block2));
+    }
+
+    public boolean dominates(Block block1, Block block2) {
+        if (block2.equals(block1)) {
+            return true;
+        }
+        if (block1.equals(idom(block2))) {
+            return true;
+        }
+        if (block2.equals(idom(block1))) {
             return false;
         }
+
+        // If block1 is lower than block2 in the dominator tree, then block1
+        // cannot dominate block2.
+        if (block1.getDominatorTreeLevel() >= block2.getDominatorTreeLevel()) {
+            return false;
+        }
+
+        // Walk block2's idoms until it gets to block1. Stop before block2's dominator tree level
+        // becomes less than block1's dominator tree level.
+        int block1Level = block1.getDominatorTreeLevel();
+        Block IDom;
+        while ((IDom = idom(block2)) != null && IDom.getDominatorTreeLevel() >= block1Level) {
+            block2 = IDom;
+        }
+        return block2.equals(block1);
+    }
+
+    public boolean strictlyDominates(Block block1, Block block2) {
+        return !block1.equals(block2) && dominates(block1, block2);
     }
 
     public Collection<Block> domChildren(Block block) {

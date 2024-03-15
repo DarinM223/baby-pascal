@@ -155,6 +155,17 @@ public class Block implements Comparable<Block> {
         this.dominatorTreeLevel = dominatorTreeLevel;
     }
 
+    public boolean equals(Block block) {
+        if (this == block) return true;
+        if (block == null) return false;
+        return id == block.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
     private static class Blocks {
         private List<Quad> code;
         private Map<Integer, Block> blocks;
