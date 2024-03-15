@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add dominator tree level to blocks, and set the level in LangauerTarjan">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add dominates() and strictlyDominates() which walks the idoms of the second block">
       <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/DominanceFrontier.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LengauerTarjan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LengauerTarjan.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -379,7 +377,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710456343191</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Add dominates() and strictlyDominates() which walks the idoms of the second block">
+      <option name="closed" value="true" />
+      <created>1710510959053</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1710510959053</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -404,7 +410,8 @@
     <MESSAGE value="Add unit test for idom()" />
     <MESSAGE value="Add domChildren() and splits Lengauer Tarjan unit test" />
     <MESSAGE value="Add dominator tree level to blocks, and set the level in LangauerTarjan" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add dominator tree level to blocks, and set the level in LangauerTarjan" />
+    <MESSAGE value="Add dominates() and strictlyDominates() which walks the idoms of the second block" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add dominates() and strictlyDominates() which walks the idoms of the second block" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
