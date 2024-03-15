@@ -1,6 +1,6 @@
 package com.d_m.ssa;
 
-import java.util.Set;
+import com.d_m.ast.Type;
 
 public class Argument extends Value {
     private Function parent;

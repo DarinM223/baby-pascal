@@ -1,5 +1,6 @@
 package com.d_m.ssa;
 
+import com.d_m.ast.Type;
 import com.d_m.util.Fresh;
 
 public abstract class Value {
