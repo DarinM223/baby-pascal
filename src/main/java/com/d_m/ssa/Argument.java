@@ -6,7 +6,8 @@ public class Argument extends Value {
     private Function parent;
     private int argumentNumber;
 
-    public Argument(Type type, String name, Function parent, int argumentNumber) {
+    public Argument(int id, String name, Type type, Function parent, int argumentNumber) {
+        super(id, name, type);
         this.parent = parent;
         this.argumentNumber = argumentNumber;
     }
