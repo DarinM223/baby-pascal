@@ -19,31 +19,4 @@ public abstract class Value {
     public Iterator<Use> uses() {
         return new UsesIterator(uses);
     }
-
-    public static class UsesIterator implements Iterator<Use> {
-        private Use currentUse = null;
-
-        private UsesIterator(Use currentUse) {
-            this.currentUse = currentUse;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return currentUse != null && currentUse.next != null;
-        }
-
-        @Override
-        public Use next() {
-            currentUse = currentUse.next;
-            return currentUse;
-        }
-
-        @Override
-        public void remove() {
-            currentUse.next.prev = currentUse.prev;
-            currentUse.prev.next = currentUse.next;
-            currentUse = currentUse.prev;
-            Iterator.super.remove();
-        }
-    }
 }

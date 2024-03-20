@@ -6,6 +6,11 @@ public class Use {
     protected Use next;
     protected Use prev;
 
+    public Use(Value value, Value user) {
+        this.value = value;
+        this.user = user;
+    }
+
     public Value getValue() {
         return value;
     }
