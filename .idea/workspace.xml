@@ -4,18 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Deletes Operator and adds Value Use iterator">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ConstantInt.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ListWrapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/UsesIterator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/InstructionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Adds more fields to Instruction and adds ConstantInt">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Constant.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Use.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Use.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/UsesIterator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/UsesIterator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/InstructionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/InstructionTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -437,11 +431,18 @@
       <option name="project" value="LOCAL" />
       <updated>1710604524656</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Adds more fields to Instruction and adds ConstantInt">
+      <option name="closed" value="true" />
+      <created>1710895511068</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1710895511068</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add three address code types" />
     <MESSAGE value="Attempt three address code normalization" />
     <MESSAGE value="Fix ordering of quads" />
     <MESSAGE value="Add a unit test for normalize()" />
@@ -466,7 +467,8 @@
     <MESSAGE value="Start skeleton of SSA class hierarchy" />
     <MESSAGE value="Lift IntegerType and BooleanType, and seal some interfaces so they can be matched on." />
     <MESSAGE value="Deletes Operator and adds Value Use iterator" />
-    <option name="LAST_COMMIT_MESSAGE" value="Deletes Operator and adds Value Use iterator" />
+    <MESSAGE value="Adds more fields to Instruction and adds ConstantInt" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adds more fields to Instruction and adds ConstantInt" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

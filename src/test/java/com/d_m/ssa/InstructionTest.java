@@ -6,6 +6,7 @@ import com.d_m.util.Fresh;
 import com.d_m.util.FreshImpl;
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,15 +18,21 @@ class InstructionTest {
         Fresh fresh = new FreshImpl();
         Instruction instruction = new Instruction(fresh.fresh(), null,
                 new IntegerType(), Operator.ADD, List.of(new ConstantInt(fresh.fresh(), 1)));
-        assertEquals(countOperands(instruction), 1);
+        assertEquals(count(instruction.operands()), 1);
 
         instruction.addOperand(new ConstantInt(fresh.fresh(), 2));
-        assertEquals(countOperands(instruction), 2);
+        assertEquals(count(instruction.operands()), 2);
+
+        var iterator = instruction.operands();
+        while (iterator.hasNext()) {
+            Use operand = iterator.next();
+            assertEquals(count(operand.getValue().uses()), 1);
+            assertEquals(operand.getValue().uses().next().getUser(), instruction);
+        }
     }
 
-    private static int countOperands(Instruction instruction) {
+    private static int count(Iterator<Use> iterator) {
         int count = 0;
-        var iterator = instruction.operands();
         while (iterator.hasNext()) {
             count++;
             iterator.next();

@@ -28,6 +28,7 @@ public class Instruction extends Value {
     }
 
     public void addOperand(Value operand) {
+        operand.addUse(this);
         Use newOperand = new Use(operand, this);
         if (operands != null) {
             newOperand.next = operands;

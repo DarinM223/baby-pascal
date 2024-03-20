@@ -16,8 +16,9 @@ public class UsesIterator implements Iterator<Use> {
 
     @Override
     public Use next() {
+        Use use = currentUse;
         currentUse = currentUse.next;
-        return currentUse;
+        return use;
     }
 
     @Override

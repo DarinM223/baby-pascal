@@ -16,6 +16,15 @@ public abstract class Value {
         this.type = type;
     }
 
+    public void addUse(Value user) {
+        Use newUse = new Use(this, user);
+        if (uses != null) {
+            newUse.next = uses;
+            uses.prev = newUse;
+        }
+        uses = newUse;
+    }
+
     public Iterator<Use> uses() {
         return new UsesIterator(uses);
     }
