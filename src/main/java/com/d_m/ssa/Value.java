@@ -3,6 +3,7 @@ package com.d_m.ssa;
 import com.d_m.ast.Type;
 
 import java.util.Iterator;
+import java.util.Objects;
 
 public abstract class Value {
     protected final int id;
@@ -25,7 +26,37 @@ public abstract class Value {
         uses = newUse;
     }
 
+    public void removeUse(Value user) {
+        if (uses != null && uses.user.equals(user)) {
+            if (uses.next != null) {
+                uses.next.prev = null;
+            }
+            uses = uses.next;
+        } else {
+            var iterator = uses();
+            while (iterator.hasNext()) {
+                Use use = iterator.next();
+                if (use.user.equals(user)) {
+                    iterator.remove();
+                }
+            }
+        }
+    }
+
     public Iterator<Use> uses() {
         return new UsesIterator(uses);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Value value = (Value) o;
+        return id == value.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

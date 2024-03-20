@@ -3,9 +3,11 @@ package com.d_m.ssa;
 import java.util.Iterator;
 
 public class UsesIterator implements Iterator<Use> {
+    private Use previousUse = null;
     private Use currentUse = null;
 
     public UsesIterator(Use currentUse) {
+        this.previousUse = null;
         this.currentUse = currentUse;
     }
 
@@ -16,18 +18,23 @@ public class UsesIterator implements Iterator<Use> {
 
     @Override
     public Use next() {
-        Use use = currentUse;
+        previousUse = currentUse;
         currentUse = currentUse.next;
-        return use;
+        return previousUse;
     }
 
     @Override
     public void remove() {
-        if (currentUse.next != null) {
-            currentUse.next.prev = currentUse.prev;
+        if (previousUse == null) {
+            return;
         }
-        currentUse.prev.next = currentUse.next;
-        currentUse = currentUse.prev;
-        Iterator.super.remove();
+
+        if (previousUse.next != null) {
+            previousUse.next.prev = previousUse.prev;
+        }
+        if (previousUse.prev != null) {
+            previousUse.prev.next = previousUse.next;
+        }
+        previousUse = previousUse.prev;
     }
 }

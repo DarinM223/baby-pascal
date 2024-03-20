@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Adds more fields to Instruction and adds ConstantInt">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Adding an operand to an instruction adds a use from the operand to the instruction">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/UsesIterator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/UsesIterator.java" afterDir="false" />
@@ -439,11 +439,18 @@
       <option name="project" value="LOCAL" />
       <updated>1710895511068</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Adding an operand to an instruction adds a use from the operand to the instruction">
+      <option name="closed" value="true" />
+      <created>1710897654217</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1710897654217</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Attempt three address code normalization" />
     <MESSAGE value="Fix ordering of quads" />
     <MESSAGE value="Add a unit test for normalize()" />
     <MESSAGE value="Fix unit test for normalize()" />
@@ -468,7 +475,8 @@
     <MESSAGE value="Lift IntegerType and BooleanType, and seal some interfaces so they can be matched on." />
     <MESSAGE value="Deletes Operator and adds Value Use iterator" />
     <MESSAGE value="Adds more fields to Instruction and adds ConstantInt" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adds more fields to Instruction and adds ConstantInt" />
+    <MESSAGE value="Adding an operand to an instruction adds a use from the operand to the instruction" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding an operand to an instruction adds a use from the operand to the instruction" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

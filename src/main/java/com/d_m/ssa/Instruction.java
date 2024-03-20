@@ -12,29 +12,30 @@ public class Instruction extends Value {
     private Value prev;
     private Value next;
     private Operator operator;
-    private Use operands = null;
+    private List<Use> operands;
     protected Set<Block> successors;
 
     public Instruction(int id, String name, Type type, Operator operator, List<Value> operands) {
         super(id, name, type);
         this.operator = operator;
-        for (Value operand : operands) {
-            this.addOperand(operand);
-        }
+        this.operands = operands.stream().map(this::valueToUse).toList();
     }
 
     public Iterator<Use> operands() {
-        return new UsesIterator(operands);
+        return operands.iterator();
     }
 
-    public void addOperand(Value operand) {
+    public Use getOperand(int i) {
+        return operands.get(i);
+    }
+
+    public Use setOperand(int i, Use use) {
+        return operands.set(i, use);
+    }
+
+    public Use valueToUse(Value operand) {
         operand.addUse(this);
-        Use newOperand = new Use(operand, this);
-        if (operands != null) {
-            newOperand.next = operands;
-            operands.prev = newOperand;
-        }
-        operands = newOperand;
+        return new Use(operand, this);
     }
 
     public void addSuccessor(Block successor) {
