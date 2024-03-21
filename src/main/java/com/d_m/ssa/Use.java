@@ -1,6 +1,6 @@
 package com.d_m.ssa;
 
-public class Use {
+public class Use implements Listable<Use> {
     protected Value value;
     protected Value user;
     protected Use next;
@@ -27,18 +27,22 @@ public class Use {
         this.user = user;
     }
 
+    @Override
     public Use getNext() {
         return next;
     }
 
+    @Override
     public void setNext(Use next) {
         this.next = next;
     }
 
+    @Override
     public Use getPrev() {
         return prev;
     }
 
+    @Override
     public void setPrev(Use prev) {
         this.prev = prev;
     }

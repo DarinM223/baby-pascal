@@ -4,6 +4,7 @@ import com.d_m.ast.IntegerType;
 import com.d_m.code.Operator;
 import com.d_m.util.Fresh;
 import com.d_m.util.FreshImpl;
+import com.google.common.collect.Iterators;
 import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
@@ -20,20 +21,10 @@ class InstructionTest {
         var two = new ConstantInt(fresh.fresh(), 2);
         Instruction instruction = new Instruction(fresh.fresh(), null, new IntegerType(), Operator.ADD, List.of(one, two));
 
-        assertEquals(count(instruction.operands()), 2);
-        for (var it = instruction.operands(); it.hasNext(); ) {
-            Use operand = it.next();
-            assertEquals(count(operand.getValue().uses()), 1);
+        assertEquals(Iterators.size(instruction.operands().iterator()), 2);
+        for (Use operand : instruction.operands()) {
+            assertEquals(Iterators.size(operand.getValue().uses()), 1);
             assertEquals(operand.getValue().uses().next().getUser(), instruction);
         }
-    }
-
-    private static int count(Iterator<Use> iterator) {
-        int count = 0;
-        while (iterator.hasNext()) {
-            count++;
-            iterator.next();
-        }
-        return count;
     }
 }

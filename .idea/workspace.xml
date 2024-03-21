@@ -4,10 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Adding an operand to an instruction adds a use from the operand to the instruction">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Changes operand to be a list and fixes UseIterator remove()">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/LinkedIterator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Listable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/BlockTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/UsesIterator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/UsesIterator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ListWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ListWrapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Use.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Use.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/UsesIterator.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/InstructionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/InstructionTest.java" afterDir="false" />
     </list>
@@ -447,11 +454,18 @@
       <option name="project" value="LOCAL" />
       <updated>1710897654217</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Changes operand to be a list and fixes UseIterator remove()">
+      <option name="closed" value="true" />
+      <created>1710902775750</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1710902775750</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix ordering of quads" />
     <MESSAGE value="Add a unit test for normalize()" />
     <MESSAGE value="Fix unit test for normalize()" />
     <MESSAGE value="Create control flow graph using identifying leaders" />
@@ -476,7 +490,8 @@
     <MESSAGE value="Deletes Operator and adds Value Use iterator" />
     <MESSAGE value="Adds more fields to Instruction and adds ConstantInt" />
     <MESSAGE value="Adding an operand to an instruction adds a use from the operand to the instruction" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding an operand to an instruction adds a use from the operand to the instruction" />
+    <MESSAGE value="Changes operand to be a list and fixes UseIterator remove()" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changes operand to be a list and fixes UseIterator remove()" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

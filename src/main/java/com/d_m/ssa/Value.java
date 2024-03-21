@@ -44,7 +44,7 @@ public abstract class Value {
     }
 
     public Iterator<Use> uses() {
-        return new UsesIterator(uses);
+        return new LinkedIterator<>(uses);
     }
 
     @Override

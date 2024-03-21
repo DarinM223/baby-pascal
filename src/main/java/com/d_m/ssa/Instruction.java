@@ -3,14 +3,12 @@ package com.d_m.ssa;
 import com.d_m.ast.Type;
 import com.d_m.code.Operator;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-public class Instruction extends Value {
+public class Instruction extends Value implements Listable<Instruction> {
     private Block parent;
-    private Value prev;
-    private Value next;
+    protected Instruction prev;
+    protected Instruction next;
     private Operator operator;
     private List<Use> operands;
     protected Set<Block> successors;
@@ -18,11 +16,12 @@ public class Instruction extends Value {
     public Instruction(int id, String name, Type type, Operator operator, List<Value> operands) {
         super(id, name, type);
         this.operator = operator;
-        this.operands = operands.stream().map(this::valueToUse).toList();
+        this.operands = new ArrayList<>(operands.stream().map(this::valueToUse).toList());
+        this.successors = new HashSet<>();
     }
 
-    public Iterator<Use> operands() {
-        return operands.iterator();
+    public Iterable<Use> operands() {
+        return operands;
     }
 
     public Use getOperand(int i) {
@@ -33,7 +32,25 @@ public class Instruction extends Value {
         return operands.set(i, use);
     }
 
-    public Use valueToUse(Value operand) {
+    public void remove() {
+        for (Use operand : operands()) {
+            operand.value.removeUse(this);
+        }
+        if (prev != null) {
+            prev.next = next;
+            if (this.equals(parent.getTerminator())) {
+                parent.getInstructions().last = prev;
+            }
+        }
+        if (next != null) {
+            next.prev = prev;
+            if (this.equals(parent.getInstructions().first)) {
+                parent.getInstructions().first = next;
+            }
+        }
+    }
+
+    private Use valueToUse(Value operand) {
         operand.addUse(this);
         return new Use(operand, this);
     }
@@ -48,5 +65,25 @@ public class Instruction extends Value {
 
     public Set<Block> getSuccessors() {
         return successors;
+    }
+
+    @Override
+    public Instruction getPrev() {
+        return prev;
+    }
+
+    @Override
+    public void setPrev(Instruction prev) {
+        this.prev = prev;
+    }
+
+    @Override
+    public Instruction getNext() {
+        return next;
+    }
+
+    @Override
+    public void setNext(Instruction next) {
+        this.next = next;
     }
 }
