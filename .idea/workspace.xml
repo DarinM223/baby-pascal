@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add definition sites and phi node">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Phi.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/construct/InsertPhis.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/construct/InsertPhisMinimal.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/construct/InsertPhisPruned.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add phis to three address code block, and implement inserting phis">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/NameAddress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/NameAddress.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/construct/InsertPhis.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/construct/InsertPhis.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dom/DefinitionSites.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/DefinitionSites.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -474,11 +469,18 @@
       <option name="project" value="LOCAL" />
       <updated>1711126014948</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="Add phis to three address code block, and implement inserting phis">
+      <option name="closed" value="true" />
+      <created>1711138368310</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1711138368310</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Create control flow graph using identifying leaders" />
     <MESSAGE value="Construct example for unit test" />
     <MESSAGE value="Blocks calculate gen/kill info" />
     <MESSAGE value="blocks() handles entry and exit indices and adds assert for unit test creating blocks" />
@@ -503,7 +505,8 @@
     <MESSAGE value="Changes operand to be a list and fixes UseIterator remove()" />
     <MESSAGE value="Refactor linked list code and add functions to ListWrapper for adding nodes to the front or back" />
     <MESSAGE value="Add definition sites and phi node" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add definition sites and phi node" />
+    <MESSAGE value="Add phis to three address code block, and implement inserting phis" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add phis to three address code block, and implement inserting phis" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

@@ -30,7 +30,7 @@ public abstract class InsertPhis {
 
     public abstract boolean test(Block phiBlock, Integer symbol);
 
-    public run() {
+    public void run() {
         for (int sym : symbol.symbols()) {
             Queue<Block> worklist = new LinkedList<>(defsites.defsites(sym));
             while (!worklist.isEmpty()) {
