@@ -10,7 +10,7 @@ public class Instruction extends Value implements Listable<Instruction> {
     protected Instruction prev;
     protected Instruction next;
     private Operator operator;
-    private List<Use> operands;
+    protected List<Use> operands;
     protected Set<Block> successors;
 
     public Instruction(int id, String name, Type type, Operator operator, List<Value> operands) {

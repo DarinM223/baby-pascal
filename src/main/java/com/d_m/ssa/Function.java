@@ -6,7 +6,7 @@ import com.d_m.ast.Type;
 import java.util.List;
 import java.util.Optional;
 
-public class Function extends Value {
+public class Function extends Constant {
     private List<Argument> arguments;
     private List<Block> blocks;
 
