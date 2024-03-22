@@ -2,6 +2,8 @@ package com.d_m.construct;
 
 import com.d_m.cfg.Block;
 import com.d_m.cfg.Phi;
+import com.d_m.code.Address;
+import com.d_m.code.NameAddress;
 import com.d_m.dom.DefinitionSites;
 import com.d_m.dom.DominanceFrontier;
 import com.d_m.util.Symbol;
@@ -37,8 +39,8 @@ public abstract class InsertPhis {
                 Block definitionBlock = worklist.poll();
                 for (Block phiBlock : frontier.dominanceFrontier(definitionBlock)) {
                     if (!aPhi.containsEntry(sym, phiBlock) && test(phiBlock, sym)) {
-                        List<Integer> phiOperands = new ArrayList<>(phiBlock.getPredecessors().stream().map(ignored -> sym).toList());
-                        Phi phi = new Phi(sym, phiOperands);
+                        List<Address> phiOperands = new ArrayList<>(phiBlock.getPredecessors().stream().map(ignored -> new NameAddress(sym)).toList());
+                        Phi phi = new Phi(new NameAddress(sym), phiOperands);
                         phiBlock.getPhis().add(phi);
                         aPhi.put(sym, phiBlock);
                         // If phi block is a new block that defines sym, then add it to the worklist.

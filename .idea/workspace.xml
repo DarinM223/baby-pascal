@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add phis to three address code block, and implement inserting phis">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fix compile error">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/construct/UniqueRenamer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/GenKillInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/GenKillInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Phi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Phi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/NameAddress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/NameAddress.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/construct/InsertPhis.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/construct/InsertPhis.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dom/DefinitionSites.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/DefinitionSites.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -477,11 +480,18 @@
       <option name="project" value="LOCAL" />
       <updated>1711138368310</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Fix compile error">
+      <option name="closed" value="true" />
+      <created>1711138421344</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1711138421344</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Construct example for unit test" />
     <MESSAGE value="Blocks calculate gen/kill info" />
     <MESSAGE value="blocks() handles entry and exit indices and adds assert for unit test creating blocks" />
     <MESSAGE value="Calculates liveness when building control flow graph" />
@@ -506,7 +516,8 @@
     <MESSAGE value="Refactor linked list code and add functions to ListWrapper for adding nodes to the front or back" />
     <MESSAGE value="Add definition sites and phi node" />
     <MESSAGE value="Add phis to three address code block, and implement inserting phis" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add phis to three address code block, and implement inserting phis" />
+    <MESSAGE value="Fix compile error" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix compile error" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

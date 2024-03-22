@@ -29,13 +29,13 @@ public class GenKillInfo {
 
         for (int i = code.size() - 1; i >= 0; i--) {
             Quad quad = code.get(i);
-            if (quad.input1() instanceof NameAddress(int n)) {
+            if (quad.input1() instanceof NameAddress(int n, int ignored)) {
                 gen.get(i).set(n);
             }
-            if (quad.input2() instanceof NameAddress(int n)) {
+            if (quad.input2() instanceof NameAddress(int n, int ignored)) {
                 gen.get(i).set(n);
             }
-            if (quad.result() instanceof NameAddress(int r)) {
+            if (quad.result() instanceof NameAddress(int r, int ignored)) {
                 kill.get(i).set(r);
             }
             genBlock.or(gen.get(i));

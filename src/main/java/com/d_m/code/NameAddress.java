@@ -7,6 +7,9 @@ public record NameAddress(int name, int unique) implements Address {
 
     @Override
     public String toString() {
-        return "%" + name;
+        if (unique == 0) {
+            return "%" + name;
+        }
+        return "%" + name + "_" + unique;
     }
 }
