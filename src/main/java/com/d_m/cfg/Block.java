@@ -8,6 +8,7 @@ import java.util.*;
 
 public class Block implements Comparable<Block> {
     private final int id;
+    private final List<Phi> phis;
     private final List<Quad> code;
     private final Set<Block> predecessors;
     private final Set<Block> successors;
@@ -19,6 +20,7 @@ public class Block implements Comparable<Block> {
 
     public Block(List<Quad> code) {
         this.id = Blocks.ENTRY;
+        this.phis = new ArrayList<>();
         this.code = List.of();
         this.predecessors = Set.of();
         this.successors = new HashSet<>();
@@ -112,6 +114,10 @@ public class Block implements Comparable<Block> {
 
     public List<Quad> getCode() {
         return code;
+    }
+
+    public List<Phi> getPhis() {
+        return phis;
     }
 
     public Set<Block> getPredecessors() {
@@ -212,6 +218,7 @@ public class Block implements Comparable<Block> {
 
     private Block(int id, List<Quad> code, Set<Block> predecessors, Set<Block> successors, Block entry, Block exit) {
         this.id = id;
+        this.phis = new ArrayList<>();
         this.code = code;
         this.predecessors = predecessors;
         this.successors = successors;

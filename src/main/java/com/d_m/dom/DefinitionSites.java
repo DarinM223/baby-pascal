@@ -5,18 +5,21 @@ import com.d_m.code.NameAddress;
 import com.d_m.code.Quad;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.SortedSetMultimap;
+import com.google.common.collect.TreeMultimap;
 
 import java.util.Collection;
+import java.util.SortedSet;
 
 public class DefinitionSites {
     // Mapping from block to names originating at that block.
-    private Multimap<Block, Integer> aOrig;
+    private SortedSetMultimap<Block, Integer> aOrig;
 
     // Mapping from name to blocks that define that name.
     private Multimap<Integer, Block> defsites;
 
     public DefinitionSites(Block cfg) {
-        aOrig = ArrayListMultimap.create();
+        aOrig = TreeMultimap.create();
         defsites = ArrayListMultimap.create();
         calcAOrig(cfg);
         for (Block block : cfg.blocks()) {
@@ -28,6 +31,10 @@ public class DefinitionSites {
 
     public Collection<Block> defsites(int symbol) {
         return defsites.get(symbol);
+    }
+
+    public SortedSet<Integer> originatingNames(Block block) {
+        return aOrig.get(block);
     }
 
     private void calcAOrig(Block graph) {
