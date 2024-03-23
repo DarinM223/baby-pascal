@@ -9,4 +9,23 @@ public class Module {
     private String moduleID;
     private List<Function> functionList;
     private Symbol symbolTable;
+
+    public Module(int id, String moduleID, List<Function> functionList, Symbol symbolTable) {
+        this.id = id;
+        this.moduleID = moduleID;
+        this.functionList = functionList;
+        this.symbolTable = symbolTable;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getModuleID() {
+        return moduleID;
+    }
+
+    public List<Function> getFunctionList() {
+        return functionList;
+    }
 }

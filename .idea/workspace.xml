@@ -4,18 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Rewrite names to be unique after inserting phis">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Linking use to value doesn't create a new use, and starts named to unnamed SSA conversion">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Declaration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Declaration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/FunctionDeclaration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/FunctionDeclaration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Program.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Program.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/Address.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Argument.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Argument.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Function.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Function.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PhiNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PhiNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Module.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Module.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -501,11 +493,18 @@
       <option name="project" value="LOCAL" />
       <updated>1711143737175</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Linking use to value doesn't create a new use, and starts named to unnamed SSA conversion">
+      <option name="closed" value="true" />
+      <created>1711219555529</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1711219555529</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="blocks() handles entry and exit indices and adds assert for unit test creating blocks" />
     <MESSAGE value="Calculates liveness when building control flow graph" />
     <MESSAGE value="Start dataflow unit test for gen/kill" />
     <MESSAGE value="Add assert for dataflow unit test" />
@@ -530,7 +529,8 @@
     <MESSAGE value="Add phis to three address code block, and implement inserting phis" />
     <MESSAGE value="Fix compile error" />
     <MESSAGE value="Rewrite names to be unique after inserting phis" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rewrite names to be unique after inserting phis" />
+    <MESSAGE value="Linking use to value doesn't create a new use, and starts named to unnamed SSA conversion" />
+    <option name="LAST_COMMIT_MESSAGE" value="Linking use to value doesn't create a new use, and starts named to unnamed SSA conversion" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

@@ -28,6 +28,8 @@ public class SsaConverter {
     }
 
     public Module convertProgram(Program<com.d_m.cfg.Block> program) {
+        Module result = new Module(fresh.fresh(), "main", new ArrayList<>(), symbol);
+
         // TODO: ignoring globals for now
         for (Declaration<com.d_m.cfg.Block> declaration : program.getDeclarations()) {
             if (declaration instanceof FunctionDeclaration<com.d_m.cfg.Block> functionDeclaration) {
@@ -36,16 +38,16 @@ public class SsaConverter {
         }
         for (Declaration<com.d_m.cfg.Block> declaration : program.getDeclarations()) {
             if (declaration instanceof FunctionDeclaration<com.d_m.cfg.Block> functionDeclaration) {
-                convertFunctionBody(functionDeclaration);
+                convertFunctionBody(result, functionDeclaration);
             }
         }
+
         Function function = new Function(fresh.fresh(), "main", null, List.of());
         for (com.d_m.cfg.Block block : program.getMain().blocks()) {
             Block converted = convertBlock(function, block);
             function.getBlocks().add(converted);
         }
-
-        // TODO: collect functions into module
+        result.getFunctionList().addFirst(function);
 
         // Fill the values bound in a later block.
         for (Address unfilledAddress : unfilled.keySet()) {
@@ -57,7 +59,7 @@ public class SsaConverter {
                 }
             }
         }
-        throw new UnsupportedOperationException("Not implemented");
+        return result;
     }
 
     public void initializeFunctionDeclaration(FunctionDeclaration<com.d_m.cfg.Block> declaration) {
@@ -78,12 +80,13 @@ public class SsaConverter {
         env.put(new NameAddress(symbol.getSymbol(function.name)), function);
     }
 
-    public void convertFunctionBody(FunctionDeclaration<com.d_m.cfg.Block> declaration) {
+    public void convertFunctionBody(Module module, FunctionDeclaration<com.d_m.cfg.Block> declaration) {
         if (env.get(new NameAddress(symbol.getSymbol(declaration.functionName()))) instanceof Function function) {
             for (com.d_m.cfg.Block block : declaration.body().blocks()) {
                 Block converted = convertBlock(function, block);
                 function.getBlocks().add(converted);
             }
+            module.getFunctionList().add(function);
         }
     }
 
@@ -116,6 +119,8 @@ public class SsaConverter {
         Use use = new Use(result, instruction);
         if (result == null) {
             unfilled.put(address, use);
+        } else {
+            result.linkUse(use);
         }
         return use;
     }
