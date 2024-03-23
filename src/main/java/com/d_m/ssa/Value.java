@@ -17,13 +17,12 @@ public abstract class Value {
         this.type = type;
     }
 
-    public void addUse(Value user) {
-        Use newUse = new Use(this, user);
+    public void linkUse(Use use) {
         if (uses != null) {
-            newUse.next = uses;
-            uses.prev = newUse;
+            use.next = uses;
+            uses.prev = use;
         }
-        uses = newUse;
+        uses = use;
     }
 
     public void removeUse(Value user) {

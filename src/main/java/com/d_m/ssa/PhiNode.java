@@ -11,8 +11,8 @@ public class PhiNode extends Instruction {
     }
 
     public void addOperand(Value operand) {
-        operand.addUse(this);
-        operands.add(new Use(operand, this));
+        Use use = new Use(operand, this);
+        operand.linkUse(use);
         if (type == null) {
             type = getType(List.of(operand));
         }

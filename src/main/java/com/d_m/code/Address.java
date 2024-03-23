@@ -1,4 +1,4 @@
 package com.d_m.code;
 
-public interface Address {
+public sealed interface Address permits EmptyAddress, ConstantAddress, NameAddress, TempAddress {
 }

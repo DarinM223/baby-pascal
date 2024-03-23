@@ -13,6 +13,10 @@ public class Instruction extends Value implements Listable<Instruction> {
     protected List<Use> operands;
     protected Set<Block> successors;
 
+    public Instruction(int id, String name, Type type, Operator operator) {
+        this(id, name, type, operator, List.of());
+    }
+
     public Instruction(int id, String name, Type type, Operator operator, List<Value> operands) {
         super(id, name, type);
         this.operator = operator;
@@ -30,6 +34,10 @@ public class Instruction extends Value implements Listable<Instruction> {
 
     public Use setOperand(int i, Use use) {
         return operands.set(i, use);
+    }
+
+    public void addOperand(Use use) {
+        operands.add(use);
     }
 
     public void remove() {
@@ -51,8 +59,9 @@ public class Instruction extends Value implements Listable<Instruction> {
     }
 
     private Use valueToUse(Value operand) {
-        operand.addUse(this);
-        return new Use(operand, this);
+        Use use = new Use(operand, this);
+        operand.linkUse(use);
+        return use;
     }
 
     public void addSuccessor(Block successor) {

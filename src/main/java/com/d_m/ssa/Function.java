@@ -13,4 +13,12 @@ public class Function extends Constant {
     public Function(int id, String name, Type returnType, List<Argument> arguments) {
         super(id, name, new FunctionType(arguments.stream().map(value -> value.type).toList(), Optional.of(returnType)));
     }
+
+    public List<Argument> getArguments() {
+        return arguments;
+    }
+
+    public List<Block> getBlocks() {
+        return blocks;
+    }
 }
