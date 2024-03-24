@@ -21,11 +21,11 @@ public class Block implements Comparable<Block> {
     public Block(List<Quad> code) {
         this.id = Blocks.ENTRY;
         this.phis = new ArrayList<>();
-        this.code = List.of();
+        this.code = new ArrayList<>();
         this.predecessors = Set.of();
         this.successors = new HashSet<>();
         this.entry = this;
-        this.exit = new Block(Blocks.EXIT, List.of(), new HashSet<>(), Set.of(), this, null);
+        this.exit = new Block(Blocks.EXIT, new ArrayList<>(), new HashSet<>(), Set.of(), this, null);
         this.exit.exit = exit;
         this.genKill = new GenKillInfo(this.code);
         this.live = new LivenessInfo();
@@ -106,7 +106,8 @@ public class Block implements Comparable<Block> {
     }
 
     public String pretty() {
-        return "{\ncode:\n" + code
+        var phisString = phis.isEmpty() ? "" : "\nphis:\n" + phis;
+        return "{" + phisString + "\ncode:\n" + code
                 + "\npredecessors:\n" + predecessors.stream().map(Block::getId).sorted().toList()
                 + "\nsuccessors:\n" + successors.stream().map(Block::getId).sorted().toList()
                 + "\n}\n";
