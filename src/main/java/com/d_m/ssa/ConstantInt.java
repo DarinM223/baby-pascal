@@ -2,6 +2,8 @@ package com.d_m.ssa;
 
 import com.d_m.ast.IntegerType;
 
+import java.io.IOException;
+
 public class ConstantInt extends Constant {
     private int value;
 
@@ -17,5 +19,10 @@ public class ConstantInt extends Constant {
 
     public int getValue() {
         return value;
+    }
+
+    @Override
+    public void accept(PrettyPrinter printer) throws IOException {
+        printer.writeConstantInt(this);
     }
 }

@@ -2,6 +2,7 @@ package com.d_m.ssa;
 
 import com.d_m.ast.Type;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Objects;
 
@@ -58,4 +59,14 @@ public abstract class Value {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public Type getType() {
+        return type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public abstract void accept(PrettyPrinter printer) throws IOException;
 }

@@ -2,6 +2,8 @@ package com.d_m.ssa;
 
 import com.d_m.ast.Type;
 
+import java.io.IOException;
+
 public class Argument extends Value {
     private Function parent;
     private final int argumentNumber;
@@ -22,5 +24,10 @@ public class Argument extends Value {
 
     public int getArgumentNumber() {
         return argumentNumber;
+    }
+
+    @Override
+    public void accept(PrettyPrinter printer) throws IOException {
+        printer.writeArgument(this);
     }
 }

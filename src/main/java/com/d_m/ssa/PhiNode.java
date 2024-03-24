@@ -3,6 +3,7 @@ package com.d_m.ssa;
 import com.d_m.ast.Type;
 import com.d_m.code.Operator;
 
+import java.io.IOException;
 import java.util.List;
 
 public class PhiNode extends Instruction {
@@ -24,5 +25,10 @@ public class PhiNode extends Instruction {
             type = operands.getFirst().type;
         }
         return type;
+    }
+
+    @Override
+    public void accept(PrettyPrinter printer) throws IOException {
+        printer.writePhi(this);
     }
 }

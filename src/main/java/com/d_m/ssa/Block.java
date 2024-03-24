@@ -54,4 +54,8 @@ public class Block {
     public ListWrapper<Instruction> getInstructions() {
         return instructions;
     }
+
+    public int getId() {
+        return id;
+    }
 }

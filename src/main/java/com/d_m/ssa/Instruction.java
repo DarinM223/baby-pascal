@@ -3,6 +3,7 @@ package com.d_m.ssa;
 import com.d_m.ast.Type;
 import com.d_m.code.Operator;
 
+import java.io.IOException;
 import java.util.*;
 
 public class Instruction extends Value implements Listable<Instruction> {
@@ -98,5 +99,10 @@ public class Instruction extends Value implements Listable<Instruction> {
 
     public Operator getOperator() {
         return operator;
+    }
+
+    @Override
+    public void accept(PrettyPrinter printer) throws IOException {
+        printer.writeInstruction(this);
     }
 }

@@ -3,6 +3,7 @@ package com.d_m.ssa;
 import com.d_m.ast.FunctionType;
 import com.d_m.ast.Type;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,5 +24,10 @@ public class Function extends Constant {
 
     public List<Block> getBlocks() {
         return blocks;
+    }
+
+    @Override
+    public void accept(PrettyPrinter printer) throws IOException {
+        printer.writeFunctionValue(this);
     }
 }
