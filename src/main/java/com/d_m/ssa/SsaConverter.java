@@ -1,53 +1,49 @@
 package com.d_m.ssa;
 
-import com.d_m.ast.Declaration;
-import com.d_m.ast.FunctionDeclaration;
-import com.d_m.ast.Program;
+import com.d_m.ast.*;
+import com.d_m.cfg.Phi;
 import com.d_m.code.*;
 import com.d_m.util.Fresh;
 import com.d_m.util.Symbol;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SsaConverter {
     private final Fresh fresh;
     private final Symbol symbol;
     private final Map<Address, Value> env;
     private final Multimap<Address, Use> unfilled;
+    private final Map<com.d_m.cfg.Block, Block> rewrittenBlocks;
 
     public SsaConverter(Fresh fresh, Symbol symbol) {
         this.fresh = fresh;
         this.symbol = symbol;
         this.env = new HashMap<>();
         this.unfilled = ArrayListMultimap.create();
+        this.rewrittenBlocks = new HashMap<>();
     }
 
     public Module convertProgram(Program<com.d_m.cfg.Block> program) {
         Module result = new Module(fresh.fresh(), "main", new ArrayList<>(), symbol);
 
         // TODO: ignoring globals for now
+        FunctionDeclaration<com.d_m.cfg.Block> mainDecl = new FunctionDeclaration<>("main", List.of(), Optional.empty(), program.getMain());
+
+        initializeFunctionDeclaration(mainDecl);
         for (Declaration<com.d_m.cfg.Block> declaration : program.getDeclarations()) {
             if (declaration instanceof FunctionDeclaration<com.d_m.cfg.Block> functionDeclaration) {
                 initializeFunctionDeclaration(functionDeclaration);
             }
         }
+
+        convertFunctionBody(result, mainDecl);
         for (Declaration<com.d_m.cfg.Block> declaration : program.getDeclarations()) {
             if (declaration instanceof FunctionDeclaration<com.d_m.cfg.Block> functionDeclaration) {
                 convertFunctionBody(result, functionDeclaration);
             }
         }
-
-        Function function = new Function(fresh.fresh(), "main", null, List.of());
-        for (com.d_m.cfg.Block block : program.getMain().blocks()) {
-            Block converted = convertBlock(function, block);
-            function.getBlocks().add(converted);
-        }
-        result.getFunctionList().addFirst(function);
 
         // Fill the values bound in a later block.
         for (Address unfilledAddress : unfilled.keySet()) {
@@ -86,25 +82,57 @@ public class SsaConverter {
                 Block converted = convertBlock(function, block);
                 function.getBlocks().add(converted);
             }
+            for (com.d_m.cfg.Block block : declaration.body().blocks()) {
+                Block rewrittenBlock = rewrittenBlocks.get(block);
+                for (com.d_m.cfg.Block predecessor : block.getPredecessors()) {
+                    Block rewrittenPredecessor = rewrittenBlocks.get(predecessor);
+                    rewrittenBlock.getPredecessors().add(rewrittenPredecessor);
+                }
+                for (com.d_m.cfg.Block successor : block.getSuccessors()) {
+                    Block rewrittenSuccessor = rewrittenBlocks.get(successor);
+                    rewrittenBlock.getTerminator().successors.add(rewrittenSuccessor);
+                }
+            }
             module.getFunctionList().add(function);
         }
     }
 
-    public com.d_m.ssa.Block convertBlock(Function parent, com.d_m.cfg.Block block) {
-        return new Block(fresh.fresh(), parent, block.getCode().stream().map(this::convertQuad).toList());
+    public Block convertBlock(Function parent, com.d_m.cfg.Block block) {
+        List<Instruction> instructions = new ArrayList<>(block.getPhis().size() + block.getCode().size());
+        for (Phi phi : block.getPhis()) {
+            instructions.add(convertPhi(phi));
+        }
+        for (Quad quad : block.getCode()) {
+            instructions.add(convertQuad(quad));
+        }
+        Block converted = new Block(fresh.fresh(), parent, instructions);
+        if (!block.getSuccessors().isEmpty() &&
+                (converted.getTerminator() == null || !converted.getTerminator().getOperator().isBranch())) {
+            converted.getInstructions().addToEnd(new Instruction(fresh.fresh(), null, null, Operator.GOTO));
+        }
+        rewrittenBlocks.put(block, converted);
+        return converted;
+    }
+
+    public PhiNode convertPhi(Phi phi) {
+        PhiNode phiNode = new PhiNode(fresh.fresh(), nameOfAddress(phi.name()), List.of());
+        for (Address address : phi.ins()) {
+            phiNode.addOperand(lookupAddress(phiNode, address));
+        }
+        env.put(phi.name(), phiNode);
+        return phiNode;
     }
 
     public Instruction convertQuad(Quad quad) {
-        if (quad instanceof Quad(Operator op, Address result, Address input1, Address input2)) {
-            Instruction instruction = new Instruction(fresh.fresh(), nameOfAddress(result), null, op);
-            if (!(input1 instanceof EmptyAddress())) {
-                instruction.addOperand(lookupAddress(instruction, input1));
-            }
-            if (!(input2 instanceof EmptyAddress())) {
-                instruction.addOperand(lookupAddress(instruction, input2));
-            }
+        Instruction instruction = new Instruction(fresh.fresh(), nameOfAddress(quad.result()), null, quad.op());
+        if (!(quad.input1() instanceof EmptyAddress())) {
+            instruction.addOperand(lookupAddress(instruction, quad.input1()));
         }
-        return null;
+        if (!(quad.input2() instanceof EmptyAddress())) {
+            instruction.addOperand(lookupAddress(instruction, quad.input2()));
+        }
+        env.put(quad.result(), instruction);
+        return instruction;
     }
 
     public String nameOfAddress(Address address) {
@@ -118,7 +146,14 @@ public class SsaConverter {
         Value result = env.get(address);
         Use use = new Use(result, instruction);
         if (result == null) {
-            unfilled.put(address, use);
+            if (address instanceof ConstantAddress(int value)) {
+                ConstantInt rewrittenConstant = new ConstantInt(fresh.fresh(), value);
+                env.put(address, rewrittenConstant);
+                use.value = rewrittenConstant;
+                rewrittenConstant.linkUse(use);
+            } else {
+                unfilled.put(address, use);
+            }
         } else {
             result.linkUse(use);
         }

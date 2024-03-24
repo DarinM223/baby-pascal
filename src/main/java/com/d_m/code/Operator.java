@@ -27,4 +27,8 @@ public enum Operator {
     public boolean isComparison() {
         return this == EQ || this == NE || this == GT || this == GE || this == LT || this == LE;
     }
+
+    public boolean isBranch() {
+        return isComparison() || this == GOTO;
+    }
 }

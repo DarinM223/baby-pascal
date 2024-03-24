@@ -95,4 +95,8 @@ public class Instruction extends Value implements Listable<Instruction> {
     public void setNext(Instruction next) {
         this.next = next;
     }
+
+    public Operator getOperator() {
+        return operator;
+    }
 }

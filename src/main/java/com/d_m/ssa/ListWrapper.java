@@ -32,6 +32,17 @@ public class ListWrapper<T extends Listable<T>> implements Iterable<T> {
         }
     }
 
+    public void addToEnd(T node) {
+        if (last == null) {
+            first = node;
+        } else {
+            last.setNext(node);
+            node.setPrev(last);
+            node.setNext(null);
+        }
+        last = node;
+    }
+
     @Override
     public Iterator<T> iterator() {
         return new LinkedIterator<>(first);
