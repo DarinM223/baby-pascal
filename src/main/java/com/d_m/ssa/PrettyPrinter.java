@@ -6,6 +6,7 @@ import com.d_m.ast.IntegerType;
 import com.d_m.ast.Type;
 import com.d_m.util.Fresh;
 import com.d_m.util.Symbol;
+import com.google.common.collect.Iterables;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -44,8 +45,6 @@ public class PrettyPrinter {
 
     public void writeFunction(Function function) throws IOException {
         start();
-        writeType(function.getType());
-        out.write(" ");
         out.write(function.getName());
         out.write("(");
         for (var it = function.getArguments().iterator(); it.hasNext(); ) {
@@ -54,7 +53,9 @@ public class PrettyPrinter {
                 out.write(", ");
             }
         }
-        out.write(") {\n");
+        out.write(") : ");
+        writeType(function.getType());
+        out.write(" {\n");
         indentationLevel++;
         for (Block block : function.getBlocks()) {
             writeBlock(block);
@@ -88,12 +89,12 @@ public class PrettyPrinter {
     public void writeBlock(Block block) throws IOException {
         start();
         out.write("block l");
-        out.write(block.getId());
+        out.write(Integer.toString(block.getId()));
         out.write(" {\n");
         indentationLevel++;
 
         for (Instruction instruction : block.getInstructions()) {
-            instruction.accept(this);
+            instruction.acceptDef(this);
         }
 
         indentationLevel--;
@@ -102,26 +103,102 @@ public class PrettyPrinter {
     }
 
     public void writePhi(PhiNode phi) throws IOException {
-    }
-
-    public void writeInstruction(Instruction instruction) throws IOException {
-    }
-
-    public void start() throws IOException {
-        for (int i = 0; i < indentationLevel; i++) {
-            out.write("  ");
+        start();
+        out.write(getName(phi));
+        out.write(" <- Φ(");
+        for (var it = phi.operands().iterator(); it.hasNext(); ) {
+            it.next().getValue().acceptUse(this);
+            if (it.hasNext()) {
+                out.write(", ");
+            }
         }
+        out.write(")\n");
+    }
+
+    public void writeInstructionDef(Instruction instruction) throws IOException {
+        start();
+        out.write(getName(instruction));
+        out.write(" <- ");
+        switch (Iterables.size(instruction.operands())) {
+            case 2 -> {
+                instruction.getOperand(0).getValue().acceptUse(this);
+                out.write(" " + instruction.getOperator().toString() + " ");
+                instruction.getOperand(1).getValue().acceptUse(this);
+            }
+            case 1 -> {
+                out.write(instruction.getOperator().toString() + " ");
+                instruction.getOperand(0).getValue().acceptUse(this);
+            }
+            default -> {
+                out.write(instruction.getOperator().toString() + "(");
+                for (var it = instruction.operands().iterator(); it.hasNext(); ) {
+                    it.next().getValue().acceptUse(this);
+                    if (it.hasNext()) {
+                        out.write(", ");
+                    }
+                }
+                out.write(")");
+            }
+        }
+        if (!instruction.getSuccessors().isEmpty()) {
+            out.write(" [");
+            for (var it = instruction.getSuccessors().iterator(); it.hasNext(); ) {
+                Block successor = it.next();
+                out.write("l" + successor.getId());
+                if (it.hasNext()) {
+                    out.write(", ");
+                }
+            }
+            out.write("]");
+        }
+        out.write("\n");
     }
 
     public void writeConstantInt(ConstantInt constantInt) throws IOException {
+        out.write(Integer.toString(constantInt.getValue()));
     }
 
     public void writeFunctionValue(Function function) throws IOException {
+        out.write(getName(function));
     }
 
     public void writeArgument(Argument arg) throws IOException {
         writeType(arg.getType());
         out.write(" ");
         out.write(arg.getName());
+    }
+
+    public void writeInstructionUse(Instruction instruction) throws IOException {
+        out.write(getName(instruction));
+    }
+
+    public void writeArgumentUse(Argument argument) throws IOException {
+        out.write(getName(argument));
+    }
+
+    private void start() throws IOException {
+        for (int i = 0; i < indentationLevel; i++) {
+            out.write("  ");
+        }
+    }
+
+    private String getName(Value value) {
+        String result = nameMapping.get(value);
+        if (result == null) {
+            if (value.getName() == null) {
+                result = "%" + fresh.fresh();
+            } else {
+                Integer newCount = nameCount.get(value.getName());
+                if (newCount == null) {
+                    newCount = 1;
+                } else {
+                    newCount++;
+                }
+                nameCount.put(value.getName(), newCount);
+                result = value.getName() + newCount;
+                nameMapping.put(value, result);
+            }
+        }
+        return result;
     }
 }

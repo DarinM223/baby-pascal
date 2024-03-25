@@ -22,7 +22,12 @@ public class ConstantInt extends Constant {
     }
 
     @Override
-    public void accept(PrettyPrinter printer) throws IOException {
+    public void acceptDef(PrettyPrinter printer) throws IOException {
+        printer.writeConstantInt(this);
+    }
+
+    @Override
+    public void acceptUse(PrettyPrinter printer) throws IOException {
         printer.writeConstantInt(this);
     }
 }

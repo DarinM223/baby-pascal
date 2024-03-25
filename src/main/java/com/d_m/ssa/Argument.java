@@ -27,7 +27,12 @@ public class Argument extends Value {
     }
 
     @Override
-    public void accept(PrettyPrinter printer) throws IOException {
+    public void acceptDef(PrettyPrinter printer) throws IOException {
         printer.writeArgument(this);
+    }
+
+    @Override
+    public void acceptUse(PrettyPrinter printer) throws IOException {
+        printer.writeArgumentUse(this);
     }
 }

@@ -68,5 +68,6 @@ public abstract class Value {
         return name;
     }
 
-    public abstract void accept(PrettyPrinter printer) throws IOException;
+    public abstract void acceptDef(PrettyPrinter printer) throws IOException;
+    public abstract void acceptUse(PrettyPrinter printer) throws IOException;
 }

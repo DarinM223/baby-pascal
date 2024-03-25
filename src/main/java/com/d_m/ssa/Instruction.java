@@ -102,7 +102,12 @@ public class Instruction extends Value implements Listable<Instruction> {
     }
 
     @Override
-    public void accept(PrettyPrinter printer) throws IOException {
-        printer.writeInstruction(this);
+    public void acceptDef(PrettyPrinter printer) throws IOException {
+        printer.writeInstructionDef(this);
+    }
+
+    @Override
+    public void acceptUse(PrettyPrinter printer) throws IOException {
+        printer.writeInstructionUse(this);
     }
 }

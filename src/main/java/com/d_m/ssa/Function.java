@@ -13,8 +13,8 @@ public class Function extends Constant {
     private List<Block> blocks;
 
     public Function(int id, String name, Type returnType, List<Argument> arguments) {
-        super(id, name, new FunctionType(arguments.stream().map(value -> value.type).toList(), Optional.ofNullable(returnType)));
-        this.arguments = new ArrayList<>();
+        super(id, name, returnType);
+        this.arguments = arguments;
         this.blocks = new ArrayList<>();
     }
 
@@ -27,7 +27,12 @@ public class Function extends Constant {
     }
 
     @Override
-    public void accept(PrettyPrinter printer) throws IOException {
+    public void acceptDef(PrettyPrinter printer) throws IOException {
+        printer.writeFunction(this);
+    }
+
+    @Override
+    public void acceptUse(PrettyPrinter printer) throws IOException {
         printer.writeFunctionValue(this);
     }
 }

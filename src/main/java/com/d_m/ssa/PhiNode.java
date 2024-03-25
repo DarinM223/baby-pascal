@@ -28,7 +28,7 @@ public class PhiNode extends Instruction {
     }
 
     @Override
-    public void accept(PrettyPrinter printer) throws IOException {
+    public void acceptDef(PrettyPrinter printer) throws IOException {
         printer.writePhi(this);
     }
 }
