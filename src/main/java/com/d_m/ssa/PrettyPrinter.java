@@ -163,9 +163,9 @@ public class PrettyPrinter {
     }
 
     public void writeArgument(Argument arg) throws IOException {
-        writeType(arg.getType());
-        out.write(" ");
         out.write(arg.getName());
+        out.write(" : ");
+        writeType(arg.getType());
     }
 
     public void writeInstructionUse(Instruction instruction) throws IOException {
@@ -187,15 +187,17 @@ public class PrettyPrinter {
         if (result == null) {
             if (value.getName() == null) {
                 result = "%" + fresh.fresh();
+                nameMapping.put(value, result);
             } else {
                 Integer newCount = nameCount.get(value.getName());
                 if (newCount == null) {
                     newCount = 1;
+                    result = value.getName();
                 } else {
                     newCount++;
+                    result = value.getName() + newCount;
                 }
                 nameCount.put(value.getName(), newCount);
-                result = value.getName() + newCount;
                 nameMapping.put(value, result);
             }
         }

@@ -78,6 +78,11 @@ public class SsaConverter {
 
     public void convertFunctionBody(Module module, FunctionDeclaration<com.d_m.cfg.Block> declaration) {
         if (env.get(new NameAddress(symbol.getSymbol(declaration.functionName()))) instanceof Function function) {
+            for (int i = 0; i < function.getArguments().size(); i++) {
+                TypedName typedName = declaration.parameters().get(i);
+                Argument argument = function.getArguments().get(i);
+                env.put(new NameAddress(symbol.getSymbol(typedName.name())), argument);
+            }
             for (com.d_m.cfg.Block block : declaration.body().blocks()) {
                 Block converted = convertBlock(function, block);
                 function.getBlocks().add(converted);
@@ -92,6 +97,9 @@ public class SsaConverter {
                     Block rewrittenSuccessor = rewrittenBlocks.get(successor);
                     rewrittenBlock.getTerminator().successors.add(rewrittenSuccessor);
                 }
+            }
+            for (TypedName typedName : declaration.parameters()) {
+                env.remove(new NameAddress(symbol.getSymbol(typedName.name())));
             }
             module.getFunctionList().add(function);
         }
@@ -131,7 +139,9 @@ public class SsaConverter {
         if (!(quad.input2() instanceof EmptyAddress())) {
             instruction.addOperand(lookupAddress(instruction, quad.input2()));
         }
-        env.put(quad.result(), instruction);
+        if (!(quad.result() instanceof ConstantAddress)) {
+            env.put(quad.result(), instruction);
+        }
         return instruction;
     }
 

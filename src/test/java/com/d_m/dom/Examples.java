@@ -28,4 +28,23 @@ public class Examples {
                 )
         );
     }
+
+    public static List<Statement> fibonacci(String functionName, String varName) {
+        return List.of(
+                new IfStatement(
+                        new BinaryOpExpression(BinaryOp.LE, new VarExpression(varName), new IntExpression(1)),
+                        List.of(new AssignStatement(functionName, new VarExpression(varName))),
+                        List.of(
+                                new AssignStatement(
+                                        functionName,
+                                        new BinaryOpExpression(
+                                                BinaryOp.ADD,
+                                                new CallExpression(functionName, List.of(new BinaryOpExpression(BinaryOp.SUB, new VarExpression(varName), new IntExpression(1)))),
+                                                new CallExpression(functionName, List.of(new BinaryOpExpression(BinaryOp.SUB, new VarExpression(varName), new IntExpression(2))))
+                                        )
+                                )
+                        )
+                )
+        );
+    }
 }
