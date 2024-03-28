@@ -111,4 +111,8 @@ public class Instruction extends Value implements Listable<Instruction> {
     public boolean hasSideEffects() {
         return this.operator.hasSideEffects();
     }
+
+    public void setParent(Block block) {
+        this.parent = block;
+    }
 }

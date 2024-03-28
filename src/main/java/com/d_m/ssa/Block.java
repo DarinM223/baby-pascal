@@ -22,6 +22,7 @@ public class Block {
         this.predecessors = predecessors;
 
         for (Instruction instruction : instructions.reversed()) {
+            instruction.setParent(this);
             this.instructions.addToFront(instruction);
         }
     }
