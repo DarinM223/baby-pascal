@@ -42,9 +42,6 @@ public class Instruction extends Value implements Listable<Instruction> {
     }
 
     public void remove() {
-        for (Use operand : operands()) {
-            operand.value.removeUse(this);
-        }
         if (prev != null) {
             prev.next = next;
             if (this.equals(parent.getTerminator())) {
@@ -109,5 +106,9 @@ public class Instruction extends Value implements Listable<Instruction> {
     @Override
     public void acceptUse(PrettyPrinter printer) throws IOException {
         printer.writeInstructionUse(this);
+    }
+
+    public boolean hasSideEffects() {
+        return this.operator.hasSideEffects();
     }
 }

@@ -58,7 +58,7 @@ public class Block implements Comparable<Block> {
         do {
             changed = false;
             for (Block block : iterations) {
-                changed = changed || block.livenessRound();
+                changed |= block.livenessRound();
             }
         } while (changed);
     }

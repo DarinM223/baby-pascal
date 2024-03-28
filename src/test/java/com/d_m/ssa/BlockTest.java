@@ -27,7 +27,7 @@ class BlockTest {
         instruction1 = new Instruction(fresh.fresh(), null, new IntegerType(), Operator.ADD, List.of(const1, const2));
         instruction2 = new Instruction(fresh.fresh(), null, new IntegerType(), Operator.SUB, List.of(instruction1, const1));
         instruction3 = new Instruction(fresh.fresh(), null, new IntegerType(), Operator.MUL, List.of(instruction2, instruction2));
-        function = new Function(fresh.fresh(), "foo", new IntegerType(), List.of());
+        function = new Function(fresh.fresh(), "foo", new IntegerType(), null, List.of());
     }
 
     @Test

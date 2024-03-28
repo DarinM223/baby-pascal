@@ -31,10 +31,10 @@ public class SsaConverter {
         // TODO: ignoring globals for now
         FunctionDeclaration<com.d_m.cfg.Block> mainDecl = new FunctionDeclaration<>("main", List.of(), Optional.empty(), program.getMain());
 
-        initializeFunctionDeclaration(mainDecl);
+        initializeFunctionDeclaration(result, mainDecl);
         for (Declaration<com.d_m.cfg.Block> declaration : program.getDeclarations()) {
             if (declaration instanceof FunctionDeclaration<com.d_m.cfg.Block> functionDeclaration) {
-                initializeFunctionDeclaration(functionDeclaration);
+                initializeFunctionDeclaration(result, functionDeclaration);
             }
         }
 
@@ -58,7 +58,7 @@ public class SsaConverter {
         return result;
     }
 
-    public void initializeFunctionDeclaration(FunctionDeclaration<com.d_m.cfg.Block> declaration) {
+    public void initializeFunctionDeclaration(Module module, FunctionDeclaration<com.d_m.cfg.Block> declaration) {
         List<Argument> arguments = new ArrayList<>(declaration.parameters().size());
         for (int i = 0; i < declaration.parameters().size(); i++) {
             arguments.add(new Argument(fresh.fresh(), declaration.parameters().get(i).name(), declaration.parameters().get(i).type(), null, i));
@@ -67,6 +67,7 @@ public class SsaConverter {
                 fresh.fresh(),
                 declaration.functionName(),
                 declaration.returnType().isPresent() ? declaration.returnType().get() : null,
+                module,
                 arguments
         );
         for (Argument arg : arguments) {

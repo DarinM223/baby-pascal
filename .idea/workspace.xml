@@ -4,12 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Improve pretty printing and use it for unit test">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fixes for pretty printing and unnamed SSA conversion and adds unit test for recursive function call">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/DeadCodeElimination.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/FunctionPass.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PrettyPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PrettyPrinter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/Operator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/Operator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Function.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Function.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/Examples.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/Examples.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/BlockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/BlockTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,9 +24,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Interface" />
         <option value="Record" />
         <option value="JUnit5 Test Class" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -42,29 +46,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "JUnit.All tests.executor": "Run",
-    "JUnit.BlockTest.createBlocks.executor": "Run",
-    "JUnit.BlockTest.executor": "Run",
-    "JUnit.DataflowTest.genKill.executor": "Run",
-    "JUnit.DataflowTest.genKillAndLiveness.executor": "Run",
-    "JUnit.LengauerTarjanTest.idom.executor": "Run",
-    "JUnit.ThreeAddressCodeTest.normalize.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/d/Documents/java/baby-pascal/target/classes",
-    "project.structure.last.edited": "SDKs",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All tests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BlockTest.createBlocks.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BlockTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.DataflowTest.genKill.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.DataflowTest.genKillAndLiveness.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LengauerTarjanTest.idom.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ThreeAddressCodeTest.normalize.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/d/Documents/java/baby-pascal/target/classes&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.d_m.code" />
@@ -544,11 +548,18 @@
       <option name="project" value="LOCAL" />
       <updated>1711331803599</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="Fixes for pretty printing and unnamed SSA conversion and adds unit test for recursive function call">
+      <option name="closed" value="true" />
+      <created>1711411222547</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1711411222547</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Don't tuple block id with block in queue for blocks()" />
     <MESSAGE value="Port Lengauer-Tarjan from Appel's pseudocode into Java" />
     <MESSAGE value="Add unit test for idom()" />
     <MESSAGE value="Add domChildren() and splits Lengauer Tarjan unit test" />
@@ -573,7 +584,8 @@
     <MESSAGE value="Fixes for unnamed SSA conversion&#10;&#10;* Converts phis as well as quads&#10;* Adds terminator to the end of blocks with successors and no branch terminator&#10;* Links blocks predecessors and successors after rewriting them to unnamed SSA&#10;* Handles constants when looking up addresses&#10;* Adds unit test for converting to unnamed SSA (doesn't do anything yet but its useful for inspection through the debugger)" />
     <MESSAGE value="Start unnamed SSA pretty printer" />
     <MESSAGE value="Improve pretty printing and use it for unit test" />
-    <option name="LAST_COMMIT_MESSAGE" value="Improve pretty printing and use it for unit test" />
+    <MESSAGE value="Fixes for pretty printing and unnamed SSA conversion and adds unit test for recursive function call" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixes for pretty printing and unnamed SSA conversion and adds unit test for recursive function call" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

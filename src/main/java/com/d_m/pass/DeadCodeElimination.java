@@ -1,0 +1,56 @@
+package com.d_m.pass;
+
+import com.d_m.ssa.*;
+import com.d_m.ssa.Module;
+import com.google.common.collect.Iterators;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class DeadCodeElimination implements FunctionPass<Boolean> {
+    @Override
+    public Boolean runModule(Module module) {
+        boolean changed = false;
+        for (Function function : module.getFunctionList()) {
+            changed |= runFunction(function);
+        }
+        return changed;
+    }
+
+    @Override
+    public Boolean runFunction(Function function) {
+        Set<Instruction> worklist = new HashSet<>();
+        boolean changed = false;
+        for (var it = function.instructions(); it.hasNext(); ) {
+            Instruction instruction = it.next();
+            if (!worklist.contains(instruction)) {
+                changed |= runInstruction(worklist, instruction);
+            }
+        }
+        while (!worklist.isEmpty()) {
+            var it = worklist.iterator();
+            Instruction instruction = it.next();
+            it.remove();
+            changed |= runInstruction(worklist, instruction);
+        }
+        return changed;
+    }
+
+    public boolean runInstruction(Set<Instruction> worklist, Instruction instruction) {
+        int numUses = Iterators.size(instruction.uses());
+        if (numUses > 0 || instruction.getOperator().isBranch() || instruction.hasSideEffects()) {
+            return false;
+        }
+
+        instruction.remove();
+        for (Use use : instruction.operands()) {
+            Value operand = use.getValue();
+            operand.removeUse(instruction);
+            if (operand instanceof Instruction operandInstruction) {
+                worklist.add(operandInstruction);
+            }
+        }
+
+        return true;
+    }
+}
