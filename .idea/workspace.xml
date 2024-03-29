@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start deadcode elimination pass">
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/DeadCodeEliminationTest.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add basic deadcode elimination test for fibonacci">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/Lattice.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Function.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Function.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,8 +20,8 @@
         <option value="Enum" />
         <option value="Record" />
         <option value="Interface" />
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -73,6 +71,7 @@
       <recent name="" />
     </key>
     <key name="MoveInnerDialog.RECENTS_KEY">
+      <recent name="com.d_m.pass" />
       <recent name="com.d_m.ssa" />
       <recent name="com.d_m.ast" />
     </key>
@@ -560,11 +559,18 @@
       <option name="project" value="LOCAL" />
       <updated>1711584095089</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="Add basic deadcode elimination test for fibonacci">
+      <option name="closed" value="true" />
+      <created>1711585662134</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1711585662134</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add unit test for idom()" />
     <MESSAGE value="Add domChildren() and splits Lengauer Tarjan unit test" />
     <MESSAGE value="Add dominator tree level to blocks, and set the level in LangauerTarjan" />
     <MESSAGE value="Add dominates() and strictlyDominates() which walks the idoms of the second block" />
@@ -589,7 +595,8 @@
     <MESSAGE value="Improve pretty printing and use it for unit test" />
     <MESSAGE value="Fixes for pretty printing and unnamed SSA conversion and adds unit test for recursive function call" />
     <MESSAGE value="Start deadcode elimination pass" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start deadcode elimination pass" />
+    <MESSAGE value="Add basic deadcode elimination test for fibonacci" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add basic deadcode elimination test for fibonacci" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
