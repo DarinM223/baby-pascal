@@ -1,14 +1,14 @@
 package com.d_m.ssa;
 
-import com.d_m.ast.FunctionType;
 import com.d_m.ast.Type;
+import com.d_m.code.Operator;
+import com.d_m.util.Fresh;
 import com.google.common.collect.Iterators;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 public class Function extends Constant {
     private Module parent;
@@ -47,5 +47,10 @@ public class Function extends Constant {
 
     public Iterator<Instruction> instructions() {
         return Iterators.concat(blocks.stream().map(Block::getInstructions).map(ListWrapper::iterator).iterator());
+    }
+
+    @Override
+    protected Constant applyOp(Fresh fresh, Operator op, Constant other) {
+        throw new UnsupportedOperationException("Cannot apply operator to Function");
     }
 }

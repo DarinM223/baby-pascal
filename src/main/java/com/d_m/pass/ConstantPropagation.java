@@ -11,8 +11,8 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
     private Map<Instruction, Lattice> variableMapping;
     private Set<Block> executableBlocks;
 
-    private List<Instruction> overdefinedInstructionWorklist;
-    private List<Instruction> instructionWorklist;
+    private List<Value> overdefinedInstructionWorklist;
+    private List<Value> instructionWorklist;
     private List<Block> blockWorklist;
 
     @Override
@@ -26,14 +26,36 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
 
     @Override
     public Boolean runFunction(Function function) {
+        if (!function.getBlocks().isEmpty()) {
+            markExecutable(function.getBlocks().getFirst());
+        }
+        for (Argument arg : function.getArguments()) {
+            markOverdefined(arg);
+        }
+        boolean resolvedUndefs = true;
+        while (resolvedUndefs) {
+            solve();
+            resolvedUndefs = resolvedUndefsIn(function);
+        }
+
+        // TODO: delete the contents of dead blocks (simplifyInstsInBlock)
+        // TODO: delete unreachable blocks
+        return null;
+    }
+
+    private boolean resolvedUndefsIn(Function function) {
+        return false;
+    }
+
+    public void solve() {
         while (!blockWorklist.isEmpty() || !instructionWorklist.isEmpty() || !overdefinedInstructionWorklist.isEmpty()) {
             while (!overdefinedInstructionWorklist.isEmpty()) {
-                Instruction instruction = overdefinedInstructionWorklist.removeLast();
+                Value instruction = overdefinedInstructionWorklist.removeLast();
                 // TODO: process overdefined instructions first.
             }
 
             while (!instructionWorklist.isEmpty()) {
-                Instruction instruction = instructionWorklist.removeLast();
+                Value instruction = instructionWorklist.removeLast();
                 // TODO: process instruction.
             }
 
@@ -42,6 +64,26 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
                 // TODO: visit block.
             }
         }
-        return null;
+    }
+
+    public void markExecutable(Block block) {
+        executableBlocks.add(block);
+        blockWorklist.addAll(block.getSuccessors());
+    }
+
+    public void markOverdefined(Value value) {
+    }
+
+    public void pushToWorklist(Lattice lattice, Value instruction) {
+        if (lattice instanceof Lattice.Overdefined) {
+            if (overdefinedInstructionWorklist.isEmpty() || !overdefinedInstructionWorklist.getLast().equals(instruction)) {
+                overdefinedInstructionWorklist.add(instruction);
+            }
+            return;
+        }
+
+        if (instructionWorklist.isEmpty() || !instructionWorklist.getLast().equals(instruction)) {
+            instructionWorklist.add(instruction);
+        }
     }
 }
