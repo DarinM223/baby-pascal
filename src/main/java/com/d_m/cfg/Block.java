@@ -23,7 +23,7 @@ public class Block implements Comparable<Block> {
         this.phis = new ArrayList<>();
         this.code = new ArrayList<>();
         this.predecessors = Set.of();
-        this.successors = new HashSet<>();
+        this.successors = new LinkedHashSet<>();
         this.entry = this;
         this.exit = new Block(Blocks.EXIT, new ArrayList<>(), new HashSet<>(), Set.of(), this, null);
         this.exit.exit = exit;

@@ -9,5 +9,5 @@ public abstract class Constant extends Value {
         super(id, name, type);
     }
 
-    protected abstract Constant applyOp(Fresh fresh, Operator op, Constant other);
+    public abstract Constant applyOp(Fresh fresh, Operator op, Constant other);
 }

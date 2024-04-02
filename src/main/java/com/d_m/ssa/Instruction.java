@@ -22,7 +22,7 @@ public class Instruction extends Value implements Listable<Instruction> {
         super(id, name, type);
         this.operator = operator;
         this.operands = new ArrayList<>(operands.stream().map(this::valueToUse).toList());
-        this.successors = new HashSet<>();
+        this.successors = new LinkedHashSet<>();
     }
 
     public Iterable<Use> operands() {
@@ -114,5 +114,9 @@ public class Instruction extends Value implements Listable<Instruction> {
 
     public void setParent(Block block) {
         this.parent = block;
+    }
+
+    public Block getParent() {
+        return parent;
     }
 }

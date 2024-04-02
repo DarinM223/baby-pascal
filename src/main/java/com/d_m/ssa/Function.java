@@ -50,7 +50,7 @@ public class Function extends Constant {
     }
 
     @Override
-    protected Constant applyOp(Fresh fresh, Operator op, Constant other) {
+    public Constant applyOp(Fresh fresh, Operator op, Constant other) {
         throw new UnsupportedOperationException("Cannot apply operator to Function");
     }
 }

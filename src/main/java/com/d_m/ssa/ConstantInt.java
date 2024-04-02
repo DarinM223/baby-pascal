@@ -34,7 +34,7 @@ public class ConstantInt extends Constant {
     }
 
     @Override
-    protected Constant applyOp(Fresh fresh, Operator op, Constant other) {
+    public Constant applyOp(Fresh fresh, Operator op, Constant other) {
         if (other == null) {
             int result = switch (op) {
                 case NEG -> -value;
