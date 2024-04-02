@@ -5,9 +5,7 @@ import com.d_m.ssa.Module;
 import com.d_m.util.Fresh;
 import com.d_m.util.Pair;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ConstantPropagation implements FunctionPass<Boolean> {
     private Fresh fresh;
@@ -40,9 +38,67 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
             resolvedUndefs = resolvedUndefsIn(function);
         }
 
-        // TODO: delete the contents of dead blocks (simplifyInstsInBlock)
-        // TODO: delete unreachable blocks
-        return null;
+        boolean changes = false;
+        List<Block> blocksToErase = new ArrayList<>();
+        // Rewrite instructions in block or delete the block.
+        for (Block block : function.getBlocks()) {
+            if (!executableBlocks.contains(block)) {
+                changes = true;
+                deleteBlock(block);
+                continue;
+            }
+
+            changes |= simplifyInstsInBlock(block);
+        }
+        // TODO: delete empty blocks and single argument phi nodes.
+        return changes;
+    }
+
+    private void deleteBlock(Block block) {
+        for (var it = block.getInstructions().iterator(); it.hasNext(); ) {
+            Instruction instruction = it.next();
+            for (Use operand : instruction.operands()) {
+                operand.getValue().removeUse(instruction);
+            }
+            it.remove();
+        }
+        for (Block predecessor : block.getPredecessors()) {
+            predecessor.getSuccessors().remove(block);
+        }
+        for (Block successor : block.getSuccessors()) {
+            int index = successor.getPredecessors().stream().toList().indexOf(block);
+            successor.getPredecessors().remove(block);
+            for (Instruction instruction : successor.getInstructions()) {
+                if (instruction instanceof PhiNode phi) {
+                    // Delete operand at the index of the edge between block and successor.
+                    phi.getOperand(index).getValue().removeUse(phi);
+                    phi.removeOperand(index);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+
+    private boolean simplifyInstsInBlock(Block block) {
+        boolean changed = false;
+        for (var it = block.getInstructions().iterator(); it.hasNext(); ) {
+            Instruction instruction = it.next();
+            if (variableMapping.get(instruction) instanceof Lattice.Defined(Constant constant)) {
+                changed = true;
+                for (Iterator<Use> uses = instruction.uses(); uses.hasNext(); ) {
+                    Use use = uses.next();
+                    use.setValue(constant);
+                    instruction.removeUse(use.getUser());
+                    constant.linkUse(use);
+                }
+                for (Use operand : instruction.operands()) {
+                    operand.getValue().removeUse(instruction);
+                }
+                it.remove();
+            }
+        }
+        return changed;
     }
 
     private boolean resolvedUndefsIn(Function function) {
@@ -193,12 +249,26 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
     }
 
     public void markNeverdefined(Value value) {
+        if (variableMapping.get(value) instanceof Lattice.NeverDefined) {
+            return;
+        }
+        variableMapping.put(value, new Lattice.NeverDefined());
     }
 
     public void markDefined(Value value, Constant constant) {
+        if (variableMapping.get(value) instanceof Lattice.Defined || variableMapping.get(value) instanceof Lattice.Overdefined) {
+            return;
+        }
+        variableMapping.put(value, new Lattice.Defined(constant));
+        if (value instanceof Instruction instruction) {
+            pushToWorklist(instruction);
+        }
     }
 
     public void markOverdefined(Value value) {
+        if (variableMapping.get(value) instanceof Lattice.Overdefined()) {
+            return;
+        }
         variableMapping.put(value, new Lattice.Overdefined());
         if (value instanceof Instruction instruction) {
             pushToWorklist(instruction);

@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Handles executable instruction cases">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Attempt to handle phi case">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -591,11 +592,18 @@
       <option name="project" value="LOCAL" />
       <updated>1712024419959</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="Attempt to handle phi case">
+      <option name="closed" value="true" />
+      <created>1712026178542</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1712026178542</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Compute dominance frontier" />
     <MESSAGE value="Move figure 19.4 example into separate class and add unit test for dominance frontier" />
     <MESSAGE value="Start skeleton of SSA class hierarchy" />
     <MESSAGE value="Lift IntegerType and BooleanType, and seal some interfaces so they can be matched on." />
@@ -620,7 +628,8 @@
     <MESSAGE value="Start constant propagation" />
     <MESSAGE value="Fill out more of constant propagation" />
     <MESSAGE value="Handles executable instruction cases" />
-    <option name="LAST_COMMIT_MESSAGE" value="Handles executable instruction cases" />
+    <MESSAGE value="Attempt to handle phi case" />
+    <option name="LAST_COMMIT_MESSAGE" value="Attempt to handle phi case" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

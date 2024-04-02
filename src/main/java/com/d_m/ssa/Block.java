@@ -53,6 +53,15 @@ public class Block {
         return instructions;
     }
 
+    public Instruction firstNonPhi() {
+        for (Instruction instruction : getInstructions()) {
+            if (!(instruction instanceof PhiNode)) {
+                return instruction;
+            }
+        }
+        return null;
+    }
+
     public int getId() {
         return id;
     }

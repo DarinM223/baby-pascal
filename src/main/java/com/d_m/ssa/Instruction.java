@@ -37,6 +37,10 @@ public class Instruction extends Value implements Listable<Instruction> {
         return operands.set(i, use);
     }
 
+    public void removeOperand(int index) {
+        operands.remove(index);
+    }
+
     public void addOperand(Use use) {
         operands.add(use);
     }
