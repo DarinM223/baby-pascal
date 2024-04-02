@@ -59,7 +59,7 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
             while (!blockWorklist.isEmpty()) {
                 Block block = blockWorklist.removeLast();
                 // Consider condition 3 for block.
-                // For any executable block B with only one successor C, set gamma[C] <- true
+                // For any executable block B with only one successor C, set ε[C] <- true
                 if (block.getSuccessors().size() == 1) {
                     markExecutable(block.getSuccessors().iterator().next());
                 }
@@ -75,7 +75,39 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
         if (executableBlocks.contains(instruction.getParent())) {
             handleExecutableInstruction(instruction);
         }
-        // TODO: handle phis here
+        if (instruction instanceof PhiNode phi) {
+            List<Block> indexedPreds = phi.getParent().getPredecessors().stream().toList();
+            boolean succeeded = true;
+            ConstantInt saved = null;
+            outerLoop:
+            for (int i = 0; i < indexedPreds.size(); i++) {
+                Lattice operand = variableMapping.getOrDefault(phi.getOperand(i).getValue(), new Lattice.NeverDefined());
+                if (!executableBlocks.contains(indexedPreds.get(i))) {
+                    continue;
+                }
+                switch (operand) {
+                    case Lattice.Overdefined() -> {
+                        succeeded = false;
+                        break outerLoop;
+                    }
+                    case Lattice.Defined(ConstantInt c) -> {
+                        if (saved == null) {
+                            saved = c;
+                        } else if (saved.getValue() != c.getValue()) {
+                            succeeded = false;
+                            break outerLoop;
+                        }
+                    }
+                    case Lattice.Defined defined -> {
+                    }
+                    case Lattice.NeverDefined neverDefined -> {
+                    }
+                }
+            }
+            if (succeeded && saved != null) {
+                markDefined(phi, saved);
+            }
+        }
     }
 
     public void handleExecutableInstruction(Instruction instruction) {

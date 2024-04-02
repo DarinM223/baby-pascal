@@ -1,9 +1,6 @@
 package com.d_m.ssa;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Block {
     private int id;
@@ -12,7 +9,7 @@ public class Block {
     private Set<Block> predecessors;
 
     public Block(int id, Function parent, List<Instruction> instructions) {
-        this(id, parent, instructions, new HashSet<>());
+        this(id, parent, instructions, new LinkedHashSet<>());
     }
 
     public Block(int id, Function parent, List<Instruction> instructions, Set<Block> predecessors) {
