@@ -29,7 +29,7 @@ public class Block {
     }
 
     public Set<Block> getSuccessors() {
-        return getTerminator().getSuccessors();
+        return instructions.last == null ? new HashSet<>() : instructions.last.getSuccessors();
     }
 
     public Instruction getTerminator() {

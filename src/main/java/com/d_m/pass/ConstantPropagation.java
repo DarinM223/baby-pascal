@@ -15,6 +15,14 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
     private List<Instruction> instructionWorklist;
     private List<Block> blockWorklist;
 
+    public ConstantPropagation(Fresh fresh) {
+        this.fresh = fresh;
+        this.variableMapping = new HashMap<>();
+        this.executableBlocks = new HashSet<>();
+        this.instructionWorklist = new ArrayList<>();
+        this.blockWorklist = new ArrayList<>();
+    }
+
     @Override
     public Boolean runModule(Module module) {
         boolean changed = false;
@@ -32,14 +40,9 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
         for (Argument arg : function.getArguments()) {
             markOverdefined(arg);
         }
-        boolean resolvedUndefs = true;
-        while (resolvedUndefs) {
-            solve();
-            resolvedUndefs = resolvedUndefsIn(function);
-        }
+        solve();
 
         boolean changes = false;
-        List<Block> blocksToErase = new ArrayList<>();
         // Rewrite instructions in block or delete the block.
         for (Block block : function.getBlocks()) {
             if (!executableBlocks.contains(block)) {
@@ -55,13 +58,6 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
     }
 
     private void deleteBlock(Block block) {
-        for (var it = block.getInstructions().iterator(); it.hasNext(); ) {
-            Instruction instruction = it.next();
-            for (Use operand : instruction.operands()) {
-                operand.getValue().removeUse(instruction);
-            }
-            it.remove();
-        }
         for (Block predecessor : block.getPredecessors()) {
             predecessor.getSuccessors().remove(block);
         }
@@ -78,12 +74,17 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
                 }
             }
         }
+        for (Instruction instruction : block.getInstructions()) {
+            for (Use operand : instruction.operands()) {
+                operand.getValue().removeUse(instruction);
+            }
+            instruction.remove();
+        }
     }
 
     private boolean simplifyInstsInBlock(Block block) {
         boolean changed = false;
-        for (var it = block.getInstructions().iterator(); it.hasNext(); ) {
-            Instruction instruction = it.next();
+        for (Instruction instruction : block.getInstructions()) {
             if (variableMapping.get(instruction) instanceof Lattice.Defined(Constant constant)) {
                 changed = true;
                 for (Iterator<Use> uses = instruction.uses(); uses.hasNext(); ) {
@@ -95,7 +96,7 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
                 for (Use operand : instruction.operands()) {
                     operand.getValue().removeUse(instruction);
                 }
-                it.remove();
+                instruction.remove();
             }
         }
         return changed;
@@ -137,7 +138,7 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
             ConstantInt saved = null;
             outerLoop:
             for (int i = 0; i < indexedPreds.size(); i++) {
-                Lattice operand = variableMapping.getOrDefault(phi.getOperand(i).getValue(), new Lattice.NeverDefined());
+                Lattice operand = lookupValue(phi.getOperand(i).getValue());
                 if (!executableBlocks.contains(indexedPreds.get(i))) {
                     continue;
                 }
@@ -170,7 +171,7 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
         // Consider conditions 4-9 for instructions.
         switch (instruction.getOperator()) {
             case NOT, NEG -> {
-                switch (variableMapping.getOrDefault(instruction.getOperand(0).getValue(), new Lattice.NeverDefined())) {
+                switch (lookupValue(instruction.getOperand(0).getValue())) {
                     case Lattice.NeverDefined() -> markNeverdefined(instruction);
                     case Lattice.Defined(Constant constant) ->
                             markDefined(instruction, constant.applyOp(fresh, instruction.getOperator(), null));
@@ -178,8 +179,8 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
                 }
             }
             case ADD, SUB, MUL, DIV, AND, OR -> {
-                Lattice operand1 = variableMapping.getOrDefault(instruction.getOperand(0).getValue(), new Lattice.NeverDefined());
-                Lattice operand2 = variableMapping.getOrDefault(instruction.getOperand(1).getValue(), new Lattice.NeverDefined());
+                Lattice operand1 = lookupValue(instruction.getOperand(0).getValue());
+                Lattice operand2 = lookupValue(instruction.getOperand(1).getValue());
                 switch (new Pair<>(operand1, operand2)) {
                     case Pair(Lattice.NeverDefined(), var ignored) -> markNeverdefined(instruction);
                     case Pair(var ignored, Lattice.NeverDefined()) -> markNeverdefined(instruction);
@@ -192,8 +193,8 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
                 }
             }
             case LT, LE, GT, GE, EQ, NE -> {
-                Lattice operand1 = variableMapping.getOrDefault(instruction.getOperand(0).getValue(), new Lattice.NeverDefined());
-                Lattice operand2 = variableMapping.getOrDefault(instruction.getOperand(1).getValue(), new Lattice.NeverDefined());
+                Lattice operand1 = lookupValue(instruction.getOperand(0).getValue());
+                Lattice operand2 = lookupValue(instruction.getOperand(1).getValue());
                 switch (new Pair<>(operand1, operand2)) {
                     case Pair(Lattice.NeverDefined(), var ignored) -> {
                     }
@@ -229,7 +230,7 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
             case GOTO -> markExecutable(instruction.getSuccessors().iterator().next());
             case PARAM, CALL, LOAD -> markOverdefined(instruction);
             case ASSIGN -> {
-                switch (variableMapping.getOrDefault(instruction.getOperand(0).getValue(), new Lattice.NeverDefined())) {
+                switch (lookupValue(instruction.getOperand(0).getValue())) {
                     case Lattice.NeverDefined() -> markNeverdefined(instruction);
                     case Lattice.Defined(Constant constant) -> markDefined(instruction, constant);
                     case Lattice.Overdefined() -> markOverdefined(instruction);
@@ -240,6 +241,13 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
             case PHI, PCOPY -> {
             }
         }
+    }
+
+    public Lattice lookupValue(Value value) {
+        if (value instanceof Constant constant) {
+            variableMapping.put(value, new Lattice.Defined(constant));
+        }
+        return variableMapping.getOrDefault(value, new Lattice.NeverDefined());
     }
 
     public void markExecutable(Block block) {
