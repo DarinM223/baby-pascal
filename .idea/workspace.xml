@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Constant propagation attempts to delete non-executable blocks and simplify instructions">
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/ConstantPropagationTest.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Setup constant propagation test with figure 19.4">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,14 +213,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00001" summary="Initial commit: Add AST classes">
-      <option name="closed" value="true" />
-      <created>1709914328459</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1709914328459</updated>
     </task>
     <task id="LOCAL-00002" summary="Add basic type checking">
       <option name="closed" value="true" />
@@ -608,11 +598,18 @@
       <option name="project" value="LOCAL" />
       <updated>1712101586705</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="Setup constant propagation test with figure 19.4">
+      <option name="closed" value="true" />
+      <created>1712104460484</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1712104460484</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Start skeleton of SSA class hierarchy" />
     <MESSAGE value="Lift IntegerType and BooleanType, and seal some interfaces so they can be matched on." />
     <MESSAGE value="Deletes Operator and adds Value Use iterator" />
     <MESSAGE value="Adds more fields to Instruction and adds ConstantInt" />
@@ -637,20 +634,16 @@
     <MESSAGE value="Handles executable instruction cases" />
     <MESSAGE value="Attempt to handle phi case" />
     <MESSAGE value="Constant propagation attempts to delete non-executable blocks and simplify instructions" />
-    <option name="LAST_COMMIT_MESSAGE" value="Constant propagation attempts to delete non-executable blocks and simplify instructions" />
+    <MESSAGE value="Setup constant propagation test with figure 19.4" />
+    <option name="LAST_COMMIT_MESSAGE" value="Setup constant propagation test with figure 19.4" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java</url>
-          <line>49</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java</url>
-          <line>87</line>
-          <option name="timeStamp" value="11" />
+          <line>290</line>
+          <option name="timeStamp" value="21" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

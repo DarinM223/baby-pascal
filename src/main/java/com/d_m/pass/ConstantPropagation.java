@@ -110,7 +110,12 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
         while (!blockWorklist.isEmpty() || !instructionWorklist.isEmpty()) {
             while (!instructionWorklist.isEmpty()) {
                 Instruction instruction = instructionWorklist.removeLast();
-                handleInstruction(instruction);
+                for (Iterator<Use> it = instruction.uses(); it.hasNext(); ) {
+                    Use use = it.next();
+                    if (use.getUser() instanceof Instruction useInstruction) {
+                        handleInstruction(useInstruction);
+                    }
+                }
             }
 
             while (!blockWorklist.isEmpty()) {
@@ -237,8 +242,17 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
                 }
             }
             case NOP -> markNeverdefined(instruction);
-            // Don't do anything for PHIs yet, the later part will handle those.
-            case PHI, PCOPY -> {
+            case PHI -> {
+                List<Block> indexedPreds = instruction.getParent().getPredecessors().stream().toList();
+                for (int i = 0; i < indexedPreds.size(); i++) {
+                    Lattice operand = lookupValue(instruction.getOperand(i).getValue());
+                    if (operand instanceof Lattice.Overdefined() && executableBlocks.contains(indexedPreds.get(i))) {
+                        markOverdefined(instruction);
+                        break;
+                    }
+                }
+            }
+            case PCOPY -> {
             }
         }
     }
