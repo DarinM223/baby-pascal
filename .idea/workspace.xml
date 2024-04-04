@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Set phi to overdefined if its operands have different defined values">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Deletes nonexecutable blocks to better see issue&#10;&#10;The issue is that the true branches is the second successor in the conditional so the SCCP is not marking that path.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/ConstantPropagationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/ConstantPropagationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -214,14 +215,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Fix ordering of quads">
-      <option name="closed" value="true" />
-      <created>1709952643238</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1709952643238</updated>
     </task>
     <task id="LOCAL-00006" summary="Add a unit test for normalize()">
       <option name="closed" value="true" />
@@ -607,11 +600,18 @@
       <option name="project" value="LOCAL" />
       <updated>1712195667301</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="Deletes nonexecutable blocks to better see issue&#10;&#10;The issue is that the true branches is the second successor in the conditional so the SCCP is not marking that path.">
+      <option name="closed" value="true" />
+      <created>1712197134899</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1712197134903</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Adding an operand to an instruction adds a use from the operand to the instruction" />
     <MESSAGE value="Changes operand to be a list and fixes UseIterator remove()" />
     <MESSAGE value="Refactor linked list code and add functions to ListWrapper for adding nodes to the front or back" />
     <MESSAGE value="Add definition sites and phi node" />
@@ -636,7 +636,8 @@
     <MESSAGE value="Fix instruction worklist and executable PHI" />
     <MESSAGE value="Small changes to worklist functions and looking up values" />
     <MESSAGE value="Set phi to overdefined if its operands have different defined values" />
-    <option name="LAST_COMMIT_MESSAGE" value="Set phi to overdefined if its operands have different defined values" />
+    <MESSAGE value="Deletes nonexecutable blocks to better see issue&#10;&#10;The issue is that the true branches is the second successor in the conditional so the SCCP is not marking that path." />
+    <option name="LAST_COMMIT_MESSAGE" value="Deletes nonexecutable blocks to better see issue&#10;&#10;The issue is that the true branches is the second successor in the conditional so the SCCP is not marking that path." />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

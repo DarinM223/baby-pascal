@@ -73,13 +73,13 @@ class SsaConverterTest {
                     block l21 {
                       j2 <- Φ(j3, j4, j)
                       k2 <- Φ(k3, k4, k)
-                      %49 <- k2 LT 100 [l24, l27]
+                      %49 <- k2 LT 100 [l27, l24]
                     }
                     block l24 {
                       %50 <- GOTO 15 [l29]
                     }
                     block l27 {
-                      %51 <- j2 LT 20 [l33, l39]
+                      %51 <- j2 LT 20 [l39, l33]
                     }
                     block l29 {
                       %52 <- NOP()
@@ -156,7 +156,7 @@ class SsaConverterTest {
                       %62 <- GOTO() [l33]
                     }
                     block l33 {
-                      %63 <- n LE 1 [l36, l40]
+                      %63 <- n LE 1 [l40, l36]
                     }
                     block l36 {
                       %64 <- GOTO 4 [l49]

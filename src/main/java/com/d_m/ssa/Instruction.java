@@ -12,7 +12,7 @@ public class Instruction extends Value implements Listable<Instruction> {
     protected Instruction next;
     private Operator operator;
     protected List<Use> operands;
-    protected Set<Block> successors;
+    protected LinkedHashSet<Block> successors;
 
     public Instruction(int id, String name, Type type, Operator operator) {
         this(id, name, type, operator, List.of());
@@ -74,7 +74,7 @@ public class Instruction extends Value implements Listable<Instruction> {
         successors.remove(successor);
     }
 
-    public Set<Block> getSuccessors() {
+    public LinkedHashSet<Block> getSuccessors() {
         return successors;
     }
 
