@@ -43,15 +43,20 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
         solve();
 
         boolean changes = false;
+        List<Block> blocksToRemove = new ArrayList<>();
         // Rewrite instructions in block or delete the block.
         for (Block block : function.getBlocks()) {
             if (!executableBlocks.contains(block)) {
                 changes = true;
                 deleteBlock(block);
+                blocksToRemove.add(block);
                 continue;
             }
 
             changes |= simplifyInstsInBlock(block);
+        }
+        for (Block block : blocksToRemove) {
+            function.getBlocks().remove(block);
         }
         // TODO: delete empty blocks and single argument phi nodes.
         return changes;
