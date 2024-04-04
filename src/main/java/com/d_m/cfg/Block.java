@@ -39,10 +39,10 @@ public class Block implements Comparable<Block> {
         for (Range range : ranges) {
             int endIndex = range.j();
             switch (code.get(endIndex)) {
-                case Quad(Operator op, var r, ConstantAddress(int j), var b) when op == Operator.GOTO -> {
+                case Quad(Operator op, _, ConstantAddress(int j), _) when op == Operator.GOTO -> {
                     blocks.addLink(range.i(), j);
                 }
-                case Quad(Operator op, ConstantAddress(int j), var a, var b) when op.isComparison() -> {
+                case Quad(Operator op, ConstantAddress(int j), _, _) when op.isComparison() -> {
                     blocks.addLink(range.i(), j);
                     blocks.addNextIndex(range.i(), endIndex);
                 }
@@ -234,11 +234,11 @@ public class Block implements Comparable<Block> {
         SortedSet<Integer> leaders = new TreeSet<>(List.of(0));
         for (int i = 0; i < code.size(); i++) {
             switch (code.get(i)) {
-                case Quad(Operator op, var r, ConstantAddress(int j), var b) when op == Operator.GOTO -> {
+                case Quad(Operator op, _, ConstantAddress(int j), _) when op == Operator.GOTO -> {
                     leaders.add(j);
                     leaders.add(i + 1);
                 }
-                case Quad(Operator op, ConstantAddress(int j), var a, var b) when op.isComparison() -> {
+                case Quad(Operator op, ConstantAddress(int j), _, _) when op.isComparison() -> {
                     leaders.add(j);
                     leaders.add(i + 1);
                 }

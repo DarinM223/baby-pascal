@@ -86,7 +86,7 @@ public class UniqueRenamer {
     }
 
     private Address replaceDefinition(Set<Integer> defs, Address address) {
-        if (address instanceof NameAddress(int name, int ignored)) {
+        if (address instanceof NameAddress(int name, _)) {
             defs.add(name);
             int i = count.get(name) + 1;
             count.put(name, i);
@@ -97,7 +97,7 @@ public class UniqueRenamer {
     }
 
     private Address replaceOperand(Address address) {
-        if (address instanceof NameAddress(int name, int ignored)) {
+        if (address instanceof NameAddress(int name, _)) {
             return new NameAddress(name, stack.get(name).getLast());
         }
         return address;

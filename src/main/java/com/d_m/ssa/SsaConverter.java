@@ -155,7 +155,7 @@ public class SsaConverter {
     }
 
     public String nameOfAddress(Address address) {
-        if (address instanceof NameAddress(int name, int ignored)) {
+        if (address instanceof NameAddress(int name, _)) {
             return symbol.getName(name);
         }
         return null;

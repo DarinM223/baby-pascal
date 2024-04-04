@@ -107,10 +107,6 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
         return changed;
     }
 
-    private boolean resolvedUndefsIn(Function function) {
-        return false;
-    }
-
     public void solve() {
         while (!blockWorklist.isEmpty() || !instructionWorklist.isEmpty()) {
             while (!instructionWorklist.isEmpty()) {
@@ -165,9 +161,7 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
                             break outerLoop;
                         }
                     }
-                    case Lattice.Defined defined -> {
-                    }
-                    case Lattice.NeverDefined neverDefined -> {
+                    case Lattice.Defined _, Lattice.NeverDefined _ -> {
                     }
                 }
             }
@@ -193,12 +187,9 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
                 Lattice operand1 = lookupValue(instruction.getOperand(0).getValue());
                 Lattice operand2 = lookupValue(instruction.getOperand(1).getValue());
                 switch (new Pair<>(operand1, operand2)) {
-                    case Pair(Lattice.NeverDefined(), var ignored) -> {
+                    case Pair(Lattice.NeverDefined(), _), Pair(_, Lattice.NeverDefined()) -> {
                     }
-                    case Pair(var ignored, Lattice.NeverDefined()) -> {
-                    }
-                    case Pair(Lattice.Overdefined(), var ignored) -> markOverdefined(instruction);
-                    case Pair(var ignored, Lattice.Overdefined()) -> markOverdefined(instruction);
+                    case Pair(Lattice.Overdefined(), _), Pair(_, Lattice.Overdefined()) -> markOverdefined(instruction);
                     case Pair(Lattice.Defined(Constant constant1), Lattice.Defined(Constant constant2)) ->
                             markDefined(instruction, constant1.applyOp(fresh, instruction.getOperator(), constant2));
                     case Pair(Lattice.Defined a, Lattice b) -> {
@@ -209,16 +200,9 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
                 Lattice operand1 = lookupValue(instruction.getOperand(0).getValue());
                 Lattice operand2 = lookupValue(instruction.getOperand(1).getValue());
                 switch (new Pair<>(operand1, operand2)) {
-                    case Pair(Lattice.NeverDefined(), var ignored) -> {
+                    case Pair(Lattice.NeverDefined(), _), Pair(_, Lattice.NeverDefined()) -> {
                     }
-                    case Pair(var ignored, Lattice.NeverDefined()) -> {
-                    }
-                    case Pair(Lattice.Overdefined(), var ignored) -> {
-                        for (Block successor : instruction.getSuccessors()) {
-                            markExecutable(successor);
-                        }
-                    }
-                    case Pair(var ignored, Lattice.Overdefined()) -> {
+                    case Pair(Lattice.Overdefined(), _), Pair(_, Lattice.Overdefined()) -> {
                         for (Block successor : instruction.getSuccessors()) {
                             markExecutable(successor);
                         }
@@ -236,7 +220,7 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
                             }
                         }
                     }
-                    case Pair(Lattice.Defined a, Lattice b) -> {
+                    case Pair(Lattice.Defined _, _) -> {
                     }
                 }
             }

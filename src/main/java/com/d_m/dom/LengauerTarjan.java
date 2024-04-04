@@ -66,7 +66,7 @@ public class LengauerTarjan {
         for (Block block : blocks) {
             try {
                 domTree.put(idom(block).getId(), block);
-            } catch (NullPointerException ignored) {
+            } catch (NullPointerException _) {
             }
         }
 

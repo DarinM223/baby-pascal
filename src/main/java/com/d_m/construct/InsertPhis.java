@@ -39,7 +39,7 @@ public abstract class InsertPhis {
                 Block definitionBlock = worklist.poll();
                 for (Block phiBlock : frontier.dominanceFrontier(definitionBlock)) {
                     if (!aPhi.containsEntry(sym, phiBlock) && test(phiBlock, sym)) {
-                        List<Address> phiOperands = new ArrayList<>(phiBlock.getPredecessors().stream().map(ignored -> new NameAddress(sym)).toList());
+                        List<Address> phiOperands = new ArrayList<>(phiBlock.getPredecessors().stream().map(_ -> new NameAddress(sym)).toList());
                         Phi phi = new Phi(new NameAddress(sym), phiOperands);
                         phiBlock.getPhis().add(phi);
                         aPhi.put(sym, phiBlock);

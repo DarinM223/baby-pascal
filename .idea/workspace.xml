@@ -4,11 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Deletes nonexecutable blocks to better see issue&#10;&#10;The issue is that the true branches is the second successor in the conditional so the SCCP is not marking that path.">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="SSA block succcessors have the true branch be the first element in the set">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/GenKillInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/GenKillInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/construct/InsertPhis.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/construct/InsertPhis.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/construct/UniqueRenamer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/construct/UniqueRenamer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dom/DefinitionSites.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/DefinitionSites.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LengauerTarjan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LengauerTarjan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,6 +58,7 @@
     "JUnit.DataflowTest.genKillAndLiveness.executor": "Run",
     "JUnit.LengauerTarjanTest.idom.executor": "Run",
     "JUnit.ThreeAddressCodeTest.normalize.executor": "Run",
+    "JUnit.UniqueRenamerTest.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
@@ -59,9 +67,10 @@
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/home/d/Documents/java/baby-pascal/target/classes",
-    "project.structure.last.edited": "SDKs",
+    "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -87,20 +96,7 @@
       <recent name="com.d_m.cfg" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.All tests">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.d_m.Main" />
-      <module name="baby-pascal" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.d_m.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="JUnit.UniqueRenamerTest">
     <configuration name="All tests" type="JUnit" factoryName="JUnit">
       <module name="baby-pascal" />
       <option name="PACKAGE_NAME" value="" />
@@ -181,9 +177,28 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="UniqueRenamerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="baby-pascal" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.d_m.construct.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.d_m.construct" />
+      <option name="MAIN_CLASS_NAME" value="com.d_m.construct.UniqueRenamerTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
-      <item itemvalue="Application.Main" />
       <item itemvalue="JUnit.All tests" />
+      <item itemvalue="JUnit.UniqueRenamerTest" />
       <item itemvalue="JUnit.BlockTest" />
       <item itemvalue="JUnit.BlockTest.createBlocks" />
       <item itemvalue="JUnit.DataflowTest.genKillAndLiveness" />
@@ -191,21 +206,13 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.UniqueRenamerTest" />
         <item itemvalue="JUnit.LengauerTarjanTest.idom" />
         <item itemvalue="JUnit.DataflowTest.genKillAndLiveness" />
         <item itemvalue="JUnit.BlockTest.createBlocks" />
         <item itemvalue="JUnit.BlockTest" />
-        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-78a6f59c" />
-        <option value="jdk-22-openjdk-22-3183f394aec4-75f08976" />
-      </set>
-    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -215,14 +222,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Add a unit test for normalize()">
-      <option name="closed" value="true" />
-      <created>1709955825967</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1709955825967</updated>
     </task>
     <task id="LOCAL-00007" summary="Fix unit test for normalize()">
       <option name="closed" value="true" />
@@ -608,11 +607,18 @@
       <option name="project" value="LOCAL" />
       <updated>1712197134903</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="SSA block succcessors have the true branch be the first element in the set">
+      <option name="closed" value="true" />
+      <created>1712205245805</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1712205245805</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Changes operand to be a list and fixes UseIterator remove()" />
     <MESSAGE value="Refactor linked list code and add functions to ListWrapper for adding nodes to the front or back" />
     <MESSAGE value="Add definition sites and phi node" />
     <MESSAGE value="Add phis to three address code block, and implement inserting phis" />
@@ -637,7 +643,8 @@
     <MESSAGE value="Small changes to worklist functions and looking up values" />
     <MESSAGE value="Set phi to overdefined if its operands have different defined values" />
     <MESSAGE value="Deletes nonexecutable blocks to better see issue&#10;&#10;The issue is that the true branches is the second successor in the conditional so the SCCP is not marking that path." />
-    <option name="LAST_COMMIT_MESSAGE" value="Deletes nonexecutable blocks to better see issue&#10;&#10;The issue is that the true branches is the second successor in the conditional so the SCCP is not marking that path." />
+    <MESSAGE value="SSA block succcessors have the true branch be the first element in the set" />
+    <option name="LAST_COMMIT_MESSAGE" value="SSA block succcessors have the true branch be the first element in the set" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
