@@ -177,7 +177,8 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
         switch (instruction.getOperator()) {
             case NOT, NEG -> {
                 switch (lookupValue(instruction.getOperand(0).getValue())) {
-                    case Lattice.NeverDefined() -> markNeverdefined(instruction);
+                    case Lattice.NeverDefined() -> {
+                    }
                     case Lattice.Defined(Constant constant) ->
                             markDefined(instruction, constant.applyOp(fresh, instruction.getOperator(), null));
                     case Lattice.Overdefined() -> markOverdefined(instruction);
@@ -187,8 +188,10 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
                 Lattice operand1 = lookupValue(instruction.getOperand(0).getValue());
                 Lattice operand2 = lookupValue(instruction.getOperand(1).getValue());
                 switch (new Pair<>(operand1, operand2)) {
-                    case Pair(Lattice.NeverDefined(), var ignored) -> markNeverdefined(instruction);
-                    case Pair(var ignored, Lattice.NeverDefined()) -> markNeverdefined(instruction);
+                    case Pair(Lattice.NeverDefined(), var ignored) -> {
+                    }
+                    case Pair(var ignored, Lattice.NeverDefined()) -> {
+                    }
                     case Pair(Lattice.Overdefined(), var ignored) -> markOverdefined(instruction);
                     case Pair(var ignored, Lattice.Overdefined()) -> markOverdefined(instruction);
                     case Pair(Lattice.Defined(Constant constant1), Lattice.Defined(Constant constant2)) ->
@@ -236,12 +239,12 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
             case PARAM, CALL, LOAD -> markOverdefined(instruction);
             case ASSIGN -> {
                 switch (lookupValue(instruction.getOperand(0).getValue())) {
-                    case Lattice.NeverDefined() -> markNeverdefined(instruction);
+                    case Lattice.NeverDefined() -> {
+                    }
                     case Lattice.Defined(Constant constant) -> markDefined(instruction, constant);
                     case Lattice.Overdefined() -> markOverdefined(instruction);
                 }
             }
-            case NOP -> markNeverdefined(instruction);
             case PHI -> {
                 List<Block> indexedPreds = instruction.getParent().getPredecessors().stream().toList();
                 for (int i = 0; i < indexedPreds.size(); i++) {
@@ -252,7 +255,7 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
                     }
                 }
             }
-            case PCOPY -> {
+            case NOP, PCOPY -> {
             }
         }
     }
@@ -261,7 +264,12 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
         if (value instanceof Constant constant) {
             variableMapping.put(value, new Lattice.Defined(constant));
         }
-        return variableMapping.getOrDefault(value, new Lattice.NeverDefined());
+        Lattice lattice = variableMapping.get(value);
+        if (lattice == null) {
+            lattice = new Lattice.NeverDefined();
+            variableMapping.put(value, lattice);
+        }
+        return lattice;
     }
 
     public void markExecutable(Block block) {
@@ -270,31 +278,20 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
         blockWorklist.addAll(block.getSuccessors().stream().filter(successor -> executableBlocks.contains(successor)).toList());
     }
 
-    public void markNeverdefined(Value value) {
-        if (variableMapping.get(value) instanceof Lattice.NeverDefined) {
-            return;
-        }
-        variableMapping.put(value, new Lattice.NeverDefined());
-    }
-
     public void markDefined(Value value, Constant constant) {
-        if (variableMapping.get(value) instanceof Lattice.Defined || variableMapping.get(value) instanceof Lattice.Overdefined) {
-            return;
-        }
-        variableMapping.put(value, new Lattice.Defined(constant));
-        if (value instanceof Instruction instruction) {
+        if (!(variableMapping.get(value) instanceof Lattice.Defined) &&
+                value instanceof Instruction instruction) {
             pushToWorklist(instruction);
         }
+        variableMapping.put(value, new Lattice.Defined(constant));
     }
 
     public void markOverdefined(Value value) {
-        if (variableMapping.get(value) instanceof Lattice.Overdefined()) {
-            return;
-        }
-        variableMapping.put(value, new Lattice.Overdefined());
-        if (value instanceof Instruction instruction) {
+        if (!(variableMapping.get(value) instanceof Lattice.Overdefined) &&
+                value instanceof Instruction instruction) {
             pushToWorklist(instruction);
         }
+        variableMapping.put(value, new Lattice.Overdefined());
     }
 
     public void pushToWorklist(Instruction instruction) {
