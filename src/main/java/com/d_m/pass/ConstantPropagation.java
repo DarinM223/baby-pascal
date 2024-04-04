@@ -247,11 +247,21 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
             }
             case PHI -> {
                 List<Block> indexedPreds = instruction.getParent().getPredecessors().stream().toList();
+                ConstantInt lastConstant = null;
                 for (int i = 0; i < indexedPreds.size(); i++) {
                     Lattice operand = lookupValue(instruction.getOperand(i).getValue());
-                    if (operand instanceof Lattice.Overdefined() && executableBlocks.contains(indexedPreds.get(i))) {
-                        markOverdefined(instruction);
-                        break;
+                    if (executableBlocks.contains(indexedPreds.get(i))) {
+                        if (operand instanceof Lattice.Overdefined()) {
+                            markOverdefined(instruction);
+                            break;
+                        } else if (operand instanceof Lattice.Defined(ConstantInt constant)) {
+                            if (lastConstant == null) {
+                                lastConstant = constant;
+                            } else if (lastConstant.getValue() != constant.getValue()) {
+                                markOverdefined(instruction);
+                                break;
+                            }
+                        }
                     }
                 }
             }
