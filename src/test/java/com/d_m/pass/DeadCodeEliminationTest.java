@@ -102,7 +102,7 @@ class DeadCodeEliminationTest {
                       %61 <- GOTO() [l33]
                     }
                     block l33 {
-                      %62 <- n LE 1 [l36, l40]
+                      %62 <- n LE 1 [l40, l36]
                     }
                     block l36 {
                       %63 <- GOTO 4 [l49]

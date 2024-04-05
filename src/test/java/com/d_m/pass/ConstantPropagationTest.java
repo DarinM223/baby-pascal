@@ -68,6 +68,37 @@ class ConstantPropagationTest {
         printer.writeModule(module);
 
         String expected = """
+                module main {
+                  main() : void {
+                    block l8 {
+                      %52 <- GOTO() [l15]
+                    }
+                    block l15 {
+                      %53 <- GOTO() [l21]
+                    }
+                    block l21 {
+                      k <- Φ(k2, 0)
+                      %54 <- k LT 100 [l27, l24]
+                    }
+                    block l24 {
+                      %55 <- GOTO 15 [l29]
+                    }
+                    block l27 {
+                      %56 <- 1 LT 20 [l39]
+                    }
+                    block l29 {
+                      %57 <- NOP()
+                      %58 <- GOTO() [l46]
+                    }
+                    block l39 {
+                      %59 <- k ADD 1
+                      k2 <- ASSIGN %59
+                      %60 <- GOTO 3 [l21]
+                    }
+                    block l46 {
+                    }
+                  }
+                }
                 """;
         assertEquals(writer.toString(), expected);
     }

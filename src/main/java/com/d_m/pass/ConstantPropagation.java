@@ -272,12 +272,18 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
     }
 
     public void markExecutable(Block block) {
-        executableBlocks.add(block);
-        blockWorklist.add(block);
-        blockWorklist.addAll(block.getSuccessors().stream().filter(successor -> executableBlocks.contains(successor)).toList());
+        if (!executableBlocks.contains(block)) {
+            executableBlocks.add(block);
+            blockWorklist.add(block);
+            blockWorklist.addAll(block.getSuccessors().stream().filter(successor -> executableBlocks.contains(successor)).toList());
+        }
     }
 
     public void markDefined(Value value, Constant constant) {
+        if (variableMapping.get(value) instanceof Lattice.Overdefined) {
+            System.err.println(value + " going from defined to overdefined");
+            return;
+        }
         if (!(variableMapping.get(value) instanceof Lattice.Defined) &&
                 value instanceof Instruction instruction) {
             pushToWorklist(instruction);
