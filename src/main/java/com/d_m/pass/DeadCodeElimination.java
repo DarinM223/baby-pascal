@@ -1,22 +1,12 @@
 package com.d_m.pass;
 
 import com.d_m.ssa.*;
-import com.d_m.ssa.Module;
 import com.google.common.collect.Iterators;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class DeadCodeElimination implements FunctionPass<Boolean> {
-    @Override
-    public Boolean runModule(Module module) {
-        boolean changed = false;
-        for (Function function : module.getFunctionList()) {
-            changed |= runFunction(function);
-        }
-        return changed;
-    }
-
+public class DeadCodeElimination extends BooleanFunctionPass {
     @Override
     public Boolean runFunction(Function function) {
         Set<Instruction> worklist = new HashSet<>();

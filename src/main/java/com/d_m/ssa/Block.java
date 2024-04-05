@@ -6,13 +6,13 @@ public class Block {
     private int id;
     private Function parent;
     private ListWrapper<Instruction> instructions;
-    private Set<Block> predecessors;
+    private List<Block> predecessors;
 
     public Block(int id, Function parent, List<Instruction> instructions) {
-        this(id, parent, instructions, new LinkedHashSet<>());
+        this(id, parent, instructions, new ArrayList<>());
     }
 
-    public Block(int id, Function parent, List<Instruction> instructions, Set<Block> predecessors) {
+    public Block(int id, Function parent, List<Instruction> instructions, List<Block> predecessors) {
         this.id = id;
         this.parent = parent;
         this.instructions = new ListWrapper<>();
@@ -24,12 +24,12 @@ public class Block {
         }
     }
 
-    public Set<Block> getPredecessors() {
+    public List<Block> getPredecessors() {
         return predecessors;
     }
 
-    public Set<Block> getSuccessors() {
-        return instructions.last == null ? new HashSet<>() : instructions.last.getSuccessors();
+    public List<Block> getSuccessors() {
+        return instructions.last == null ? new ArrayList<>() : instructions.last.getSuccessors();
     }
 
     public Instruction getTerminator() {

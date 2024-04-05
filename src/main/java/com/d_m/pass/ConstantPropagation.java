@@ -1,13 +1,12 @@
 package com.d_m.pass;
 
 import com.d_m.ssa.*;
-import com.d_m.ssa.Module;
 import com.d_m.util.Fresh;
 import com.d_m.util.Pair;
 
 import java.util.*;
 
-public class ConstantPropagation implements FunctionPass<Boolean> {
+public class ConstantPropagation extends BooleanFunctionPass {
     private Fresh fresh;
     private Map<Value, Lattice> variableMapping;
     private Set<Block> executableBlocks;
@@ -21,15 +20,6 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
         this.executableBlocks = new HashSet<>();
         this.instructionWorklist = new ArrayList<>();
         this.blockWorklist = new ArrayList<>();
-    }
-
-    @Override
-    public Boolean runModule(Module module) {
-        boolean changed = false;
-        for (Function function : module.getFunctionList()) {
-            changed |= runFunction(function);
-        }
-        return changed;
     }
 
     @Override
@@ -139,13 +129,13 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
             handleExecutableInstruction(instruction);
         }
         if (instruction instanceof PhiNode phi) {
-            List<Block> indexedPreds = phi.getParent().getPredecessors().stream().toList();
+            List<Block> predecessors = phi.getParent().getPredecessors();
             boolean succeeded = true;
             ConstantInt saved = null;
             outerLoop:
-            for (int i = 0; i < indexedPreds.size(); i++) {
+            for (int i = 0; i < predecessors.size(); i++) {
                 Lattice operand = lookupValue(phi.getOperand(i).getValue());
-                if (!executableBlocks.contains(indexedPreds.get(i))) {
+                if (!executableBlocks.contains(predecessors.get(i))) {
                     continue;
                 }
                 switch (operand) {
