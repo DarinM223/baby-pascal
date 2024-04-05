@@ -187,25 +187,27 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
                 Lattice operand1 = lookupValue(instruction.getOperand(0).getValue());
                 Lattice operand2 = lookupValue(instruction.getOperand(1).getValue());
                 switch (new Pair<>(operand1, operand2)) {
-                    case Pair(Lattice.NeverDefined(), _), Pair(_, Lattice.NeverDefined()) -> {
+                    case Pair(Lattice.Overdefined(), _),
+                         Pair(Lattice.Defined _, Lattice.Overdefined()),
+                         Pair(Lattice.NeverDefined(), Lattice.Overdefined()) -> markOverdefined(instruction);
+                    case Pair(Lattice.NeverDefined(), _), Pair(Lattice.Defined _, Lattice.NeverDefined()) -> {
                     }
-                    case Pair(Lattice.Overdefined(), _), Pair(_, Lattice.Overdefined()) -> markOverdefined(instruction);
                     case Pair(Lattice.Defined(Constant constant1), Lattice.Defined(Constant constant2)) ->
                             markDefined(instruction, constant1.applyOp(fresh, instruction.getOperator(), constant2));
-                    case Pair(Lattice.Defined a, Lattice b) -> {
-                    }
                 }
             }
             case LT, LE, GT, GE, EQ, NE -> {
                 Lattice operand1 = lookupValue(instruction.getOperand(0).getValue());
                 Lattice operand2 = lookupValue(instruction.getOperand(1).getValue());
                 switch (new Pair<>(operand1, operand2)) {
-                    case Pair(Lattice.NeverDefined(), _), Pair(_, Lattice.NeverDefined()) -> {
-                    }
-                    case Pair(Lattice.Overdefined(), _), Pair(_, Lattice.Overdefined()) -> {
+                    case Pair(Lattice.Overdefined(), _),
+                         Pair(Lattice.Defined _, Lattice.Overdefined()),
+                         Pair(Lattice.NeverDefined(), Lattice.Overdefined()) -> {
                         for (Block successor : instruction.getSuccessors()) {
                             markExecutable(successor);
                         }
+                    }
+                    case Pair(Lattice.NeverDefined(), _), Pair(Lattice.Defined _, Lattice.NeverDefined()) -> {
                     }
                     case Pair(Lattice.Defined(Constant constant1), Lattice.Defined(Constant constant2)) -> {
                         Constant result = constant1.applyOp(fresh, instruction.getOperator(), constant2);
@@ -217,10 +219,9 @@ public class ConstantPropagation implements FunctionPass<Boolean> {
                                 markExecutable(instruction.getSuccessors().iterator().next());
                             }
                             default -> {
+                                System.err.println("Branch result not a valid constant integer: " + result);
                             }
                         }
-                    }
-                    case Pair(Lattice.Defined _, _) -> {
                     }
                 }
             }

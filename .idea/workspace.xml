@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Use Java 22 wildcard patterns">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fix infinite loop with block worklist and sets constant propagation unit test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/ConstantPropagationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/ConstantPropagationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/DeadCodeEliminationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/DeadCodeEliminationTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,6 +56,7 @@
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
     "git-widget-placeholder": "master",
+    "ignore.preview.features.used": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/home/d/Documents/java/baby-pascal/target/classes",
     "project.structure.last.edited": "Project",
