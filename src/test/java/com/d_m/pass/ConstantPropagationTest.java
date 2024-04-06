@@ -70,32 +70,32 @@ class ConstantPropagationTest {
         String expected = """
                 module main {
                   main() : void {
-                    block l8 {
+                    block l8 [] {
                       %52 <- GOTO() [l15]
                     }
-                    block l15 {
+                    block l15 [l8] {
                       %53 <- GOTO() [l21]
                     }
-                    block l21 {
+                    block l21 [l39, l15] {
                       k <- Φ(k2, 0)
                       %54 <- k LT 100 [l27, l24]
                     }
-                    block l24 {
+                    block l24 [l21] {
                       %55 <- GOTO 15 [l29]
                     }
-                    block l27 {
+                    block l27 [l21] {
                       %56 <- 1 LT 20 [l39]
                     }
-                    block l29 {
+                    block l29 [l24] {
                       %57 <- NOP()
                       %58 <- GOTO() [l46]
                     }
-                    block l39 {
+                    block l39 [l27] {
                       %59 <- k ADD 1
                       k2 <- ASSIGN %59
                       %60 <- GOTO 3 [l21]
                     }
-                    block l46 {
+                    block l46 [l29] {
                     }
                   }
                 }

@@ -138,19 +138,19 @@ class CriticalEdgeSplittingTest {
         printer.writeFunction(example);
         String expected = """
                 go(x : int) : void {
-                  block l7 {
+                  block l7 [] {
                     b <- LOAD x
                     a <- ASSIGN 0
                     %16 <- GOTO() [l9]
                   }
-                  block l9 {
+                  block l9 [l7] {
                     %17 <- b LT 4 [l12, l15]
                   }
-                  block l12 {
+                  block l12 [l9] {
                     a2 <- ASSIGN b
                     %18 <- GOTO() [l15]
                   }
-                  block l15 {
+                  block l15 [l12, l9] {
                     a3 <- Φ(a2, a)
                     c <- a3 ADD b
                   }
@@ -166,23 +166,23 @@ class CriticalEdgeSplittingTest {
         printer.writeFunction(example);
         expected = """
                 go(x : int) : void {
-                  block l7 {
+                  block l7 [] {
                     b <- LOAD x
                     a <- ASSIGN 0
                     %21 <- GOTO() [l9]
                   }
-                  block l9 {
+                  block l9 [l7] {
                     %22 <- b LT 4 [l12, l20]
                   }
-                  block l12 {
+                  block l12 [l9] {
                     a2 <- ASSIGN b
                     %23 <- GOTO() [l15]
                   }
-                  block l15 {
+                  block l15 [l12, l20] {
                     a3 <- Φ(a2, a)
                     c <- a3 ADD b
                   }
-                  block l20 {
+                  block l20 [l9] {
                     %24 <- GOTO() [l15]
                   }
                 }
@@ -199,11 +199,11 @@ class CriticalEdgeSplittingTest {
         printer.writeFunction(example);
         String expected = """
                 go(a : int, b : int, c : int, n : int) : void {
-                  block l10 {
+                  block l10 [] {
                     a2 <- ASSIGN 0
                     %21 <- GOTO() [l18]
                   }
-                  block l18 {
+                  block l18 [l10, l18] {
                     a3 <- Φ(a2, a4)
                     b2 <- Φ(b, b3)
                     c2 <- Φ(c, c3)
@@ -212,7 +212,7 @@ class CriticalEdgeSplittingTest {
                     a4 <- b3 MUL 2
                     %22 <- a4 LT n [l20, l18]
                   }
-                  block l20 {
+                  block l20 [l18] {
                     go <- ASSIGN c3
                   }
                 }
@@ -227,11 +227,11 @@ class CriticalEdgeSplittingTest {
         printer.writeFunction(example);
         expected = """ 
                 go(a : int, b : int, c : int, n : int) : void {
-                  block l10 {
+                  block l10 [] {
                     a2 <- ASSIGN 0
                     %25 <- GOTO() [l18]
                   }
-                  block l18 {
+                  block l18 [l10, l24] {
                     a3 <- Φ(a2, a4)
                     b2 <- Φ(b, b3)
                     c2 <- Φ(c, c3)
@@ -240,10 +240,10 @@ class CriticalEdgeSplittingTest {
                     a4 <- b3 MUL 2
                     %26 <- a4 LT n [l20, l24]
                   }
-                  block l20 {
+                  block l20 [l18] {
                     go <- ASSIGN c3
                   }
-                  block l24 {
+                  block l24 [l18] {
                     %27 <- GOTO() [l18]
                   }
                 }

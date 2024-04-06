@@ -61,46 +61,46 @@ class SsaConverterTest {
         String expected = """
                 module main {
                   main() : void {
-                    block l8 {
+                    block l8 [] {
                       %47 <- GOTO() [l15]
                     }
-                    block l15 {
+                    block l15 [l8] {
                       i <- ASSIGN 1
                       j <- ASSIGN 1
                       k <- ASSIGN 0
                       %48 <- GOTO() [l21]
                     }
-                    block l21 {
+                    block l21 [l39, l45, l15] {
                       j2 <- Φ(j3, j4, j)
                       k2 <- Φ(k3, k4, k)
                       %49 <- k2 LT 100 [l27, l24]
                     }
-                    block l24 {
+                    block l24 [l21] {
                       %50 <- GOTO 15 [l29]
                     }
-                    block l27 {
+                    block l27 [l21] {
                       %51 <- j2 LT 20 [l39, l33]
                     }
-                    block l29 {
+                    block l29 [l24] {
                       %52 <- NOP()
                       %53 <- GOTO() [l46]
                     }
-                    block l33 {
+                    block l33 [l27] {
                       %54 <- GOTO 11 [l45]
                     }
-                    block l39 {
+                    block l39 [l27] {
                       j3 <- ASSIGN i
                       %55 <- k2 ADD 1
                       k3 <- ASSIGN %55
                       %56 <- GOTO 3 [l21]
                     }
-                    block l45 {
+                    block l45 [l33] {
                       j4 <- ASSIGN k2
                       %57 <- k2 ADD 2
                       k4 <- ASSIGN %57
                       %58 <- GOTO 3 [l21]
                     }
-                    block l46 {
+                    block l46 [l29] {
                     }
                   }
                 }
@@ -136,10 +136,10 @@ class SsaConverterTest {
         String expected = """
                 module main {
                   main() : void {
-                    block l16 {
+                    block l16 [] {
                       %56 <- GOTO() [l27]
                     }
-                    block l27 {
+                    block l27 [l16] {
                       %57 <- 2 ADD 3
                       number <- ASSIGN %57
                       %58 <- PARAM number
@@ -148,24 +148,24 @@ class SsaConverterTest {
                       %60 <- NOP()
                       %61 <- GOTO() [l29]
                     }
-                    block l29 {
+                    block l29 [l27] {
                     }
                   }
                   fibonacci(n : int) : int {
-                    block l30 {
+                    block l30 [] {
                       %62 <- GOTO() [l33]
                     }
-                    block l33 {
+                    block l33 [l30] {
                       %63 <- n LE 1 [l40, l36]
                     }
-                    block l36 {
+                    block l36 [l33] {
                       %64 <- GOTO 4 [l49]
                     }
-                    block l40 {
+                    block l40 [l33] {
                       fibonacci2 <- ASSIGN n
                       %65 <- GOTO 12 [l53]
                     }
-                    block l49 {
+                    block l49 [l36] {
                       %66 <- n SUB 1
                       %67 <- PARAM %66
                       %68 <- fibonacci CALL 1
@@ -176,12 +176,12 @@ class SsaConverterTest {
                       fibonacci3 <- ASSIGN %72
                       %73 <- GOTO() [l53]
                     }
-                    block l53 {
+                    block l53 [l40, l49] {
                       fibonacci4 <- Φ(fibonacci2, fibonacci3)
                       %74 <- NOP()
                       %75 <- GOTO() [l55]
                     }
-                    block l55 {
+                    block l55 [l53] {
                     }
                   }
                 }

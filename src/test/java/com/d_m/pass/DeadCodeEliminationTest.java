@@ -84,33 +84,33 @@ class DeadCodeEliminationTest {
         String expected = """
                 module main {
                   main() : void {
-                    block l16 {
+                    block l16 [] {
                       %56 <- GOTO() [l27]
                     }
-                    block l27 {
+                    block l27 [l16] {
                       %57 <- 2 ADD 3
                       number <- ASSIGN %57
                       %58 <- PARAM number
                       %59 <- fibonacci CALL 1
                       %60 <- GOTO() [l29]
                     }
-                    block l29 {
+                    block l29 [l27] {
                     }
                   }
                   fibonacci(n : int) : int {
-                    block l30 {
+                    block l30 [] {
                       %61 <- GOTO() [l33]
                     }
-                    block l33 {
+                    block l33 [l30] {
                       %62 <- n LE 1 [l40, l36]
                     }
-                    block l36 {
+                    block l36 [l33] {
                       %63 <- GOTO 4 [l49]
                     }
-                    block l40 {
+                    block l40 [l33] {
                       %64 <- GOTO 12 [l53]
                     }
-                    block l49 {
+                    block l49 [l36] {
                       %65 <- n SUB 1
                       %66 <- PARAM %65
                       %67 <- fibonacci CALL 1
@@ -119,10 +119,10 @@ class DeadCodeEliminationTest {
                       %70 <- fibonacci CALL 1
                       %71 <- GOTO() [l53]
                     }
-                    block l53 {
+                    block l53 [l40, l49] {
                       %72 <- GOTO() [l55]
                     }
-                    block l55 {
+                    block l55 [l53] {
                     }
                   }
                 }

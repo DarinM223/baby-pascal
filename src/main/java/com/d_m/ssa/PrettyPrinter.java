@@ -90,7 +90,15 @@ public class PrettyPrinter {
         start();
         out.write("block l");
         out.write(Integer.toString(block.getId()));
-        out.write(" {\n");
+        out.write(" [");
+        for (var it = block.getPredecessors().iterator(); it.hasNext(); ) {
+            Block predecessor = it.next();
+            out.write("l" + predecessor.getId());
+            if (it.hasNext()) {
+                out.write(", ");
+            }
+        }
+        out.write("] {\n");
         indentationLevel++;
 
         for (Instruction instruction : block.getInstructions()) {
