@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Modify pattern wildcards so that the patterns are more exhaustive">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/BooleanFunctionPass.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/CriticalEdgeSplitting.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Modify successors and predecessors to be lists instead of sets and attempt critical edge splitting">
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/CriticalEdgeSplittingTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/DeadCodeElimination.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/DeadCodeElimination.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/CriticalEdgeSplitting.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/CriticalEdgeSplitting.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/Examples.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/Examples.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,8 +21,8 @@
         <option value="Enum" />
         <option value="Record" />
         <option value="Interface" />
-        <option value="JUnit5 Test Class" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -219,14 +216,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Construct example for unit test">
-      <option name="closed" value="true" />
-      <created>1710019686391</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1710019686391</updated>
     </task>
     <task id="LOCAL-00010" summary="Blocks calculate gen/kill info">
       <option name="closed" value="true" />
@@ -612,11 +601,18 @@
       <option name="project" value="LOCAL" />
       <updated>1712335117505</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="Modify successors and predecessors to be lists instead of sets and attempt critical edge splitting">
+      <option name="closed" value="true" />
+      <created>1712353614921</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1712353614921</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add phis to three address code block, and implement inserting phis" />
     <MESSAGE value="Fix compile error" />
     <MESSAGE value="Rewrite names to be unique after inserting phis" />
     <MESSAGE value="Linking use to value doesn't create a new use, and starts named to unnamed SSA conversion" />
@@ -641,7 +637,8 @@
     <MESSAGE value="SSA block succcessors have the true branch be the first element in the set" />
     <MESSAGE value="Use Java 22 wildcard patterns" />
     <MESSAGE value="Modify pattern wildcards so that the patterns are more exhaustive" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modify pattern wildcards so that the patterns are more exhaustive" />
+    <MESSAGE value="Modify successors and predecessors to be lists instead of sets and attempt critical edge splitting" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modify successors and predecessors to be lists instead of sets and attempt critical edge splitting" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
