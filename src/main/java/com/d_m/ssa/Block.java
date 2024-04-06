@@ -1,12 +1,15 @@
 package com.d_m.ssa;
 
+import com.d_m.cfg.IBlock;
+
 import java.util.*;
 
-public class Block {
-    private int id;
-    private Function parent;
-    private ListWrapper<Instruction> instructions;
-    private List<Block> predecessors;
+public class Block implements IBlock<Block> {
+    private final int id;
+    private int dominatorTreeLevel;
+    private final Function parent;
+    private final ListWrapper<Instruction> instructions;
+    private final List<Block> predecessors;
 
     public Block(int id, Function parent, List<Instruction> instructions) {
         this(id, parent, instructions, new ArrayList<>());
@@ -17,6 +20,7 @@ public class Block {
         this.parent = parent;
         this.instructions = new ListWrapper<>();
         this.predecessors = predecessors;
+        this.dominatorTreeLevel = -1;
 
         for (Instruction instruction : instructions.reversed()) {
             instruction.setParent(this);
@@ -64,5 +68,17 @@ public class Block {
 
     public int getId() {
         return id;
+    }
+
+    public int getDominatorTreeLevel() {
+        return dominatorTreeLevel;
+    }
+
+    public void setDominatorTreeLevel(int dominatorTreeLevel) {
+        this.dominatorTreeLevel = dominatorTreeLevel;
+    }
+
+    public Function getParent() {
+        return parent;
     }
 }

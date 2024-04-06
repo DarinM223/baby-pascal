@@ -1,6 +1,6 @@
 package com.d_m.dom;
 
-import com.d_m.cfg.Block;
+import com.d_m.cfg.IBlock;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
@@ -8,14 +8,14 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DominanceFrontier {
-    private final LengauerTarjan dominators;
+public class DominanceFrontier<Block extends IBlock<Block>> {
+    private final LengauerTarjan<Block> dominators;
     private final Multimap<Integer, Block> df;
 
-    public DominanceFrontier(LengauerTarjan dominators, Block cfg) {
+    public DominanceFrontier(LengauerTarjan<Block> dominators, Block entry) {
         this.dominators = dominators;
         this.df = ArrayListMultimap.create();
-        computeDF(cfg.getEntry());
+        computeDF(entry);
     }
 
     public Collection<Block> dominanceFrontier(Block block) {

@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LengauerTarjanTest {
-    LengauerTarjan dominators;
+    LengauerTarjan<Block> dominators;
     List<Block> blocks;
 
     @BeforeEach
@@ -25,7 +25,7 @@ class LengauerTarjanTest {
         ThreeAddressCode threeAddressCode = new ThreeAddressCode(fresh, symbol);
         List<Quad> code = threeAddressCode.normalize(Examples.figure_19_4());
         Block cfg = new Block(code);
-        dominators = new LengauerTarjan(cfg);
+        dominators = new LengauerTarjan<>(cfg.blocks(), cfg.getEntry());
         blocks = cfg.blocks();
         blocks.sort(null);
     }

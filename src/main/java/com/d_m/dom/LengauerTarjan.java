@@ -1,12 +1,12 @@
 package com.d_m.dom;
 
-import com.d_m.cfg.Block;
+import com.d_m.cfg.IBlock;
 import com.d_m.util.Pair;
 import com.google.common.collect.*;
 
 import java.util.*;
 
-public class LengauerTarjan {
+public class LengauerTarjan<Block extends IBlock<Block>> {
     private int N;
     private final Map<Integer, Integer> dfnum;
     private final Map<Integer, Block> parent;
@@ -14,11 +14,10 @@ public class LengauerTarjan {
     private final Map<Integer, Integer> ancestor;
     private final Map<Integer, Integer> best;
     private final Map<Integer, Block> idom;
-    private final Block[] vertex;
+    private final List<Block> vertex;
     private final Multimap<Integer, Block> domTree;
 
-    public LengauerTarjan(Block graph) {
-        List<Block> blocks = graph.blocks();
+    public LengauerTarjan(List<Block> blocks, Block entry) {
         int size = blocks.size();
         N = 0;
         dfnum = new HashMap<>(size);
@@ -27,13 +26,16 @@ public class LengauerTarjan {
         ancestor = new HashMap<>(size);
         best = new HashMap<>(size);
         idom = new HashMap<>(size);
-        vertex = new Block[size];
+        vertex = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            vertex.add(i, null);
+        }
         domTree = ArrayListMultimap.create();
         Multimap<Integer, Integer> bucket = TreeMultimap.create();
         Map<Integer, Integer> samedom = new HashMap<>(size);
-        dfs(null, graph);
+        dfs(null, entry);
         for (int i = N - 1; i >= 1; i--) {
-            Block n = vertex[i];
+            Block n = vertex.get(i);
             Block p = parent.get(n.getId());
             int s = p.getId();
             for (Block v : n.getPredecessors()) {
@@ -56,7 +58,7 @@ public class LengauerTarjan {
             bucket.removeAll(p.getId());
         }
         for (int i = 1; i < N; i++) {
-            int n = vertex[i].getId();
+            int n = vertex.get(i).getId();
             if (samedom.get(n) != null) {
                 idom.put(n, idom.get(samedom.get(n)));
             }
@@ -72,7 +74,7 @@ public class LengauerTarjan {
 
         // Set dominator tree level for blocks.
         Queue<Pair<Integer, Block>> worklist = new LinkedList<>();
-        worklist.add(new Pair<>(0, graph.getEntry()));
+        worklist.add(new Pair<>(0, entry));
         while (!worklist.isEmpty()) {
             var pair = worklist.poll();
             int level = pair.a();
@@ -147,7 +149,7 @@ public class LengauerTarjan {
     private void dfs(Block p, Block n) {
         if (!dfnum.containsKey(n.getId())) {
             dfnum.put(n.getId(), N);
-            vertex[N] = n;
+            vertex.set(N, n);
             if (p != null) {
                 parent.put(n.getId(), p);
             }

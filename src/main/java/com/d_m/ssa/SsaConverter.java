@@ -128,6 +128,7 @@ public class SsaConverter {
             converted.getInstructions().addToEnd(new Instruction(fresh.fresh(), null, null, Operator.GOTO));
         }
         rewrittenBlocks.put(block, converted);
+        converted.setDominatorTreeLevel(block.getDominatorTreeLevel());
         return converted;
     }
 

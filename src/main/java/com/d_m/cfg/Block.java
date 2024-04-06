@@ -6,7 +6,7 @@ import com.d_m.code.Quad;
 
 import java.util.*;
 
-public class Block implements Comparable<Block> {
+public class Block implements Comparable<Block>, IBlock<Block> {
     private final int id;
     private final List<Phi> phis;
     private final List<Quad> code;
@@ -174,8 +174,8 @@ public class Block implements Comparable<Block> {
     }
 
     private static class Blocks {
-        private List<Quad> code;
-        private Map<Integer, Block> blocks;
+        private final List<Quad> code;
+        private final Map<Integer, Block> blocks;
         private final Block entry;
         private final Block exit;
 
@@ -210,10 +210,6 @@ public class Block implements Comparable<Block> {
             if (next < this.code.size()) {
                 addLink(i, next);
             }
-        }
-
-        public Iterable<Map.Entry<Integer, Block>> iterator() {
-            return this.blocks.entrySet();
         }
     }
 

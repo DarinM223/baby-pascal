@@ -16,14 +16,14 @@ import java.util.List;
 import java.util.Queue;
 
 public abstract class InsertPhis {
-    private Symbol symbol;
-    private DefinitionSites defsites;
-    private DominanceFrontier frontier;
+    private final Symbol symbol;
+    private final DefinitionSites defsites;
+    private final DominanceFrontier<Block> frontier;
 
     // Multimap from symbol to blocks where a phi for that symbol has been inserted.
-    private SortedSetMultimap<Integer, Block> aPhi;
+    private final SortedSetMultimap<Integer, Block> aPhi;
 
-    public InsertPhis(Symbol symbol, DefinitionSites defsites, DominanceFrontier frontier) {
+    public InsertPhis(Symbol symbol, DefinitionSites defsites, DominanceFrontier<Block> frontier) {
         this.symbol = symbol;
         this.defsites = defsites;
         this.frontier = frontier;

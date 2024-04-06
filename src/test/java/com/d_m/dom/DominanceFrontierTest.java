@@ -22,8 +22,8 @@ class DominanceFrontierTest {
         ThreeAddressCode threeAddressCode = new ThreeAddressCode(fresh, symbol);
         List<Quad> code = threeAddressCode.normalize(Examples.figure_19_4());
         Block cfg = new Block(code);
-        LengauerTarjan dominators = new LengauerTarjan(cfg);
-        DominanceFrontier frontier = new DominanceFrontier(dominators, cfg);
+        LengauerTarjan<Block> dominators = new LengauerTarjan<>(cfg.blocks(), cfg.getEntry());
+        DominanceFrontier<Block> frontier = new DominanceFrontier<>(dominators, cfg);
 
         List<Block> blocks = cfg.blocks();
         blocks.sort(null);

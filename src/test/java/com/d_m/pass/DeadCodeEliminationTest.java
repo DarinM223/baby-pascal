@@ -31,7 +31,7 @@ class DeadCodeEliminationTest {
     Fresh fresh;
     Symbol symbol;
     ThreeAddressCode threeAddressCode;
-    DominanceFrontier frontier;
+    DominanceFrontier<Block> frontier;
     DefinitionSites defsites;
 
     @BeforeEach
@@ -44,8 +44,8 @@ class DeadCodeEliminationTest {
         threeAddressCode = new ThreeAddressCode(fresh, symbol);
         List<Quad> code = threeAddressCode.normalize(statements);
         com.d_m.cfg.Block cfg = new Block(code);
-        LengauerTarjan dominators = new LengauerTarjan(cfg);
-        frontier = new DominanceFrontier(dominators, cfg);
+        LengauerTarjan<Block> dominators = new LengauerTarjan<>(cfg.blocks(), cfg.getEntry());
+        frontier = new DominanceFrontier<>(dominators, cfg);
         defsites = new DefinitionSites(cfg);
         return cfg;
     }
