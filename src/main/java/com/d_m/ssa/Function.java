@@ -20,6 +20,10 @@ public class Function extends Constant {
         this.parent = parent;
         this.arguments = arguments;
         this.blocks = new ArrayList<>();
+
+        for (Argument argument : arguments) {
+            argument.setParent(this);
+        }
     }
 
     public List<Argument> getArguments() {

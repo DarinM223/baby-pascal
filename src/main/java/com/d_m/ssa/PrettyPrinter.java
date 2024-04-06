@@ -163,7 +163,7 @@ public class PrettyPrinter {
     }
 
     public void writeArgument(Argument arg) throws IOException {
-        out.write(arg.getName());
+        out.write(getName(arg));
         out.write(" : ");
         writeType(arg.getType());
     }
