@@ -90,21 +90,13 @@ public class SsaConverter {
             }
             for (com.d_m.cfg.Block block : declaration.body().blocks()) {
                 Block rewrittenBlock = rewrittenBlocks.get(block);
-                for (com.d_m.cfg.Block predecessor : block.getPredecessors()) {
+                for (com.d_m.cfg.Block predecessor : block.getPredecessors().stream().sorted().toList()) {
                     Block rewrittenPredecessor = rewrittenBlocks.get(predecessor);
                     rewrittenBlock.getPredecessors().add(rewrittenPredecessor);
                 }
                 for (com.d_m.cfg.Block successor : block.getSuccessors()) {
                     Block rewrittenSuccessor = rewrittenBlocks.get(successor);
-                    // Block terminator instruction result is the block id of the true branch.
-                    // Preserve ordering so that the true branch is always the first element in the successors set.
-                    if (!block.getCode().isEmpty() &&
-                            block.getCode().getLast().result() instanceof ConstantAddress(int blockAddress) &&
-                            successor.getId() == blockAddress) {
-                        rewrittenBlock.getTerminator().successors.addFirst(rewrittenSuccessor);
-                    } else {
-                        rewrittenBlock.getTerminator().successors.addLast(rewrittenSuccessor);
-                    }
+                    rewrittenBlock.getTerminator().getSuccessors().add(rewrittenSuccessor);
                 }
             }
             for (TypedName typedName : declaration.parameters()) {

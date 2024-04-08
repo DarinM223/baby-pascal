@@ -102,27 +102,27 @@ class DeadCodeEliminationTest {
                       %61 <- GOTO() [l33]
                     }
                     block l33 [l30] {
-                      %62 <- n LE 1 [l40, l36]
+                      %62 <- n LE 1 [l37, l40]
                     }
-                    block l36 [l33] {
-                      %63 <- GOTO 4 [l49]
+                    block l37 [l33] {
+                      %63 <- GOTO 12 [l43]
                     }
                     block l40 [l33] {
-                      %64 <- GOTO 12 [l53]
+                      %64 <- GOTO 4 [l53]
                     }
-                    block l49 [l36] {
-                      %65 <- n SUB 1
-                      %66 <- PARAM %65
-                      %67 <- fibonacci CALL 1
-                      %68 <- n SUB 2
-                      %69 <- PARAM %68
-                      %70 <- fibonacci CALL 1
-                      %71 <- GOTO() [l53]
+                    block l43 [l37, l53] {
+                      %65 <- GOTO() [l55]
                     }
-                    block l53 [l40, l49] {
-                      %72 <- GOTO() [l55]
+                    block l53 [l40] {
+                      %66 <- n SUB 1
+                      %67 <- PARAM %66
+                      %68 <- fibonacci CALL 1
+                      %69 <- n SUB 2
+                      %70 <- PARAM %69
+                      %71 <- fibonacci CALL 1
+                      %72 <- GOTO() [l43]
                     }
-                    block l55 [l53] {
+                    block l55 [l43] {
                     }
                   }
                 }

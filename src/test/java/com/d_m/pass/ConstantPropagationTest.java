@@ -76,26 +76,26 @@ class ConstantPropagationTest {
                     block l15 [l8] {
                       %53 <- GOTO() [l21]
                     }
-                    block l21 [l39, l15] {
-                      k <- Φ(k2, 0)
-                      %54 <- k LT 100 [l27, l24]
+                    block l21 [l15, l33] {
+                      k <- Φ(0, k2)
+                      %54 <- k LT 100 [l24, l27]
                     }
                     block l24 [l21] {
-                      %55 <- GOTO 15 [l29]
+                      %55 <- 1 LT 20 [l33]
                     }
                     block l27 [l21] {
-                      %56 <- 1 LT 20 [l39]
+                      %56 <- GOTO 15 [l38]
                     }
-                    block l29 [l24] {
-                      %57 <- NOP()
-                      %58 <- GOTO() [l46]
+                    block l33 [l24] {
+                      %57 <- k ADD 1
+                      k2 <- ASSIGN %57
+                      %58 <- GOTO 3 [l21]
                     }
-                    block l39 [l27] {
-                      %59 <- k ADD 1
-                      k2 <- ASSIGN %59
-                      %60 <- GOTO 3 [l21]
+                    block l38 [l27] {
+                      %59 <- NOP()
+                      %60 <- GOTO() [l46]
                     }
-                    block l46 [l29] {
+                    block l46 [l38] {
                     }
                   }
                 }

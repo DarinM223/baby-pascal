@@ -62,16 +62,7 @@ public class UniqueRenamer {
 
     // Returns the index of the edge between block and successor.
     private int edgeIndex(Block block, Block successor) {
-        int j = 0;
-        int i = 0;
-        for (Block predecessor : successor.getPredecessors()) {
-            if (predecessor.equals(block)) {
-                j = i;
-                break;
-            }
-            i++;
-        }
-        return j;
+        return successor.getPredecessors().indexOf(block);
     }
 
     private Phi renamePhiResult(Set<Integer> defs, Phi phi) {

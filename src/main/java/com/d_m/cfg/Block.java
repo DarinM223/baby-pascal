@@ -10,8 +10,8 @@ public class Block implements Comparable<Block>, IBlock<Block> {
     private final int id;
     private final List<Phi> phis;
     private final List<Quad> code;
-    private final Set<Block> predecessors;
-    private final Set<Block> successors;
+    private final List<Block> predecessors;
+    private final List<Block> successors;
     private final Block entry;
     private Block exit;
     private final GenKillInfo genKill;
@@ -22,10 +22,10 @@ public class Block implements Comparable<Block>, IBlock<Block> {
         this.id = Blocks.ENTRY;
         this.phis = new ArrayList<>();
         this.code = new ArrayList<>();
-        this.predecessors = Set.of();
-        this.successors = new LinkedHashSet<>();
+        this.predecessors = List.of();
+        this.successors = new ArrayList<>();
         this.entry = this;
-        this.exit = new Block(Blocks.EXIT, new ArrayList<>(), new HashSet<>(), Set.of(), this, null);
+        this.exit = new Block(Blocks.EXIT, new ArrayList<>(), new ArrayList<>(), List.of(), this, null);
         this.exit.exit = exit;
         this.genKill = new GenKillInfo(this.code);
         this.live = new LivenessInfo();
@@ -121,11 +121,11 @@ public class Block implements Comparable<Block>, IBlock<Block> {
         return phis;
     }
 
-    public Set<Block> getPredecessors() {
+    public List<Block> getPredecessors() {
         return predecessors;
     }
 
-    public Set<Block> getSuccessors() {
+    public List<Block> getSuccessors() {
         return successors;
     }
 
@@ -194,7 +194,7 @@ public class Block implements Comparable<Block>, IBlock<Block> {
         public void newBlock(Range range) {
             List<Quad> newCode = code.subList(range.i(), range.j() + 1);
             int key = range.i();
-            Block block = new Block(key, newCode, new HashSet<>(), new HashSet<>(), entry, exit);
+            Block block = new Block(key, newCode, new ArrayList<>(), new ArrayList<>(), entry, exit);
             blocks.put(key, block);
         }
 
@@ -213,7 +213,7 @@ public class Block implements Comparable<Block>, IBlock<Block> {
         }
     }
 
-    private Block(int id, List<Quad> code, Set<Block> predecessors, Set<Block> successors, Block entry, Block exit) {
+    public Block(int id, List<Quad> code, List<Block> predecessors, List<Block> successors, Block entry, Block exit) {
         this.id = id;
         this.phis = new ArrayList<>();
         this.code = code;

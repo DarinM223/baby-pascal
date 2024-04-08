@@ -66,21 +66,13 @@ class UniqueRenamerTest {
                 }
                 {
                 phis:
-                [Phi[name=%1_2, ins=[%1_4, %1_3, %1_1]], Phi[name=%2_2, ins=[%2_4, %2_3, %2_1]]]
+                [Phi[name=%1_2, ins=[%1_1, %1_3, %1_4]], Phi[name=%2_2, ins=[%2_1, %2_3, %2_4]]]
                 code:
                 [5 <- %2_2 LT 100]
                 predecessors:
                 [0, 7, 11]
                 successors:
                 [4, 5]
-                }
-                {
-                code:
-                [_ <- 15 GOTO _]
-                predecessors:
-                [3]
-                successors:
-                [15]
                 }
                 {
                 code:
@@ -92,11 +84,19 @@ class UniqueRenamerTest {
                 }
                 {
                 code:
-                [_ <- _ NOP _]
+                [_ <- 15 GOTO _]
                 predecessors:
-                [4]
+                [3]
                 successors:
-                [-2]
+                [15]
+                }
+                {
+                code:
+                [%1_3 <- %0_1 ASSIGN _, %3 <- %2_2 ADD 1, %2_3 <- %3 ASSIGN _, _ <- 3 GOTO _]
+                predecessors:
+                [5]
+                successors:
+                [3]
                 }
                 {
                 code:
@@ -108,15 +108,15 @@ class UniqueRenamerTest {
                 }
                 {
                 code:
-                [%1_4 <- %0_1 ASSIGN _, %3 <- %2_2 ADD 1, %2_4 <- %3 ASSIGN _, _ <- 3 GOTO _]
+                [_ <- _ NOP _]
                 predecessors:
-                [5]
+                [4]
                 successors:
-                [3]
+                [-2]
                 }
                 {
                 code:
-                [%1_3 <- %2_2 ASSIGN _, %4 <- %2_2 ADD 2, %2_3 <- %4 ASSIGN _, _ <- 3 GOTO _]
+                [%1_4 <- %2_2 ASSIGN _, %4 <- %2_2 ADD 2, %2_4 <- %4 ASSIGN _, _ <- 3 GOTO _]
                 predecessors:
                 [6]
                 successors:
@@ -163,27 +163,19 @@ class UniqueRenamerTest {
                 }
                 {
                 code:
+                [%1_1 <- 1 ASSIGN _, _ <- 5 GOTO _]
+                predecessors:
+                [0]
+                successors:
+                [5]
+                }
+                {
+                code:
                 [_ <- 4 GOTO _]
                 predecessors:
                 [0]
                 successors:
                 [4]
-                }
-                {
-                code:
-                [%1_2 <- 1 ASSIGN _, _ <- 5 GOTO _]
-                predecessors:
-                [0]
-                successors:
-                [5]
-                }
-                {
-                code:
-                [%1_1 <- %2 ASSIGN _]
-                predecessors:
-                [1]
-                successors:
-                [5]
                 }
                 {
                 code:
@@ -195,6 +187,22 @@ class UniqueRenamerTest {
                 }
                 {
                 code:
+                [%1_2 <- %2 ASSIGN _]
+                predecessors:
+                [1]
+                successors:
+                [5]
+                }
+                {
+                code:
+                [%3_1 <- 1 ASSIGN _, _ <- 10 GOTO _]
+                predecessors:
+                [5]
+                successors:
+                [10]
+                }
+                {
+                code:
                 [_ <- 9 GOTO _]
                 predecessors:
                 [5]
@@ -202,30 +210,22 @@ class UniqueRenamerTest {
                 [9]
                 }
                 {
-                code:
-                [%3_3 <- 1 ASSIGN _, _ <- 10 GOTO _]
-                predecessors:
-                [5]
-                successors:
-                [10]
-                }
-                {
-                code:
-                [%3_1 <- %2 ASSIGN _]
-                predecessors:
-                [6]
-                successors:
-                [10]
-                }
-                {
                 phis:
-                [Phi[name=%3_2, ins=[%3_3, %3_1]]]
+                [Phi[name=%3_2, ins=[%3_1, %3_3]]]
                 code:
                 [%4_1 <- %3_2 ASSIGN _, _ <- _ NOP _]
                 predecessors:
                 [7, 9]
                 successors:
                 [-2]
+                }
+                {
+                code:
+                [%3_3 <- %2 ASSIGN _]
+                predecessors:
+                [6]
+                successors:
+                [10]
                 }
                 {
                 code:
