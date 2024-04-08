@@ -48,87 +48,43 @@ class UniqueRenamerTest {
             builder.append(block.pretty());
         }
         String expected = """
-                {
-                code:
-                []
-                predecessors:
-                []
-                successors:
-                [0]
+                block -1 predecessors: [] successors: [0] {
                 }
-                {
-                code:
-                [%0_1 <- 1 ASSIGN _, %1_1 <- 1 ASSIGN _, %2_1 <- 0 ASSIGN _]
-                predecessors:
-                [-1]
-                successors:
-                [3]
+                block 0 predecessors: [-1] successors: [3] {
+                  %0_1 <- 1 ASSIGN _
+                  %1_1 <- 1 ASSIGN _
+                  %2_1 <- 0 ASSIGN _
                 }
-                {
-                phis:
-                [Phi[name=%1_2, ins=[%1_1, %1_3, %1_4]], Phi[name=%2_2, ins=[%2_1, %2_3, %2_4]]]
-                code:
-                [5 <- %2_2 LT 100]
-                predecessors:
-                [0, 7, 11]
-                successors:
-                [4, 5]
+                block 3 predecessors: [0, 7, 11] successors: [5, 4] {
+                  %1_2 <- Φ([%1_1, %1_3, %1_4])
+                  %2_2 <- Φ([%2_1, %2_3, %2_4])
+                  5 <- %2_2 LT 100
                 }
-                {
-                code:
-                [7 <- %1_2 LT 20]
-                predecessors:
-                [3]
-                successors:
-                [6, 7]
+                block 5 predecessors: [3] successors: [7, 6] {
+                  7 <- %1_2 LT 20
                 }
-                {
-                code:
-                [_ <- 15 GOTO _]
-                predecessors:
-                [3]
-                successors:
-                [15]
+                block 4 predecessors: [3] successors: [15] {
+                  _ <- 15 GOTO _
                 }
-                {
-                code:
-                [%1_3 <- %0_1 ASSIGN _, %3 <- %2_2 ADD 1, %2_3 <- %3 ASSIGN _, _ <- 3 GOTO _]
-                predecessors:
-                [5]
-                successors:
-                [3]
+                block 7 predecessors: [5] successors: [3] {
+                  %1_3 <- %0_1 ASSIGN _
+                  %3 <- %2_2 ADD 1
+                  %2_3 <- %3 ASSIGN _
+                  _ <- 3 GOTO _
                 }
-                {
-                code:
-                [_ <- 11 GOTO _]
-                predecessors:
-                [5]
-                successors:
-                [11]
+                block 6 predecessors: [5] successors: [11] {
+                  _ <- 11 GOTO _
                 }
-                {
-                code:
-                [_ <- _ NOP _]
-                predecessors:
-                [4]
-                successors:
-                [-2]
+                block 15 predecessors: [4] successors: [-2] {
+                  _ <- _ NOP _
                 }
-                {
-                code:
-                [%1_4 <- %2_2 ASSIGN _, %4 <- %2_2 ADD 2, %2_4 <- %4 ASSIGN _, _ <- 3 GOTO _]
-                predecessors:
-                [6]
-                successors:
-                [3]
+                block 11 predecessors: [6] successors: [3] {
+                  %1_4 <- %2_2 ASSIGN _
+                  %4 <- %2_2 ADD 2
+                  %2_4 <- %4 ASSIGN _
+                  _ <- 3 GOTO _
                 }
-                {
-                code:
-                []
-                predecessors:
-                [15]
-                successors:
-                []
+                block -2 predecessors: [15] successors: [] {
                 }
                 """;
         assertEquals(builder.toString(), expected);
@@ -145,95 +101,40 @@ class UniqueRenamerTest {
             builder.append(block.pretty());
         }
         String expected = """
-                {
-                code:
-                []
-                predecessors:
-                []
-                successors:
-                [0]
+                block -1 predecessors: [] successors: [0] {
                 }
-                {
-                code:
-                [2 <- %0 LT 2]
-                predecessors:
-                [-1]
-                successors:
-                [1, 2]
+                block 0 predecessors: [-1] successors: [2, 1] {
+                  2 <- %0 LT 2
                 }
-                {
-                code:
-                [%1_1 <- 1 ASSIGN _, _ <- 5 GOTO _]
-                predecessors:
-                [0]
-                successors:
-                [5]
+                block 2 predecessors: [0] successors: [5] {
+                  %1_1 <- 1 ASSIGN _
+                  _ <- 5 GOTO _
                 }
-                {
-                code:
-                [_ <- 4 GOTO _]
-                predecessors:
-                [0]
-                successors:
-                [4]
+                block 1 predecessors: [0] successors: [4] {
+                  _ <- 4 GOTO _
                 }
-                {
-                code:
-                [7 <- %0 LT 2]
-                predecessors:
-                [2, 4]
-                successors:
-                [6, 7]
+                block 5 predecessors: [2, 4] successors: [7, 6] {
+                  7 <- %0 LT 2
                 }
-                {
-                code:
-                [%1_2 <- %2 ASSIGN _]
-                predecessors:
-                [1]
-                successors:
-                [5]
+                block 4 predecessors: [1] successors: [5] {
+                  %1_2 <- %2 ASSIGN _
                 }
-                {
-                code:
-                [%3_1 <- 1 ASSIGN _, _ <- 10 GOTO _]
-                predecessors:
-                [5]
-                successors:
-                [10]
+                block 7 predecessors: [5] successors: [10] {
+                  %3_1 <- 1 ASSIGN _
+                  _ <- 10 GOTO _
                 }
-                {
-                code:
-                [_ <- 9 GOTO _]
-                predecessors:
-                [5]
-                successors:
-                [9]
+                block 6 predecessors: [5] successors: [9] {
+                  _ <- 9 GOTO _
                 }
-                {
-                phis:
-                [Phi[name=%3_2, ins=[%3_1, %3_3]]]
-                code:
-                [%4_1 <- %3_2 ASSIGN _, _ <- _ NOP _]
-                predecessors:
-                [7, 9]
-                successors:
-                [-2]
+                block 10 predecessors: [7, 9] successors: [-2] {
+                  %3_2 <- Φ([%3_1, %3_3])
+                  %4_1 <- %3_2 ASSIGN _
+                  _ <- _ NOP _
                 }
-                {
-                code:
-                [%3_3 <- %2 ASSIGN _]
-                predecessors:
-                [6]
-                successors:
-                [10]
+                block 9 predecessors: [6] successors: [10] {
+                  %3_3 <- %2 ASSIGN _
                 }
-                {
-                code:
-                []
-                predecessors:
-                [10]
-                successors:
-                []
+                block -2 predecessors: [10] successors: [] {
                 }
                 """;
         assertEquals(builder.toString(), expected);

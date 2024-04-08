@@ -4,16 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Construct loop nesting tree from dominator tree and adds unit test from figure 18.3">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LoopPostbody.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Remove HashSet usage from cfg.Block in favor of ArrayList, refactors unit tests">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/construct/UniqueRenamer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/construct/UniqueRenamer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Phi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Phi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/BlockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/BlockTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/construct/UniqueRenamerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/construct/UniqueRenamerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/ConstantPropagationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/ConstantPropagationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/DeadCodeEliminationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/DeadCodeEliminationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -221,14 +217,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00014" summary="Add assert for dataflow unit test">
-      <option name="closed" value="true" />
-      <created>1710093444221</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1710093444221</updated>
     </task>
     <task id="LOCAL-00015" summary="Attempt to make block unit test more reliable by substituting in object hashcodes">
       <option name="closed" value="true" />
@@ -614,11 +602,18 @@
       <option name="project" value="LOCAL" />
       <updated>1712502340929</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="Remove HashSet usage from cfg.Block in favor of ArrayList, refactors unit tests">
+      <option name="closed" value="true" />
+      <created>1712551088392</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1712551088392</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add unit test for named SSA" />
     <MESSAGE value="Fixes for unnamed SSA conversion&#10;&#10;* Converts phis as well as quads&#10;* Adds terminator to the end of blocks with successors and no branch terminator&#10;* Links blocks predecessors and successors after rewriting them to unnamed SSA&#10;* Handles constants when looking up addresses&#10;* Adds unit test for converting to unnamed SSA (doesn't do anything yet but its useful for inspection through the debugger)" />
     <MESSAGE value="Start unnamed SSA pretty printer" />
     <MESSAGE value="Improve pretty printing and use it for unit test" />
@@ -643,7 +638,8 @@
     <MESSAGE value="Add unit test for figure 19.3 critical edge splitting" />
     <MESSAGE value="Abstract dominance stuff to work on both cfg.Block and ssa.Block" />
     <MESSAGE value="Construct loop nesting tree from dominator tree and adds unit test from figure 18.3" />
-    <option name="LAST_COMMIT_MESSAGE" value="Construct loop nesting tree from dominator tree and adds unit test from figure 18.3" />
+    <MESSAGE value="Remove HashSet usage from cfg.Block in favor of ArrayList, refactors unit tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove HashSet usage from cfg.Block in favor of ArrayList, refactors unit tests" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

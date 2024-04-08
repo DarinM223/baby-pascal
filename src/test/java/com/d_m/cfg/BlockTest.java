@@ -38,69 +38,38 @@ class BlockTest {
             builder.append(curr.pretty());
         }
         String expected = """
-                {
-                code:
-                []
-                predecessors:
-                [12]
-                successors:
-                []
+                block -2 predecessors: [12] successors: [] {
                 }
-                {
-                code:
-                []
-                predecessors:
-                []
-                successors:
-                [0]
+                block -1 predecessors: [] successors: [0] {
                 }
-                {
-                code:
-                [%1 <- 1 ASSIGN _]
-                predecessors:
-                [-1]
-                successors:
-                [1]
+                block 0 predecessors: [-1] successors: [1] {
+                  %1 <- 1 ASSIGN _
                 }
-                {
-                code:
-                [%2 <- 1 ASSIGN _]
-                predecessors:
-                [0, 9]
-                successors:
-                [2]
+                block 1 predecessors: [0, 9] successors: [2] {
+                  %2 <- 1 ASSIGN _
                 }
-                {
-                code:
-                [%1 <- 10 MUL %1, %2 <- %1 ADD %2, %3 <- 8 MUL %2, %4 <- %3 SUB 88, %3 <- 0 ASSIGN _, %2 <- %2 ADD 1, 2 <- %2 LE 10]
-                predecessors:
-                [1, 2]
-                successors:
-                [2, 9]
+                block 2 predecessors: [1, 2] successors: [2, 9] {
+                  %1 <- 10 MUL %1
+                  %2 <- %1 ADD %2
+                  %3 <- 8 MUL %2
+                  %4 <- %3 SUB 88
+                  %3 <- 0 ASSIGN _
+                  %2 <- %2 ADD 1
+                  2 <- %2 LE 10
                 }
-                {
-                code:
-                [%1 <- %1 ADD 1, 1 <- %1 LE 10]
-                predecessors:
-                [2]
-                successors:
-                [1, 11]
+                block 9 predecessors: [2] successors: [1, 11] {
+                  %1 <- %1 ADD 1
+                  1 <- %1 LE 10
                 }
-                {
-                code:
-                [%1 <- 1 ASSIGN _]
-                predecessors:
-                [9]
-                successors:
-                [12]
+                block 11 predecessors: [9] successors: [12] {
+                  %1 <- 1 ASSIGN _
                 }
-                {
-                code:
-                [%5 <- %1 SUB 1, %6 <- 88 MUL %5, %3 <- 1 ASSIGN _, %1 <- %1 ADD 1, 12 <- %1 LE 10]
-                predecessors:
-                [11, 12]
-                successors:
-                [-2, 12]
+                block 12 predecessors: [11, 12] successors: [12, -2] {
+                  %5 <- %1 SUB 1
+                  %6 <- 88 MUL %5
+                  %3 <- 1 ASSIGN _
+                  %1 <- %1 ADD 1
+                  12 <- %1 LE 10
                 }
                 """;
         assertEquals(builder.toString(), expected);

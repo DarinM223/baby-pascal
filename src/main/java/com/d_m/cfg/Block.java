@@ -106,11 +106,30 @@ public class Block implements Comparable<Block>, IBlock<Block> {
     }
 
     public String pretty() {
-        var phisString = phis.isEmpty() ? "" : "\nphis:\n" + phis;
-        return "{" + phisString + "\ncode:\n" + code
-                + "\npredecessors:\n" + predecessors.stream().map(Block::getId).sorted().toList()
-                + "\nsuccessors:\n" + successors.stream().map(Block::getId).sorted().toList()
-                + "\n}\n";
+        StringBuilder builder = new StringBuilder();
+        builder.append("block ").append(id).append(" predecessors: [");
+        for (var it = predecessors.iterator(); it.hasNext(); ) {
+            builder.append(it.next().getId());
+            if (it.hasNext()) {
+                builder.append(", ");
+            }
+        }
+        builder.append("] successors: [");
+        for (var it = successors.iterator(); it.hasNext(); ) {
+            builder.append(it.next().getId());
+            if (it.hasNext()) {
+                builder.append(", ");
+            }
+        }
+        builder.append("] {\n");
+        for (Phi phi : phis) {
+            builder.append("  ").append(phi.toString()).append("\n");
+        }
+        for (Quad quad : code) {
+            builder.append("  ").append(quad.toString()).append("\n");
+        }
+        builder.append("}\n");
+        return builder.toString();
     }
 
     public List<Quad> getCode() {
