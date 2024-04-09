@@ -4,19 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="cfg.Block pretty() prints out block id and has more compact predecessor and successor lists">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Pass in Symbol when pretty printing three address code">
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LoopPostbodyTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Phi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Phi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/Address.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/ConstantAddress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/ConstantAddress.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/EmptyAddress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/EmptyAddress.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/NameAddress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/NameAddress.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/Quad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/Quad.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/TempAddress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/TempAddress.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/BlockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/BlockTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/code/ThreeAddressCodeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/code/ThreeAddressCodeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/construct/UniqueRenamerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/construct/UniqueRenamerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LoopPostbody.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LoopPostbody.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/util/FreshImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/util/FreshImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,8 +21,8 @@
         <option value="Enum" />
         <option value="Record" />
         <option value="Interface" />
-        <option value="JUnit5 Test Class" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -224,14 +216,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00016" summary="Blocks include their id, predecessors and successors are sets, fix block tests">
-      <option name="closed" value="true" />
-      <created>1710108673901</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1710108673901</updated>
     </task>
     <task id="LOCAL-00017" summary="Don't tuple block id with block in queue for blocks()">
       <option name="closed" value="true" />
@@ -617,11 +601,18 @@
       <option name="project" value="LOCAL" />
       <updated>1712619851982</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="Pass in Symbol when pretty printing three address code">
+      <option name="closed" value="true" />
+      <created>1712620897898</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1712620897898</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Start unnamed SSA pretty printer" />
     <MESSAGE value="Improve pretty printing and use it for unit test" />
     <MESSAGE value="Fixes for pretty printing and unnamed SSA conversion and adds unit test for recursive function call" />
     <MESSAGE value="Start deadcode elimination pass" />
@@ -646,7 +637,8 @@
     <MESSAGE value="Construct loop nesting tree from dominator tree and adds unit test from figure 18.3" />
     <MESSAGE value="Remove HashSet usage from cfg.Block in favor of ArrayList, refactors unit tests" />
     <MESSAGE value="cfg.Block pretty() prints out block id and has more compact predecessor and successor lists" />
-    <option name="LAST_COMMIT_MESSAGE" value="cfg.Block pretty() prints out block id and has more compact predecessor and successor lists" />
+    <MESSAGE value="Pass in Symbol when pretty printing three address code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Pass in Symbol when pretty printing three address code" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

@@ -1,7 +1,15 @@
 package com.d_m.util;
 
 public class FreshImpl implements Fresh {
-    private int counter = 0;
+    private int counter;
+
+    public FreshImpl() {
+        counter = 0;
+    }
+
+    public FreshImpl(int counter) {
+        this.counter = counter;
+    }
 
     @Override
     public int fresh() {
