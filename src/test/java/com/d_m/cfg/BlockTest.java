@@ -35,7 +35,7 @@ class BlockTest {
         List<Block> blocks = block.blocks();
         blocks.sort(null);
         for (Block curr : blocks) {
-            builder.append(curr.pretty());
+            builder.append(curr.pretty(null));
         }
         String expected = """
                 block -2 predecessors: [12] successors: [] {

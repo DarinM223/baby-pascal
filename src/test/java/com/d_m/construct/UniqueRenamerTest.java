@@ -45,31 +45,31 @@ class UniqueRenamerTest {
         new UniqueRenamer(symbol).rename(cfg);
         StringBuilder builder = new StringBuilder();
         for (Block block : cfg.blocks()) {
-            builder.append(block.pretty());
+            builder.append(block.pretty(symbol));
         }
         String expected = """
                 block -1 predecessors: [] successors: [0] {
                 }
                 block 0 predecessors: [-1] successors: [3] {
-                  %0_1 <- 1 ASSIGN _
-                  %1_1 <- 1 ASSIGN _
-                  %2_1 <- 0 ASSIGN _
+                  i_1 <- 1 ASSIGN _
+                  j_1 <- 1 ASSIGN _
+                  k_1 <- 0 ASSIGN _
                 }
                 block 3 predecessors: [0, 7, 11] successors: [5, 4] {
-                  %1_2 <- Φ([%1_1, %1_3, %1_4])
-                  %2_2 <- Φ([%2_1, %2_3, %2_4])
-                  5 <- %2_2 LT 100
+                  j_2 <- Φ(j_1, j_3, j_4)
+                  k_2 <- Φ(k_1, k_3, k_4)
+                  5 <- k_2 LT 100
                 }
                 block 5 predecessors: [3] successors: [7, 6] {
-                  7 <- %1_2 LT 20
+                  7 <- j_2 LT 20
                 }
                 block 4 predecessors: [3] successors: [15] {
                   _ <- 15 GOTO _
                 }
                 block 7 predecessors: [5] successors: [3] {
-                  %1_3 <- %0_1 ASSIGN _
-                  %3 <- %2_2 ADD 1
-                  %2_3 <- %3 ASSIGN _
+                  j_3 <- i_1 ASSIGN _
+                  %3 <- k_2 ADD 1
+                  k_3 <- %3 ASSIGN _
                   _ <- 3 GOTO _
                 }
                 block 6 predecessors: [5] successors: [11] {
@@ -79,9 +79,9 @@ class UniqueRenamerTest {
                   _ <- _ NOP _
                 }
                 block 11 predecessors: [6] successors: [3] {
-                  %1_4 <- %2_2 ASSIGN _
-                  %4 <- %2_2 ADD 2
-                  %2_4 <- %4 ASSIGN _
+                  j_4 <- k_2 ASSIGN _
+                  %4 <- k_2 ADD 2
+                  k_4 <- %4 ASSIGN _
                   _ <- 3 GOTO _
                 }
                 block -2 predecessors: [15] successors: [] {
@@ -98,41 +98,41 @@ class UniqueRenamerTest {
         new UniqueRenamer(symbol).rename(cfg);
         StringBuilder builder = new StringBuilder();
         for (Block block : cfg.blocks()) {
-            builder.append(block.pretty());
+            builder.append(block.pretty(symbol));
         }
         String expected = """
                 block -1 predecessors: [] successors: [0] {
                 }
                 block 0 predecessors: [-1] successors: [2, 1] {
-                  2 <- %0 LT 2
+                  2 <- i LT 2
                 }
                 block 2 predecessors: [0] successors: [5] {
-                  %1_1 <- 1 ASSIGN _
+                  y_1 <- 1 ASSIGN _
                   _ <- 5 GOTO _
                 }
                 block 1 predecessors: [0] successors: [4] {
                   _ <- 4 GOTO _
                 }
                 block 5 predecessors: [2, 4] successors: [7, 6] {
-                  7 <- %0 LT 2
+                  7 <- i LT 2
                 }
                 block 4 predecessors: [1] successors: [5] {
-                  %1_2 <- %2 ASSIGN _
+                  y_2 <- x ASSIGN _
                 }
                 block 7 predecessors: [5] successors: [10] {
-                  %3_1 <- 1 ASSIGN _
+                  z_1 <- 1 ASSIGN _
                   _ <- 10 GOTO _
                 }
                 block 6 predecessors: [5] successors: [9] {
                   _ <- 9 GOTO _
                 }
                 block 10 predecessors: [7, 9] successors: [-2] {
-                  %3_2 <- Φ([%3_1, %3_3])
-                  %4_1 <- %3_2 ASSIGN _
+                  z_2 <- Φ(z_1, z_3)
+                  result_1 <- z_2 ASSIGN _
                   _ <- _ NOP _
                 }
                 block 9 predecessors: [6] successors: [10] {
-                  %3_3 <- %2 ASSIGN _
+                  z_3 <- x ASSIGN _
                 }
                 block -2 predecessors: [10] successors: [] {
                 }

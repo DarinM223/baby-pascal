@@ -27,24 +27,24 @@ class ThreeAddressCodeTest {
         Symbol symbol = new SymbolImpl(fresh);
         ThreeAddressCode threeAddressCode = new ThreeAddressCode(fresh, symbol);
         List<Quad> result = threeAddressCode.normalize(stmts);
-        String resultString = String.join("\n", result.stream().map(Quad::toString).toList());
+        String resultString = String.join("\n", result.stream().map(quad -> quad.pretty(symbol)).toList());
         String expected = """
                 %0 <- 2 MUL 3
                 %1 <- 1 ADD %0
-                %2 <- %1 ASSIGN _
-                5 <- %2 EQ 1
+                a <- %1 ASSIGN _
+                5 <- a EQ 1
                 _ <- 15 GOTO _
-                7 <- %2 LT 5
+                7 <- a LT 5
                 _ <- 15 GOTO _
-                9 <- %2 EQ 1
+                9 <- a EQ 1
                 _ <- 16 GOTO _
-                11 <- %2 LT 5
+                11 <- a LT 5
                 _ <- 16 GOTO _
-                %3 <- %2 ADD 1
-                %2 <- %3 ASSIGN _
+                %3 <- a ADD 1
+                a <- %3 ASSIGN _
                 _ <- 7 GOTO _
                 _ <- 16 GOTO _
-                %4 <- 60 ASSIGN _
+                result <- 60 ASSIGN _
                 _ <- _ NOP _""";
         assertEquals(resultString, expected);
     }

@@ -3,6 +3,7 @@ package com.d_m.cfg;
 import com.d_m.code.ConstantAddress;
 import com.d_m.code.Operator;
 import com.d_m.code.Quad;
+import com.d_m.util.Symbol;
 
 import java.util.*;
 
@@ -105,7 +106,7 @@ public class Block implements Comparable<Block>, IBlock<Block> {
         return !same;
     }
 
-    public String pretty() {
+    public String pretty(Symbol symbol) {
         StringBuilder builder = new StringBuilder();
         builder.append("block ").append(id).append(" predecessors: [");
         for (var it = predecessors.iterator(); it.hasNext(); ) {
@@ -123,10 +124,10 @@ public class Block implements Comparable<Block>, IBlock<Block> {
         }
         builder.append("] {\n");
         for (Phi phi : phis) {
-            builder.append("  ").append(phi.toString()).append("\n");
+            builder.append("  ").append(phi.pretty(symbol)).append("\n");
         }
         for (Quad quad : code) {
-            builder.append("  ").append(quad.toString()).append("\n");
+            builder.append("  ").append(quad.pretty(symbol)).append("\n");
         }
         builder.append("}\n");
         return builder.toString();
