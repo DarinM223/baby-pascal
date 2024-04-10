@@ -52,7 +52,9 @@ public class Block implements Comparable<Block>, IBlock<Block> {
         }
         blocks.addLink(Blocks.ENTRY, 0);
         blocks.addLink(ranges.getLast().i(), Blocks.EXIT);
+    }
 
+    public void runLiveness() {
         // Calculate liveness for all the blocks.
         List<Block> iterations = this.blocks();
         boolean changed;

@@ -5,7 +5,7 @@ import com.d_m.ast.Statement;
 import com.d_m.cfg.Block;
 import com.d_m.code.Quad;
 import com.d_m.code.ThreeAddressCode;
-import com.d_m.construct.InsertPhisMinimal;
+import com.d_m.construct.InsertPhisPruned;
 import com.d_m.construct.UniqueRenamer;
 import com.d_m.ssa.Module;
 import com.d_m.ssa.PrettyPrinter;
@@ -47,6 +47,7 @@ class LoopPostbodyTest {
         for (Block block : cfg.blocks()) {
             postbody.run(block);
         }
+        cfg.runLiveness();
         dominators = new LengauerTarjan<>(cfg.blocks(), cfg.getEntry());
         frontier = new DominanceFrontier<>(dominators, cfg);
         defsites = new DefinitionSites(cfg);
@@ -58,62 +59,51 @@ class LoopPostbodyTest {
         Block cfg = toCfg(Examples.figure_19_4());
         StringBuilder builder = new StringBuilder();
         for (Block block : cfg.blocks()) {
-            builder.append(block.pretty(symbol)).append("\n");
+            builder.append(block.pretty(symbol));
         }
         String expected = """
                 block -1 predecessors: [] successors: [0] {
                 }
-
                 block 0 predecessors: [-1] successors: [3] {
                   i <- 1 ASSIGN _
                   j <- 1 ASSIGN _
                   k <- 0 ASSIGN _
                 }
-
                 block 3 predecessors: [0, 17] successors: [5, 4] {
                   5 <- k LT 100
                 }
-
                 block 5 predecessors: [3] successors: [7, 6] {
                   7 <- j LT 20
                 }
-
                 block 4 predecessors: [3] successors: [15] {
                   _ <- 15 GOTO _
                 }
-
                 block 7 predecessors: [5] successors: [17] {
                   j <- i ASSIGN _
                   %3 <- k ADD 1
                   k <- %3 ASSIGN _
                   _ <- 3 GOTO _
                 }
-
                 block 6 predecessors: [5] successors: [11] {
                   _ <- 11 GOTO _
                 }
-
                 block 15 predecessors: [4] successors: [-2] {
                   _ <- _ NOP _
                 }
-
                 block 17 predecessors: [7, 11] successors: [3] {
                 }
-
                 block 11 predecessors: [6] successors: [17] {
                   j <- k ASSIGN _
                   %4 <- k ADD 2
                   k <- %4 ASSIGN _
                   _ <- 3 GOTO _
                 }
-
                 block -2 predecessors: [15] successors: [] {
                 }
-                
                 """;
         assertEquals(builder.toString(), expected);
 
-        new InsertPhisMinimal(symbol, defsites, frontier).run();
+        new InsertPhisPruned(symbol, defsites, frontier).run();
         new UniqueRenamer(symbol).rename(cfg);
         Program<Block> program = new Program<>(List.of(), List.of(), cfg);
         SsaConverter converter = new SsaConverter(fresh, symbol);

@@ -32,6 +32,7 @@ class UniqueRenamerTest {
         threeAddressCode = new ThreeAddressCode(fresh, symbol);
         List<Quad> code = threeAddressCode.normalize(statements);
         Block cfg = new Block(code);
+        cfg.runLiveness();
         LengauerTarjan<Block> dominators = new LengauerTarjan<>(cfg.blocks(), cfg.getEntry());
         frontier = new DominanceFrontier<>(dominators, cfg);
         defsites = new DefinitionSites(cfg);
