@@ -34,8 +34,37 @@ public enum Operator {
 
     public boolean hasSideEffects() {
         return switch (this) {
-            case NEG, NOT, ADD, SUB, MUL, DIV, AND, OR, GOTO, LT, LE, GT, GE, EQ, NE, ASSIGN, LOAD, NOP, PHI, PCOPY -> false;
+            case NEG, NOT, ADD, SUB, MUL, DIV, AND, OR, GOTO, LT, LE, GT, GE, EQ, NE, ASSIGN, LOAD, NOP, PHI, PCOPY ->
+                    false;
             case PARAM, CALL -> true;
+        };
+    }
+
+    @Override
+    public String toString() {
+        return switch (this) {
+            case NEG -> "~";
+            case NOT -> "!";
+            case ADD -> "+";
+            case SUB -> "-";
+            case MUL -> "*";
+            case DIV -> "/";
+            case AND -> "&";
+            case OR -> "|";
+            case GOTO -> "GOTO";
+            case LT -> "<";
+            case LE -> "<=";
+            case GT -> ">";
+            case GE -> ">=";
+            case EQ -> "==";
+            case NE -> "!=";
+            case PARAM -> "PARAM";
+            case CALL -> "CALL";
+            case ASSIGN -> ":=";
+            case LOAD -> "LOAD";
+            case NOP -> "NOP";
+            case PHI -> "Φ";
+            case PCOPY -> "PCOPY";
         };
     }
 }

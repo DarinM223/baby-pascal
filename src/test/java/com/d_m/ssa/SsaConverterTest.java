@@ -55,6 +55,7 @@ class SsaConverterTest {
         Program<Block> program = new Program<>(List.of(), List.of(), cfg);
         SsaConverter converter = new SsaConverter(fresh, symbol);
         Module module = converter.convertProgram(program);
+
         StringWriter writer = new StringWriter();
         PrettyPrinter printer = new PrettyPrinter(fresh, symbol, writer);
         printer.writeModule(module);
@@ -65,26 +66,26 @@ class SsaConverterTest {
                       %47 <- GOTO() [l15]
                     }
                     block l15 [l8] {
-                      i <- ASSIGN 1
-                      j <- ASSIGN 1
-                      k <- ASSIGN 0
+                      i <- 1
+                      j <- 1
+                      k <- 0
                       %48 <- GOTO() [l21]
                     }
                     block l21 [l15, l33, l45] {
                       j2 <- Φ(j, j3, j4)
                       k2 <- Φ(k, k3, k4)
-                      %49 <- k2 LT 100 [l24, l27]
+                      %49 <- k2 < 100 [l24, l27]
                     }
                     block l24 [l21] {
-                      %50 <- j2 LT 20 [l33, l36]
+                      %50 <- j2 < 20 [l33, l36]
                     }
                     block l27 [l21] {
                       %51 <- GOTO 15 [l38]
                     }
                     block l33 [l24] {
-                      j3 <- ASSIGN i
-                      %52 <- k2 ADD 1
-                      k3 <- ASSIGN %52
+                      j3 <- i
+                      %52 <- k2 + 1
+                      k3 <- %52
                       %53 <- GOTO 3 [l21]
                     }
                     block l36 [l24] {
@@ -95,9 +96,9 @@ class SsaConverterTest {
                       %56 <- GOTO() [l46]
                     }
                     block l45 [l36] {
-                      j4 <- ASSIGN k2
-                      %57 <- k2 ADD 2
-                      k4 <- ASSIGN %57
+                      j4 <- k2
+                      %57 <- k2 + 2
+                      k4 <- %57
                       %58 <- GOTO 3 [l21]
                     }
                     block l46 [l38] {
@@ -140,11 +141,11 @@ class SsaConverterTest {
                       %56 <- GOTO() [l27]
                     }
                     block l27 [l16] {
-                      %57 <- 2 ADD 3
-                      number <- ASSIGN %57
+                      %57 <- 2 + 3
+                      number <- %57
                       %58 <- PARAM number
                       %59 <- fibonacci CALL 1
-                      result <- ASSIGN %59
+                      result <- %59
                       %60 <- NOP()
                       %61 <- GOTO() [l29]
                     }
@@ -156,10 +157,10 @@ class SsaConverterTest {
                       %62 <- GOTO() [l33]
                     }
                     block l33 [l30] {
-                      %63 <- n LE 1 [l37, l40]
+                      %63 <- n <= 1 [l37, l40]
                     }
                     block l37 [l33] {
-                      fibonacci2 <- ASSIGN n
+                      fibonacci2 <- n
                       %64 <- GOTO 12 [l43]
                     }
                     block l40 [l33] {
@@ -171,14 +172,14 @@ class SsaConverterTest {
                       %67 <- GOTO() [l55]
                     }
                     block l53 [l40] {
-                      %68 <- n SUB 1
+                      %68 <- n - 1
                       %69 <- PARAM %68
                       %70 <- fibonacci CALL 1
-                      %71 <- n SUB 2
+                      %71 <- n - 2
                       %72 <- PARAM %71
                       %73 <- fibonacci CALL 1
-                      %74 <- %70 ADD %73
-                      fibonacci4 <- ASSIGN %74
+                      %74 <- %70 + %73
+                      fibonacci4 <- %74
                       %75 <- GOTO() [l43]
                     }
                     block l55 [l43] {

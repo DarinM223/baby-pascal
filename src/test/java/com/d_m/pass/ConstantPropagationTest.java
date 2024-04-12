@@ -78,17 +78,17 @@ class ConstantPropagationTest {
                     }
                     block l21 [l15, l33] {
                       k <- Φ(0, k2)
-                      %54 <- k LT 100 [l24, l27]
+                      %54 <- k < 100 [l24, l27]
                     }
                     block l24 [l21] {
-                      %55 <- 1 LT 20 [l33]
+                      %55 <- 1 < 20 [l33]
                     }
                     block l27 [l21] {
                       %56 <- GOTO 15 [l38]
                     }
                     block l33 [l24] {
-                      %57 <- k ADD 1
-                      k2 <- ASSIGN %57
+                      %57 <- k + 1
+                      k2 <- %57
                       %58 <- GOTO 3 [l21]
                     }
                     block l38 [l27] {

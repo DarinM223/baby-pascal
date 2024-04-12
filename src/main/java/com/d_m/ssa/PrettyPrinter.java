@@ -4,6 +4,7 @@ import com.d_m.ast.BooleanType;
 import com.d_m.ast.FunctionType;
 import com.d_m.ast.IntegerType;
 import com.d_m.ast.Type;
+import com.d_m.code.Operator;
 import com.d_m.util.Fresh;
 import com.d_m.util.Symbol;
 import com.google.common.collect.Iterables;
@@ -134,7 +135,9 @@ public class PrettyPrinter {
                 instruction.getOperand(1).getValue().acceptUse(this);
             }
             case 1 -> {
-                out.write(instruction.getOperator().toString() + " ");
+                if (instruction.getOperator() != Operator.ASSIGN) {
+                    out.write(instruction.getOperator().toString() + " ");
+                }
                 instruction.getOperand(0).getValue().acceptUse(this);
             }
             default -> {

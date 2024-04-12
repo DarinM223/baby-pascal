@@ -43,33 +43,33 @@ class BlockTest {
                 block -1 predecessors: [] successors: [0] {
                 }
                 block 0 predecessors: [-1] successors: [1] {
-                  %1 <- 1 ASSIGN _
+                  %1 <- 1 := _
                 }
                 block 1 predecessors: [0, 9] successors: [2] {
-                  %2 <- 1 ASSIGN _
+                  %2 <- 1 := _
                 }
                 block 2 predecessors: [1, 2] successors: [2, 9] {
-                  %1 <- 10 MUL %1
-                  %2 <- %1 ADD %2
-                  %3 <- 8 MUL %2
-                  %4 <- %3 SUB 88
-                  %3 <- 0 ASSIGN _
-                  %2 <- %2 ADD 1
-                  2 <- %2 LE 10
+                  %1 <- 10 * %1
+                  %2 <- %1 + %2
+                  %3 <- 8 * %2
+                  %4 <- %3 - 88
+                  %3 <- 0 := _
+                  %2 <- %2 + 1
+                  2 <- %2 <= 10
                 }
                 block 9 predecessors: [2] successors: [1, 11] {
-                  %1 <- %1 ADD 1
-                  1 <- %1 LE 10
+                  %1 <- %1 + 1
+                  1 <- %1 <= 10
                 }
                 block 11 predecessors: [9] successors: [12] {
-                  %1 <- 1 ASSIGN _
+                  %1 <- 1 := _
                 }
                 block 12 predecessors: [11, 12] successors: [12, -2] {
-                  %5 <- %1 SUB 1
-                  %6 <- 88 MUL %5
-                  %3 <- 1 ASSIGN _
-                  %1 <- %1 ADD 1
-                  12 <- %1 LE 10
+                  %5 <- %1 - 1
+                  %6 <- 88 * %5
+                  %3 <- 1 := _
+                  %1 <- %1 + 1
+                  12 <- %1 <= 10
                 }
                 """;
         assertEquals(builder.toString(), expected);

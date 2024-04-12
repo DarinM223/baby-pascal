@@ -65,23 +65,23 @@ class LoopPostbodyTest {
                 block -1 predecessors: [] successors: [0] {
                 }
                 block 0 predecessors: [-1] successors: [3] {
-                  i <- 1 ASSIGN _
-                  j <- 1 ASSIGN _
-                  k <- 0 ASSIGN _
+                  i <- 1 := _
+                  j <- 1 := _
+                  k <- 0 := _
                 }
                 block 3 predecessors: [0, 17] successors: [5, 4] {
-                  5 <- k LT 100
+                  5 <- k < 100
                 }
                 block 5 predecessors: [3] successors: [7, 6] {
-                  7 <- j LT 20
+                  7 <- j < 20
                 }
                 block 4 predecessors: [3] successors: [15] {
                   _ <- 15 GOTO _
                 }
                 block 7 predecessors: [5] successors: [17] {
-                  j <- i ASSIGN _
-                  %3 <- k ADD 1
-                  k <- %3 ASSIGN _
+                  j <- i := _
+                  %3 <- k + 1
+                  k <- %3 := _
                   _ <- 3 GOTO _
                 }
                 block 6 predecessors: [5] successors: [11] {
@@ -93,9 +93,9 @@ class LoopPostbodyTest {
                 block 17 predecessors: [7, 11] successors: [3] {
                 }
                 block 11 predecessors: [6] successors: [17] {
-                  j <- k ASSIGN _
-                  %4 <- k ADD 2
-                  k <- %4 ASSIGN _
+                  j <- k := _
+                  %4 <- k + 2
+                  k <- %4 := _
                   _ <- 3 GOTO _
                 }
                 block -2 predecessors: [15] successors: [] {
@@ -118,26 +118,26 @@ class LoopPostbodyTest {
                       %51 <- GOTO() [l15]
                     }
                     block l15 [l8] {
-                      i <- ASSIGN 1
-                      j <- ASSIGN 1
-                      k <- ASSIGN 0
+                      i <- 1
+                      j <- 1
+                      k <- 0
                       %52 <- GOTO() [l21]
                     }
                     block l21 [l15, l42] {
                       j2 <- Φ(j, j3)
                       k2 <- Φ(k, k3)
-                      %53 <- k2 LT 100 [l24, l27]
+                      %53 <- k2 < 100 [l24, l27]
                     }
                     block l24 [l21] {
-                      %54 <- j2 LT 20 [l33, l36]
+                      %54 <- j2 < 20 [l33, l36]
                     }
                     block l27 [l21] {
                       %55 <- GOTO 15 [l38]
                     }
                     block l33 [l24] {
-                      j4 <- ASSIGN i
-                      %56 <- k2 ADD 1
-                      k4 <- ASSIGN %56
+                      j4 <- i
+                      %56 <- k2 + 1
+                      k4 <- %56
                       %57 <- GOTO 3 [l42]
                     }
                     block l36 [l24] {
@@ -153,9 +153,9 @@ class LoopPostbodyTest {
                       %61 <- GOTO() [l21]
                     }
                     block l49 [l36] {
-                      j5 <- ASSIGN k2
-                      %62 <- k2 ADD 2
-                      k5 <- ASSIGN %62
+                      j5 <- k2
+                      %62 <- k2 + 2
+                      k5 <- %62
                       %63 <- GOTO 3 [l42]
                     }
                     block l50 [l38] {

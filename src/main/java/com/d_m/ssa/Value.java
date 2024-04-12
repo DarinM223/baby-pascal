@@ -70,4 +70,8 @@ public abstract class Value {
 
     public abstract void acceptDef(PrettyPrinter printer) throws IOException;
     public abstract void acceptUse(PrettyPrinter printer) throws IOException;
+
+    public int getId() {
+        return id;
+    }
 }

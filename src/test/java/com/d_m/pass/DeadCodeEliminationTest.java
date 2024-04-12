@@ -88,8 +88,8 @@ class DeadCodeEliminationTest {
                       %56 <- GOTO() [l27]
                     }
                     block l27 [l16] {
-                      %57 <- 2 ADD 3
-                      number <- ASSIGN %57
+                      %57 <- 2 + 3
+                      number <- %57
                       %58 <- PARAM number
                       %59 <- fibonacci CALL 1
                       %60 <- GOTO() [l29]
@@ -102,7 +102,7 @@ class DeadCodeEliminationTest {
                       %61 <- GOTO() [l33]
                     }
                     block l33 [l30] {
-                      %62 <- n LE 1 [l37, l40]
+                      %62 <- n <= 1 [l37, l40]
                     }
                     block l37 [l33] {
                       %63 <- GOTO 12 [l43]
@@ -114,10 +114,10 @@ class DeadCodeEliminationTest {
                       %65 <- GOTO() [l55]
                     }
                     block l53 [l40] {
-                      %66 <- n SUB 1
+                      %66 <- n - 1
                       %67 <- PARAM %66
                       %68 <- fibonacci CALL 1
-                      %69 <- n SUB 2
+                      %69 <- n - 2
                       %70 <- PARAM %69
                       %71 <- fibonacci CALL 1
                       %72 <- GOTO() [l43]

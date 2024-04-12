@@ -29,22 +29,22 @@ class ThreeAddressCodeTest {
         List<Quad> result = threeAddressCode.normalize(stmts);
         String resultString = String.join("\n", result.stream().map(quad -> quad.pretty(symbol)).toList());
         String expected = """
-                %0 <- 2 MUL 3
-                %1 <- 1 ADD %0
-                a <- %1 ASSIGN _
-                5 <- a EQ 1
+                %0 <- 2 * 3
+                %1 <- 1 + %0
+                a <- %1 := _
+                5 <- a == 1
                 _ <- 15 GOTO _
-                7 <- a LT 5
+                7 <- a < 5
                 _ <- 15 GOTO _
-                9 <- a EQ 1
+                9 <- a == 1
                 _ <- 16 GOTO _
-                11 <- a LT 5
+                11 <- a < 5
                 _ <- 16 GOTO _
-                %3 <- a ADD 1
-                a <- %3 ASSIGN _
+                %3 <- a + 1
+                a <- %3 := _
                 _ <- 7 GOTO _
                 _ <- 16 GOTO _
-                result <- 60 ASSIGN _
+                result <- 60 := _
                 _ <- _ NOP _""";
         assertEquals(resultString, expected);
     }
