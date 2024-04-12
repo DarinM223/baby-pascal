@@ -56,7 +56,7 @@ class SsaGraphTest {
     }
 
     @Test
-    void writeModule() throws IOException {
+    void test_19_4() throws IOException {
         Block cfg = toCfg(Examples.figure_19_4());
         new InsertPhisPruned(symbol, defsites, frontier).run();
         new UniqueRenamer(symbol).rename(cfg);
@@ -64,11 +64,28 @@ class SsaGraphTest {
         SsaConverter converter = new SsaConverter(fresh, symbol);
         Module module = converter.convertProgram(program);
 
-        File file = new File("graph.dot");
+        File file = new File("normal.dot");
         file.deleteOnExit();
         SsaGraph graph = new SsaGraph(new FileWriter(file));
         graph.writeModule(module);
 
-        GraphvizViewer.viewFile(file);
+        GraphvizViewer.viewFile("Figure 19.4 SSA graph", file);
+    }
+
+    @Test
+    void test_nestedLoops() throws IOException {
+        Block cfg = toCfg(Examples.nestedLoops());
+        new InsertPhisPruned(symbol, defsites, frontier).run();
+        new UniqueRenamer(symbol).rename(cfg);
+        Program<Block> program = new Program<>(List.of(), List.of(), cfg);
+        SsaConverter converter = new SsaConverter(fresh, symbol);
+        Module module = converter.convertProgram(program);
+
+        File file = new File("nested.dot");
+        file.deleteOnExit();
+        SsaGraph graph = new SsaGraph(new FileWriter(file));
+        graph.writeModule(module);
+
+        GraphvizViewer.viewFile("Nested loops SSA graph", file);
     }
 }

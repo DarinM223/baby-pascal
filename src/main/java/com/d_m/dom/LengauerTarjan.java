@@ -39,8 +39,8 @@ public class LengauerTarjan<Block extends IBlock<Block>> {
             Block p = parent.get(n.getId());
             int s = p.getId();
             for (Block v : n.getPredecessors()) {
-                int s2 = dfnum.get(v.getId()) <= dfnum.get(n.getId()) ? v.getId() : semi.get(ancestorWithLowestSemi(v.getId()));
-                if (dfnum.get(s2) < dfnum.get(s)) {
+                int s2 = dfnum(v.getId()) <= dfnum(n.getId()) ? v.getId() : semi.get(ancestorWithLowestSemi(v.getId()));
+                if (dfnum(s2) < dfnum(s)) {
                     s = s2;
                 }
             }
@@ -134,7 +134,7 @@ public class LengauerTarjan<Block extends IBlock<Block>> {
         if (ancestor.get(a) != null) {
             int b = ancestorWithLowestSemi(a);
             ancestor.put(v, ancestor.get(a));
-            if (dfnum.get(semi.get(b)) < dfnum.get(semi.get(best.get(v)))) {
+            if (dfnum(semi.get(b)) < dfnum(semi.get(best.get(v)))) {
                 best.put(v, b);
             }
         }
@@ -158,5 +158,9 @@ public class LengauerTarjan<Block extends IBlock<Block>> {
                 dfs(n, w);
             }
         }
+    }
+
+    private int dfnum(int id) {
+        return dfnum.getOrDefault(id, 0);
     }
 }

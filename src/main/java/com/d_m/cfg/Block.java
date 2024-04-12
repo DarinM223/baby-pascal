@@ -23,10 +23,10 @@ public class Block implements Comparable<Block>, IBlock<Block> {
         this.id = Blocks.ENTRY;
         this.phis = new ArrayList<>();
         this.code = new ArrayList<>();
-        this.predecessors = List.of();
+        this.predecessors = new ArrayList<>();
         this.successors = new ArrayList<>();
         this.entry = this;
-        this.exit = new Block(Blocks.EXIT, new ArrayList<>(), new ArrayList<>(), List.of(), this, null);
+        this.exit = new Block(Blocks.EXIT, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), this, null);
         this.exit.exit = exit;
         this.genKill = new GenKillInfo(this.code);
         this.live = new LivenessInfo();
@@ -52,6 +52,13 @@ public class Block implements Comparable<Block>, IBlock<Block> {
         }
         blocks.addLink(Blocks.ENTRY, 0);
         blocks.addLink(ranges.getLast().i(), Blocks.EXIT);
+
+        // Delete unreachable blocks from predecessors to prevent issues
+        // when converting to unnamed SSA.
+        Set<Block> blocksSet = new HashSet<>(blocks());
+        for (Block block : blocks()) {
+            block.getPredecessors().removeIf(predecessor -> !blocksSet.contains(predecessor));
+        }
     }
 
     public void runLiveness() {

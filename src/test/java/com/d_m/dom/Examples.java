@@ -29,6 +29,25 @@ public class Examples {
         );
     }
 
+    public static List<Statement> nestedLoops() {
+        return List.of(
+                new AssignStatement("i", new IntExpression(0)),
+                new WhileStatement(
+                        new BinaryOpExpression(BinaryOp.LT, new VarExpression("i"), new IntExpression(100)),
+                        List.of(
+                                new AssignStatement("j", new VarExpression("i")),
+                                new WhileStatement(
+                                        new BinaryOpExpression(BinaryOp.LT, new VarExpression("j"), new IntExpression(100)),
+                                        List.of(
+                                                new AssignStatement("j", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("j"), new IntExpression(1))),
+                                                new AssignStatement("i", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("j"), new IntExpression(1)))
+                                        )
+                                )
+                        )
+                )
+        );
+    }
+
     public static List<Statement> fibonacci(String functionName, String varName) {
         return List.of(
                 new IfStatement(

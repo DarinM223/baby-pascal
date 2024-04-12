@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start printing out SSA graph in graphviz and improve pretty printer">
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/graphviz/SsaGraphTest.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add unit test that opens the SSA graph graphviz image using Swing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LengauerTarjan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LengauerTarjan.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/GraphvizViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/GraphvizViewer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/SsaGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/SsaGraph.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LoopPostbodyTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LoopPostbodyTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/Examples.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/Examples.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/graphviz/SsaGraphTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/graphviz/SsaGraphTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +66,7 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+    "settings.editor.selected.configurable": "reference.settings.project.maven.testRunning"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -217,14 +218,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00020" summary="Add domChildren() and splits Lengauer Tarjan unit test">
-      <option name="closed" value="true" />
-      <created>1710376532125</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1710376532125</updated>
     </task>
     <task id="LOCAL-00021" summary="Add dominator tree level to blocks, and set the level in LangauerTarjan">
       <option name="closed" value="true" />
@@ -610,11 +603,18 @@
       <option name="project" value="LOCAL" />
       <updated>1712935265169</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="Add unit test that opens the SSA graph graphviz image using Swing">
+      <option name="closed" value="true" />
+      <created>1712939050684</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1712939050684</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add basic deadcode elimination test for fibonacci" />
     <MESSAGE value="Start constant propagation" />
     <MESSAGE value="Fill out more of constant propagation" />
     <MESSAGE value="Handles executable instruction cases" />
@@ -639,7 +639,8 @@
     <MESSAGE value="Add test for loop postbody" />
     <MESSAGE value="Separate out liveness from cfg.Block constructor" />
     <MESSAGE value="Start printing out SSA graph in graphviz and improve pretty printer" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start printing out SSA graph in graphviz and improve pretty printer" />
+    <MESSAGE value="Add unit test that opens the SSA graph graphviz image using Swing" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add unit test that opens the SSA graph graphviz image using Swing" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
