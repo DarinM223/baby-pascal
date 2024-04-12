@@ -108,6 +108,7 @@ class LoopPostbodyTest {
         Program<Block> program = new Program<>(List.of(), List.of(), cfg);
         SsaConverter converter = new SsaConverter(fresh, symbol);
         Module module = converter.convertProgram(program);
+
         StringWriter writer = new StringWriter();
         PrettyPrinter printer = new PrettyPrinter(fresh, symbol, writer);
         printer.writeModule(module);

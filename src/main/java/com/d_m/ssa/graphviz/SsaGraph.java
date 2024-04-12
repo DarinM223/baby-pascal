@@ -24,6 +24,7 @@ public class SsaGraph {
         }
         writer.write("}\n");
         writer.flush();
+        writer.close();
     }
 
     public void writeFunction(Function function) throws IOException {
