@@ -3,6 +3,7 @@ package com.d_m.cfg;
 import com.d_m.code.ConstantAddress;
 import com.d_m.code.Operator;
 import com.d_m.code.Quad;
+import com.d_m.dom.PostOrder;
 import com.d_m.util.Symbol;
 
 import java.util.*;
@@ -63,11 +64,13 @@ public class Block implements Comparable<Block>, IBlock<Block> {
 
     public void runLiveness() {
         // Calculate liveness for all the blocks.
-        List<Block> iterations = this.blocks();
+        // Runs reverse post order traversal on the reverse CFG
+        // because liveness analysis is backwards dataflow.
+        PostOrder<Block> postOrder = new PostOrder<Block>().runBackwards(this.exit);
         boolean changed;
         do {
             changed = false;
-            for (Block block : iterations) {
+            for (Block block : postOrder.reversed()) {
                 changed |= block.livenessRound();
             }
         } while (changed);

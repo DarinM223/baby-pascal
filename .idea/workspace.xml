@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Delete unreachable blocks when creating CFG and add nested loop SSA graph unit test">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Graphviz viewer has the size of the graphviz image it is viewing">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/PostOrder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/PostOrderTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/GraphvizViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/GraphvizViewer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/Examples.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/Examples.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,8 +22,8 @@
         <option value="Enum" />
         <option value="Record" />
         <option value="Interface" />
-        <option value="JUnit5 Test Class" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -82,8 +84,8 @@
       <recent name="com.d_m.code.normalize" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
-      <recent name="com.d_m.ssa.graphviz" />
       <recent name="com.d_m.dom" />
+      <recent name="com.d_m.ssa.graphviz" />
       <recent name="com.d_m.pass" />
       <recent name="com.d_m.ssa" />
       <recent name="com.d_m.construct" />
@@ -215,14 +217,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00022" summary="Add dominates() and strictlyDominates() which walks the idoms of the second block">
-      <option name="closed" value="true" />
-      <created>1710510959053</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1710510959053</updated>
     </task>
     <task id="LOCAL-00023" summary="Compute dominance frontier">
       <option name="closed" value="true" />
@@ -608,11 +602,18 @@
       <option name="project" value="LOCAL" />
       <updated>1712949838259</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="Graphviz viewer has the size of the graphviz image it is viewing">
+      <option name="closed" value="true" />
+      <created>1712968894416</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1712968894416</updated>
+    </task>
+    <option name="localTasksCounter" value="72" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fill out more of constant propagation" />
     <MESSAGE value="Handles executable instruction cases" />
     <MESSAGE value="Attempt to handle phi case" />
     <MESSAGE value="Constant propagation attempts to delete non-executable blocks and simplify instructions" />
@@ -637,9 +638,19 @@
     <MESSAGE value="Start printing out SSA graph in graphviz and improve pretty printer" />
     <MESSAGE value="Add unit test that opens the SSA graph graphviz image using Swing" />
     <MESSAGE value="Delete unreachable blocks when creating CFG and add nested loop SSA graph unit test" />
-    <option name="LAST_COMMIT_MESSAGE" value="Delete unreachable blocks when creating CFG and add nested loop SSA graph unit test" />
+    <MESSAGE value="Graphviz viewer has the size of the graphviz image it is viewing" />
+    <option name="LAST_COMMIT_MESSAGE" value="Graphviz viewer has the size of the graphviz image it is viewing" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/dom/PostOrder.java</url>
+          <line>28</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="com.d_m.ssa.Block" memberName="instructions" />

@@ -4,6 +4,8 @@ import com.google.common.io.Files;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -43,6 +45,15 @@ public class GraphvizViewer {
                 @Override
                 public void windowClosing(WindowEvent e) {
                     latch.countDown();
+                }
+            });
+            frame.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+                        frame.dispose();
+                    }
                 }
             });
             frame.setVisible(true);
