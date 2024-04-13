@@ -2,10 +2,11 @@ package com.d_m.ssa.graphviz;
 
 import com.google.common.io.Files;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -28,12 +29,15 @@ public class GraphvizViewer {
         CountDownLatch latch = new CountDownLatch(1);
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame(title);
-            ImageIcon icon = new ImageIcon(pngFile.toString());
-            frame.add(new JLabel(icon));
-            Dimension dimension = new Dimension(1000, 1000);
-            frame.setSize(dimension);
-            frame.setPreferredSize(dimension);
-            frame.setMinimumSize(dimension);
+
+            BufferedImage image = null;
+            try {
+                image = ImageIO.read(pngFile);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            frame.add(new JLabel(new ImageIcon(image)));
+
             frame.pack();
             frame.addWindowListener(new WindowAdapter() {
                 @Override
@@ -46,6 +50,10 @@ public class GraphvizViewer {
         try {
             latch.await();
         } catch (InterruptedException _) {
+        } finally {
+            if (!pngFile.delete()) {
+                System.out.println("Couldn't delete PNG file");
+            }
         }
     }
 }

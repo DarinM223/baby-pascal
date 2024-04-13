@@ -40,7 +40,7 @@ public class Examples {
                                         new BinaryOpExpression(BinaryOp.LT, new VarExpression("j"), new IntExpression(100)),
                                         List.of(
                                                 new AssignStatement("j", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("j"), new IntExpression(1))),
-                                                new AssignStatement("i", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("j"), new IntExpression(1)))
+                                                new AssignStatement("i", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("i"), new IntExpression(1)))
                                         )
                                 )
                         )

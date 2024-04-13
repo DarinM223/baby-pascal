@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add unit test that opens the SSA graph graphviz image using Swing">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Delete unreachable blocks when creating CFG and add nested loop SSA graph unit test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LengauerTarjan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LengauerTarjan.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/GraphvizViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/GraphvizViewer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/Examples.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/Examples.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/graphviz/SsaGraphTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/graphviz/SsaGraphTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,8 +20,8 @@
         <option value="Enum" />
         <option value="Record" />
         <option value="Interface" />
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -218,14 +215,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00021" summary="Add dominator tree level to blocks, and set the level in LangauerTarjan">
-      <option name="closed" value="true" />
-      <created>1710456343191</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1710456343191</updated>
     </task>
     <task id="LOCAL-00022" summary="Add dominates() and strictlyDominates() which walks the idoms of the second block">
       <option name="closed" value="true" />
@@ -611,11 +600,18 @@
       <option name="project" value="LOCAL" />
       <updated>1712939050684</updated>
     </task>
-    <option name="localTasksCounter" value="70" />
+    <task id="LOCAL-00070" summary="Delete unreachable blocks when creating CFG and add nested loop SSA graph unit test">
+      <option name="closed" value="true" />
+      <created>1712949838259</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1712949838259</updated>
+    </task>
+    <option name="localTasksCounter" value="71" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Start constant propagation" />
     <MESSAGE value="Fill out more of constant propagation" />
     <MESSAGE value="Handles executable instruction cases" />
     <MESSAGE value="Attempt to handle phi case" />
@@ -640,7 +636,8 @@
     <MESSAGE value="Separate out liveness from cfg.Block constructor" />
     <MESSAGE value="Start printing out SSA graph in graphviz and improve pretty printer" />
     <MESSAGE value="Add unit test that opens the SSA graph graphviz image using Swing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add unit test that opens the SSA graph graphviz image using Swing" />
+    <MESSAGE value="Delete unreachable blocks when creating CFG and add nested loop SSA graph unit test" />
+    <option name="LAST_COMMIT_MESSAGE" value="Delete unreachable blocks when creating CFG and add nested loop SSA graph unit test" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
