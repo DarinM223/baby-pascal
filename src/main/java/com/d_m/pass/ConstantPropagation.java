@@ -3,16 +3,17 @@ package com.d_m.pass;
 import com.d_m.ssa.*;
 import com.d_m.util.Fresh;
 import com.d_m.util.Pair;
+import com.google.common.collect.Iterables;
 
 import java.util.*;
 
 public class ConstantPropagation extends BooleanFunctionPass {
-    private Fresh fresh;
-    private Map<Value, Lattice> variableMapping;
-    private Set<Block> executableBlocks;
+    private final Fresh fresh;
+    private final Map<Value, Lattice> variableMapping;
+    private final Set<Block> executableBlocks;
 
-    private List<Instruction> instructionWorklist;
-    private List<Block> blockWorklist;
+    private final List<Instruction> instructionWorklist;
+    private final List<Block> blockWorklist;
 
     public ConstantPropagation(Fresh fresh) {
         this.fresh = fresh;
@@ -38,21 +39,55 @@ public class ConstantPropagation extends BooleanFunctionPass {
         for (Block block : function.getBlocks()) {
             if (!executableBlocks.contains(block)) {
                 changes = true;
-                deleteBlock(block);
+                deleteNonExecutableBlock(block);
                 blocksToRemove.add(block);
                 continue;
             }
 
             changes |= simplifyInstsInBlock(block);
         }
+
+        // delete empty blocks and single argument phi nodes.
+        for (Block block : function.getBlocks()) {
+            if (blocksToRemove.contains(block)) {
+                continue;
+            }
+            changes |= removeSingleArgumentPhis(block);
+            if (isEmptyBlock(block)) {
+                changes = true;
+                deleteEmptyBlock(block);
+                blocksToRemove.add(block);
+            }
+        }
+
         for (Block block : blocksToRemove) {
             function.getBlocks().remove(block);
         }
-        // TODO: delete empty blocks and single argument phi nodes.
         return changes;
     }
 
-    private void deleteBlock(Block block) {
+    // Have to make sure that the predecessors and successors
+    // are wired to bypass this empty block.
+    private void deleteEmptyBlock(Block block) {
+        if (block.getSuccessors().isEmpty()) {
+            for (Block predecessor : block.getPredecessors()) {
+                predecessor.getSuccessors().remove(block);
+            }
+        } else {
+            Block successor = block.getSuccessors().getFirst();
+            int i = successor.getPredecessors().indexOf(block);
+            for (Block predecessor : block.getPredecessors()) {
+                int j = predecessor.getSuccessors().indexOf(block);
+                predecessor.getSuccessors().set(j, successor);
+                successor.getPredecessors().set(i, predecessor);
+            }
+        }
+    }
+
+    // Since block is non executable can remove this block from
+    // predecessors and successors but have to make sure that the
+    // operand use information and phi nodes of successors are properly updated.
+    private void deleteNonExecutableBlock(Block block) {
         for (Block predecessor : block.getPredecessors()) {
             predecessor.getSuccessors().remove(block);
         }
@@ -75,6 +110,35 @@ public class ConstantPropagation extends BooleanFunctionPass {
             }
             instruction.remove();
         }
+    }
+
+    private boolean removeSingleArgumentPhis(Block block) {
+        boolean changed = false;
+        Instruction firstNonPhi = block.firstNonPhi();
+        for (Instruction instruction : block.getInstructions()) {
+            if (instruction.equals(firstNonPhi)) {
+                break;
+            }
+            if (instruction instanceof PhiNode phiNode && Iterables.size(phiNode.operands()) == 1) {
+                Value operand = phiNode.operands().iterator().next().getValue();
+                for (Iterator<Use> uses = instruction.uses(); uses.hasNext(); ) {
+                    Use use = uses.next();
+                    use.setValue(operand);
+                    instruction.removeUse(use.getUser());
+                    operand.linkUse(use);
+                }
+                operand.removeUse(phiNode);
+                phiNode.remove();
+            }
+        }
+        return changed;
+    }
+
+    private boolean isEmptyBlock(Block block) {
+        return !block.getPredecessors().isEmpty() &&
+                (block.getInstructions().first == null ||
+                        (block.getInstructions().first == block.getInstructions().last &&
+                                block.getSuccessors().size() == 1));
     }
 
     private boolean simplifyInstsInBlock(Block block) {
@@ -114,7 +178,7 @@ public class ConstantPropagation extends BooleanFunctionPass {
                 // Consider condition 3 for block.
                 // For any executable block B with only one successor C, set ε[C] <- true
                 if (block.getSuccessors().size() == 1) {
-                    markExecutable(block.getSuccessors().iterator().next());
+                    markExecutable(block.getSuccessors().getFirst());
                 }
 
                 for (Instruction instruction : block.getInstructions()) {
@@ -206,16 +270,14 @@ public class ConstantPropagation extends BooleanFunctionPass {
                             case ConstantInt i when i.getValue() == 1 -> markExecutable(it.next());
                             case ConstantInt i when i.getValue() == 0 -> {
                                 it.next();
-                                markExecutable(instruction.getSuccessors().iterator().next());
+                                markExecutable(instruction.getSuccessors().getFirst());
                             }
-                            default -> {
-                                System.err.println("Branch result not a valid constant integer: " + result);
-                            }
+                            default -> System.err.println("Branch result not a valid constant integer: " + result);
                         }
                     }
                 }
             }
-            case GOTO -> markExecutable(instruction.getSuccessors().iterator().next());
+            case GOTO -> markExecutable(instruction.getSuccessors().getFirst());
             case PARAM, CALL, LOAD -> markOverdefined(instruction);
             case ASSIGN -> {
                 switch (lookupValue(instruction.getOperand(0).getValue())) {
@@ -266,7 +328,7 @@ public class ConstantPropagation extends BooleanFunctionPass {
         if (!executableBlocks.contains(block)) {
             executableBlocks.add(block);
             blockWorklist.add(block);
-            blockWorklist.addAll(block.getSuccessors().stream().filter(successor -> executableBlocks.contains(successor)).toList());
+            blockWorklist.addAll(block.getSuccessors().stream().filter(executableBlocks::contains).toList());
         }
     }
 

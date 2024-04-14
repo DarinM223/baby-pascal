@@ -40,6 +40,10 @@ public class Block implements IBlock<Block> {
         return instructions.last;
     }
 
+    public void setTerminator(Instruction terminator) {
+        instructions.last = terminator;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Graphviz viewer has the size of the graphviz image it is viewing">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/PostOrder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/PostOrderTest.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Constant propagation deletes empty blocks and single argument phi nodes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/GraphvizViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/GraphvizViewer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/ConstantPropagationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/ConstantPropagationTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -217,14 +216,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00023" summary="Compute dominance frontier">
-      <option name="closed" value="true" />
-      <created>1710512963494</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1710512963494</updated>
     </task>
     <task id="LOCAL-00024" summary="Move figure 19.4 example into separate class and add unit test for dominance frontier">
       <option name="closed" value="true" />
@@ -610,12 +601,18 @@
       <option name="project" value="LOCAL" />
       <updated>1712968894416</updated>
     </task>
-    <option name="localTasksCounter" value="72" />
+    <task id="LOCAL-00072" summary="Add postorder traversals #1 and close graphviz window with ESC">
+      <option name="closed" value="true" />
+      <created>1713034269538</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1713034269538</updated>
+    </task>
+    <option name="localTasksCounter" value="73" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Handles executable instruction cases" />
-    <MESSAGE value="Attempt to handle phi case" />
     <MESSAGE value="Constant propagation attempts to delete non-executable blocks and simplify instructions" />
     <MESSAGE value="Setup constant propagation test with figure 19.4" />
     <MESSAGE value="Fix instruction worklist and executable PHI" />
@@ -639,15 +636,17 @@
     <MESSAGE value="Add unit test that opens the SSA graph graphviz image using Swing" />
     <MESSAGE value="Delete unreachable blocks when creating CFG and add nested loop SSA graph unit test" />
     <MESSAGE value="Graphviz viewer has the size of the graphviz image it is viewing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Graphviz viewer has the size of the graphviz image it is viewing" />
+    <MESSAGE value="Add postorder traversals #1 and close graphviz window with ESC" />
+    <MESSAGE value="Constant propagation deletes empty blocks and single argument phi nodes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Constant propagation deletes empty blocks and single argument phi nodes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/dom/PostOrder.java</url>
-          <line>28</line>
-          <option name="timeStamp" value="3" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java</url>
+          <line>80</line>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
