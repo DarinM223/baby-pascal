@@ -32,6 +32,13 @@ public enum Operator {
         return isComparison() || this == GOTO;
     }
 
+    public boolean isCommutative() {
+        return switch (this) {
+            case ADD, MUL, AND -> true;
+            default -> false;
+        };
+    }
+
     public boolean hasSideEffects() {
         return switch (this) {
             case NEG, NOT, ADD, SUB, MUL, DIV, AND, OR, GOTO, LT, LE, GT, GE, EQ, NE, ASSIGN, LOAD, NOP, PHI, PCOPY ->
