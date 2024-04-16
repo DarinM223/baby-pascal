@@ -265,13 +265,11 @@ public class ConstantPropagation extends BooleanFunctionPass {
                     }
                     case Pair(Lattice.Defined(Constant constant1), Lattice.Defined(Constant constant2)) -> {
                         Constant result = constant1.applyOp(fresh, instruction.getOperator(), constant2);
-                        var it = instruction.getSuccessors().iterator();
                         switch (result) {
-                            case ConstantInt i when i.getValue() == 1 -> markExecutable(it.next());
-                            case ConstantInt i when i.getValue() == 0 -> {
-                                it.next();
-                                markExecutable(instruction.getSuccessors().getFirst());
-                            }
+                            case ConstantInt i when i.getValue() == 1 ->
+                                    markExecutable(instruction.getSuccessors().getFirst());
+                            case ConstantInt i when i.getValue() == 0 ->
+                                    markExecutable(instruction.getSuccessors().getLast());
                             default -> System.err.println("Branch result not a valid constant integer: " + result);
                         }
                     }
