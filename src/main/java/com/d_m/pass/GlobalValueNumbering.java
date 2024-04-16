@@ -10,15 +10,17 @@ import java.util.*;
 public class GlobalValueNumbering extends BooleanFunctionPass {
     private final Map<Value, Integer> valueNumbering;
     private final Map<Expression, Integer> expressionNumbering;
+
+    // Mapping from value number to expression or phi node.
+    private final Map<Integer, Expression> expressions;
     private final Map<Integer, PhiNode> numberingPhi;
-    private int nextExpressionNumber;
     private int nextValueNumber;
 
     public GlobalValueNumbering() {
         valueNumbering = new HashMap<>();
         expressionNumbering = new HashMap<>();
+        expressions = new HashMap<>();
         numberingPhi = new HashMap<>();
-        nextExpressionNumber = 0;
         nextValueNumber = 1;
     }
 
@@ -29,6 +31,7 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
     }
 
     public int lookupOrAdd(Value value) {
+        Expression expression;
         if (value instanceof PhiNode phiNode) {
             valueNumbering.put(phiNode, nextValueNumber);
             numberingPhi.put(nextValueNumber, phiNode);
@@ -45,7 +48,7 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
                 varargs.set(0, varargs.get(1));
                 varargs.set(1, tmp);
             }
-            Expression expression = new Expression(
+            expression = new Expression(
                     instruction.getOperator(),
                     instruction.getType(),
                     varargs.stream().mapToInt(Integer::intValue).toArray(),
@@ -55,15 +58,19 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
             valueNumbering.put(value, nextValueNumber);
             return nextValueNumber++;
         }
-        // TODO: create assignExpNewValueNum
-        return 0;
+        int e = assignExpNewValueNum(expression);
+        valueNumbering.put(value, e);
+        return e;
     }
 
     public int assignExpNewValueNum(Expression expression) {
-        if (expressionNumbering.containsKey(expression)) {
+        // Based on hashcode, so it can give equivalent expressions.
+        Integer e = expressionNumbering.get(expression);
+        if (e == null) {
+            e = nextValueNumber;
+            expressions.put(nextValueNumber++, expression);
         }
-        // TODO: Implement this
-        return 0;
+        return e;
     }
 
     public static class Expression {

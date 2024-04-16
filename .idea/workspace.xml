@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Constant propagation deletes empty blocks and single argument phi nodes">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Assign value numbers to expressions and have mapping to be able to look up expression from the value number.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/Operator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/Operator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,14 +214,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00025" summary="Start skeleton of SSA class hierarchy">
-      <option name="closed" value="true" />
-      <created>1710540960581</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1710540960581</updated>
     </task>
     <task id="LOCAL-00026" summary="Lift IntegerType and BooleanType, and seal some interfaces so they can be matched on.">
       <option name="closed" value="true" />
@@ -608,12 +599,18 @@
       <option name="project" value="LOCAL" />
       <updated>1713055262437</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL-00074" summary="Start global value numbering">
+      <option name="closed" value="true" />
+      <created>1713135872851</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1713135872852</updated>
+    </task>
+    <option name="localTasksCounter" value="75" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Constant propagation attempts to delete non-executable blocks and simplify instructions" />
-    <MESSAGE value="Setup constant propagation test with figure 19.4" />
     <MESSAGE value="Fix instruction worklist and executable PHI" />
     <MESSAGE value="Small changes to worklist functions and looking up values" />
     <MESSAGE value="Set phi to overdefined if its operands have different defined values" />
@@ -637,7 +634,9 @@
     <MESSAGE value="Graphviz viewer has the size of the graphviz image it is viewing" />
     <MESSAGE value="Add postorder traversals #1 and close graphviz window with ESC" />
     <MESSAGE value="Constant propagation deletes empty blocks and single argument phi nodes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Constant propagation deletes empty blocks and single argument phi nodes" />
+    <MESSAGE value="Start global value numbering" />
+    <MESSAGE value="Assign value numbers to expressions and have mapping to be able to look up expression from the value number." />
+    <option name="LAST_COMMIT_MESSAGE" value="Assign value numbers to expressions and have mapping to be able to look up expression from the value number." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
