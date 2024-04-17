@@ -2,6 +2,7 @@ package com.d_m.pass;
 
 import com.d_m.ast.Type;
 import com.d_m.code.Operator;
+import com.d_m.dom.PostOrder;
 import com.d_m.ssa.*;
 import com.google.common.collect.Iterables;
 
@@ -27,6 +28,21 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
     @Override
     public Boolean runFunction(Function function) {
         boolean changed = false;
+        PostOrder<Block> postOrder = new PostOrder<Block>().run(function.getBlocks().getFirst());
+        for (Block block : postOrder.reversed()) {
+            changed |= runBlock(block);
+        }
+        return changed;
+    }
+
+    public boolean runBlock(Block block) {
+        // processBlock in LLVM
+        boolean changed = false;
+        // TODO: step 1: eliminate duplicate phis (EliminateDuplicatePHINodes)
+        for (Instruction instruction : block.getInstructions()) {
+            // TODO: replaceOperandsForInBlockEquality
+            // TODO: processInstruction
+        }
         return changed;
     }
 
