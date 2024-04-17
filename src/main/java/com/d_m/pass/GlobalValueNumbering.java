@@ -28,6 +28,16 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
     @Override
     public Boolean runFunction(Function function) {
         boolean changed = false;
+        boolean shouldContinue = true;
+        while (shouldContinue) {
+            shouldContinue = iterateFunction(function);
+            changed |= shouldContinue;
+        }
+        return changed;
+    }
+
+    public boolean iterateFunction(Function function) {
+        boolean changed = false;
         PostOrder<Block> postOrder = new PostOrder<Block>().run(function.getBlocks().getFirst());
         for (Block block : postOrder.reversed()) {
             changed |= runBlock(block);
