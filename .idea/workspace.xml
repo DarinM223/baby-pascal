@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add stubs for running blocks in a function">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="GVN iterates multiple times until there are no more changes">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PhiNodeHashWrapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java" afterDir="false" />
     </list>
@@ -214,14 +215,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00029" summary="Adding an operand to an instruction adds a use from the operand to the instruction">
-      <option name="closed" value="true" />
-      <created>1710897654217</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1710897654217</updated>
     </task>
     <task id="LOCAL-00030" summary="Changes operand to be a list and fixes UseIterator remove()">
       <option name="closed" value="true" />
@@ -607,11 +600,18 @@
       <option name="project" value="LOCAL" />
       <updated>1713321328410</updated>
     </task>
-    <option name="localTasksCounter" value="78" />
+    <task id="LOCAL-00078" summary="GVN iterates multiple times until there are no more changes">
+      <option name="closed" value="true" />
+      <created>1713395252313</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1713395252313</updated>
+    </task>
+    <option name="localTasksCounter" value="79" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Set phi to overdefined if its operands have different defined values" />
     <MESSAGE value="Deletes nonexecutable blocks to better see issue&#10;&#10;The issue is that the true branches is the second successor in the conditional so the SCCP is not marking that path." />
     <MESSAGE value="SSA block succcessors have the true branch be the first element in the set" />
     <MESSAGE value="Use Java 22 wildcard patterns" />
@@ -636,7 +636,8 @@
     <MESSAGE value="Assign value numbers to expressions and have mapping to be able to look up expression from the value number." />
     <MESSAGE value="Fix constant propagation to choose the right branch" />
     <MESSAGE value="Add stubs for running blocks in a function" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add stubs for running blocks in a function" />
+    <MESSAGE value="GVN iterates multiple times until there are no more changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="GVN iterates multiple times until there are no more changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

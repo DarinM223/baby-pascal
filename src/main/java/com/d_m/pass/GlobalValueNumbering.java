@@ -17,12 +17,15 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
     private final Map<Integer, PhiNode> numberingPhi;
     private int nextValueNumber;
 
+    private final Set<PhiNode> phisToRemove;
+
     public GlobalValueNumbering() {
         valueNumbering = new HashMap<>();
         expressionNumbering = new HashMap<>();
         expressions = new HashMap<>();
         numberingPhi = new HashMap<>();
         nextValueNumber = 1;
+        phisToRemove = new HashSet<>();
     }
 
     @Override
@@ -46,14 +49,57 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
     }
 
     public boolean runBlock(Block block) {
-        // processBlock in LLVM
         boolean changed = false;
-        // TODO: step 1: eliminate duplicate phis (EliminateDuplicatePHINodes)
+        changed |= eliminateDuplicatePhis(block);
         for (Instruction instruction : block.getInstructions()) {
             // TODO: replaceOperandsForInBlockEquality
-            // TODO: processInstruction
+            changed |= processInstruction(instruction);
         }
         return changed;
+    }
+
+    public boolean eliminateDuplicatePhis(Block block) {
+        boolean changed = false;
+        Map<PhiNodeHashWrapper, PhiNode> phiSet = new HashMap<>();
+        Instruction firstNonPhi = block.firstNonPhi();
+        var instructionIterator = block.getInstructions().iterator();
+        while (instructionIterator.hasNext()) {
+            Instruction instruction = instructionIterator.next();
+            if (instruction.equals(firstNonPhi)) {
+                break;
+            }
+            if (instruction instanceof PhiNode phiNode) {
+                if (phisToRemove.contains(phiNode)) {
+                    continue;
+                }
+                PhiNodeHashWrapper wrapper = new PhiNodeHashWrapper(phiNode);
+                // If the phi node is a duplicate of an existing phi node:
+                if (phiSet.containsKey(wrapper)) {
+                    changed = true;
+                    PhiNode existingPhiNode = phiSet.get(wrapper);
+
+                    // Replace phiNode's uses with existingPhiNode.
+                    for (var it = phiNode.uses(); it.hasNext(); ) {
+                        Use use = it.next();
+                        phiNode.removeUse(use.getUser());
+                        use.setValue(existingPhiNode);
+                        existingPhiNode.linkUse(use);
+                        phisToRemove.add(phiNode);
+                    }
+
+                    // Start over from the beginning.
+                    phiSet.clear();
+                    instructionIterator = block.getInstructions().iterator();
+                } else {
+                    phiSet.put(wrapper, phiNode);
+                }
+            }
+        }
+        return changed;
+    }
+
+    public boolean processInstruction(Instruction instruction) {
+        return false;
     }
 
     public int lookupOrAdd(Value value) {
@@ -74,12 +120,8 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
                 varargs.set(0, varargs.get(1));
                 varargs.set(1, tmp);
             }
-            expression = new Expression(
-                    instruction.getOperator(),
-                    instruction.getType(),
-                    varargs.stream().mapToInt(Integer::intValue).toArray(),
-                    instruction.getOperator().isCommutative()
-            );
+            int[] varargsArray = varargs.stream().mapToInt(Integer::intValue).toArray();
+            expression = new Expression(instruction.getOperator(), instruction.getType(), varargsArray);
         } else {
             valueNumbering.put(value, nextValueNumber);
             return nextValueNumber++;
@@ -99,33 +141,6 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
         return e;
     }
 
-    public static class Expression {
-        Operator operator;
-        boolean commutative;
-        Type type;
-        int[] varargs;
-
-        public Expression(Operator operator, Type type, int[] varargs) {
-            this(operator, type, varargs, false);
-        }
-
-        public Expression(Operator operator, Type type, int[] varargs, boolean commutative) {
-            this.operator = operator;
-            this.commutative = commutative;
-            this.type = type;
-            this.varargs = varargs;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof Expression that)) return false;
-            return operator == that.operator && Objects.equals(type, that.type) && Objects.deepEquals(varargs, that.varargs);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(operator, type, Arrays.hashCode(varargs));
-        }
+    public record Expression(Operator operator, Type type, int[] varargs) {
     }
 }
