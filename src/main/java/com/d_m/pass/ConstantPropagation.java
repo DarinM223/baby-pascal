@@ -121,8 +121,7 @@ public class ConstantPropagation extends BooleanFunctionPass {
             }
             if (instruction instanceof PhiNode phiNode && Iterables.size(phiNode.operands()) == 1) {
                 Value operand = phiNode.operands().iterator().next().getValue();
-                for (Iterator<Use> uses = instruction.uses(); uses.hasNext(); ) {
-                    Use use = uses.next();
+                for (Use use : instruction.uses()) {
                     use.setValue(operand);
                     instruction.removeUse(use.getUser());
                     operand.linkUse(use);
@@ -146,8 +145,7 @@ public class ConstantPropagation extends BooleanFunctionPass {
         for (Instruction instruction : block.getInstructions()) {
             if (variableMapping.get(instruction) instanceof Lattice.Defined(Constant constant)) {
                 changed = true;
-                for (Iterator<Use> uses = instruction.uses(); uses.hasNext(); ) {
-                    Use use = uses.next();
+                for (Use use : instruction.uses()) {
                     use.setValue(constant);
                     instruction.removeUse(use.getUser());
                     constant.linkUse(use);
@@ -165,8 +163,7 @@ public class ConstantPropagation extends BooleanFunctionPass {
         while (!blockWorklist.isEmpty() || !instructionWorklist.isEmpty()) {
             while (!instructionWorklist.isEmpty()) {
                 Instruction instruction = instructionWorklist.removeLast();
-                for (Iterator<Use> it = instruction.uses(); it.hasNext(); ) {
-                    Use use = it.next();
+                for (Use use : instruction.uses()) {
                     if (use.getUser() instanceof Instruction useInstruction) {
                         handleInstruction(useInstruction);
                     }

@@ -2,7 +2,7 @@ package com.d_m.ssa;
 
 import java.util.Iterator;
 
-public class LinkedIterator<T extends Listable<T>> implements Iterator<T>, Iterable<T> {
+public class LinkedIterator<T extends Listable<T>> implements Iterator<T> {
     private T prev = null;
     private T curr = null;
 
@@ -36,10 +36,5 @@ public class LinkedIterator<T extends Listable<T>> implements Iterator<T>, Itera
             prev.getPrev().setNext(prev.getNext());
         }
         prev = prev.getPrev();
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        return this;
     }
 }

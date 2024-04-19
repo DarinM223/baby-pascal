@@ -93,8 +93,7 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
                     PhiNode existingPhiNode = phiSet.get(wrapper);
 
                     // Replace phiNode's uses with existingPhiNode.
-                    for (var it = phiNode.uses(); it.hasNext(); ) {
-                        Use use = it.next();
+                    for (Use use : phiNode.uses()) {
                         phiNode.removeUse(use.getUser());
                         use.setValue(existingPhiNode);
                         existingPhiNode.linkUse(use);
@@ -133,8 +132,7 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
         }
 
         // Replace all uses of instruction with duplicate.
-        for (var it = instruction.uses(); it.hasNext(); ) {
-            Use use = it.next();
+        for (Use use : instruction.uses()) {
             instruction.removeUse(use.getUser());
             use.setValue(duplicate);
             duplicate.linkUse(use);

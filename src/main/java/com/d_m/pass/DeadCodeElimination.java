@@ -1,7 +1,7 @@
 package com.d_m.pass;
 
 import com.d_m.ssa.*;
-import com.google.common.collect.Iterators;
+import com.google.common.collect.Iterables;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +27,7 @@ public class DeadCodeElimination extends BooleanFunctionPass {
     }
 
     public boolean runInstruction(Set<Instruction> worklist, Instruction instruction) {
-        int numUses = Iterators.size(instruction.uses());
+        int numUses = Iterables.size(instruction.uses());
         if (numUses > 0 || instruction.getOperator().isBranch() || instruction.hasSideEffects()) {
             return false;
         }

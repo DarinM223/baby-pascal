@@ -33,7 +33,7 @@ public abstract class Value {
             }
             uses = uses.next;
         } else {
-            var iterator = uses();
+            var iterator = uses().iterator();
             while (iterator.hasNext()) {
                 Use use = iterator.next();
                 if (use.user.equals(user)) {
@@ -43,8 +43,15 @@ public abstract class Value {
         }
     }
 
-    public Iterator<Use> uses() {
-        return new LinkedIterator<>(uses);
+    public Iterable<Use> uses() {
+        return new UseIterable();
+    }
+
+    private class UseIterable implements Iterable<Use> {
+        @Override
+        public Iterator<Use> iterator() {
+            return new LinkedIterator<>(uses);
+        }
     }
 
     @Override
@@ -69,6 +76,7 @@ public abstract class Value {
     }
 
     public abstract void acceptDef(PrettyPrinter printer) throws IOException;
+
     public abstract void acceptUse(PrettyPrinter printer) throws IOException;
 
     public int getId() {
