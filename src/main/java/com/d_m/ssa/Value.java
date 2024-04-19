@@ -43,6 +43,14 @@ public abstract class Value {
         }
     }
 
+    public void replaceUsesWith(Value value) {
+        for (Use use : uses()) {
+            removeUse(use.getUser());
+            use.setValue(value);
+            value.linkUse(use);
+        }
+    }
+
     public Iterable<Use> uses() {
         return new UseIterable();
     }

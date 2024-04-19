@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fill out more of processInstruction">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add helper method replaceUsesWith() to Value">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/DeadCodeElimination.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/DeadCodeElimination.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/LinkedIterator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/LinkedIterator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/InstructionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/InstructionTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -219,14 +216,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00032" summary="Add definition sites and phi node">
-      <option name="closed" value="true" />
-      <created>1711126014948</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1711126014948</updated>
     </task>
     <task id="LOCAL-00033" summary="Add phis to three address code block, and implement inserting phis">
       <option name="closed" value="true" />
@@ -612,12 +601,18 @@
       <option name="project" value="LOCAL" />
       <updated>1713537881443</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL-00081" summary="Make Value uses() Iterable instead of Iterator">
+      <option name="closed" value="true" />
+      <created>1713549282234</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1713549282235</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Use Java 22 wildcard patterns" />
-    <MESSAGE value="Modify pattern wildcards so that the patterns are more exhaustive" />
     <MESSAGE value="Modify successors and predecessors to be lists instead of sets and attempt critical edge splitting" />
     <MESSAGE value="Add test for figure 19.2 critical edge splitting" />
     <MESSAGE value="Add unit test for figure 19.3 critical edge splitting" />
@@ -641,7 +636,9 @@
     <MESSAGE value="GVN iterates multiple times until there are no more changes" />
     <MESSAGE value="Add phi node wrapper that hashes based off of operands and successors and attempts removal of duplicate phis in a block." />
     <MESSAGE value="Fill out more of processInstruction" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fill out more of processInstruction" />
+    <MESSAGE value="Make Value uses() Iterable instead of Iterator" />
+    <MESSAGE value="Add helper method replaceUsesWith() to Value" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add helper method replaceUsesWith() to Value" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
