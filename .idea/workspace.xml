@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="GVN iterates multiple times until there are no more changes">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PhiNodeHashWrapper.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fill out more of processInstruction">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java" afterDir="false" />
     </list>
@@ -215,14 +214,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00030" summary="Changes operand to be a list and fixes UseIterator remove()">
-      <option name="closed" value="true" />
-      <created>1710902775750</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1710902775750</updated>
     </task>
     <task id="LOCAL-00031" summary="Refactor linked list code and add functions to ListWrapper for adding nodes to the front or back">
       <option name="closed" value="true" />
@@ -608,12 +599,18 @@
       <option name="project" value="LOCAL" />
       <updated>1713395252313</updated>
     </task>
-    <option name="localTasksCounter" value="79" />
+    <task id="LOCAL-00079" summary="Add phi node wrapper that hashes based off of operands and successors and attempts removal of duplicate phis in a block.">
+      <option name="closed" value="true" />
+      <created>1713406328605</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1713406328605</updated>
+    </task>
+    <option name="localTasksCounter" value="80" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Deletes nonexecutable blocks to better see issue&#10;&#10;The issue is that the true branches is the second successor in the conditional so the SCCP is not marking that path." />
-    <MESSAGE value="SSA block succcessors have the true branch be the first element in the set" />
     <MESSAGE value="Use Java 22 wildcard patterns" />
     <MESSAGE value="Modify pattern wildcards so that the patterns are more exhaustive" />
     <MESSAGE value="Modify successors and predecessors to be lists instead of sets and attempt critical edge splitting" />
@@ -637,7 +634,9 @@
     <MESSAGE value="Fix constant propagation to choose the right branch" />
     <MESSAGE value="Add stubs for running blocks in a function" />
     <MESSAGE value="GVN iterates multiple times until there are no more changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="GVN iterates multiple times until there are no more changes" />
+    <MESSAGE value="Add phi node wrapper that hashes based off of operands and successors and attempts removal of duplicate phis in a block." />
+    <MESSAGE value="Fill out more of processInstruction" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fill out more of processInstruction" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

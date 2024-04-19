@@ -18,6 +18,7 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
     private int nextValueNumber;
 
     private final Set<PhiNode> phisToRemove;
+    private final Set<Instruction> instructionsToRemove;
 
     public GlobalValueNumbering() {
         valueNumbering = new HashMap<>();
@@ -26,6 +27,7 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
         numberingPhi = new HashMap<>();
         nextValueNumber = 1;
         phisToRemove = new HashSet<>();
+        instructionsToRemove = new HashSet<>();
     }
 
     @Override
@@ -51,11 +53,23 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
     public boolean runBlock(Block block) {
         boolean changed = false;
         changed |= eliminateDuplicatePhis(block);
+        for (PhiNode phiNode : phisToRemove) {
+            int value = valueNumbering.remove(phiNode);
+            numberingPhi.remove(value);
+            removeInstruction(phiNode);
+        }
         for (Instruction instruction : block.getInstructions()) {
             // TODO: replaceOperandsForInBlockEquality
             changed |= processInstruction(instruction);
         }
         return changed;
+    }
+
+    public void removeInstruction(Instruction instruction) {
+        for (Use operand : instruction.operands()) {
+            operand.getValue().removeUse(instruction);
+        }
+        instruction.remove();
     }
 
     public boolean eliminateDuplicatePhis(Block block) {
@@ -84,8 +98,8 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
                         phiNode.removeUse(use.getUser());
                         use.setValue(existingPhiNode);
                         existingPhiNode.linkUse(use);
-                        phisToRemove.add(phiNode);
                     }
+                    phisToRemove.add(phiNode);
 
                     // Start over from the beginning.
                     phiSet.clear();
@@ -99,11 +113,50 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
     }
 
     public boolean processInstruction(Instruction instruction) {
-        return false;
+        // TODO: attempt to simplify instruction
+        int nextNum = nextValueNumber;
+        int valueNumber = lookupOrAdd(instruction);
+        if (valueNumber >= nextNum) {
+            // New value number, don't need to look for existing values that dominate this instruction.
+            addToLeaderTable(valueNumber, instruction);
+            return false;
+        }
+
+        // TODO: for every value that has that value number, look for ones that dominate this instruction.
+        Value duplicate = findLeader(instruction, valueNumber);
+        if (duplicate == null) {
+            addToLeaderTable(valueNumber, instruction);
+            return false;
+        }
+        if (duplicate.equals(instruction)) {
+            return false;
+        }
+
+        // Replace all uses of instruction with duplicate.
+        for (var it = instruction.uses(); it.hasNext(); ) {
+            Use use = it.next();
+            instruction.removeUse(use.getUser());
+            use.setValue(duplicate);
+            duplicate.linkUse(use);
+        }
+
+        // Mark instruction for deletion.
+        if (instruction instanceof PhiNode) {
+            numberingPhi.remove(valueNumber);
+        }
+        valueNumbering.remove(instruction);
+        instructionsToRemove.add(instruction);
+        return true;
+    }
+
+    private Value findLeader(Instruction instruction, int valueNumber) {
+        return null;
+    }
+
+    private void addToLeaderTable(int valueNumber, Instruction instruction) {
     }
 
     public int lookupOrAdd(Value value) {
-        Expression expression;
         if (value instanceof PhiNode phiNode) {
             valueNumbering.put(phiNode, nextValueNumber);
             numberingPhi.put(nextValueNumber, phiNode);
@@ -121,24 +174,25 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
                 varargs.set(1, tmp);
             }
             int[] varargsArray = varargs.stream().mapToInt(Integer::intValue).toArray();
-            expression = new Expression(instruction.getOperator(), instruction.getType(), varargsArray);
+            Expression expression = new Expression(instruction.getOperator(), instruction.getType(), varargsArray);
+            int expressionValueNumber = assignExpNewValueNum(expression);
+            valueNumbering.put(value, expressionValueNumber);
+            return expressionValueNumber;
         } else {
             valueNumbering.put(value, nextValueNumber);
             return nextValueNumber++;
         }
-        int e = assignExpNewValueNum(expression);
-        valueNumbering.put(value, e);
-        return e;
     }
 
     public int assignExpNewValueNum(Expression expression) {
         // Based on hashcode, so it can give equivalent expressions.
-        Integer e = expressionNumbering.get(expression);
-        if (e == null) {
-            e = nextValueNumber;
-            expressions.put(nextValueNumber++, expression);
+        Integer expressionValueNumber = expressionNumbering.get(expression);
+        if (expressionValueNumber == null) {
+            expressionValueNumber = nextValueNumber;
+            expressions.put(expressionValueNumber, expression);
+            nextValueNumber++;
         }
-        return e;
+        return expressionValueNumber;
     }
 
     public record Expression(Operator operator, Type type, int[] varargs) {
