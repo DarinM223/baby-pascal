@@ -2,29 +2,40 @@ package com.d_m.pass;
 
 import com.d_m.ast.Type;
 import com.d_m.code.Operator;
+import com.d_m.dom.LengauerTarjan;
 import com.d_m.dom.PostOrder;
 import com.d_m.ssa.*;
+import com.d_m.util.Pair;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Multimap;
 
 import java.util.*;
 
 public class GlobalValueNumbering extends BooleanFunctionPass {
+    private final LengauerTarjan<Block> dominators;
     private final Map<Value, Integer> valueNumbering;
     private final Map<Expression, Integer> expressionNumbering;
 
     // Mapping from value number to expression or phi node.
     private final Map<Integer, Expression> expressions;
     private final Map<Integer, PhiNode> numberingPhi;
+
+    // Mapping from value number to lists of values that have the value number.
+    private final Multimap<Integer, Pair<Block, Value>> leaderTable;
+
     private int nextValueNumber;
 
     private final Set<PhiNode> phisToRemove;
     private final Set<Instruction> instructionsToRemove;
 
-    public GlobalValueNumbering() {
+    public GlobalValueNumbering(LengauerTarjan<Block> dominators) {
+        this.dominators = dominators;
         valueNumbering = new HashMap<>();
         expressionNumbering = new HashMap<>();
         expressions = new HashMap<>();
         numberingPhi = new HashMap<>();
+        leaderTable = HashMultimap.create();
         nextValueNumber = 1;
         phisToRemove = new HashSet<>();
         instructionsToRemove = new HashSet<>();
@@ -113,14 +124,14 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
         int valueNumber = lookupOrAdd(instruction);
         if (valueNumber >= nextNum) {
             // New value number, don't need to look for existing values that dominate this instruction.
-            addToLeaderTable(valueNumber, instruction);
+            leaderTable.put(valueNumber, new Pair<>(instruction.getParent(), instruction));
             return false;
         }
 
-        // TODO: for every value that has that value number, look for ones that dominate this instruction.
-        Value duplicate = findLeader(instruction, valueNumber);
+        // For every value that has that value number, look for ones that dominate this instruction.
+        Value duplicate = findLeader(instruction.getParent(), valueNumber);
         if (duplicate == null) {
-            addToLeaderTable(valueNumber, instruction);
+            leaderTable.put(valueNumber, new Pair<>(instruction.getParent(), instruction));
             return false;
         }
         if (duplicate.equals(instruction)) {
@@ -137,11 +148,13 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
         return true;
     }
 
-    private Value findLeader(Instruction instruction, int valueNumber) {
+    private Value findLeader(Block block, int valueNumber) {
+        for (var next : leaderTable.get(valueNumber)) {
+            if (dominators.dominates(next.a(), block)) {
+                return next.b();
+            }
+        }
         return null;
-    }
-
-    private void addToLeaderTable(int valueNumber, Instruction instruction) {
     }
 
     public int lookupOrAdd(Value value) {
