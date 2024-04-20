@@ -4,6 +4,7 @@ import com.d_m.ast.*;
 import com.d_m.cfg.Block;
 import com.d_m.code.Quad;
 import com.d_m.code.ThreeAddressCode;
+import com.d_m.code.normalize.ShortCircuitException;
 import com.d_m.dom.DefinitionSites;
 import com.d_m.dom.DominanceFrontier;
 import com.d_m.dom.Examples;
@@ -26,7 +27,7 @@ class UniqueRenamerTest {
     DominanceFrontier<Block> frontier;
     DefinitionSites defsites;
 
-    Block toCfg(List<Statement> statements) {
+    Block toCfg(List<Statement> statements) throws ShortCircuitException {
         fresh = new FreshImpl();
         symbol = new SymbolImpl(fresh);
         threeAddressCode = new ThreeAddressCode(fresh, symbol);
@@ -40,7 +41,7 @@ class UniqueRenamerTest {
     }
 
     @Test
-    void rename_19_4() {
+    void rename_19_4() throws ShortCircuitException {
         Block cfg = toCfg(Examples.figure_19_4());
         new InsertPhisMinimal(symbol, defsites, frontier).run();
         new UniqueRenamer(symbol).rename(cfg);
@@ -92,7 +93,7 @@ class UniqueRenamerTest {
     }
 
     @Test
-    void renamePruned() {
+    void renamePruned() throws ShortCircuitException {
         List<Statement> statements = prunedExample();
         Block cfg = toCfg(statements);
         new InsertPhisPruned(symbol, defsites, frontier).run();

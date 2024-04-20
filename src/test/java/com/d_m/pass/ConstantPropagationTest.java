@@ -5,6 +5,7 @@ import com.d_m.ast.Statement;
 import com.d_m.cfg.Block;
 import com.d_m.code.Quad;
 import com.d_m.code.ThreeAddressCode;
+import com.d_m.code.normalize.ShortCircuitException;
 import com.d_m.construct.InsertPhisMinimal;
 import com.d_m.construct.UniqueRenamer;
 import com.d_m.dom.DefinitionSites;
@@ -40,7 +41,7 @@ class ConstantPropagationTest {
         symbol = new SymbolImpl(fresh);
     }
 
-    Block toCfg(List<Statement> statements) {
+    Block toCfg(List<Statement> statements) throws ShortCircuitException {
         threeAddressCode = new ThreeAddressCode(fresh, symbol);
         List<Quad> code = threeAddressCode.normalize(statements);
         com.d_m.cfg.Block cfg = new Block(code);
@@ -51,7 +52,7 @@ class ConstantPropagationTest {
     }
 
     @Test
-    void testConstantPropagation_19_4() throws IOException {
+    void testConstantPropagation_19_4() throws IOException, ShortCircuitException {
         Block cfg = toCfg(Examples.figure_19_4());
         new InsertPhisMinimal(symbol, defsites, frontier).run();
         new UniqueRenamer(symbol).rename(cfg);

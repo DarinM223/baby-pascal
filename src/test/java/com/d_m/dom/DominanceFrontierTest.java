@@ -3,6 +3,7 @@ package com.d_m.dom;
 import com.d_m.cfg.Block;
 import com.d_m.code.Quad;
 import com.d_m.code.ThreeAddressCode;
+import com.d_m.code.normalize.ShortCircuitException;
 import com.d_m.util.Fresh;
 import com.d_m.util.FreshImpl;
 import com.d_m.util.Symbol;
@@ -16,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DominanceFrontierTest {
 
     @Test
-    void dominanceFrontier() {
+    void dominanceFrontier() throws ShortCircuitException {
         Fresh fresh = new FreshImpl();
         Symbol symbol = new SymbolImpl(fresh);
         ThreeAddressCode threeAddressCode = new ThreeAddressCode(fresh, symbol);

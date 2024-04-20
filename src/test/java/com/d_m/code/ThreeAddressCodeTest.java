@@ -1,6 +1,7 @@
 package com.d_m.code;
 
 import com.d_m.ast.*;
+import com.d_m.code.normalize.ShortCircuitException;
 import com.d_m.util.Fresh;
 import com.d_m.util.FreshImpl;
 import com.d_m.util.Symbol;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ThreeAddressCodeTest {
 
     @org.junit.jupiter.api.Test
-    void normalize() {
+    void normalize() throws ShortCircuitException {
         BinaryOpExpression test = new BinaryOpExpression(BinaryOp.AND,
                 new BinaryOpExpression(BinaryOp.EQ, new VarExpression("a"), new IntExpression(1)),
                 new BinaryOpExpression(BinaryOp.LT, new VarExpression("a"), new IntExpression(5)));

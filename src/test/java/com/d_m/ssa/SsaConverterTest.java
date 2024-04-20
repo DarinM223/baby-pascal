@@ -4,6 +4,7 @@ import com.d_m.ast.*;
 import com.d_m.cfg.Block;
 import com.d_m.code.Quad;
 import com.d_m.code.ThreeAddressCode;
+import com.d_m.code.normalize.ShortCircuitException;
 import com.d_m.construct.InsertPhisMinimal;
 import com.d_m.construct.UniqueRenamer;
 import com.d_m.dom.DefinitionSites;
@@ -37,7 +38,7 @@ class SsaConverterTest {
         symbol = new SymbolImpl(fresh);
     }
 
-    Block toCfg(List<Statement> statements) {
+    Block toCfg(List<Statement> statements) throws ShortCircuitException {
         threeAddressCode = new ThreeAddressCode(fresh, symbol);
         List<Quad> code = threeAddressCode.normalize(statements);
         com.d_m.cfg.Block cfg = new Block(code);
@@ -48,7 +49,7 @@ class SsaConverterTest {
     }
 
     @Test
-    void convertProgram() throws IOException {
+    void convertProgram() throws IOException, ShortCircuitException {
         Block cfg = toCfg(Examples.figure_19_4());
         new InsertPhisMinimal(symbol, defsites, frontier).run();
         new UniqueRenamer(symbol).rename(cfg);
@@ -110,7 +111,7 @@ class SsaConverterTest {
     }
 
     @Test
-    void convertFibonacci() throws IOException {
+    void convertFibonacci() throws IOException, ShortCircuitException {
         Block fibonacci = toCfg(Examples.fibonacci("fibonacci", "n"));
         new InsertPhisMinimal(symbol, defsites, frontier).run();
         new UniqueRenamer(symbol).rename(fibonacci);
