@@ -16,9 +16,4 @@ public record IfStatement(Expression predicate, List<Statement> then, List<State
             statement.check(venv, fenv);
         }
     }
-
-    @Override
-    public <T> T accept(StatementVisitor<T> visitor) {
-        return visitor.visit(this);
-    }
 }

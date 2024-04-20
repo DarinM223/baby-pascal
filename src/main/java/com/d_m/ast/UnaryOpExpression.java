@@ -8,10 +8,4 @@ public record UnaryOpExpression(UnaryOp op, Expression expr) implements Expressi
         // TODO(DarinM223): check that the operator is valid for the type.
         return expr.check(venv, fenv);
     }
-
-    @Override
-    public <T> T accept(ExpressionVisitor<T> visitor) {
-        return visitor.visit(this);
-    }
-
 }

@@ -7,9 +7,4 @@ public record BoolExpression(boolean value) implements Expression {
     public Type check(Map<String, Type> venv, Map<String, FunctionType> fenv) throws CheckException {
         return new BooleanType();
     }
-
-    @Override
-    public <T> T accept(ExpressionVisitor<T> visitor) {
-        return visitor.visit(this);
-    }
 }

@@ -21,9 +21,4 @@ public record CallExpression(String functionName, List<Expression> arguments) im
         }
         return functionType.returnType().get();
     }
-
-    @Override
-    public <T> T accept(ExpressionVisitor<T> visitor) {
-        return visitor.visit(this);
-    }
 }

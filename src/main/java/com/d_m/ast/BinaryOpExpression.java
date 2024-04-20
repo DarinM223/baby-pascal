@@ -13,9 +13,4 @@ public record BinaryOpExpression(BinaryOp op, Expression expr1, Expression expr2
         // TODO(DarinM223): check that the binary operator matches the type.
         return type1;
     }
-
-    @Override
-    public <T> T accept(ExpressionVisitor<T> visitor) {
-        return visitor.visit(this);
-    }
 }

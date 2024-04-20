@@ -5,7 +5,7 @@ import com.d_m.ast.Statement;
 import com.d_m.cfg.Block;
 import com.d_m.code.Quad;
 import com.d_m.code.ThreeAddressCode;
-import com.d_m.code.normalize.ShortCircuitException;
+import com.d_m.code.ShortCircuitException;
 import com.d_m.construct.InsertPhisPruned;
 import com.d_m.construct.UniqueRenamer;
 import com.d_m.dom.*;
@@ -22,8 +22,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class SsaGraphTest {
     Fresh fresh;

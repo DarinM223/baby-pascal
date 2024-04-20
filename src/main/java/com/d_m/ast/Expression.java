@@ -10,6 +10,4 @@ public sealed interface Expression permits
         UnaryOpExpression,
         BinaryOpExpression {
     Type check(Map<String, Type> venv, Map<String, FunctionType> fenv) throws CheckException;
-
-    <T> T accept(ExpressionVisitor<T> visitor);
 }

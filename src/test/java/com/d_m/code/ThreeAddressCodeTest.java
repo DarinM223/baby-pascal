@@ -1,7 +1,6 @@
 package com.d_m.code;
 
 import com.d_m.ast.*;
-import com.d_m.code.normalize.ShortCircuitException;
 import com.d_m.util.Fresh;
 import com.d_m.util.FreshImpl;
 import com.d_m.util.Symbol;

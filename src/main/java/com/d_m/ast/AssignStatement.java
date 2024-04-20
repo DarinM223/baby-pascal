@@ -7,9 +7,4 @@ public record AssignStatement(String name, Expression expr) implements Statement
     public void check(Map<String, Type> venv, Map<String, FunctionType> fenv) throws CheckException {
         venv.put(name, expr.check(venv, fenv));
     }
-
-    @Override
-    public <T> T accept(StatementVisitor<T> visitor) {
-        return visitor.visit(this);
-    }
 }

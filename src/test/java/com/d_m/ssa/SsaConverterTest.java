@@ -4,7 +4,7 @@ import com.d_m.ast.*;
 import com.d_m.cfg.Block;
 import com.d_m.code.Quad;
 import com.d_m.code.ThreeAddressCode;
-import com.d_m.code.normalize.ShortCircuitException;
+import com.d_m.code.ShortCircuitException;
 import com.d_m.construct.InsertPhisMinimal;
 import com.d_m.construct.UniqueRenamer;
 import com.d_m.dom.DefinitionSites;

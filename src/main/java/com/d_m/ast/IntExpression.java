@@ -7,9 +7,4 @@ public record IntExpression(int value) implements Expression {
     public Type check(Map<String, Type> venv, Map<String, FunctionType> fenv) throws CheckException {
         return new IntegerType();
     }
-
-    @Override
-    public <T> T accept(ExpressionVisitor<T> visitor) {
-        return visitor.visit(this);
-    }
 }

@@ -20,9 +20,4 @@ public record CallStatement(String functionName, List<Expression> arguments) imp
             throw new CheckException("Call statement arguments are different types");
         }
     }
-
-    @Override
-    public <T> T accept(StatementVisitor<T> visitor) {
-        return visitor.visit(this);
-    }
 }
