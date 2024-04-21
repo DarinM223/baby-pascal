@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add more references to Modern Compiler Implementation in ML">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fill out README for com.d_m.dom and com.d_m.construct">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/construct/UniqueRenamer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/construct/UniqueRenamer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -216,14 +215,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00040" summary="Start unnamed SSA pretty printer">
-      <option name="closed" value="true" />
-      <created>1711296962678</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1711296962678</updated>
     </task>
     <task id="LOCAL-00041" summary="Improve pretty printing and use it for unit test">
       <option name="closed" value="true" />
@@ -609,11 +600,18 @@
       <option name="project" value="LOCAL" />
       <updated>1713662695812</updated>
     </task>
-    <option name="localTasksCounter" value="89" />
+    <task id="LOCAL-00089" summary="Fill out README for com.d_m.dom and com.d_m.construct">
+      <option name="closed" value="true" />
+      <created>1713709352157</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1713709352158</updated>
+    </task>
+    <option name="localTasksCounter" value="90" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="cfg.Block pretty() prints out block id and has more compact predecessor and successor lists" />
     <MESSAGE value="Pass in Symbol when pretty printing three address code" />
     <MESSAGE value="Add test for loop postbody" />
     <MESSAGE value="Separate out liveness from cfg.Block constructor" />
@@ -638,7 +636,8 @@
     <MESSAGE value="Delete ExpressionVisitor and StatementVisitor" />
     <MESSAGE value="Adds documentation to IBlock and fills out README for com.d_m.code and com.d_m.cfg" />
     <MESSAGE value="Add more references to Modern Compiler Implementation in ML" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add more references to Modern Compiler Implementation in ML" />
+    <MESSAGE value="Fill out README for com.d_m.dom and com.d_m.construct" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fill out README for com.d_m.dom and com.d_m.construct" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

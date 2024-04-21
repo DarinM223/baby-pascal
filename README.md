@@ -112,7 +112,26 @@ Pruned SSA form is mentioned in chapter 2.4 of SSA-based Compiler Design.
 
 ### com.d_m.ssa
 
+This package contains the types for the unnamed SSA representation which is what is going to be used
+for most of the SSA passes. Unnamed SSA doesn't have a name for every value, uniqueness is from every object
+having a different pointer and uses of values are references to its object. Because Java has a moving garbage collector,
+every value has a unique id assigned for
+testing equality. Because values contain references to their def-use information with `uses()` and
+instructions contain references to their use-def information with `operands()`, this representation works with
+the worklist algorithms used in most books and papers. This representation is a simplified version
+of [LLVM's SSA representation](https://github.com/llvm/llvm-project/tree/main/llvm/include/llvm/IR).
+
+The class `SsaConverter` converts from named SSA to unnamed SSA. The method `convertProgram()` converts a `Program`
+containing
+`com.d_m.cfg.Block`s and converts it into a `com.d_m.ssa.Module` which contains `Function`s which
+contain `Instruction`s.
+
+The package `com.d_m.ssa.graphviz` contains `SsaGraph` for writing the SSA data dependency graph of a program with the
+use-def links as edges as a Graphviz dot file. `GraphvizViewer` allows for rendering a Graphviz dot file in Swing.
+
 ### com.d_m.pass
+
+This package contains optimization passes over SSA.
 
 #### Dead code elimination
 
