@@ -60,16 +60,32 @@ mentioned in page 385.
 
 ### com.d_m.dom
 
+Dominators, loops detection, loop-nest trees, and loop preheader (similar to loop postbody) is covered in Modern
+Compiler Implementation in ML Chapter 18.1.
+
+Computing the dominance frontier from the dominator tree is covered in Modern Compiler Implementation in ML Chapter
+19.1.
+
+Computing the dominator tree using Lengauer-Tarjan is covered in Modern Compiler Implementation in ML Chapter 19.2.
+
 ### com.d_m.construct
+
+Inserting phi nodes is covered in Modern Compiler Implementation in ML Chapter 19.1.
 
 ### com.d_m.ssa
 
 ### com.d_m.pass
 
-* #### Dead code elimination
+#### Dead code elimination
 
-* #### Critical edge splitting
+Dead code elimination over SSA is covered in Modern Compiler Implementation in ML Chapter 19.3.
 
-* #### Constant propagation (sparse conditional constant propagation)
+#### Critical edge splitting
 
-* #### Global value numbering
+Critical edge splitting is mentioned in Chapter 19 of Modern Compiler Implementation in ML.
+
+#### Constant propagation (sparse conditional constant propagation)
+
+Conditional constant propagation is covered in Modern Compiler Implementation in ML Chapter 19.3.
+
+#### Global value numbering
