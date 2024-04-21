@@ -4,6 +4,13 @@ baby-pascal
 Experiments with SSA transformations in Java
 --------------------------------------------
 
+One of the issues with compilers is that a lot of information is spread out
+over multiple books and papers. I intend
+to use this project to gather together resources on backend compiler topics and to show
+how to make a practical SSA representation that will work with most SSA algorithms in books and papers.
+
+Below is a listing of the packages in the project in the order that the compiler will use them:
+
 ### com.d_m.ast
 
 Defines the AST (abstract syntax tree)
@@ -25,9 +32,31 @@ method `symbols()` which iterates over all created symbols.
 ### com.d_m.code
 
 Defines the types for three address code, which is `Quad`, which represents something like
-`r <- a + b`, where `r`, `a`, and `b` are addresses and `+` is an operator.
+`r <- a + b`, where `r`, `a`, and `b` are addresses and `+` is an operator. The class `ThreeAddressCode` handles
+normalization of the AST in `com.d_m.ast` into three address code.
+
+Normalization to three address code that handles short circuiting is covered in Chapter 6.6 of the Dragon book
+(Compilers: Principles, Techniques, and Tools).
 
 ### com.d_m.cfg
+
+The main class in this package is `Block` which represents a basic block containing three address code `Quad`s
+along with references to its predecessor and successor basic blocks and references to the entry and exit basic blocks
+in the control flow graph. It also stores the GEN/KILL sets and live in/live out as bitsets.
+
+The constructor for `Block` takes three address code, and partitions it into basic blocks by identifying leaders.
+It also calculates the GEN/KILL sets for each block and removes blocks that are unreachable from the entry block.
+
+Live in and live out sets are not computed in the constructor of `Block`, they are computed after the fact in the
+method `runLiveness()`.
+This iterates over the reverse postorder of the reversed control flow graph (starting from the exit node traversing over
+block predecessors).
+The method for each iteration step is `livenessRound()`.
+
+Identifying leaders to partition three address code into basic blocks is covered in Chapter 8.4 of the Dragon book.
+
+Dataflow analysis is covered in Modern Compiler Implementation in ML by Andrew Appel Chapter 17.2. Liveness analysis is
+mentioned in page 385.
 
 ### com.d_m.dom
 
