@@ -16,12 +16,10 @@ import java.util.Map;
 import java.util.Set;
 
 public class UniqueRenamer {
-    private Map<Integer, Integer> count;
-    private ArrayListMultimap<Integer, Integer> stack;
-    private Symbol symbol;
+    private final Map<Integer, Integer> count;
+    private final ArrayListMultimap<Integer, Integer> stack;
 
     public UniqueRenamer(Symbol symbol) {
-        this.symbol = symbol;
         int size = Iterables.size(symbol.symbols());
         this.count = new HashMap<>(size);
         this.stack = ArrayListMultimap.create(size, size);

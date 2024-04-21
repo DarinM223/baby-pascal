@@ -60,6 +60,23 @@ mentioned in page 385.
 
 ### com.d_m.dom
 
+This package stores dominance information of the control flow graph. The class `LengauerTarjan`
+stores the dominator tree, the immediate dominator of a node, and has methods to check if a block dominates, immediately
+dominates, or strictly dominates another block with `dominates()`, `idoms()` and `strictlyDominates()` respectively.
+
+The class `DominanceFrontier` computes the dominance frontier of blocks in the control flow graph given the dominator
+tree in `LengauerTarjan`.
+
+The class `LoopNesting` finds all the loops by looking for backedges, edges from a block to a block that dominates it.
+It then computes the loop-nest tree by traversing the dominator tree with a stack of the current loop header.
+
+The class `LoopPostbody` modifies the control flow graph to insert postbody blocks to loops using the loop nest tree
+in `LoopNesting`. These postbody blocks are helpful during conversion to SSA form and are used in
+Figure 19.4 of Modern Compiler Implementation in ML which our unit tests use as an example.
+
+The class `DefinitionSites` returns all of the blocks that define a given symbol. This is used for inserting phi nodes
+in `com.d_m.construct`.
+
 Dominators, loops detection, loop-nest trees, and loop preheader (similar to loop postbody) is covered in Modern
 Compiler Implementation in ML Chapter 18.1.
 
@@ -68,9 +85,30 @@ Computing the dominance frontier from the dominator tree is covered in Modern Co
 
 Computing the dominator tree using Lengauer-Tarjan is covered in Modern Compiler Implementation in ML Chapter 19.2.
 
+LLVM blocks store the dominator tree level for more
+efficient [dominance comparisons](https://github.com/llvm/llvm-project/blob/56ca5ecf416ad0e57c5e3558159bd73e5d662476/llvm/include/llvm/Support/GenericDomTree.h#L432)
+because [walking](https://github.com/llvm/llvm-project/blob/56ca5ecf416ad0e57c5e3558159bd73e5d662476/llvm/include/llvm/Support/GenericDomTree.h#L902)
+the dominance tree
+can stop if the first block hasn't been found and its dominator tree level has already been reached. This project uses
+this method also for checking dominance.
+
 ### com.d_m.construct
 
-Inserting phi nodes is covered in Modern Compiler Implementation in ML Chapter 19.1.
+This package is for converting the control flow graph to be in named SSA form by inserting phi nodes
+and renaming all the variables to be unique.
+
+For inserting phis, the abstract class `InsertPhis` has two implementations, `InsertPhisMinimal` and `InsertPhisPruned`.
+`InsertPhisPruned` only inserts a phi node for a symbol if that symbol is live in to that block, preventing redundant
+phi nodes from being created. `InsertPhisMinimal` has no such check so it can result in redundant phi nodes.
+
+The class `UniqueRenamer`'s `rename()` method traverses the blocks starting from the entry block, renaming the variables
+to be unique.
+
+Inserting phi nodes is covered in Modern Compiler Implementation in ML Chapter 19.1, Algorithm 19.6.
+
+Renaming variables to be unique is covered in Modern Compiler Implementation in ML Chapter 19.1, Algorithm 19.7.
+
+Pruned SSA form is mentioned in chapter 2.4 of SSA-based Compiler Design.
 
 ### com.d_m.ssa
 
@@ -83,6 +121,13 @@ Dead code elimination over SSA is covered in Modern Compiler Implementation in M
 #### Critical edge splitting
 
 Critical edge splitting is mentioned in Chapter 19 of Modern Compiler Implementation in ML.
+
+Critical edge splitting is also mentioned in Chapter 3.2 of SSA-based Compiler Design when talking about SSA
+destruction.
+
+The Go
+compiler's [implementation](https://github.com/golang/go/blob/d29dd2ecf7563a8cb15a662a7ec5caa461068bbe/src/cmd/compile/internal/ssa/critical.go#L10)
+of critical edge splitting was also looked at.
 
 #### Constant propagation (sparse conditional constant propagation)
 

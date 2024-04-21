@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Adds documentation to IBlock and fills out README for com.d_m.code and com.d_m.cfg">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add more references to Modern Compiler Implementation in ML">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/construct/UniqueRenamer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/construct/UniqueRenamer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,14 +216,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00039" summary="Fixes for unnamed SSA conversion&#10;&#10;* Converts phis as well as quads&#10;* Adds terminator to the end of blocks with successors and no branch terminator&#10;* Links blocks predecessors and successors after rewriting them to unnamed SSA&#10;* Handles constants when looking up addresses&#10;* Adds unit test for converting to unnamed SSA (doesn't do anything yet but its useful for inspection through the debugger)">
-      <option name="closed" value="true" />
-      <created>1711291052319</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1711291052319</updated>
     </task>
     <task id="LOCAL-00040" summary="Start unnamed SSA pretty printer">
       <option name="closed" value="true" />
@@ -608,11 +601,18 @@
       <option name="project" value="LOCAL" />
       <updated>1713660544305</updated>
     </task>
-    <option name="localTasksCounter" value="88" />
+    <task id="LOCAL-00088" summary="Add more references to Modern Compiler Implementation in ML">
+      <option name="closed" value="true" />
+      <created>1713662695812</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1713662695812</updated>
+    </task>
+    <option name="localTasksCounter" value="89" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Remove HashSet usage from cfg.Block in favor of ArrayList, refactors unit tests" />
     <MESSAGE value="cfg.Block pretty() prints out block id and has more compact predecessor and successor lists" />
     <MESSAGE value="Pass in Symbol when pretty printing three address code" />
     <MESSAGE value="Add test for loop postbody" />
@@ -637,7 +637,8 @@
     <MESSAGE value="ThreeAddressCode uses pattern matching instead of visitors for normalization" />
     <MESSAGE value="Delete ExpressionVisitor and StatementVisitor" />
     <MESSAGE value="Adds documentation to IBlock and fills out README for com.d_m.code and com.d_m.cfg" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adds documentation to IBlock and fills out README for com.d_m.code and com.d_m.cfg" />
+    <MESSAGE value="Add more references to Modern Compiler Implementation in ML" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add more references to Modern Compiler Implementation in ML" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
