@@ -13,6 +13,7 @@ import com.google.common.collect.Multimap;
 import java.util.*;
 
 public class GlobalValueNumbering extends BooleanFunctionPass {
+    public static final int RECURSION_LIMIT = 100;
     private final LengauerTarjan<Block> dominators;
     private final Map<Value, Integer> valueNumbering;
     private final Map<Expression, Integer> expressionNumbering;
@@ -119,9 +120,9 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
     }
 
     public boolean processInstruction(Instruction instruction) {
-        // TODO: attempt to simplify instruction
+        Value simplified = InstructionSimplify.simplifyInstruction(instruction, RECURSION_LIMIT);
         int nextNum = nextValueNumber;
-        int valueNumber = lookupOrAdd(instruction);
+        int valueNumber = lookupOrAdd(simplified);
         if (valueNumber >= nextNum) {
             // New value number, don't need to look for existing values that dominate this instruction.
             leaderTable.put(valueNumber, new Pair<>(instruction.getParent(), instruction));

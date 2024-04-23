@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fill out README for com.d_m.dom and com.d_m.construct">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fill out README for com.d_m.ssa">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/InstructionSimplify.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,14 +216,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00041" summary="Improve pretty printing and use it for unit test">
-      <option name="closed" value="true" />
-      <created>1711331803599</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1711331803599</updated>
     </task>
     <task id="LOCAL-00042" summary="Fixes for pretty printing and unnamed SSA conversion and adds unit test for recursive function call">
       <option name="closed" value="true" />
@@ -608,11 +601,18 @@
       <option name="project" value="LOCAL" />
       <updated>1713709352158</updated>
     </task>
-    <option name="localTasksCounter" value="90" />
+    <task id="LOCAL-00090" summary="Fill out README for com.d_m.ssa">
+      <option name="closed" value="true" />
+      <created>1713714109925</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1713714109925</updated>
+    </task>
+    <option name="localTasksCounter" value="91" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Pass in Symbol when pretty printing three address code" />
     <MESSAGE value="Add test for loop postbody" />
     <MESSAGE value="Separate out liveness from cfg.Block constructor" />
     <MESSAGE value="Start printing out SSA graph in graphviz and improve pretty printer" />
@@ -637,7 +637,8 @@
     <MESSAGE value="Adds documentation to IBlock and fills out README for com.d_m.code and com.d_m.cfg" />
     <MESSAGE value="Add more references to Modern Compiler Implementation in ML" />
     <MESSAGE value="Fill out README for com.d_m.dom and com.d_m.construct" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fill out README for com.d_m.dom and com.d_m.construct" />
+    <MESSAGE value="Fill out README for com.d_m.ssa" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fill out README for com.d_m.ssa" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
