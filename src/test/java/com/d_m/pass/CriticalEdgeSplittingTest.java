@@ -20,18 +20,20 @@ import static org.junit.jupiter.api.Assertions.*;
 class CriticalEdgeSplittingTest {
     Fresh fresh;
     Symbol symbol;
+    ConstantTable constants;
 
     @BeforeEach
     void setUp() {
         fresh = new FreshImpl();
         symbol = new SymbolImpl(fresh);
+        constants = new ConstantTable(fresh);
     }
 
     Function figure_19_2() {
         Argument x = new Argument(fresh.fresh(), "x", new IntegerType(), null, 0);
         Function function = new Function(fresh.fresh(), "go", null, null, List.of(x));
-        Constant zero = new ConstantInt(fresh.fresh(), 0);
-        Constant four = new ConstantInt(fresh.fresh(), 4);
+        Constant zero = constants.get(0);
+        Constant four = constants.get(4);
 
         // b1 <- M[x]
         Instruction b1 = new Instruction(fresh.fresh(), "b", new IntegerType(), Operator.LOAD, List.of(x));
@@ -81,9 +83,9 @@ class CriticalEdgeSplittingTest {
         Argument n = new Argument(fresh.fresh(), "n", new IntegerType(), null, 10);
         Function function = new Function(fresh.fresh(), "go", null, null, List.of(a, b, c, n));
 
-        Constant zero = new ConstantInt(fresh.fresh(), 0);
-        Constant one = new ConstantInt(fresh.fresh(), 1);
-        Constant two = new ConstantInt(fresh.fresh(), 2);
+        Constant zero = constants.get(0);
+        Constant one = constants.get(1);
+        Constant two = constants.get(2);
 
         // a1 <- 0
         Instruction a1 = new Instruction(fresh.fresh(), "a", new IntegerType(), Operator.ASSIGN, List.of(zero));

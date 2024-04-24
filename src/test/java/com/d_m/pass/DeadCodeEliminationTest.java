@@ -11,6 +11,7 @@ import com.d_m.dom.DefinitionSites;
 import com.d_m.dom.DominanceFrontier;
 import com.d_m.dom.Examples;
 import com.d_m.dom.LengauerTarjan;
+import com.d_m.ssa.ConstantTable;
 import com.d_m.ssa.Module;
 import com.d_m.ssa.PrettyPrinter;
 import com.d_m.ssa.SsaConverter;
@@ -31,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DeadCodeEliminationTest {
     Fresh fresh;
     Symbol symbol;
+    ConstantTable constants;
     ThreeAddressCode threeAddressCode;
     DominanceFrontier<Block> frontier;
     DefinitionSites defsites;
@@ -39,6 +41,7 @@ class DeadCodeEliminationTest {
     void setUp() {
         fresh = new FreshImpl();
         symbol = new SymbolImpl(fresh);
+        constants = new ConstantTable(fresh);
     }
 
     Block toCfg(List<Statement> statements) throws ShortCircuitException {
@@ -71,7 +74,7 @@ class DeadCodeEliminationTest {
         new InsertPhisMinimal(symbol, defsites, frontier).run();
         new UniqueRenamer(symbol).rename(cfg);
         Program<Block> program = new Program<>(List.of(), List.of(fibonacciDeclaration), cfg);
-        SsaConverter converter = new SsaConverter(fresh, symbol);
+        SsaConverter converter = new SsaConverter(fresh, symbol, constants);
         Module module = converter.convertProgram(program);
 
         FunctionPass<Boolean> deadcode = new DeadCodeElimination();

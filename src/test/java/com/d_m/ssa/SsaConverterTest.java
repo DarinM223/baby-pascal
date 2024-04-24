@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SsaConverterTest {
     Fresh fresh;
     Symbol symbol;
+    ConstantTable constants;
     ThreeAddressCode threeAddressCode;
     DominanceFrontier<Block> frontier;
     DefinitionSites defsites;
@@ -36,6 +37,7 @@ class SsaConverterTest {
     void setUp() {
         fresh = new FreshImpl();
         symbol = new SymbolImpl(fresh);
+        constants = new ConstantTable(fresh);
     }
 
     Block toCfg(List<Statement> statements) throws ShortCircuitException {
@@ -54,7 +56,7 @@ class SsaConverterTest {
         new InsertPhisMinimal(symbol, defsites, frontier).run();
         new UniqueRenamer(symbol).rename(cfg);
         Program<Block> program = new Program<>(List.of(), List.of(), cfg);
-        SsaConverter converter = new SsaConverter(fresh, symbol);
+        SsaConverter converter = new SsaConverter(fresh, symbol, constants);
         Module module = converter.convertProgram(program);
 
         StringWriter writer = new StringWriter();
@@ -130,7 +132,7 @@ class SsaConverterTest {
         new InsertPhisMinimal(symbol, defsites, frontier).run();
         new UniqueRenamer(symbol).rename(cfg);
         Program<Block> program = new Program<>(List.of(), List.of(fibonacciDeclaration), cfg);
-        SsaConverter converter = new SsaConverter(fresh, symbol);
+        SsaConverter converter = new SsaConverter(fresh, symbol, constants);
         Module module = converter.convertProgram(program);
         StringWriter writer = new StringWriter();
         PrettyPrinter printer = new PrettyPrinter(fresh, symbol, writer);

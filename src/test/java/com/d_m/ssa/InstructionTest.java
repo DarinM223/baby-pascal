@@ -16,8 +16,9 @@ class InstructionTest {
     @Test
     void addOperand() {
         Fresh fresh = new FreshImpl();
-        var one = new ConstantInt(fresh.fresh(), 1);
-        var two = new ConstantInt(fresh.fresh(), 2);
+        ConstantTable constants = new ConstantTable(fresh);
+        var one = constants.get(1);
+        var two = constants.get(2);
         Instruction instruction = new Instruction(fresh.fresh(), null, new IntegerType(), Operator.ADD, List.of(one, two));
 
         assertEquals(Iterables.size(instruction.operands()), 2);

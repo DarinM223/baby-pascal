@@ -2,19 +2,18 @@ package com.d_m.ssa;
 
 import com.d_m.ast.IntegerType;
 import com.d_m.code.Operator;
-import com.d_m.util.Fresh;
 
 import java.io.IOException;
 
 public class ConstantInt extends Constant {
-    private int value;
+    private final int value;
 
-    public ConstantInt(int id, int value) {
+    protected ConstantInt(int id, int value) {
         super(id, null, new IntegerType());
         this.value = value;
     }
 
-    public ConstantInt(int id, String name, int value) {
+    protected ConstantInt(int id, String name, int value) {
         super(id, name, new IntegerType());
         this.value = value;
     }
@@ -34,14 +33,14 @@ public class ConstantInt extends Constant {
     }
 
     @Override
-    public Constant applyOp(Fresh fresh, Operator op, Constant other) {
+    public Constant applyOp(ConstantTable constants, Operator op, Constant other) {
         if (other == null) {
             int result = switch (op) {
                 case NEG -> -value;
                 case NOT -> ~value;
                 default -> throw new UnsupportedOperationException("Invalid UnOp for ConstantInt");
             };
-            return new ConstantInt(fresh.fresh(), result);
+            return constants.get(result);
         } else if (other instanceof ConstantInt otherInt) {
             int result = switch (op) {
                 case ADD -> value + otherInt.value;
@@ -58,7 +57,7 @@ public class ConstantInt extends Constant {
                 case NE -> value != otherInt.value ? 1 : 0;
                 default -> throw new UnsupportedOperationException("Invalid BinOp for ConstantInt");
             };
-            return new ConstantInt(fresh.fresh(), result);
+            return constants.get(result);
         }
         throw new UnsupportedOperationException("ConstantInt can only apply to other ConstantInt");
     }

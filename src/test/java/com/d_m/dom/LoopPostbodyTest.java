@@ -8,6 +8,7 @@ import com.d_m.code.ThreeAddressCode;
 import com.d_m.code.ShortCircuitException;
 import com.d_m.construct.InsertPhisPruned;
 import com.d_m.construct.UniqueRenamer;
+import com.d_m.ssa.ConstantTable;
 import com.d_m.ssa.Module;
 import com.d_m.ssa.PrettyPrinter;
 import com.d_m.ssa.SsaConverter;
@@ -27,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class LoopPostbodyTest {
     Fresh fresh;
     Symbol symbol;
+    ConstantTable constants;
     ThreeAddressCode threeAddressCode;
     DominanceFrontier<Block> frontier;
     DefinitionSites defsites;
@@ -36,6 +38,7 @@ class LoopPostbodyTest {
     void setUp() {
         fresh = new FreshImpl();
         symbol = new SymbolImpl(fresh);
+        constants = new ConstantTable(fresh);
     }
 
     Block toCfg(List<Statement> statements) throws ShortCircuitException {
@@ -107,7 +110,7 @@ class LoopPostbodyTest {
         new InsertPhisPruned(symbol, defsites, frontier).run();
         new UniqueRenamer(symbol).rename(cfg);
         Program<Block> program = new Program<>(List.of(), List.of(), cfg);
-        SsaConverter converter = new SsaConverter(fresh, symbol);
+        SsaConverter converter = new SsaConverter(fresh, symbol, constants);
         Module module = converter.convertProgram(program);
 
         StringWriter writer = new StringWriter();

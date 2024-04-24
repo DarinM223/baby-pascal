@@ -13,13 +13,15 @@ import java.util.*;
 public class SsaConverter {
     private final Fresh fresh;
     private final Symbol symbol;
+    private final ConstantTable constants;
     private final Map<Address, Value> env;
     private final Multimap<Address, Use> unfilled;
     private final Map<com.d_m.cfg.Block, Block> rewrittenBlocks;
 
-    public SsaConverter(Fresh fresh, Symbol symbol) {
+    public SsaConverter(Fresh fresh, Symbol symbol, ConstantTable constants) {
         this.fresh = fresh;
         this.symbol = symbol;
+        this.constants = constants;
         this.env = new HashMap<>();
         this.unfilled = ArrayListMultimap.create();
         this.rewrittenBlocks = new HashMap<>();
@@ -159,7 +161,7 @@ public class SsaConverter {
         Use use = new Use(result, instruction);
         if (result == null) {
             if (address instanceof ConstantAddress(int value)) {
-                ConstantInt rewrittenConstant = new ConstantInt(fresh.fresh(), value);
+                ConstantInt rewrittenConstant = constants.get(value);
                 env.put(address, rewrittenConstant);
                 use.value = rewrittenConstant;
                 rewrittenConstant.linkUse(use);

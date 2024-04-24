@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BlockTest {
     Fresh fresh;
+    ConstantTable constants;
     Instruction instruction1;
     Instruction instruction2;
     Instruction instruction3;
@@ -22,8 +23,9 @@ class BlockTest {
     @BeforeEach
     void setUp() {
         fresh = new FreshImpl();
-        var const1 = new ConstantInt(fresh.fresh(), 1);
-        var const2 = new ConstantInt(fresh.fresh(), 2);
+        constants = new ConstantTable(fresh);
+        var const1 = constants.get(1);
+        var const2 = constants.get(2);
         instruction1 = new Instruction(fresh.fresh(), null, new IntegerType(), Operator.ADD, List.of(const1, const2));
         instruction2 = new Instruction(fresh.fresh(), null, new IntegerType(), Operator.SUB, List.of(instruction1, const1));
         instruction3 = new Instruction(fresh.fresh(), null, new IntegerType(), Operator.MUL, List.of(instruction2, instruction2));

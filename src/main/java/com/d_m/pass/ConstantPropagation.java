@@ -8,15 +8,15 @@ import com.google.common.collect.Iterables;
 import java.util.*;
 
 public class ConstantPropagation extends BooleanFunctionPass {
-    private final Fresh fresh;
+    private final ConstantTable constants;
     private final Map<Value, Lattice> variableMapping;
     private final Set<Block> executableBlocks;
 
     private final List<Instruction> instructionWorklist;
     private final List<Block> blockWorklist;
 
-    public ConstantPropagation(Fresh fresh) {
-        this.fresh = fresh;
+    public ConstantPropagation(ConstantTable constants) {
+        this.constants = constants;
         this.variableMapping = new HashMap<>();
         this.executableBlocks = new HashSet<>();
         this.instructionWorklist = new ArrayList<>();
@@ -222,7 +222,7 @@ public class ConstantPropagation extends BooleanFunctionPass {
                     case Lattice.NeverDefined() -> {
                     }
                     case Lattice.Defined(Constant constant) ->
-                            markDefined(instruction, constant.applyOp(fresh, instruction.getOperator(), null));
+                            markDefined(instruction, constant.applyOp(constants, instruction.getOperator(), null));
                     case Lattice.Overdefined() -> markOverdefined(instruction);
                 }
             }
@@ -236,7 +236,7 @@ public class ConstantPropagation extends BooleanFunctionPass {
                     case Pair(Lattice.NeverDefined(), _), Pair(Lattice.Defined _, Lattice.NeverDefined()) -> {
                     }
                     case Pair(Lattice.Defined(Constant constant1), Lattice.Defined(Constant constant2)) ->
-                            markDefined(instruction, constant1.applyOp(fresh, instruction.getOperator(), constant2));
+                            markDefined(instruction, constant1.applyOp(constants, instruction.getOperator(), constant2));
                 }
             }
             case LT, LE, GT, GE, EQ, NE -> {
@@ -253,7 +253,7 @@ public class ConstantPropagation extends BooleanFunctionPass {
                     case Pair(Lattice.NeverDefined(), _), Pair(Lattice.Defined _, Lattice.NeverDefined()) -> {
                     }
                     case Pair(Lattice.Defined(Constant constant1), Lattice.Defined(Constant constant2)) -> {
-                        Constant result = constant1.applyOp(fresh, instruction.getOperator(), constant2);
+                        Constant result = constant1.applyOp(constants, instruction.getOperator(), constant2);
                         switch (result) {
                             case ConstantInt i when i.getValue() == 1 ->
                                     markExecutable(instruction.getSuccessors().getFirst());
