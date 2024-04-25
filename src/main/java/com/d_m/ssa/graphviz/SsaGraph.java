@@ -5,16 +5,22 @@ import com.d_m.ssa.Module;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class SsaGraph {
     private final Writer writer;
     private final Set<Value> writtenValues;
+    private final Map<Value, Integer> valueToId;
+    private int nextId;
 
     public SsaGraph(Writer writer) {
         this.writer = writer;
         this.writtenValues = new HashSet<>();
+        this.valueToId = new HashMap<>();
+        this.nextId = 0;
     }
 
     public void writeModule(Module module) throws IOException {
@@ -53,15 +59,24 @@ public class SsaGraph {
         }
         writtenValues.add(value);
         if (value instanceof Instruction instruction) {
-            writer.write(value.getId() + "[label=\"" + instruction.getOperator() + (instruction.getName() != null ? " " + instruction.getName() : "") + "\"];\n");
+            writer.write(getId(value) + "[label=\"" + instruction.getOperator() + (instruction.getName() != null ? " " + instruction.getName() : "") + "\"];\n");
         } else if (value instanceof ConstantInt constant) {
-            writer.write(value.getId() + "[label=" + constant.getValue() + "];\n");
+            writer.write(getId(value) + "[label=" + constant.getValue() + "];\n");
         } else if (value.getName() != null) {
-            writer.write(value.getId() + "[label=\"" + value.getName() + "\"];\n");
+            writer.write(getId(value) + "[label=\"" + value.getName() + "\"];\n");
         }
     }
 
     public void writeEdge(Value source, Value destination) throws IOException {
-        writer.write(source.getId() + " -> " + destination.getId() + ";\n");
+        writer.write(getId(source) + " -> " + getId(destination) + ";\n");
+    }
+
+    public int getId(Value value) {
+        Integer id = valueToId.get(value);
+        if (id == null) {
+            id = nextId++;
+            valueToId.put(value, id);
+        }
+        return id;
     }
 }

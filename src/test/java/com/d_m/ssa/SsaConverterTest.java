@@ -60,7 +60,7 @@ class SsaConverterTest {
         Module module = converter.convertProgram(program);
 
         StringWriter writer = new StringWriter();
-        PrettyPrinter printer = new PrettyPrinter(fresh, symbol, writer);
+        PrettyPrinter printer = new PrettyPrinter(fresh, writer);
         printer.writeModule(module);
         String expected = """
                 module main {
@@ -135,7 +135,7 @@ class SsaConverterTest {
         SsaConverter converter = new SsaConverter(fresh, symbol, constants);
         Module module = converter.convertProgram(program);
         StringWriter writer = new StringWriter();
-        PrettyPrinter printer = new PrettyPrinter(fresh, symbol, writer);
+        PrettyPrinter printer = new PrettyPrinter(fresh, writer);
         printer.writeModule(module);
         String expected = """
                 module main {

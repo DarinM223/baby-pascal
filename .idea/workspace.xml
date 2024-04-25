@@ -4,22 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fill out README for com.d_m.ssa">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ConstantTable.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Use ConstantTable to share constants for a program">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Constant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ConstantInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ConstantInt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Function.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Function.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PrettyPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PrettyPrinter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/SsaGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/SsaGraph.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LoopPostbodyTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LoopPostbodyTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/ConstantPropagationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/ConstantPropagationTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/CriticalEdgeSplittingTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/CriticalEdgeSplittingTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/DeadCodeEliminationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/DeadCodeEliminationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/BlockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/BlockTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/InstructionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/InstructionTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/graphviz/SsaGraphTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/graphviz/SsaGraphTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -228,14 +222,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00042" summary="Fixes for pretty printing and unnamed SSA conversion and adds unit test for recursive function call">
-      <option name="closed" value="true" />
-      <created>1711411222547</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1711411222547</updated>
     </task>
     <task id="LOCAL-00043" summary="Start deadcode elimination pass">
       <option name="closed" value="true" />
@@ -621,11 +607,18 @@
       <option name="project" value="LOCAL" />
       <updated>1713714109925</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="Use ConstantTable to share constants for a program">
+      <option name="closed" value="true" />
+      <created>1713925887393</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1713925887394</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add test for loop postbody" />
     <MESSAGE value="Separate out liveness from cfg.Block constructor" />
     <MESSAGE value="Start printing out SSA graph in graphviz and improve pretty printer" />
     <MESSAGE value="Add unit test that opens the SSA graph graphviz image using Swing" />
@@ -650,7 +643,8 @@
     <MESSAGE value="Add more references to Modern Compiler Implementation in ML" />
     <MESSAGE value="Fill out README for com.d_m.dom and com.d_m.construct" />
     <MESSAGE value="Fill out README for com.d_m.ssa" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fill out README for com.d_m.ssa" />
+    <MESSAGE value="Use ConstantTable to share constants for a program" />
+    <option name="LAST_COMMIT_MESSAGE" value="Use ConstantTable to share constants for a program" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

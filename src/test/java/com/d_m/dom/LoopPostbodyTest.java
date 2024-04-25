@@ -114,7 +114,7 @@ class LoopPostbodyTest {
         Module module = converter.convertProgram(program);
 
         StringWriter writer = new StringWriter();
-        PrettyPrinter printer = new PrettyPrinter(fresh, symbol, writer);
+        PrettyPrinter printer = new PrettyPrinter(fresh, writer);
         printer.writeModule(module);
         expected = """
                 module main {

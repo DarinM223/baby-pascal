@@ -136,7 +136,7 @@ class CriticalEdgeSplittingTest {
         Function example = figure_19_2();
 
         StringWriter writer = new StringWriter();
-        PrettyPrinter printer = new PrettyPrinter(fresh, symbol, writer);
+        PrettyPrinter printer = new PrettyPrinter(fresh, writer);
         printer.writeFunction(example);
         String expected = """
                 go(x : int) : void {
@@ -164,7 +164,7 @@ class CriticalEdgeSplittingTest {
         assertTrue(changed);
 
         writer = new StringWriter();
-        printer = new PrettyPrinter(fresh, symbol, writer);
+        printer = new PrettyPrinter(fresh, writer);
         printer.writeFunction(example);
         expected = """
                 go(x : int) : void {
@@ -197,7 +197,7 @@ class CriticalEdgeSplittingTest {
         Function example = figure_19_3();
 
         StringWriter writer = new StringWriter();
-        PrettyPrinter printer = new PrettyPrinter(fresh, symbol, writer);
+        PrettyPrinter printer = new PrettyPrinter(fresh, writer);
         printer.writeFunction(example);
         String expected = """
                 go(a : int, b : int, c : int, n : int) : void {
@@ -225,7 +225,7 @@ class CriticalEdgeSplittingTest {
         assertTrue(changed);
 
         writer = new StringWriter();
-        printer = new PrettyPrinter(fresh, symbol, writer);
+        printer = new PrettyPrinter(fresh, writer);
         printer.writeFunction(example);
         expected = """ 
                 go(a : int, b : int, c : int, n : int) : void {

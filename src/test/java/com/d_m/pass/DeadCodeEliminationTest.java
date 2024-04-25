@@ -82,7 +82,7 @@ class DeadCodeEliminationTest {
         assertTrue(changed);
 
         StringWriter writer = new StringWriter();
-        PrettyPrinter printer = new PrettyPrinter(fresh, symbol, writer);
+        PrettyPrinter printer = new PrettyPrinter(fresh, writer);
         printer.writeModule(module);
 
         String expected = """

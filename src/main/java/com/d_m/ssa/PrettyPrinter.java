@@ -16,15 +16,13 @@ import java.util.Map;
 
 public class PrettyPrinter {
     private final Fresh fresh;
-    private final Symbol symbol;
     private final Map<Value, String> nameMapping;
     private final Map<String, Integer> nameCount;
     private final Writer out;
     private int indentationLevel;
 
-    public PrettyPrinter(Fresh fresh, Symbol symbol, Writer out) {
+    public PrettyPrinter(Fresh fresh, Writer out) {
         this.fresh = fresh;
-        this.symbol = symbol;
         this.out = out;
         this.nameMapping = new HashMap<>();
         this.nameCount = new HashMap<>();
