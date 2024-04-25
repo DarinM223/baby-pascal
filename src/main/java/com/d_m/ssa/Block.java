@@ -4,19 +4,19 @@ import com.d_m.cfg.IBlock;
 
 import java.util.*;
 
-public class Block implements IBlock<Block> {
+public class Block implements IBlock<Block>, Comparable<Block> {
     private final int id;
     private int dominatorTreeLevel;
     private final Function parent;
     private final ListWrapper<Instruction> instructions;
     private final List<Block> predecessors;
 
-    public Block(int id, Function parent, List<Instruction> instructions) {
-        this(id, parent, instructions, new ArrayList<>());
+    public Block(Function parent, List<Instruction> instructions) {
+        this(parent, instructions, new ArrayList<>());
     }
 
-    public Block(int id, Function parent, List<Instruction> instructions, List<Block> predecessors) {
-        this.id = id;
+    public Block(Function parent, List<Instruction> instructions, List<Block> predecessors) {
+        this.id = IdGenerator.newId();
         this.parent = parent;
         this.instructions = new ListWrapper<>();
         this.predecessors = predecessors;
@@ -70,10 +70,6 @@ public class Block implements IBlock<Block> {
         return null;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public int getDominatorTreeLevel() {
         return dominatorTreeLevel;
     }
@@ -84,5 +80,10 @@ public class Block implements IBlock<Block> {
 
     public Function getParent() {
         return parent;
+    }
+
+    @Override
+    public int compareTo(Block o) {
+        return Integer.compare(this.id, o.id);
     }
 }

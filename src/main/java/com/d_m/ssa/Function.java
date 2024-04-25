@@ -2,7 +2,6 @@ package com.d_m.ssa;
 
 import com.d_m.ast.Type;
 import com.d_m.code.Operator;
-import com.d_m.util.Fresh;
 import com.google.common.collect.Iterators;
 
 import java.io.IOException;
@@ -12,11 +11,11 @@ import java.util.List;
 
 public class Function extends Constant {
     private Module parent;
-    private List<Argument> arguments;
-    private List<Block> blocks;
+    private final List<Argument> arguments;
+    private final List<Block> blocks;
 
-    public Function(int id, String name, Type returnType, Module parent, List<Argument> arguments) {
-        super(id, name, returnType);
+    public Function(String name, Type returnType, Module parent, List<Argument> arguments) {
+        super(name, returnType);
         this.parent = parent;
         this.arguments = arguments;
         this.blocks = new ArrayList<>();
@@ -54,7 +53,7 @@ public class Function extends Constant {
     }
 
     @Override
-    public Constant applyOp(ConstantTable constants, Operator op, Constant other) {
+    public Constant applyOp(Operator op, Constant other) {
         throw new UnsupportedOperationException("Cannot apply operator to Function");
     }
 }

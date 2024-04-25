@@ -10,16 +10,16 @@ public class Instruction extends Value implements Listable<Instruction> {
     private Block parent;
     protected Instruction prev;
     protected Instruction next;
-    private Operator operator;
+    private final Operator operator;
     protected List<Use> operands;
     protected List<Block> successors;
 
-    public Instruction(int id, String name, Type type, Operator operator) {
-        this(id, name, type, operator, List.of());
+    public Instruction(String name, Type type, Operator operator) {
+        this(name, type, operator, List.of());
     }
 
-    public Instruction(int id, String name, Type type, Operator operator, List<Value> operands) {
-        super(id, name, type);
+    public Instruction(String name, Type type, Operator operator, List<Value> operands) {
+        super(name, type);
         this.operator = operator;
         this.operands = new ArrayList<>(operands.stream().map(this::valueToUse).toList());
         this.successors = new ArrayList<>();

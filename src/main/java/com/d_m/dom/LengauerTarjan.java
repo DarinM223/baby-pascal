@@ -6,16 +6,16 @@ import com.google.common.collect.*;
 
 import java.util.*;
 
-public class LengauerTarjan<Block extends IBlock<Block>> {
+public class LengauerTarjan<Block extends IBlock<Block> & Comparable<Block>> {
     private int N;
-    private final Map<Integer, Integer> dfnum;
-    private final Map<Integer, Block> parent;
-    private final Map<Integer, Integer> semi;
-    private final Map<Integer, Integer> ancestor;
-    private final Map<Integer, Integer> best;
-    private final Map<Integer, Block> idom;
+    private final Map<Block, Integer> dfnum;
+    private final Map<Block, Block> parent;
+    private final Map<Block, Block> semi;
+    private final Map<Block, Block> ancestor;
+    private final Map<Block, Block> best;
+    private final Map<Block, Block> idom;
     private final List<Block> vertex;
-    private final Multimap<Integer, Block> domTree;
+    private final Multimap<Block, Block> domTree;
 
     public LengauerTarjan(List<Block> blocks, Block entry) {
         int size = blocks.size();
@@ -31,34 +31,34 @@ public class LengauerTarjan<Block extends IBlock<Block>> {
             vertex.add(i, null);
         }
         domTree = ArrayListMultimap.create();
-        Multimap<Integer, Integer> bucket = TreeMultimap.create();
-        Map<Integer, Integer> samedom = new HashMap<>(size);
+        Multimap<Block, Block> bucket = TreeMultimap.create();
+        Map<Block, Block> samedom = new HashMap<>(size);
         dfs(null, entry);
         for (int i = N - 1; i >= 1; i--) {
             Block n = vertex.get(i);
-            Block p = parent.get(n.getId());
-            int s = p.getId();
+            Block p = parent.get(n);
+            Block s = p;
             for (Block v : n.getPredecessors()) {
-                int s2 = dfnum(v.getId()) <= dfnum(n.getId()) ? v.getId() : semi.get(ancestorWithLowestSemi(v.getId()));
+                Block s2 = dfnum(v) <= dfnum(n) ? v : semi.get(ancestorWithLowestSemi(v));
                 if (dfnum(s2) < dfnum(s)) {
                     s = s2;
                 }
             }
-            semi.put(n.getId(), s);
-            bucket.put(s, n.getId());
-            link(p.getId(), n.getId());
-            for (int v : bucket.get(p.getId())) {
-                int y = ancestorWithLowestSemi(v);
+            semi.put(n, s);
+            bucket.put(s, n);
+            link(p, n);
+            for (Block v : bucket.get(p)) {
+                Block y = ancestorWithLowestSemi(v);
                 if (semi.get(y).equals(semi.get(v))) {
                     idom.put(v, p);
                 } else {
                     samedom.put(v, y);
                 }
             }
-            bucket.removeAll(p.getId());
+            bucket.removeAll(p);
         }
         for (int i = 1; i < N; i++) {
-            int n = vertex.get(i).getId();
+            Block n = vertex.get(i);
             if (samedom.get(n) != null) {
                 idom.put(n, idom.get(samedom.get(n)));
             }
@@ -67,7 +67,7 @@ public class LengauerTarjan<Block extends IBlock<Block>> {
         // Calculate dominator tree from idom.
         for (Block block : blocks) {
             try {
-                domTree.put(idom(block).getId(), block);
+                domTree.put(idom(block), block);
             } catch (NullPointerException _) {
             }
         }
@@ -80,14 +80,14 @@ public class LengauerTarjan<Block extends IBlock<Block>> {
             int level = pair.a();
             Block block = pair.b();
             block.setDominatorTreeLevel(level);
-            for (Block domChild : domTree.get(block.getId())) {
+            for (Block domChild : domTree.get(block)) {
                 worklist.add(new Pair<>(level + 1, domChild));
             }
         }
     }
 
     public Block idom(Block block) {
-        return idom.get(block.getId());
+        return idom.get(block);
     }
 
     public boolean idoms(Block block1, Block block2) {
@@ -126,13 +126,13 @@ public class LengauerTarjan<Block extends IBlock<Block>> {
     }
 
     public Collection<Block> domChildren(Block block) {
-        return domTree.get(block.getId());
+        return domTree.get(block);
     }
 
-    private int ancestorWithLowestSemi(int v) {
-        int a = ancestor.get(v);
+    private Block ancestorWithLowestSemi(Block v) {
+        Block a = ancestor.get(v);
         if (ancestor.get(a) != null) {
-            int b = ancestorWithLowestSemi(a);
+            Block b = ancestorWithLowestSemi(a);
             ancestor.put(v, ancestor.get(a));
             if (dfnum(semi.get(b)) < dfnum(semi.get(best.get(v)))) {
                 best.put(v, b);
@@ -141,17 +141,17 @@ public class LengauerTarjan<Block extends IBlock<Block>> {
         return best.get(v);
     }
 
-    private void link(int p, int n) {
+    private void link(Block p, Block n) {
         ancestor.put(n, p);
         best.put(n, n);
     }
 
     private void dfs(Block p, Block n) {
-        if (!dfnum.containsKey(n.getId())) {
-            dfnum.put(n.getId(), N);
+        if (!dfnum.containsKey(n)) {
+            dfnum.put(n, N);
             vertex.set(N, n);
             if (p != null) {
-                parent.put(n.getId(), p);
+                parent.put(n, p);
             }
             N++;
             for (Block w : n.getSuccessors()) {
@@ -160,7 +160,7 @@ public class LengauerTarjan<Block extends IBlock<Block>> {
         }
     }
 
-    private int dfnum(int id) {
-        return dfnum.getOrDefault(id, 0);
+    private int dfnum(Block block) {
+        return dfnum.getOrDefault(block, 0);
     }
 }

@@ -28,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class SsaConverterTest {
     Fresh fresh;
     Symbol symbol;
-    ConstantTable constants;
     ThreeAddressCode threeAddressCode;
     DominanceFrontier<Block> frontier;
     DefinitionSites defsites;
@@ -37,7 +36,6 @@ class SsaConverterTest {
     void setUp() {
         fresh = new FreshImpl();
         symbol = new SymbolImpl(fresh);
-        constants = new ConstantTable(fresh);
     }
 
     Block toCfg(List<Statement> statements) throws ShortCircuitException {
@@ -56,55 +54,55 @@ class SsaConverterTest {
         new InsertPhisMinimal(symbol, defsites, frontier).run();
         new UniqueRenamer(symbol).rename(cfg);
         Program<Block> program = new Program<>(List.of(), List.of(), cfg);
-        SsaConverter converter = new SsaConverter(fresh, symbol, constants);
+        SsaConverter converter = new SsaConverter(symbol);
         Module module = converter.convertProgram(program);
 
         StringWriter writer = new StringWriter();
-        PrettyPrinter printer = new PrettyPrinter(fresh, writer);
+        PrettyPrinter printer = new PrettyPrinter(writer);
         printer.writeModule(module);
         String expected = """
                 module main {
                   main() : void {
-                    block l8 [] {
-                      %47 <- GOTO() [l15]
+                    block l0 [] {
+                      %0 <- GOTO() [l1]
                     }
-                    block l15 [l8] {
+                    block l1 [l0] {
                       i <- 1
                       j <- 1
                       k <- 0
-                      %48 <- GOTO() [l21]
+                      %1 <- GOTO() [l2]
                     }
-                    block l21 [l15, l33, l45] {
+                    block l2 [l1, l3, l4] {
                       j2 <- Φ(j, j3, j4)
                       k2 <- Φ(k, k3, k4)
-                      %49 <- k2 < 100 [l24, l27]
+                      %2 <- k2 < 100 [l5, l6]
                     }
-                    block l24 [l21] {
-                      %50 <- j2 < 20 [l33, l36]
+                    block l5 [l2] {
+                      %3 <- j2 < 20 [l3, l7]
                     }
-                    block l27 [l21] {
-                      %51 <- GOTO 15 [l38]
+                    block l6 [l2] {
+                      %4 <- GOTO 15 [l8]
                     }
-                    block l33 [l24] {
+                    block l3 [l5] {
                       j3 <- i
-                      %52 <- k2 + 1
-                      k3 <- %52
-                      %53 <- GOTO 3 [l21]
+                      %5 <- k2 + 1
+                      k3 <- %5
+                      %6 <- GOTO 3 [l2]
                     }
-                    block l36 [l24] {
-                      %54 <- GOTO 11 [l45]
+                    block l7 [l5] {
+                      %7 <- GOTO 11 [l4]
                     }
-                    block l38 [l27] {
-                      %55 <- NOP()
-                      %56 <- GOTO() [l46]
+                    block l8 [l6] {
+                      %8 <- NOP()
+                      %9 <- GOTO() [l9]
                     }
-                    block l45 [l36] {
+                    block l4 [l7] {
                       j4 <- k2
-                      %57 <- k2 + 2
-                      k4 <- %57
-                      %58 <- GOTO 3 [l21]
+                      %10 <- k2 + 2
+                      k4 <- %10
+                      %11 <- GOTO 3 [l2]
                     }
-                    block l46 [l38] {
+                    block l9 [l8] {
                     }
                   }
                 }
@@ -132,60 +130,60 @@ class SsaConverterTest {
         new InsertPhisMinimal(symbol, defsites, frontier).run();
         new UniqueRenamer(symbol).rename(cfg);
         Program<Block> program = new Program<>(List.of(), List.of(fibonacciDeclaration), cfg);
-        SsaConverter converter = new SsaConverter(fresh, symbol, constants);
+        SsaConverter converter = new SsaConverter(symbol);
         Module module = converter.convertProgram(program);
         StringWriter writer = new StringWriter();
-        PrettyPrinter printer = new PrettyPrinter(fresh, writer);
+        PrettyPrinter printer = new PrettyPrinter(writer);
         printer.writeModule(module);
         String expected = """
                 module main {
                   main() : void {
-                    block l16 [] {
-                      %56 <- GOTO() [l27]
+                    block l0 [] {
+                      %0 <- GOTO() [l1]
                     }
-                    block l27 [l16] {
-                      %57 <- 2 + 3
-                      number <- %57
-                      %58 <- PARAM number
-                      %59 <- fibonacci CALL 1
-                      result <- %59
-                      %60 <- NOP()
-                      %61 <- GOTO() [l29]
+                    block l1 [l0] {
+                      %1 <- 2 + 3
+                      number <- %1
+                      %2 <- PARAM number
+                      %3 <- fibonacci CALL 1
+                      result <- %3
+                      %4 <- NOP()
+                      %5 <- GOTO() [l2]
                     }
-                    block l29 [l27] {
+                    block l2 [l1] {
                     }
                   }
                   fibonacci(n : int) : int {
-                    block l30 [] {
-                      %62 <- GOTO() [l33]
+                    block l3 [] {
+                      %6 <- GOTO() [l4]
                     }
-                    block l33 [l30] {
-                      %63 <- n <= 1 [l37, l40]
+                    block l4 [l3] {
+                      %7 <- n <= 1 [l5, l6]
                     }
-                    block l37 [l33] {
+                    block l5 [l4] {
                       fibonacci2 <- n
-                      %64 <- GOTO 12 [l43]
+                      %8 <- GOTO 12 [l7]
                     }
-                    block l40 [l33] {
-                      %65 <- GOTO 4 [l53]
+                    block l6 [l4] {
+                      %9 <- GOTO 4 [l8]
                     }
-                    block l43 [l37, l53] {
+                    block l7 [l5, l8] {
                       fibonacci3 <- Φ(fibonacci2, fibonacci4)
-                      %66 <- NOP()
-                      %67 <- GOTO() [l55]
+                      %10 <- NOP()
+                      %11 <- GOTO() [l9]
                     }
-                    block l53 [l40] {
-                      %68 <- n - 1
-                      %69 <- PARAM %68
-                      %70 <- fibonacci CALL 1
-                      %71 <- n - 2
-                      %72 <- PARAM %71
-                      %73 <- fibonacci CALL 1
-                      %74 <- %70 + %73
-                      fibonacci4 <- %74
-                      %75 <- GOTO() [l43]
+                    block l8 [l6] {
+                      %12 <- n - 1
+                      %13 <- PARAM %12
+                      %14 <- fibonacci CALL 1
+                      %15 <- n - 2
+                      %16 <- PARAM %15
+                      %17 <- fibonacci CALL 1
+                      %18 <- %14 + %17
+                      fibonacci4 <- %18
+                      %19 <- GOTO() [l7]
                     }
-                    block l55 [l43] {
+                    block l9 [l7] {
                     }
                   }
                 }

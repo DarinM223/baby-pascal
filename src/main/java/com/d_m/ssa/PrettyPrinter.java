@@ -6,7 +6,7 @@ import com.d_m.ast.IntegerType;
 import com.d_m.ast.Type;
 import com.d_m.code.Operator;
 import com.d_m.util.Fresh;
-import com.d_m.util.Symbol;
+import com.d_m.util.FreshImpl;
 import com.google.common.collect.Iterables;
 
 import java.io.IOException;
@@ -15,17 +15,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PrettyPrinter {
-    private final Fresh fresh;
+    private final Fresh freshNames;
+    private final Fresh freshBlocks;
     private final Map<Value, String> nameMapping;
     private final Map<String, Integer> nameCount;
+    private final Map<Block, Integer> blockId;
     private final Writer out;
     private int indentationLevel;
 
-    public PrettyPrinter(Fresh fresh, Writer out) {
-        this.fresh = fresh;
+    public PrettyPrinter(Writer out) {
         this.out = out;
+        this.freshNames = new FreshImpl();
+        this.freshBlocks = new FreshImpl();
         this.nameMapping = new HashMap<>();
         this.nameCount = new HashMap<>();
+        this.blockId = new HashMap<>();
         this.indentationLevel = 0;
     }
 
@@ -88,11 +92,11 @@ public class PrettyPrinter {
     public void writeBlock(Block block) throws IOException {
         start();
         out.write("block l");
-        out.write(Integer.toString(block.getId()));
+        out.write(Integer.toString(getBlockId(block)));
         out.write(" [");
         for (var it = block.getPredecessors().iterator(); it.hasNext(); ) {
             Block predecessor = it.next();
-            out.write("l" + predecessor.getId());
+            out.write("l" + getBlockId(predecessor));
             if (it.hasNext()) {
                 out.write(", ");
             }
@@ -153,7 +157,7 @@ public class PrettyPrinter {
             out.write(" [");
             for (var it = instruction.getSuccessors().iterator(); it.hasNext(); ) {
                 Block successor = it.next();
-                out.write("l" + successor.getId());
+                out.write("l" + getBlockId(successor));
                 if (it.hasNext()) {
                     out.write(", ");
                 }
@@ -195,7 +199,7 @@ public class PrettyPrinter {
         String result = nameMapping.get(value);
         if (result == null) {
             if (value.getName() == null) {
-                result = "%" + fresh.fresh();
+                result = "%" + freshNames.fresh();
                 nameMapping.put(value, result);
             } else {
                 Integer newCount = nameCount.get(value.getName());
@@ -211,5 +215,14 @@ public class PrettyPrinter {
             }
         }
         return result;
+    }
+
+    private int getBlockId(Block block) {
+        Integer id = blockId.get(block);
+        if (id == null) {
+            id = freshBlocks.fresh();
+            blockId.put(block, id);
+        }
+        return id;
     }
 }

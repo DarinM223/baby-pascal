@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BlockTest {
     Fresh fresh;
-    ConstantTable constants;
     Instruction instruction1;
     Instruction instruction2;
     Instruction instruction3;
@@ -23,24 +22,23 @@ class BlockTest {
     @BeforeEach
     void setUp() {
         fresh = new FreshImpl();
-        constants = new ConstantTable(fresh);
-        var const1 = constants.get(1);
-        var const2 = constants.get(2);
-        instruction1 = new Instruction(fresh.fresh(), null, new IntegerType(), Operator.ADD, List.of(const1, const2));
-        instruction2 = new Instruction(fresh.fresh(), null, new IntegerType(), Operator.SUB, List.of(instruction1, const1));
-        instruction3 = new Instruction(fresh.fresh(), null, new IntegerType(), Operator.MUL, List.of(instruction2, instruction2));
-        function = new Function(fresh.fresh(), "foo", new IntegerType(), null, List.of());
+        var const1 = Constants.get(1);
+        var const2 = Constants.get(2);
+        instruction1 = new Instruction(null, new IntegerType(), Operator.ADD, List.of(const1, const2));
+        instruction2 = new Instruction(null, new IntegerType(), Operator.SUB, List.of(instruction1, const1));
+        instruction3 = new Instruction(null, new IntegerType(), Operator.MUL, List.of(instruction2, instruction2));
+        function = new Function("foo", new IntegerType(), null, List.of());
     }
 
     @Test
     void addInstructionToFront() {
-        Block block = new Block(fresh.fresh(), function, List.of(
+        Block block = new Block(function, List.of(
                 instruction1,
                 instruction2,
                 instruction3
         ));
-        instruction3.getSuccessors().add(new Block(fresh.fresh(), function, List.of()));
-        instruction3.getSuccessors().add(new Block(fresh.fresh(), function, List.of()));
+        instruction3.getSuccessors().add(new Block(function, List.of()));
+        instruction3.getSuccessors().add(new Block(function, List.of()));
         assertEquals(block.getInstructions().first, instruction1);
         assertEquals(block.getTerminator(), instruction3);
         assertEquals(block.getSuccessors().size(), 2);
@@ -49,7 +47,7 @@ class BlockTest {
 
     @Test
     void addInstructionBeforeTerminator() {
-        Block block = new Block(fresh.fresh(), function, List.of());
+        Block block = new Block(function, List.of());
         block.getInstructions().addBeforeLast(instruction1);
         assertEquals(Iterables.size(block.getInstructions()), 0);
 

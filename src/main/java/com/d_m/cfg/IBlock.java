@@ -8,8 +8,6 @@ package com.d_m.cfg;
  * @param <T> The block type.
  */
 public interface IBlock<T> {
-    int getId();
-
     Iterable<T> getPredecessors();
 
     Iterable<T> getSuccessors();

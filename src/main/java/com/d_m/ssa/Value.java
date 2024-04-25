@@ -12,8 +12,8 @@ public abstract class Value {
     protected Type type;
     protected Use uses = null;
 
-    protected Value(int id, String name, Type type) {
-        this.id = id;
+    protected Value(String name, Type type) {
+        this.id = IdGenerator.newId();
         this.name = name;
         this.type = type;
     }

@@ -7,7 +7,7 @@ import com.google.common.collect.Multimap;
 
 import java.util.*;
 
-public class LoopNesting<Block extends IBlock<Block>> {
+public class LoopNesting<Block extends IBlock<Block> & Comparable<Block>> {
     private final LengauerTarjan<Block> dominators;
     private final Multimap<Block, Block> loopNestSuccessors;
     private final Multimap<Block, Block> loop;

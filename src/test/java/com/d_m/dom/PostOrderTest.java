@@ -1,6 +1,5 @@
 package com.d_m.dom;
 
-import com.d_m.cfg.IBlock;
 import com.d_m.util.Fresh;
 import com.d_m.util.FreshImpl;
 import org.junit.jupiter.api.Test;
@@ -34,7 +33,7 @@ class PostOrderTest {
         assertEquals(printTraversal(new PostOrder<SimpleBlock>().runBackwards(block4).reversed()), "[3, 2, 1, 0]");
     }
 
-    static <Block extends IBlock<Block>> String printTraversal(Iterable<Block> blocks) {
+    static String printTraversal(Iterable<SimpleBlock> blocks) {
         StringBuilder builder = new StringBuilder();
         builder.append("[");
         for (var it = blocks.iterator(); it.hasNext(); ) {

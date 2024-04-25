@@ -8,7 +8,6 @@ import com.d_m.code.ThreeAddressCode;
 import com.d_m.code.ShortCircuitException;
 import com.d_m.construct.InsertPhisPruned;
 import com.d_m.construct.UniqueRenamer;
-import com.d_m.ssa.ConstantTable;
 import com.d_m.ssa.Module;
 import com.d_m.ssa.PrettyPrinter;
 import com.d_m.ssa.SsaConverter;
@@ -28,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class LoopPostbodyTest {
     Fresh fresh;
     Symbol symbol;
-    ConstantTable constants;
     ThreeAddressCode threeAddressCode;
     DominanceFrontier<Block> frontier;
     DefinitionSites defsites;
@@ -38,7 +36,6 @@ class LoopPostbodyTest {
     void setUp() {
         fresh = new FreshImpl();
         symbol = new SymbolImpl(fresh);
-        constants = new ConstantTable(fresh);
     }
 
     Block toCfg(List<Statement> statements) throws ShortCircuitException {
@@ -110,60 +107,60 @@ class LoopPostbodyTest {
         new InsertPhisPruned(symbol, defsites, frontier).run();
         new UniqueRenamer(symbol).rename(cfg);
         Program<Block> program = new Program<>(List.of(), List.of(), cfg);
-        SsaConverter converter = new SsaConverter(fresh, symbol, constants);
+        SsaConverter converter = new SsaConverter(symbol);
         Module module = converter.convertProgram(program);
 
         StringWriter writer = new StringWriter();
-        PrettyPrinter printer = new PrettyPrinter(fresh, writer);
+        PrettyPrinter printer = new PrettyPrinter(writer);
         printer.writeModule(module);
         expected = """
                 module main {
                   main() : void {
-                    block l8 [] {
-                      %51 <- GOTO() [l15]
+                    block l0 [] {
+                      %0 <- GOTO() [l1]
                     }
-                    block l15 [l8] {
+                    block l1 [l0] {
                       i <- 1
                       j <- 1
                       k <- 0
-                      %52 <- GOTO() [l21]
+                      %1 <- GOTO() [l2]
                     }
-                    block l21 [l15, l42] {
+                    block l2 [l1, l3] {
                       j2 <- Φ(j, j3)
                       k2 <- Φ(k, k3)
-                      %53 <- k2 < 100 [l24, l27]
+                      %2 <- k2 < 100 [l4, l5]
                     }
-                    block l24 [l21] {
-                      %54 <- j2 < 20 [l33, l36]
+                    block l4 [l2] {
+                      %3 <- j2 < 20 [l6, l7]
                     }
-                    block l27 [l21] {
-                      %55 <- GOTO 15 [l38]
+                    block l5 [l2] {
+                      %4 <- GOTO 15 [l8]
                     }
-                    block l33 [l24] {
+                    block l6 [l4] {
                       j4 <- i
-                      %56 <- k2 + 1
-                      k4 <- %56
-                      %57 <- GOTO 3 [l42]
+                      %5 <- k2 + 1
+                      k4 <- %5
+                      %6 <- GOTO 3 [l3]
                     }
-                    block l36 [l24] {
-                      %58 <- GOTO 11 [l49]
+                    block l7 [l4] {
+                      %7 <- GOTO 11 [l9]
                     }
-                    block l38 [l27] {
-                      %59 <- NOP()
-                      %60 <- GOTO() [l50]
+                    block l8 [l5] {
+                      %8 <- NOP()
+                      %9 <- GOTO() [l10]
                     }
-                    block l42 [l33, l49] {
+                    block l3 [l6, l9] {
                       j3 <- Φ(j4, j5)
                       k3 <- Φ(k4, k5)
-                      %61 <- GOTO() [l21]
+                      %10 <- GOTO() [l2]
                     }
-                    block l49 [l36] {
+                    block l9 [l7] {
                       j5 <- k2
-                      %62 <- k2 + 2
-                      k5 <- %62
-                      %63 <- GOTO 3 [l42]
+                      %11 <- k2 + 2
+                      k5 <- %11
+                      %12 <- GOTO 3 [l3]
                     }
-                    block l50 [l38] {
+                    block l10 [l8] {
                     }
                   }
                 }

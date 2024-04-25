@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class SimpleBlock implements IBlock<SimpleBlock> {
+public class SimpleBlock implements IBlock<SimpleBlock>, Comparable<SimpleBlock> {
     private final int id;
     private final List<SimpleBlock> successors;
     private final List<SimpleBlock> predecessors;
@@ -23,7 +23,6 @@ public class SimpleBlock implements IBlock<SimpleBlock> {
         this.dominatorTreeLevel = -1;
     }
 
-    @Override
     public int getId() {
         return id;
     }
@@ -58,5 +57,10 @@ public class SimpleBlock implements IBlock<SimpleBlock> {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    @Override
+    public int compareTo(SimpleBlock o) {
+        return Integer.compare(this.id, o.id);
     }
 }

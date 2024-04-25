@@ -8,9 +8,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DominanceFrontier<Block extends IBlock<Block>> {
+public class DominanceFrontier<Block extends IBlock<Block> & Comparable<Block>> {
     private final LengauerTarjan<Block> dominators;
-    private final Multimap<Integer, Block> df;
+    private final Multimap<Block, Block> df;
 
     public DominanceFrontier(LengauerTarjan<Block> dominators, Block entry) {
         this.dominators = dominators;
@@ -19,7 +19,7 @@ public class DominanceFrontier<Block extends IBlock<Block>> {
     }
 
     public Collection<Block> dominanceFrontier(Block block) {
-        return df.get(block.getId());
+        return df.get(block);
     }
 
     private void computeDF(Block n) {
@@ -42,6 +42,6 @@ public class DominanceFrontier<Block extends IBlock<Block>> {
             }
         }
 
-        df.putAll(n.getId(), S);
+        df.putAll(n, S);
     }
 }

@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class PhiNode extends Instruction {
-    public PhiNode(int id, String name, List<Value> operands) {
-        super(id, name, getType(operands), Operator.PHI, operands);
+    public PhiNode(String name, List<Value> operands) {
+        super(name, getType(operands), Operator.PHI, operands);
     }
 
     public void addOperand(Value operand) {

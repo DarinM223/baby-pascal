@@ -9,7 +9,6 @@ import com.d_m.code.ShortCircuitException;
 import com.d_m.construct.InsertPhisPruned;
 import com.d_m.construct.UniqueRenamer;
 import com.d_m.dom.*;
-import com.d_m.ssa.ConstantTable;
 import com.d_m.ssa.Module;
 import com.d_m.ssa.SsaConverter;
 import com.d_m.util.Fresh;
@@ -27,7 +26,6 @@ import java.util.List;
 class SsaGraphTest {
     Fresh fresh;
     Symbol symbol;
-    ConstantTable constants;
     ThreeAddressCode threeAddressCode;
     DominanceFrontier<Block> frontier;
     DefinitionSites defsites;
@@ -37,7 +35,6 @@ class SsaGraphTest {
     void setUp() {
         fresh = new FreshImpl();
         symbol = new SymbolImpl(fresh);
-        constants = new ConstantTable(fresh);
     }
 
     Block toCfg(List<Statement> statements) throws ShortCircuitException {
@@ -63,7 +60,7 @@ class SsaGraphTest {
         new InsertPhisPruned(symbol, defsites, frontier).run();
         new UniqueRenamer(symbol).rename(cfg);
         Program<Block> program = new Program<>(List.of(), List.of(), cfg);
-        SsaConverter converter = new SsaConverter(fresh, symbol, constants);
+        SsaConverter converter = new SsaConverter(symbol);
         Module module = converter.convertProgram(program);
 
         File file = new File("normal.dot");
@@ -80,7 +77,7 @@ class SsaGraphTest {
         new InsertPhisPruned(symbol, defsites, frontier).run();
         new UniqueRenamer(symbol).rename(cfg);
         Program<Block> program = new Program<>(List.of(), List.of(), cfg);
-        SsaConverter converter = new SsaConverter(fresh, symbol, constants);
+        SsaConverter converter = new SsaConverter(symbol);
         Module module = converter.convertProgram(program);
 
         File file = new File("nested.dot");

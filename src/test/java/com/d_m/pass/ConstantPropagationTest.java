@@ -12,7 +12,6 @@ import com.d_m.dom.DefinitionSites;
 import com.d_m.dom.DominanceFrontier;
 import com.d_m.dom.Examples;
 import com.d_m.dom.LengauerTarjan;
-import com.d_m.ssa.ConstantTable;
 import com.d_m.ssa.Module;
 import com.d_m.ssa.PrettyPrinter;
 import com.d_m.ssa.SsaConverter;
@@ -32,7 +31,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class ConstantPropagationTest {
     Fresh fresh;
     Symbol symbol;
-    ConstantTable constants;
     ThreeAddressCode threeAddressCode;
     DominanceFrontier<Block> frontier;
     DefinitionSites defsites;
@@ -41,7 +39,6 @@ class ConstantPropagationTest {
     void setUp() {
         fresh = new FreshImpl();
         symbol = new SymbolImpl(fresh);
-        constants = new ConstantTable(fresh);
     }
 
     Block toCfg(List<Statement> statements) throws ShortCircuitException {
@@ -60,35 +57,35 @@ class ConstantPropagationTest {
         new InsertPhisMinimal(symbol, defsites, frontier).run();
         new UniqueRenamer(symbol).rename(cfg);
         Program<Block> program = new Program<>(List.of(), List.of(), cfg);
-        SsaConverter converter = new SsaConverter(fresh, symbol, constants);
+        SsaConverter converter = new SsaConverter(symbol);
         Module module = converter.convertProgram(program);
 
-        FunctionPass<Boolean> constPropagation = new ConstantPropagation(constants);
+        FunctionPass<Boolean> constPropagation = new ConstantPropagation();
         boolean changed = constPropagation.runModule(module);
         assertTrue(changed);
 
         StringWriter writer = new StringWriter();
-        PrettyPrinter printer = new PrettyPrinter(fresh, writer);
+        PrettyPrinter printer = new PrettyPrinter(writer);
         printer.writeModule(module);
 
         String expected = """
                 module main {
                   main() : void {
-                    block l8 [] {
-                      %47 <- GOTO() [l21]
+                    block l0 [] {
+                      %0 <- GOTO() [l1]
                     }
-                    block l21 [l8, l33] {
+                    block l1 [l0, l2] {
                       k <- Φ(0, k2)
-                      %48 <- k < 100 [l33, l38]
+                      %1 <- k < 100 [l2, l3]
                     }
-                    block l33 [l21] {
-                      %49 <- k + 1
-                      k2 <- %49
-                      %50 <- GOTO 3 [l21]
+                    block l2 [l1] {
+                      %2 <- k + 1
+                      k2 <- %2
+                      %3 <- GOTO 3 [l1]
                     }
-                    block l38 [l21] {
-                      %51 <- NOP()
-                      %52 <- GOTO()
+                    block l3 [l1] {
+                      %4 <- NOP()
+                      %5 <- GOTO()
                     }
                   }
                 }

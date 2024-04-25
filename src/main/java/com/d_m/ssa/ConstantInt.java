@@ -8,13 +8,13 @@ import java.io.IOException;
 public class ConstantInt extends Constant {
     private final int value;
 
-    protected ConstantInt(int id, int value) {
-        super(id, null, new IntegerType());
+    protected ConstantInt(int value) {
+        super(null, new IntegerType());
         this.value = value;
     }
 
     protected ConstantInt(int id, String name, int value) {
-        super(id, name, new IntegerType());
+        super(name, new IntegerType());
         this.value = value;
     }
 
@@ -33,14 +33,14 @@ public class ConstantInt extends Constant {
     }
 
     @Override
-    public Constant applyOp(ConstantTable constants, Operator op, Constant other) {
+    public Constant applyOp(Operator op, Constant other) {
         if (other == null) {
             int result = switch (op) {
                 case NEG -> -value;
                 case NOT -> ~value;
                 default -> throw new UnsupportedOperationException("Invalid UnOp for ConstantInt");
             };
-            return constants.get(result);
+            return Constants.get(result);
         } else if (other instanceof ConstantInt otherInt) {
             int result = switch (op) {
                 case ADD -> value + otherInt.value;
@@ -57,7 +57,7 @@ public class ConstantInt extends Constant {
                 case NE -> value != otherInt.value ? 1 : 0;
                 default -> throw new UnsupportedOperationException("Invalid BinOp for ConstantInt");
             };
-            return constants.get(result);
+            return Constants.get(result);
         }
         throw new UnsupportedOperationException("ConstantInt can only apply to other ConstantInt");
     }

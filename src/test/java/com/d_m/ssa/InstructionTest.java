@@ -2,8 +2,6 @@ package com.d_m.ssa;
 
 import com.d_m.ast.IntegerType;
 import com.d_m.code.Operator;
-import com.d_m.util.Fresh;
-import com.d_m.util.FreshImpl;
 import com.google.common.collect.Iterables;
 import org.junit.jupiter.api.Test;
 
@@ -15,11 +13,10 @@ class InstructionTest {
 
     @Test
     void addOperand() {
-        Fresh fresh = new FreshImpl();
-        ConstantTable constants = new ConstantTable(fresh);
-        var one = constants.get(1);
-        var two = constants.get(2);
-        Instruction instruction = new Instruction(fresh.fresh(), null, new IntegerType(), Operator.ADD, List.of(one, two));
+        Constants.reset();
+        var one = Constants.get(1);
+        var two = Constants.get(2);
+        Instruction instruction = new Instruction(null, new IntegerType(), Operator.ADD, List.of(one, two));
 
         assertEquals(Iterables.size(instruction.operands()), 2);
         for (Use operand : instruction.operands()) {

@@ -3,7 +3,6 @@ package com.d_m.ssa;
 import com.d_m.ast.*;
 import com.d_m.cfg.Phi;
 import com.d_m.code.*;
-import com.d_m.util.Fresh;
 import com.d_m.util.Symbol;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -11,24 +10,20 @@ import com.google.common.collect.Multimap;
 import java.util.*;
 
 public class SsaConverter {
-    private final Fresh fresh;
     private final Symbol symbol;
-    private final ConstantTable constants;
     private final Map<Address, Value> env;
     private final Multimap<Address, Use> unfilled;
     private final Map<com.d_m.cfg.Block, Block> rewrittenBlocks;
 
-    public SsaConverter(Fresh fresh, Symbol symbol, ConstantTable constants) {
-        this.fresh = fresh;
+    public SsaConverter(Symbol symbol) {
         this.symbol = symbol;
-        this.constants = constants;
         this.env = new HashMap<>();
         this.unfilled = ArrayListMultimap.create();
         this.rewrittenBlocks = new HashMap<>();
     }
 
     public Module convertProgram(Program<com.d_m.cfg.Block> program) {
-        Module result = new Module(fresh.fresh(), "main", new ArrayList<>(), symbol);
+        Module result = new Module("main", new ArrayList<>(), symbol);
 
         // TODO: ignoring globals for now
         FunctionDeclaration<com.d_m.cfg.Block> mainDecl = new FunctionDeclaration<>("main", List.of(), Optional.empty(), program.getMain());
@@ -63,10 +58,9 @@ public class SsaConverter {
     public void initializeFunctionDeclaration(Module module, FunctionDeclaration<com.d_m.cfg.Block> declaration) {
         List<Argument> arguments = new ArrayList<>(declaration.parameters().size());
         for (int i = 0; i < declaration.parameters().size(); i++) {
-            arguments.add(new Argument(fresh.fresh(), declaration.parameters().get(i).name(), declaration.parameters().get(i).type(), null, i));
+            arguments.add(new Argument(declaration.parameters().get(i).name(), declaration.parameters().get(i).type(), null, i));
         }
         Function function = new Function(
-                fresh.fresh(),
                 declaration.functionName(),
                 declaration.returnType().isPresent() ? declaration.returnType().get() : null,
                 module,
@@ -116,10 +110,10 @@ public class SsaConverter {
         for (Quad quad : block.getCode()) {
             instructions.add(convertQuad(quad));
         }
-        Block converted = new Block(fresh.fresh(), parent, instructions);
+        Block converted = new Block(parent, instructions);
         if (!block.getSuccessors().isEmpty() &&
                 (converted.getTerminator() == null || !converted.getTerminator().getOperator().isBranch())) {
-            converted.getInstructions().addToEnd(new Instruction(fresh.fresh(), null, null, Operator.GOTO));
+            converted.getInstructions().addToEnd(new Instruction(null, null, Operator.GOTO));
         }
         rewrittenBlocks.put(block, converted);
         converted.setDominatorTreeLevel(block.getDominatorTreeLevel());
@@ -127,7 +121,7 @@ public class SsaConverter {
     }
 
     public PhiNode convertPhi(Phi phi) {
-        PhiNode phiNode = new PhiNode(fresh.fresh(), nameOfAddress(phi.name()), List.of());
+        PhiNode phiNode = new PhiNode(nameOfAddress(phi.name()), List.of());
         for (Address address : phi.ins()) {
             phiNode.addOperand(lookupAddress(phiNode, address));
         }
@@ -136,7 +130,7 @@ public class SsaConverter {
     }
 
     public Instruction convertQuad(Quad quad) {
-        Instruction instruction = new Instruction(fresh.fresh(), nameOfAddress(quad.result()), null, quad.op());
+        Instruction instruction = new Instruction(nameOfAddress(quad.result()), null, quad.op());
         if (!(quad.input1() instanceof EmptyAddress())) {
             instruction.addOperand(lookupAddress(instruction, quad.input1()));
         }
@@ -161,7 +155,7 @@ public class SsaConverter {
         Use use = new Use(result, instruction);
         if (result == null) {
             if (address instanceof ConstantAddress(int value)) {
-                ConstantInt rewrittenConstant = constants.get(value);
+                ConstantInt rewrittenConstant = Constants.get(value);
                 env.put(address, rewrittenConstant);
                 use.value = rewrittenConstant;
                 rewrittenConstant.linkUse(use);
