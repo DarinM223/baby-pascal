@@ -2,6 +2,7 @@ package com.d_m.pass;
 
 import com.d_m.code.Operator;
 import com.d_m.ssa.ConstantInt;
+import com.d_m.ssa.Constants;
 import com.d_m.ssa.Instruction;
 import com.d_m.ssa.Value;
 import com.google.common.collect.Iterables;
@@ -18,6 +19,7 @@ public class InstructionSimplify {
     public static Value simplifyBinOpInstruction(Operator operator, Value lhs, Value rhs, int maxRecurse) {
         return switch (operator) {
             case ADD -> simplifyAddInstruction(lhs, rhs, maxRecurse);
+            case SUB -> simplifySubInstruction(lhs, rhs, maxRecurse);
             default -> null;
         };
     }
@@ -41,6 +43,49 @@ public class InstructionSimplify {
         }
 
         return simplifyAssociativeBinOp(Operator.ADD, operand1, operand2, maxRecurse);
+    }
+
+    public static Value simplifySubInstruction(Value operand1, Value operand2, int maxRecurse) {
+        // X - 0 -> X
+        if (operand2 instanceof ConstantInt constant && constant.getValue() == 0) {
+            return operand1;
+        }
+        // X - X -> 0
+        if (operand2.equals(operand1)) {
+            return Constants.get(0);
+        }
+        // X - (Y + Z) -> (X - Y) - Z or (X - Z) - Y
+        if (maxRecurse > 0 && operand2 instanceof Instruction instruction && instruction.getOperator() == Operator.ADD) {
+            Value y = instruction.getOperand(0).getValue();
+            Value z = instruction.getOperand(1).getValue();
+            // If X - Y simplifies to V
+            if (simplifyBinOpInstruction(Operator.SUB, operand1, y, maxRecurse - 1) instanceof Value v) {
+                // If V - Z simplifies to W, return W
+                if (simplifyBinOpInstruction(Operator.SUB, v, z, maxRecurse - 1) instanceof Value w) {
+                    return w;
+                }
+            }
+            // if X - Z simplifies to V
+            if (simplifyBinOpInstruction(Operator.SUB, operand1, z, maxRecurse - 1) instanceof Value v) {
+                // If V - Y simplifies to W, return W
+                if (simplifyBinOpInstruction(Operator.SUB, v, y, maxRecurse - 1) instanceof Value w) {
+                    return w;
+                }
+            }
+        }
+        // Z - (X - Y) -> (Z - X) + Y
+        if (maxRecurse > 0 && operand2 instanceof Instruction instruction && instruction.getOperator() == Operator.SUB) {
+            Value x = instruction.getOperand(0).getValue();
+            Value y = instruction.getOperand(1).getValue();
+            // If Z - X simplifies to V
+            if (simplifyBinOpInstruction(Operator.SUB, operand1, x, maxRecurse - 1) instanceof Value v) {
+                // If V + Y simplifies to W, return W
+                if (simplifyBinOpInstruction(Operator.ADD, v, y, maxRecurse - 1) instanceof Value w) {
+                    return w;
+                }
+            }
+        }
+        return null;
     }
 
     public static Value simplifyAssociativeBinOp(Operator operator, Value lhs, Value rhs, int maxRecurse) {

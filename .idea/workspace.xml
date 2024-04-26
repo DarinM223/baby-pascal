@@ -5,37 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Remove Fresh requirement for constructing unnamed SSA, remove getId() from IBlock">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Constants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/IdGenerator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/IBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/IBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dom/DominanceFrontier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/DominanceFrontier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LengauerTarjan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LengauerTarjan.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LoopNesting.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LoopNesting.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dom/SimpleBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/SimpleBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/CriticalEdgeSplitting.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/CriticalEdgeSplitting.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Argument.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Argument.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Constant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ConstantInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ConstantInt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ConstantTable.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Function.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Function.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Module.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Module.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PhiNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PhiNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PrettyPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PrettyPrinter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LoopPostbodyTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LoopPostbodyTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/PostOrderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/PostOrderTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/ConstantPropagationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/ConstantPropagationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/CriticalEdgeSplittingTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/CriticalEdgeSplittingTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/DeadCodeEliminationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/DeadCodeEliminationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/BlockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/BlockTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/InstructionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/InstructionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/graphviz/SsaGraphTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/graphviz/SsaGraphTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/InstructionSimplify.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/InstructionSimplify.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/IdGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/IdGenerator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -244,14 +216,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00044" summary="Add basic deadcode elimination test for fibonacci">
-      <option name="closed" value="true" />
-      <created>1711585662134</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1711585662134</updated>
     </task>
     <task id="LOCAL-00045" summary="Start constant propagation">
       <option name="closed" value="true" />
@@ -637,7 +601,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714007768753</updated>
     </task>
-    <option name="localTasksCounter" value="93" />
+    <task id="LOCAL-00093" summary="Remove Fresh requirement for constructing unnamed SSA, remove getId() from IBlock">
+      <option name="closed" value="true" />
+      <created>1714011803104</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1714011803104</updated>
+    </task>
+    <option name="localTasksCounter" value="94" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
