@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fill out more instruction simplifications">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fix compile error">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/InstructionSimplify.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/InstructionSimplify.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,14 +215,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00048" summary="Attempt to handle phi case">
-      <option name="closed" value="true" />
-      <created>1712026178542</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1712026178542</updated>
     </task>
     <task id="LOCAL-00049" summary="Constant propagation attempts to delete non-executable blocks and simplify instructions">
       <option name="closed" value="true" />
@@ -608,11 +600,18 @@
       <option name="project" value="LOCAL" />
       <updated>1714236145117</updated>
     </task>
-    <option name="localTasksCounter" value="97" />
+    <task id="LOCAL-00097" summary="Fix compile error">
+      <option name="closed" value="true" />
+      <created>1714236191844</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1714236191844</updated>
+    </task>
+    <option name="localTasksCounter" value="98" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add postorder traversals #1 and close graphviz window with ESC" />
     <MESSAGE value="Constant propagation deletes empty blocks and single argument phi nodes" />
     <MESSAGE value="Start global value numbering" />
     <MESSAGE value="Assign value numbers to expressions and have mapping to be able to look up expression from the value number." />
@@ -637,7 +636,8 @@
     <MESSAGE value="Simplify subtraction instructions" />
     <MESSAGE value="InstructionSimplify folds constants and expands commutative binary operations" />
     <MESSAGE value="Fill out more instruction simplifications" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fill out more instruction simplifications" />
+    <MESSAGE value="Fix compile error" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix compile error" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

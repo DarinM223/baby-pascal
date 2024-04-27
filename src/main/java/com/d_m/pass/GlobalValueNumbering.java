@@ -120,9 +120,17 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
     }
 
     public boolean processInstruction(Instruction instruction) {
-        Value simplified = InstructionSimplify.simplifyInstruction(instruction, RECURSION_LIMIT);
+        // If instruction can be simplified, simplify it instead of value numbering it.
+        if (InstructionSimplify.simplifyInstruction(instruction, RECURSION_LIMIT) instanceof Value v) {
+            instruction.replaceUsesWith(v);
+            if (Iterables.isEmpty(instruction.uses()) && !instruction.getOperator().isBranch()) {
+                instructionsToRemove.add(instruction);
+            }
+            return true;
+        }
+
         int nextNum = nextValueNumber;
-        int valueNumber = lookupOrAdd(simplified);
+        int valueNumber = lookupOrAdd(instruction);
         if (valueNumber >= nextNum) {
             // New value number, don't need to look for existing values that dominate this instruction.
             leaderTable.put(valueNumber, new Pair<>(instruction.getParent(), instruction));
