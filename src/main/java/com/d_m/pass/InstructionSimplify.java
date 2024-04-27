@@ -18,6 +18,9 @@ public class InstructionSimplify {
             case ADD -> simplifyAddInstruction(lhs, rhs, maxRecurse);
             case SUB -> simplifySubInstruction(lhs, rhs, maxRecurse);
             case MUL -> simplifyMulInstruction(lhs, rhs, maxRecurse);
+            case DIV -> simplifyDivInstruction(lhs, rhs, maxRecurse);
+            case AND -> simplifyAndInstruction(lhs, rhs, maxRecurse);
+            case OR -> simplifyOrInstruction(lhs, rhs, maxRecurse);
             default -> null;
         };
     }
@@ -73,6 +76,160 @@ public class InstructionSimplify {
         }
         if (simplifyCommutativeBinOp(Operator.MUL, operand1, operand2, Operator.ADD, maxRecurse) instance Value v){
             return v;
+        }
+        return null;
+    }
+
+    public static Value simplifyDivInstruction(Value operand1, Value operand2, int maxRecurse) {
+        FoldResult result = foldOrCommuteConstant(Operator.DIV, operand1, operand2);
+        operand1 = result.operand1;
+        operand2 = result.operand2;
+        if (result.constant != null) {
+            return result.constant;
+        }
+
+        if (operand2 instanceof ConstantInt zero && zero.getValue() == 0) {
+            // TODO: make this poison value
+            return null;
+        }
+
+        // 0 / X -> 0
+        if (operand1 instanceof ConstantInt constant && constant.getValue() == 0) {
+            return operand1;
+        }
+        // X / X -> 1
+        if (operand1.equals(operand2)) {
+            return Constants.get(1);
+        }
+        // X / 1 -> X
+        if (operand2 instanceof ConstantInt constant && constant.getValue() == 1) {
+            return operand1;
+        }
+
+        // TODO: check for overflow
+        // X * Y / Y -> X
+        if (operand1 instanceof Instruction instruction && instruction.getOperator() == Operator.MUL) {
+            Value x = instruction.getOperand(0).getValue();
+            Value y = instruction.getOperand(1).getValue();
+            if (y.equals(operand2)) {
+                return x;
+            }
+        }
+        return null;
+    }
+
+    public static Value simplifyAndInstruction(Value operand1, Value operand2, int maxRecurse) {
+        FoldResult result = foldOrCommuteConstant(Operator.AND, operand1, operand2);
+        operand1 = result.operand1;
+        operand2 = result.operand2;
+        if (result.constant != null) {
+            return result.constant;
+        }
+
+        // X & X = X
+        if (operand1.equals(operand2)) {
+            return operand1;
+        }
+        // X & 0 = 0
+        if (operand2 instanceof ConstantInt constant && constant.getValue() == 0) {
+            return operand2;
+        }
+        // X & -1 = X
+        if (operand2 instanceof ConstantInt constant && constant.getValue() == -1) {
+            return operand1;
+        }
+        if (simplifyAndCommutative(operand1, operand2, maxRecurse) instanceof Value v) {
+            return v;
+        }
+        if (simplifyAndCommutative(operand2, operand1, maxRecurse) instanceof Value v) {
+            return v;
+        }
+
+        if (simplifyAssociativeBinOp(Operator.AND, operand1, operand2, maxRecurse) instanceof Value v) {
+            return v;
+        }
+        if (simplifyCommutativeBinOp(Operator.AND, operand1, operand2, Operator.OR, maxRecurse) instanceof Value v) {
+            return v;
+        }
+        return null;
+    }
+
+    public static Value simplifyAndCommutative(Value operand1, Value operand2, int maxRecurse) {
+        // ~A & A -> 0
+        if (operand1 instanceof Instruction instruction && instruction.getOperator() == Operator.NOT) {
+            if (instruction.getOperand(0).getValue().equals(operand2)) {
+                return Constants.get(0);
+            }
+        }
+        // (A | ?) & A -> A
+        if (operand1 instanceof Instruction instruction
+                && instruction.getOperator() == Operator.OR
+                && instruction.getOperand(0).getValue().equals(operand2)) {
+            return operand2;
+        }
+        // (X | ~Y) & (X | Y) -> X
+        if (operand1 instanceof Instruction instruction1 &&
+                instruction1.getOperator() == Operator.OR &&
+                operand2 instanceof Instruction instruction2 &&
+                instruction2.getOperator() == Operator.OR) {
+            Value x = instruction1.getOperand(0).getValue();
+            Value notY = instruction1.getOperand(1).getValue();
+            Value y = instruction2.getOperand(1).getValue();
+            if (x.equals(instruction2.getOperand(0).getValue())
+                    && notY instanceof Instruction notInstruction
+                    && notInstruction.getOperator() == Operator.NOT
+                    && notInstruction.getOperand(0).getValue().equals(y)) {
+                return x;
+            }
+        }
+        return null;
+    }
+
+    public static Value simplifyOrInstruction(Value operand1, Value operand2, int maxRecurse) {
+        // X | -1 -> -1
+        if (operand2 instanceof ConstantInt constant && constant.getValue() == -1) {
+            return operand2;
+        }
+        // X | X -> X
+        // X | 0 -> X
+        if (operand2.equals(operand1) || (operand2 instanceof ConstantInt constant && constant.getValue() == 0)) {
+            return operand1;
+        }
+
+        if (simplifyOrLogic(operand1, operand2) instanceof Value v) {
+            return v;
+        }
+        if (simplifyOrLogic(operand2, operand1) instanceof Value v) {
+            return v;
+        }
+
+        if (simplifyAssociativeBinOp(Operator.OR, operand1, operand2, maxRecurse) instanceof Value v) {
+            return v;
+        }
+        if (simplifyCommutativeBinOp(Operator.OR, operand1, operand2, Operator.AND, maxRecurse) instanceof Value v) {
+            return v;
+        }
+        return null;
+    }
+
+    public static Value simplifyOrLogic(Value x, Value y) {
+        // X | ~X -> -1
+        if (y instanceof Instruction instruction
+                && instruction.getOperator() == Operator.NOT
+                && instruction.getOperand(0).getValue().equals(x)) {
+            return Constants.get(-1);
+        }
+        // X | ~(X & ?) -> -1
+        if (y instanceof Instruction not &&
+                not.getOperator() == Operator.NOT &&
+                not.getOperand(0).getValue() instanceof Instruction and &&
+                and.getOperator() == Operator.AND &&
+                and.getOperand(0).getValue().equals(x)) {
+            return Constants.get(-1);
+        }
+        // X | (X & ?) -> X
+        if (y instanceof Instruction and && and.getOperator() == Operator.AND && and.getOperand(0).getValue().equals(x)) {
+            return x;
         }
         return null;
     }

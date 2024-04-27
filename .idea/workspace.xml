@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Simplify subtraction instructions">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="InstructionSimplify folds constants and expands commutative binary operations">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/InstructionSimplify.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/InstructionSimplify.java" afterDir="false" />
     </list>
@@ -215,14 +215,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00046" summary="Fill out more of constant propagation">
-      <option name="closed" value="true" />
-      <created>1711929506917</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1711929506917</updated>
     </task>
     <task id="LOCAL-00047" summary="Handles executable instruction cases">
       <option name="closed" value="true" />
@@ -608,11 +600,18 @@
       <option name="project" value="LOCAL" />
       <updated>1714090038735</updated>
     </task>
-    <option name="localTasksCounter" value="95" />
+    <task id="LOCAL-00095" summary="InstructionSimplify folds constants and expands commutative binary operations">
+      <option name="closed" value="true" />
+      <created>1714230843761</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1714230843762</updated>
+    </task>
+    <option name="localTasksCounter" value="96" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Delete unreachable blocks when creating CFG and add nested loop SSA graph unit test" />
     <MESSAGE value="Graphviz viewer has the size of the graphviz image it is viewing" />
     <MESSAGE value="Add postorder traversals #1 and close graphviz window with ESC" />
     <MESSAGE value="Constant propagation deletes empty blocks and single argument phi nodes" />
@@ -637,7 +636,8 @@
     <MESSAGE value="Remove getId() and remove Symbol from PrettyPrinter" />
     <MESSAGE value="Remove Fresh requirement for constructing unnamed SSA, remove getId() from IBlock" />
     <MESSAGE value="Simplify subtraction instructions" />
-    <option name="LAST_COMMIT_MESSAGE" value="Simplify subtraction instructions" />
+    <MESSAGE value="InstructionSimplify folds constants and expands commutative binary operations" />
+    <option name="LAST_COMMIT_MESSAGE" value="InstructionSimplify folds constants and expands commutative binary operations" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
