@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Remove Fresh requirement for constructing unnamed SSA, remove getId() from IBlock">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Simplify subtraction instructions">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/InstructionSimplify.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/InstructionSimplify.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/IdGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/IdGenerator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +62,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.testRunning&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -216,14 +215,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00045" summary="Start constant propagation">
-      <option name="closed" value="true" />
-      <created>1711732144044</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1711732144044</updated>
     </task>
     <task id="LOCAL-00046" summary="Fill out more of constant propagation">
       <option name="closed" value="true" />
@@ -609,11 +600,18 @@
       <option name="project" value="LOCAL" />
       <updated>1714011803104</updated>
     </task>
-    <option name="localTasksCounter" value="94" />
+    <task id="LOCAL-00094" summary="Simplify subtraction instructions">
+      <option name="closed" value="true" />
+      <created>1714090038734</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1714090038735</updated>
+    </task>
+    <option name="localTasksCounter" value="95" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add unit test that opens the SSA graph graphviz image using Swing" />
     <MESSAGE value="Delete unreachable blocks when creating CFG and add nested loop SSA graph unit test" />
     <MESSAGE value="Graphviz viewer has the size of the graphviz image it is viewing" />
     <MESSAGE value="Add postorder traversals #1 and close graphviz window with ESC" />
@@ -638,7 +636,8 @@
     <MESSAGE value="Use ConstantTable to share constants for a program" />
     <MESSAGE value="Remove getId() and remove Symbol from PrettyPrinter" />
     <MESSAGE value="Remove Fresh requirement for constructing unnamed SSA, remove getId() from IBlock" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove Fresh requirement for constructing unnamed SSA, remove getId() from IBlock" />
+    <MESSAGE value="Simplify subtraction instructions" />
+    <option name="LAST_COMMIT_MESSAGE" value="Simplify subtraction instructions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
