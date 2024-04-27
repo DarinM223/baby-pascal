@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="InstructionSimplify folds constants and expands commutative binary operations">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fill out more instruction simplifications">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/InstructionSimplify.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/InstructionSimplify.java" afterDir="false" />
     </list>
@@ -215,14 +215,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00047" summary="Handles executable instruction cases">
-      <option name="closed" value="true" />
-      <created>1712024419959</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1712024419959</updated>
     </task>
     <task id="LOCAL-00048" summary="Attempt to handle phi case">
       <option name="closed" value="true" />
@@ -608,11 +600,18 @@
       <option name="project" value="LOCAL" />
       <updated>1714230843762</updated>
     </task>
-    <option name="localTasksCounter" value="96" />
+    <task id="LOCAL-00096" summary="Fill out more instruction simplifications">
+      <option name="closed" value="true" />
+      <created>1714236145117</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1714236145117</updated>
+    </task>
+    <option name="localTasksCounter" value="97" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Graphviz viewer has the size of the graphviz image it is viewing" />
     <MESSAGE value="Add postorder traversals #1 and close graphviz window with ESC" />
     <MESSAGE value="Constant propagation deletes empty blocks and single argument phi nodes" />
     <MESSAGE value="Start global value numbering" />
@@ -637,7 +636,8 @@
     <MESSAGE value="Remove Fresh requirement for constructing unnamed SSA, remove getId() from IBlock" />
     <MESSAGE value="Simplify subtraction instructions" />
     <MESSAGE value="InstructionSimplify folds constants and expands commutative binary operations" />
-    <option name="LAST_COMMIT_MESSAGE" value="InstructionSimplify folds constants and expands commutative binary operations" />
+    <MESSAGE value="Fill out more instruction simplifications" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fill out more instruction simplifications" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

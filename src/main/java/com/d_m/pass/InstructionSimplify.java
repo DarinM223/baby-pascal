@@ -74,7 +74,7 @@ public class InstructionSimplify {
         if (simplifyAssociativeBinOp(Operator.MUL, operand1, operand2, maxRecurse) instanceof Value v) {
             return v;
         }
-        if (simplifyCommutativeBinOp(Operator.MUL, operand1, operand2, Operator.ADD, maxRecurse) instance Value v){
+        if (simplifyCommutativeBinOp(Operator.MUL, operand1, operand2, Operator.ADD, maxRecurse) instanceof Value v) {
             return v;
         }
         return null;
