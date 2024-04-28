@@ -74,6 +74,14 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
             // TODO: replaceOperandsForInBlockEquality
             changed |= processInstruction(instruction);
         }
+        for (Instruction instruction : instructionsToRemove) {
+            int value = valueNumbering.remove(instruction);
+            if (instruction instanceof PhiNode phiNode) {
+                numberingPhi.remove(value);
+            }
+            expressions.remove(value);
+            removeInstruction(instruction);
+        }
         return changed;
     }
 
