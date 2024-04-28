@@ -70,18 +70,15 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
             numberingPhi.remove(value);
             removeInstruction(phiNode);
         }
+        phisToRemove.clear();
         for (Instruction instruction : block.getInstructions()) {
             // TODO: replaceOperandsForInBlockEquality
             changed |= processInstruction(instruction);
         }
         for (Instruction instruction : instructionsToRemove) {
-            int value = valueNumbering.remove(instruction);
-            if (instruction instanceof PhiNode phiNode) {
-                numberingPhi.remove(value);
-            }
-            expressions.remove(value);
             removeInstruction(instruction);
         }
+        instructionsToRemove.clear();
         return changed;
     }
 
@@ -151,7 +148,9 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
             leaderTable.put(valueNumber, new Pair<>(instruction.getParent(), instruction));
             return false;
         }
-        if (duplicate.equals(instruction)) {
+        // TODO: branch check is to prevent instructions from being removed that are terminators
+        // of a block, which can't be removed.
+        if (duplicate.equals(instruction) || instruction.getOperator().isBranch()) {
             return false;
         }
 
@@ -160,7 +159,8 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
         if (instruction instanceof PhiNode) {
             numberingPhi.remove(valueNumber);
         }
-        valueNumbering.remove(instruction);
+        int value = valueNumbering.remove(instruction);
+        expressions.remove(value);
         instructionsToRemove.add(instruction);
         return true;
     }
@@ -175,6 +175,10 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
     }
 
     public int lookupOrAdd(Value value) {
+        if (valueNumbering.containsKey(value)) {
+            return valueNumbering.get(value);
+        }
+
         if (value instanceof PhiNode phiNode) {
             valueNumbering.put(phiNode, nextValueNumber);
             numberingPhi.put(nextValueNumber, phiNode);
@@ -208,11 +212,23 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
         if (expressionValueNumber == null) {
             expressionValueNumber = nextValueNumber;
             expressions.put(expressionValueNumber, expression);
+            expressionNumbering.put(expression, expressionValueNumber);
             nextValueNumber++;
         }
         return expressionValueNumber;
     }
 
     public record Expression(Operator operator, Type type, int[] varargs) {
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Expression that)) return false;
+            return Objects.equals(type, that.type) && Objects.deepEquals(varargs, that.varargs) && operator == that.operator;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(operator, type, Arrays.hashCode(varargs));
+        }
     }
 }

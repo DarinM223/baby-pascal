@@ -30,15 +30,16 @@ class GlobalValueNumberingTest {
         Block block1 = new Block(function, List.of(
                 u,
                 new Instruction("v", new IntegerType(), Operator.ADD, List.of(c, d)),
-                new Instruction("w", new IntegerType(), Operator.ADD, List.of(e, f))
+                new Instruction("w", new IntegerType(), Operator.ADD, List.of(e, f)),
+                new Instruction(null, null, Operator.GOTO)
         ));
         var x = new Instruction("x", new IntegerType(), Operator.ADD, List.of(c, d));
         var y = new Instruction("y", new IntegerType(), Operator.ADD, List.of(c, d));
-        Block block2 = new Block(function, List.of(x, y));
+        Block block2 = new Block(function, List.of(x, y, new Instruction(null, null, Operator.GOTO)));
         var u2 = new Instruction("u", new IntegerType(), Operator.ADD, List.of(a, b));
         var x2 = new Instruction("x", new IntegerType(), Operator.ADD, List.of(e, f));
         var y2 = new Instruction("y", new IntegerType(), Operator.ADD, List.of(e, f));
-        Block block3 = new Block(function, List.of(u2, x2, y2));
+        Block block3 = new Block(function, List.of(u2, x2, y2, new Instruction(null, null, Operator.GOTO)));
         var u3 = new PhiNode("u", List.of(u, u2));
         var y3 = new PhiNode("y", List.of(y, y2));
         Block block4 = new Block(function, List.of(
