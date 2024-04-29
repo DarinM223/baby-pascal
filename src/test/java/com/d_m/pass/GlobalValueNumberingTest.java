@@ -6,6 +6,8 @@ import com.d_m.dom.LengauerTarjan;
 import com.d_m.ssa.*;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +48,7 @@ class GlobalValueNumberingTest {
                 u3,
                 new PhiNode("x", List.of(x, x2)),
                 y3,
-                new Instruction("z", new IntegerType(), Operator.ADD, List.of(u2, y2)),
+                new Instruction("z", new IntegerType(), Operator.ADD, List.of(u3, y3)),
                 new Instruction("u", new IntegerType(), Operator.ADD, List.of(a, b))
         ));
 
@@ -70,11 +72,40 @@ class GlobalValueNumberingTest {
     }
 
     @Test
-    void runFunction() {
+    void runFunction() throws IOException {
         Function example = figure_5();
         LengauerTarjan<Block> dominators = new LengauerTarjan<>(example.getBlocks(), example.getBlocks().getFirst());
         GlobalValueNumbering valueNumbering = new GlobalValueNumbering(dominators);
-        valueNumbering.runFunction(example);
-        System.out.println("hello");
+        boolean changed = valueNumbering.runFunction(example);
+        assertTrue(changed);
+
+        StringWriter writer = new StringWriter();
+        PrettyPrinter printer = new PrettyPrinter(writer);
+        printer.writeFunction(example);
+
+        // TODO: eliminate duplicate phis in l3
+        String expected = """
+                example(a : int, b : int, c : int, d : int, e : int, f : int) : void {
+                  block l0 [] {
+                    u <- a + b
+                    v <- c + d
+                    w <- e + f
+                    %0 <- GOTO() [l1, l2]
+                  }
+                  block l1 [l0] {
+                    %1 <- GOTO() [l3]
+                  }
+                  block l2 [l0] {
+                    %2 <- GOTO() [l3]
+                  }
+                  block l3 [l1, l2] {
+                    u2 <- Φ(u, u)
+                    x <- Φ(v, w)
+                    y <- Φ(v, w)
+                    z <- u2 + y
+                  }
+                }
+                """;
+        assertEquals(writer.toString(), expected);
     }
 }

@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start unit test for global value numbering">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Debugging global value numbering">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/GlobalValueNumberingTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/GlobalValueNumberingTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -216,14 +215,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00051" summary="Fix instruction worklist and executable PHI">
-      <option name="closed" value="true" />
-      <created>1712119349305</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1712119349306</updated>
     </task>
     <task id="LOCAL-00052" summary="Small changes to worklist functions and looking up values">
       <option name="closed" value="true" />
@@ -609,11 +600,18 @@
       <option name="project" value="LOCAL" />
       <updated>1714267637077</updated>
     </task>
-    <option name="localTasksCounter" value="100" />
+    <task id="LOCAL-00100" summary="Debugging global value numbering">
+      <option name="closed" value="true" />
+      <created>1714321312811</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1714321312811</updated>
+    </task>
+    <option name="localTasksCounter" value="101" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Assign value numbers to expressions and have mapping to be able to look up expression from the value number." />
     <MESSAGE value="Fix constant propagation to choose the right branch" />
     <MESSAGE value="Add stubs for running blocks in a function" />
     <MESSAGE value="GVN iterates multiple times until there are no more changes" />
@@ -638,31 +636,12 @@
     <MESSAGE value="Fix compile error" />
     <MESSAGE value="Skip value numbering if instruction can be simplified" />
     <MESSAGE value="Start unit test for global value numbering" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start unit test for global value numbering" />
+    <MESSAGE value="Debugging global value numbering" />
+    <option name="LAST_COMMIT_MESSAGE" value="Debugging global value numbering" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/com/d_m/pass/GlobalValueNumberingTest.java</url>
-          <line>77</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java</url>
-          <line>65</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java</url>
-          <line>152</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
-        <PinnedItemInfo parentTag="com.d_m.ssa.Block" memberName="instructions" />
         <PinnedItemInfo parentTag="com.d_m.cfg.Block" memberName="successors" />
         <PinnedItemInfo parentTag="java.util.HashMap$Node" memberName="value" />
         <PinnedItemInfo parentTag="com.d_m.cfg.Block" memberName="code" />
