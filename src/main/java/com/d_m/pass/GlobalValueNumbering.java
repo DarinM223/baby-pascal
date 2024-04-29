@@ -66,8 +66,10 @@ public class GlobalValueNumbering extends BooleanFunctionPass {
         boolean changed = false;
         changed |= eliminateDuplicatePhis(block);
         for (PhiNode phiNode : phisToRemove) {
-            int value = valueNumbering.remove(phiNode);
-            numberingPhi.remove(value);
+            if (valueNumbering.containsKey(phiNode)) {
+                int value = valueNumbering.remove(phiNode);
+                numberingPhi.remove(value);
+            }
             removeInstruction(phiNode);
         }
         phisToRemove.clear();

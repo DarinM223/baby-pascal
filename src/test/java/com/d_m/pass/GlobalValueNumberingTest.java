@@ -83,7 +83,7 @@ class GlobalValueNumberingTest {
         PrettyPrinter printer = new PrettyPrinter(writer);
         printer.writeFunction(example);
 
-        // TODO: eliminate duplicate phis in l3
+        // TODO: simplify u2 phi node
         String expected = """
                 example(a : int, b : int, c : int, d : int, e : int, f : int) : void {
                   block l0 [] {
@@ -101,8 +101,7 @@ class GlobalValueNumberingTest {
                   block l3 [l1, l2] {
                     u2 <- Φ(u, u)
                     x <- Φ(v, w)
-                    y <- Φ(v, w)
-                    z <- u2 + y
+                    z <- u2 + x
                   }
                 }
                 """;

@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Debugging global value numbering">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Adds unit test assertion for global value numbering">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PhiNodeHashWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PhiNodeHashWrapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/GlobalValueNumberingTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/GlobalValueNumberingTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -215,14 +217,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00052" summary="Small changes to worklist functions and looking up values">
-      <option name="closed" value="true" />
-      <created>1712190105794</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1712190105795</updated>
     </task>
     <task id="LOCAL-00053" summary="Set phi to overdefined if its operands have different defined values">
       <option name="closed" value="true" />
@@ -608,11 +602,18 @@
       <option name="project" value="LOCAL" />
       <updated>1714321312811</updated>
     </task>
-    <option name="localTasksCounter" value="101" />
+    <task id="LOCAL-00101" summary="Adds unit test assertion for global value numbering">
+      <option name="closed" value="true" />
+      <created>1714351529157</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1714351529158</updated>
+    </task>
+    <option name="localTasksCounter" value="102" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix constant propagation to choose the right branch" />
     <MESSAGE value="Add stubs for running blocks in a function" />
     <MESSAGE value="GVN iterates multiple times until there are no more changes" />
     <MESSAGE value="Add phi node wrapper that hashes based off of operands and successors and attempts removal of duplicate phis in a block." />
@@ -637,9 +638,19 @@
     <MESSAGE value="Skip value numbering if instruction can be simplified" />
     <MESSAGE value="Start unit test for global value numbering" />
     <MESSAGE value="Debugging global value numbering" />
-    <option name="LAST_COMMIT_MESSAGE" value="Debugging global value numbering" />
+    <MESSAGE value="Adds unit test assertion for global value numbering" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adds unit test assertion for global value numbering" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/pass/GlobalValueNumbering.java</url>
+          <line>103</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="com.d_m.cfg.Block" memberName="successors" />
