@@ -6,6 +6,10 @@ import com.google.common.collect.Iterables;
 
 public class InstructionSimplify {
     public static Value simplifyInstruction(Instruction instruction, int maxRecurse) {
+        if (instruction instanceof PhiNode phiNode) {
+            return simplifyPhiNode(phiNode);
+        }
+
         int numOperands = Iterables.size(instruction.operands());
         if (numOperands == 2) {
             return simplifyBinOpInstruction(instruction.getOperator(), instruction.getOperand(0).getValue(), instruction.getOperand(1).getValue(), maxRecurse);
@@ -23,6 +27,18 @@ public class InstructionSimplify {
             case OR -> simplifyOrInstruction(lhs, rhs, maxRecurse);
             default -> null;
         };
+    }
+
+    public static Value simplifyPhiNode(PhiNode phiNode) {
+        Value common = null;
+        for (Use use : phiNode.operands()) {
+            Value incoming = use.getValue();
+            if (common != null && !incoming.equals(common)) {
+                return null;
+            }
+            common = incoming;
+        }
+        return common;
     }
 
     public static Value simplifyAddInstruction(Value operand1, Value operand2, int maxRecurse) {
