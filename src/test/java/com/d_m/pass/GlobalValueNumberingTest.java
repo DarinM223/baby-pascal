@@ -71,6 +71,23 @@ class GlobalValueNumberingTest {
         return function;
     }
 
+    static Function simplificationExample() {
+        Function function = new Function("example", null, null, new ArrayList<>());
+        Argument a = new Argument("a", new IntegerType(), function, 0);
+        Argument b = new Argument("b", new IntegerType(), function, 1);
+        function.getArguments().add(a);
+        function.getArguments().add(b);
+        // (a * (((a + 0) - (0 + a)) + 1)) + 1 -> a + 1
+        Instruction c = new Instruction("c", new IntegerType(), Operator.ADD, List.of(a, Constants.get(0)));
+        Instruction d = new Instruction("d", new IntegerType(), Operator.ADD, List.of(Constants.get(0), a));
+        Instruction e = new Instruction("e", new IntegerType(), Operator.SUB, List.of(c, d));
+        Instruction f = new Instruction("f", new IntegerType(), Operator.ADD, List.of(e, Constants.get(1)));
+        Instruction g = new Instruction("g", new IntegerType(), Operator.MUL, List.of(a, f));
+        Block block = new Block(function, List.of(c, d, e, f, g, new Instruction("h", new IntegerType(), Operator.ADD, List.of(g, Constants.get(1)))));
+        function.getBlocks().add(block);
+        return function;
+    }
+
     @Test
     void runFunction() throws IOException {
         Function example = figure_5();
@@ -100,6 +117,29 @@ class GlobalValueNumberingTest {
                   block l3 [l1, l2] {
                     x <- Φ(v, w)
                     z <- u + x
+                  }
+                }
+                """;
+        assertEquals(writer.toString(), expected);
+    }
+
+    @Test
+    void testSimplification() throws IOException {
+        Function example = simplificationExample();
+        LengauerTarjan<Block> dominators = new LengauerTarjan<>(example.getBlocks(), example.getBlocks().getFirst());
+        GlobalValueNumbering valueNumbering = new GlobalValueNumbering(dominators);
+        boolean changed = valueNumbering.runFunction(example);
+        assertTrue(changed);
+        StringWriter writer = new StringWriter();
+        PrettyPrinter printer = new PrettyPrinter(writer);
+        printer.writeFunction(example);
+
+        // TODO: Simplification seems a little aggressive here. If the value's name is
+        // "example" then it shouldn't fold it away because that is used as a return value.
+        String expected = """
+                example(a : int, b : int) : void {
+                  block l0 [] {
+                    h <- a + 1
                   }
                 }
                 """;

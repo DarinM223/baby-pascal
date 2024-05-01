@@ -409,12 +409,14 @@ public class InstructionSimplify {
     }
 
     public static FoldResult foldOrCommuteConstant(Operator op, Value operand1, Value operand2) {
-        if (operand1 instanceof ConstantInt constant1 && operand2 instanceof ConstantInt constant2) {
-            return new FoldResult(constantFoldBinaryOp(op, constant1, constant2), operand1, operand2);
-        }
-        // Swap operands if operator is commutative.
-        if (op.isCommutative()) {
-            return new FoldResult(null, operand2, operand1);
+        if (operand1 instanceof ConstantInt constant1) {
+            if (operand2 instanceof ConstantInt constant2) {
+                return new FoldResult(constantFoldBinaryOp(op, constant1, constant2), operand1, operand2);
+            }
+            // Swap operands if operator is commutative.
+            if (op.isCommutative()) {
+                return new FoldResult(null, operand2, operand1);
+            }
         }
         return new FoldResult(null, operand1, operand2);
     }
