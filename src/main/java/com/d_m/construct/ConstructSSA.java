@@ -4,9 +4,7 @@ import com.d_m.ast.Declaration;
 import com.d_m.ast.FunctionDeclaration;
 import com.d_m.ast.Program;
 import com.d_m.cfg.Block;
-import com.d_m.dom.DefinitionSites;
-import com.d_m.dom.DominanceFrontier;
-import com.d_m.dom.LengauerTarjan;
+import com.d_m.dom.*;
 import com.d_m.util.Symbol;
 
 public class ConstructSSA {
@@ -25,11 +23,18 @@ public class ConstructSSA {
         toSSA(program.getMain());
     }
 
-    private void toSSA(Block block) {
-        LengauerTarjan<Block> dominators = new LengauerTarjan<>(block.blocks(), block.getEntry());
-        var frontier = new DominanceFrontier<>(dominators, block);
-        var defsites = new DefinitionSites(block);
+    private void toSSA(Block cfg) {
+        LengauerTarjan<Block> dominators = new LengauerTarjan<>(cfg.blocks(), cfg.getEntry());
+        var nesting = new LoopNesting<>(dominators, cfg.blocks());
+        LoopPostbody postbody = new LoopPostbody(nesting, cfg.blocks());
+        for (Block block : cfg.blocks()) {
+            postbody.run(block);
+        }
+        cfg.runLiveness();
+        dominators = new LengauerTarjan<>(cfg.blocks(), cfg.getEntry());
+        var frontier = new DominanceFrontier<>(dominators, cfg);
+        var defsites = new DefinitionSites(cfg);
         new InsertPhisMinimal(symbol, defsites, frontier).run();
-        new UniqueRenamer(symbol).rename(block);
+        new UniqueRenamer(symbol).rename(cfg);
     }
 }

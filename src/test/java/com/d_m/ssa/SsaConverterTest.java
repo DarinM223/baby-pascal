@@ -60,37 +60,42 @@ class SsaConverterTest {
                       k <- 0
                       %1 <- GOTO() [l2]
                     }
-                    block l2 [l1, l3, l4] {
-                      j2 <- Φ(j, j3, j4)
-                      k2 <- Φ(k, k3, k4)
-                      %2 <- k2 < 100 [l5, l6]
+                    block l2 [l1, l3] {
+                      j2 <- Φ(j, j3)
+                      k2 <- Φ(k, k3)
+                      %2 <- k2 < 100 [l4, l5]
+                    }
+                    block l4 [l2] {
+                      %3 <- j2 < 20 [l6, l7]
                     }
                     block l5 [l2] {
-                      %3 <- j2 < 20 [l3, l7]
-                    }
-                    block l6 [l2] {
                       %4 <- GOTO 15 [l8]
                     }
-                    block l3 [l5] {
-                      j3 <- i
+                    block l6 [l4] {
+                      j4 <- i
                       %5 <- k2 + 1
-                      k3 <- %5
-                      %6 <- GOTO 3 [l2]
+                      k4 <- %5
+                      %6 <- GOTO 3 [l3]
                     }
-                    block l7 [l5] {
-                      %7 <- GOTO 11 [l4]
+                    block l7 [l4] {
+                      %7 <- GOTO 11 [l9]
                     }
-                    block l8 [l6] {
+                    block l8 [l5] {
                       %8 <- NOP()
-                      %9 <- GOTO() [l9]
+                      %9 <- GOTO() [l10]
                     }
-                    block l4 [l7] {
-                      j4 <- k2
-                      %10 <- k2 + 2
-                      k4 <- %10
-                      %11 <- GOTO 3 [l2]
+                    block l3 [l6, l9] {
+                      j3 <- Φ(j4, j5)
+                      k3 <- Φ(k4, k5)
+                      %10 <- GOTO() [l2]
                     }
-                    block l9 [l8] {
+                    block l9 [l7] {
+                      j5 <- k2
+                      %11 <- k2 + 2
+                      k5 <- %11
+                      %12 <- GOTO 3 [l3]
+                    }
+                    block l10 [l8] {
                     }
                   }
                 }

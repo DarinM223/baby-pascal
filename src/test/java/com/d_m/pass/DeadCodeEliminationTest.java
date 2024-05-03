@@ -2,15 +2,10 @@ package com.d_m.pass;
 
 import com.d_m.ast.*;
 import com.d_m.cfg.Block;
-import com.d_m.code.Quad;
 import com.d_m.code.ShortCircuitException;
 import com.d_m.code.ThreeAddressCode;
-import com.d_m.construct.InsertPhisMinimal;
-import com.d_m.construct.UniqueRenamer;
-import com.d_m.dom.DefinitionSites;
-import com.d_m.dom.DominanceFrontier;
+import com.d_m.construct.ConstructSSA;
 import com.d_m.dom.Examples;
-import com.d_m.dom.LengauerTarjan;
 import com.d_m.ssa.Module;
 import com.d_m.ssa.PrettyPrinter;
 import com.d_m.ssa.SsaConverter;
@@ -33,8 +28,6 @@ class DeadCodeEliminationTest {
     Fresh fresh;
     Symbol symbol;
     ThreeAddressCode threeAddressCode;
-    DominanceFrontier<Block> frontier;
-    DefinitionSites defsites;
 
     @BeforeEach
     void setUp() {
@@ -42,38 +35,30 @@ class DeadCodeEliminationTest {
         symbol = new SymbolImpl(fresh);
     }
 
-    Block toCfg(List<Statement> statements) throws ShortCircuitException {
+    Program<Block> toCfg(Program<List<Statement>> program) throws ShortCircuitException {
         threeAddressCode = new ThreeAddressCode(fresh, symbol);
-        List<Quad> code = threeAddressCode.normalize(statements);
-        com.d_m.cfg.Block cfg = new Block(code);
-        LengauerTarjan<Block> dominators = new LengauerTarjan<>(cfg.blocks(), cfg.getEntry());
-        frontier = new DominanceFrontier<>(dominators, cfg);
-        defsites = new DefinitionSites(cfg);
+        Program<Block> cfg = threeAddressCode.normalizeProgram(program);
+        new ConstructSSA(symbol).convertProgram(cfg);
         return cfg;
     }
 
     @Test
     void testDeadCodeElimination() throws IOException, ShortCircuitException {
-        Block fibonacci = toCfg(Examples.fibonacci("fibonacci", "n"));
-        new InsertPhisMinimal(symbol, defsites, frontier).run();
-        new UniqueRenamer(symbol).rename(fibonacci);
-        Declaration<Block> fibonacciDeclaration = new FunctionDeclaration<>(
+        Declaration<List<Statement>> fibonacciDeclaration = new FunctionDeclaration<>(
                 "fibonacci",
                 List.of(new TypedName("n", new IntegerType())),
                 Optional.of(new IntegerType()),
-                fibonacci
+                Examples.fibonacci("fibonacci", "n")
         );
-
         List<Statement> statements = List.of(
                 new AssignStatement("number", new BinaryOpExpression(BinaryOp.ADD, new IntExpression(2), new IntExpression(3))),
                 new AssignStatement("result", new CallExpression("fibonacci", List.of(new VarExpression("number"))))
         );
-        Block cfg = toCfg(statements);
-        new InsertPhisMinimal(symbol, defsites, frontier).run();
-        new UniqueRenamer(symbol).rename(cfg);
-        Program<Block> program = new Program<>(List.of(), List.of(fibonacciDeclaration), cfg);
+        Program<List<Statement>> program = new Program<>(List.of(), List.of(fibonacciDeclaration), statements);
+        Program<Block> cfg = toCfg(program);
+
         SsaConverter converter = new SsaConverter(symbol);
-        Module module = converter.convertProgram(program);
+        Module module = converter.convertProgram(cfg);
 
         FunctionPass<Boolean> deadcode = new DeadCodeElimination();
         boolean changed = deadcode.runModule(module);
@@ -107,12 +92,14 @@ class DeadCodeEliminationTest {
                       %6 <- n <= 1 [l5, l6]
                     }
                     block l5 [l4] {
+                      fibonacci2 <- n
                       %7 <- GOTO 12 [l7]
                     }
                     block l6 [l4] {
                       %8 <- GOTO 4 [l8]
                     }
                     block l7 [l5, l8] {
+                      fibonacci3 <- Φ(fibonacci2, fibonacci4)
                       %9 <- GOTO() [l9]
                     }
                     block l8 [l6] {
@@ -122,9 +109,12 @@ class DeadCodeEliminationTest {
                       %13 <- n - 2
                       %14 <- PARAM %13
                       %15 <- fibonacci CALL 1
-                      %16 <- GOTO() [l7]
+                      %16 <- %12 + %15
+                      fibonacci4 <- %16
+                      %17 <- GOTO() [l7]
                     }
                     block l9 [l7] {
+                      %18 <- RETURN fibonacci3
                     }
                   }
                 }

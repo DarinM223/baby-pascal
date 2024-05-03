@@ -5,32 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add return instructions to functions with a return type and add helpers for transforming Programs">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/construct/ConstructSSA.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Declaration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Declaration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/Operator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/Operator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LengauerTarjan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LengauerTarjan.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LoopPostbody.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/LoopPostbody.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/DeadCodeElimination.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/DeadCodeElimination.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/SsaGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/SsaGraph.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/construct/UniqueRenamerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/construct/UniqueRenamerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/DominanceFrontierTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/DominanceFrontierTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LengauerTarjanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LengauerTarjanTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LoopNestingTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LoopNestingTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LoopPostbodyTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LoopPostbodyTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/PostOrderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/PostOrderTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/ConstantPropagationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/ConstantPropagationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/CriticalEdgeSplittingTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/CriticalEdgeSplittingTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/construct/ConstructSSA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/construct/ConstructSSA.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/DeadCodeEliminationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/DeadCodeEliminationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/GlobalValueNumberingTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/GlobalValueNumberingTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/BlockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/BlockTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/InstructionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/InstructionTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/graphviz/SsaGraphTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/graphviz/SsaGraphTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -239,14 +217,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00056" summary="Use Java 22 wildcard patterns">
-      <option name="closed" value="true" />
-      <created>1712270219767</created>
-      <option name="number" value="00056" />
-      <option name="presentableId" value="LOCAL-00056" />
-      <option name="project" value="LOCAL" />
-      <updated>1712270219768</updated>
     </task>
     <task id="LOCAL-00057" summary="Modify pattern wildcards so that the patterns are more exhaustive">
       <option name="closed" value="true" />
@@ -632,7 +602,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714522931448</updated>
     </task>
-    <option name="localTasksCounter" value="105" />
+    <task id="LOCAL-00105" summary="Add return instructions to functions with a return type and add helpers for transforming Programs">
+      <option name="closed" value="true" />
+      <created>1714754900731</created>
+      <option name="number" value="00105" />
+      <option name="presentableId" value="LOCAL-00105" />
+      <option name="project" value="LOCAL" />
+      <updated>1714754900732</updated>
+    </task>
+    <option name="localTasksCounter" value="106" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
