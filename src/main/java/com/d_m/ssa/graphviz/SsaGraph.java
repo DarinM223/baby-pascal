@@ -1,7 +1,7 @@
 package com.d_m.ssa.graphviz;
 
-import com.d_m.ssa.*;
 import com.d_m.ssa.Module;
+import com.d_m.ssa.*;
 
 import java.io.IOException;
 import java.io.Writer;

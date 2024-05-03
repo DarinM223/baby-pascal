@@ -1,6 +1,9 @@
 package com.d_m.ssa;
 
-import com.d_m.ast.*;
+import com.d_m.ast.Declaration;
+import com.d_m.ast.FunctionDeclaration;
+import com.d_m.ast.Program;
+import com.d_m.ast.TypedName;
 import com.d_m.cfg.Phi;
 import com.d_m.code.*;
 import com.d_m.util.Symbol;

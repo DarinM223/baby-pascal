@@ -2,7 +2,9 @@ package com.d_m.ssa;
 
 import com.d_m.cfg.IBlock;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Block implements IBlock<Block>, Comparable<Block> {
     private final int id;

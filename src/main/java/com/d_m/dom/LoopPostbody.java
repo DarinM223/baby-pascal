@@ -4,7 +4,9 @@ import com.d_m.cfg.Block;
 import com.d_m.util.Fresh;
 import com.d_m.util.FreshImpl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class LoopPostbody {
     private final Fresh fresh;

@@ -1,14 +1,13 @@
 package com.d_m.dom;
 
 import com.d_m.util.Pair;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LoopNestingTest {
     public static List<SimpleBlock> figure_18_3() {
@@ -50,7 +49,7 @@ class LoopNestingTest {
         // Check dominator tree to see if it matches figure 18.3 (b).
         StringBuilder builder = new StringBuilder();
         for (SimpleBlock block : blocks) {
-            builder.append(block.getId() + " -> [");
+            builder.append(block.getId()).append(" -> [");
             for (var it = dominators.domChildren(block).iterator(); it.hasNext(); ) {
                 builder.append(it.next().getId());
                 if (it.hasNext()) {

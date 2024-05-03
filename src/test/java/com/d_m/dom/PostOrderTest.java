@@ -4,7 +4,7 @@ import com.d_m.util.Fresh;
 import com.d_m.util.FreshImpl;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PostOrderTest {
 

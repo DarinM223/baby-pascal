@@ -1,4 +1,4 @@
 package com.d_m.ast;
 
-public interface Declaration<T> {
+public sealed interface Declaration<T> permits FunctionDeclaration {
 }

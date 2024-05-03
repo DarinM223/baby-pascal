@@ -4,7 +4,8 @@ import com.d_m.ast.Type;
 import com.d_m.code.Operator;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Instruction extends Value implements Listable<Instruction> {
     private Block parent;

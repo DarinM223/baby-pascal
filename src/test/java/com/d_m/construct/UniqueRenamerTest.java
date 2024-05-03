@@ -3,8 +3,8 @@ package com.d_m.construct;
 import com.d_m.ast.*;
 import com.d_m.cfg.Block;
 import com.d_m.code.Quad;
-import com.d_m.code.ThreeAddressCode;
 import com.d_m.code.ShortCircuitException;
+import com.d_m.code.ThreeAddressCode;
 import com.d_m.dom.DefinitionSites;
 import com.d_m.dom.DominanceFrontier;
 import com.d_m.dom.Examples;
@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UniqueRenamerTest {
 

@@ -2,8 +2,8 @@ package com.d_m.dom;
 
 import com.d_m.cfg.Block;
 import com.d_m.code.Quad;
-import com.d_m.code.ThreeAddressCode;
 import com.d_m.code.ShortCircuitException;
+import com.d_m.code.ThreeAddressCode;
 import com.d_m.util.Fresh;
 import com.d_m.util.FreshImpl;
 import com.d_m.util.Symbol;
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LengauerTarjanTest {
     LengauerTarjan<Block> dominators;

@@ -1,6 +1,9 @@
 package com.d_m.pass;
 
-import com.d_m.ssa.*;
+import com.d_m.ssa.Function;
+import com.d_m.ssa.Instruction;
+import com.d_m.ssa.Use;
+import com.d_m.ssa.Value;
 import com.google.common.collect.Iterables;
 
 import java.util.HashSet;

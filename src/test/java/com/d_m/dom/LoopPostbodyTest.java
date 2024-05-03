@@ -4,8 +4,8 @@ import com.d_m.ast.Program;
 import com.d_m.ast.Statement;
 import com.d_m.cfg.Block;
 import com.d_m.code.Quad;
-import com.d_m.code.ThreeAddressCode;
 import com.d_m.code.ShortCircuitException;
+import com.d_m.code.ThreeAddressCode;
 import com.d_m.construct.InsertPhisPruned;
 import com.d_m.construct.UniqueRenamer;
 import com.d_m.ssa.Module;
@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LoopPostbodyTest {
     Fresh fresh;

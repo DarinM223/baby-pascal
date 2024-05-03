@@ -1,6 +1,7 @@
 package com.d_m.code;
 
 import com.d_m.ast.*;
+import com.d_m.cfg.Block;
 import com.d_m.util.Fresh;
 import com.d_m.util.Label;
 import com.d_m.util.Symbol;
@@ -17,6 +18,32 @@ public class ThreeAddressCode {
     public ThreeAddressCode(Fresh fresh, Symbol symbol) {
         this.fresh = fresh;
         this.symbol = symbol;
+    }
+
+    public Program<Block> normalizeProgram(Program<List<Statement>> program) throws ShortCircuitException {
+        List<Declaration<Block>> declarations = new ArrayList<>(program.getDeclarations().size());
+        for (Declaration<List<Statement>> declaration : program.getDeclarations()) {
+            var newDeclaration =
+                    switch (declaration) {
+                        case FunctionDeclaration(var functionName, var parameters, var returnType, var body) -> {
+                            List<Quad> quads = normalize(body);
+                            Block block = new Block(quads);
+                            if (returnType.isPresent()) {
+                                var funReturn = new Quad(
+                                        Operator.RETURN,
+                                        new EmptyAddress(),
+                                        new NameAddress(symbol.getSymbol(functionName)),
+                                        new EmptyAddress()
+                                );
+                                block.getExit().getCode().add(funReturn);
+                            }
+                            yield new FunctionDeclaration<>(functionName, parameters, returnType, block);
+                        }
+                    };
+            declarations.add(newDeclaration);
+        }
+        Block main = new Block(normalize(program.getMain()));
+        return new Program<>(program.getGlobals(), declarations, main);
     }
 
     public List<Quad> normalize(List<Statement> statements) throws ShortCircuitException {
