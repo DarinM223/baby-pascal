@@ -153,3 +153,22 @@ of critical edge splitting was also looked at.
 Conditional constant propagation is covered in Modern Compiler Implementation in ML Chapter 19.3.
 
 #### Global value numbering
+
+Global value numbering is based off
+of [LLVM's implementation](https://github.com/llvm/llvm-project/blob/7a484d3a1f630ba9ce7b22e744818be974971470/llvm/lib/Transforms/Scalar/GVN.cpp#L4).
+This implementation is similar to the paper Value Numbering by Briggs, Cooper, and Simpson, but instead of doing a
+single pass
+reverse postorder traversal over the dominator tree, it does multiple passes over the reverse postorder traversal of the
+control flow graph and
+stores a mapping from value number to lists of values with that value number. Then, when finding if a value is a
+duplicate of an existing value, it looks
+through the list until it finds one that dominates the current value. The reason why LLVM does it this way
+is because dominance checking is fairly cheap because blocks store the dominator tree level to prevent having to walk
+the entire dominator tree.
+
+Instruction simplification is done in the `InstructionSimplify` class, which is also
+based off
+of [LLVM's implementation](https://github.com/llvm/llvm-project/blob/7a484d3a1f630ba9ce7b22e744818be974971470/llvm/lib/Analysis/InstructionSimplify.cpp#L4).
+This implementation handles
+various properties like commutativity and associativity and is fairly separated from the global value numbering
+implementation.
