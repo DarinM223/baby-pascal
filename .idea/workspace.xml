@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Update README.md for global value numbering">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/Builder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SDNode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SDUse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SDValue.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start types for selection dag">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/FunctionLoweringInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/IdGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/Register.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SelectionDAG.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/Builder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/Builder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SDNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SDNode.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,6 +72,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.d_m.dag" />
       <recent name="com.d_m.code" />
     </key>
     <key name="CreateTestDialog.Recents.Supers">
@@ -218,14 +221,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00059" summary="Add test for figure 19.2 critical edge splitting">
-      <option name="closed" value="true" />
-      <created>1712362397641</created>
-      <option name="number" value="00059" />
-      <option name="presentableId" value="LOCAL-00059" />
-      <option name="project" value="LOCAL" />
-      <updated>1712362397641</updated>
     </task>
     <task id="LOCAL-00060" summary="Add unit test for figure 19.3 critical edge splitting">
       <option name="closed" value="true" />
@@ -611,11 +606,18 @@
       <option name="project" value="LOCAL" />
       <updated>1714884207150</updated>
     </task>
-    <option name="localTasksCounter" value="108" />
+    <task id="LOCAL-00108" summary="Start types for selection dag">
+      <option name="closed" value="true" />
+      <created>1715441552389</created>
+      <option name="number" value="00108" />
+      <option name="presentableId" value="LOCAL-00108" />
+      <option name="project" value="LOCAL" />
+      <updated>1715441552389</updated>
+    </task>
+    <option name="localTasksCounter" value="109" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Attempt leaderTable and findLeader()" />
     <MESSAGE value="Start README.md" />
     <MESSAGE value="ThreeAddressCode uses pattern matching instead of visitors for normalization" />
     <MESSAGE value="Delete ExpressionVisitor and StatementVisitor" />
@@ -640,7 +642,8 @@
     <MESSAGE value="Add return instructions to functions with a return type and add helpers for transforming Programs" />
     <MESSAGE value="ConstructSSA adds loop postbody and updates SSA unit tests" />
     <MESSAGE value="Update README.md for global value numbering" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update README.md for global value numbering" />
+    <MESSAGE value="Start types for selection dag" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start types for selection dag" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
