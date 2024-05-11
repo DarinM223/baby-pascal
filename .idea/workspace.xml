@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="ConstructSSA adds loop postbody and updates SSA unit tests">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Update README.md for global value numbering">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/Builder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SDNode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SDUse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SDValue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +65,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.completion&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -215,14 +218,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00058" summary="Modify successors and predecessors to be lists instead of sets and attempt critical edge splitting">
-      <option name="closed" value="true" />
-      <created>1712353614921</created>
-      <option name="number" value="00058" />
-      <option name="presentableId" value="LOCAL-00058" />
-      <option name="project" value="LOCAL" />
-      <updated>1712353614921</updated>
     </task>
     <task id="LOCAL-00059" summary="Add test for figure 19.2 critical edge splitting">
       <option name="closed" value="true" />
@@ -608,11 +603,18 @@
       <option name="project" value="LOCAL" />
       <updated>1714759397113</updated>
     </task>
-    <option name="localTasksCounter" value="107" />
+    <task id="LOCAL-00107" summary="Update README.md for global value numbering">
+      <option name="closed" value="true" />
+      <created>1714884207150</created>
+      <option name="number" value="00107" />
+      <option name="presentableId" value="LOCAL-00107" />
+      <option name="project" value="LOCAL" />
+      <updated>1714884207150</updated>
+    </task>
+    <option name="localTasksCounter" value="108" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add helper method replaceUsesWith() to Value" />
     <MESSAGE value="Attempt leaderTable and findLeader()" />
     <MESSAGE value="Start README.md" />
     <MESSAGE value="ThreeAddressCode uses pattern matching instead of visitors for normalization" />
@@ -637,7 +639,8 @@
     <MESSAGE value="Add unit test for basic simplification of instructions" />
     <MESSAGE value="Add return instructions to functions with a return type and add helpers for transforming Programs" />
     <MESSAGE value="ConstructSSA adds loop postbody and updates SSA unit tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="ConstructSSA adds loop postbody and updates SSA unit tests" />
+    <MESSAGE value="Update README.md for global value numbering" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update README.md for global value numbering" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
