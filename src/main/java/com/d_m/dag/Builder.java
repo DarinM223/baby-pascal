@@ -1,5 +1,6 @@
 package com.d_m.dag;
 
+import com.d_m.ssa.ConstantInt;
 import com.d_m.ssa.Instruction;
 import com.d_m.ssa.Value;
 
@@ -25,6 +26,12 @@ public class Builder {
     }
 
     private SDValue getValueImpl(Value value) {
+        if (value instanceof ConstantInt constantInt) {
+            return dag.getConstant(constantInt);
+        }
+        if (value instanceof Instruction instruction) {
+            Register inRegister = dag.functionLoweringInfo.initializeRegister(instruction);
+        }
         return null;
     }
 

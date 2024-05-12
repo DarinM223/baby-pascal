@@ -4,14 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start types for selection dag">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/FunctionLoweringInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/IdGenerator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/Register.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SelectionDAG.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Adds register and more selection dag types">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/RegistersForValue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/Builder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/Builder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SDNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SDNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/FunctionLoweringInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/FunctionLoweringInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SelectionDAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SelectionDAG.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -221,14 +219,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00060" summary="Add unit test for figure 19.3 critical edge splitting">
-      <option name="closed" value="true" />
-      <created>1712368775403</created>
-      <option name="number" value="00060" />
-      <option name="presentableId" value="LOCAL-00060" />
-      <option name="project" value="LOCAL" />
-      <updated>1712368775403</updated>
     </task>
     <task id="LOCAL-00061" summary="Abstract dominance stuff to work on both cfg.Block and ssa.Block">
       <option name="closed" value="true" />
@@ -614,11 +604,18 @@
       <option name="project" value="LOCAL" />
       <updated>1715441552389</updated>
     </task>
-    <option name="localTasksCounter" value="109" />
+    <task id="LOCAL-00109" summary="Adds register and more selection dag types">
+      <option name="closed" value="true" />
+      <created>1715450061207</created>
+      <option name="number" value="00109" />
+      <option name="presentableId" value="LOCAL-00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1715450061208</updated>
+    </task>
+    <option name="localTasksCounter" value="110" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Start README.md" />
     <MESSAGE value="ThreeAddressCode uses pattern matching instead of visitors for normalization" />
     <MESSAGE value="Delete ExpressionVisitor and StatementVisitor" />
     <MESSAGE value="Adds documentation to IBlock and fills out README for com.d_m.code and com.d_m.cfg" />
@@ -643,7 +640,8 @@
     <MESSAGE value="ConstructSSA adds loop postbody and updates SSA unit tests" />
     <MESSAGE value="Update README.md for global value numbering" />
     <MESSAGE value="Start types for selection dag" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start types for selection dag" />
+    <MESSAGE value="Adds register and more selection dag types" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adds register and more selection dag types" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
