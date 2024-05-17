@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Adds register and more selection dag types">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/RegistersForValue.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="More stubs">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/DAG.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/DAGSelect.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/Tile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/Builder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/Builder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/FunctionLoweringInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/FunctionLoweringInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SelectionDAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SelectionDAG.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,9 +20,9 @@
       <list>
         <option value="Enum" />
         <option value="Record" />
-        <option value="Interface" />
         <option value="JUnit5 Test Class" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -219,14 +218,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00061" summary="Abstract dominance stuff to work on both cfg.Block and ssa.Block">
-      <option name="closed" value="true" />
-      <created>1712441998776</created>
-      <option name="number" value="00061" />
-      <option name="presentableId" value="LOCAL-00061" />
-      <option name="project" value="LOCAL" />
-      <updated>1712441998776</updated>
     </task>
     <task id="LOCAL-00062" summary="Construct loop nesting tree from dominator tree and adds unit test from figure 18.3">
       <option name="closed" value="true" />
@@ -612,11 +603,18 @@
       <option name="project" value="LOCAL" />
       <updated>1715450061208</updated>
     </task>
-    <option name="localTasksCounter" value="110" />
+    <task id="LOCAL-00110" summary="More stubs">
+      <option name="closed" value="true" />
+      <created>1715539279359</created>
+      <option name="number" value="00110" />
+      <option name="presentableId" value="LOCAL-00110" />
+      <option name="project" value="LOCAL" />
+      <updated>1715539279360</updated>
+    </task>
+    <option name="localTasksCounter" value="111" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="ThreeAddressCode uses pattern matching instead of visitors for normalization" />
     <MESSAGE value="Delete ExpressionVisitor and StatementVisitor" />
     <MESSAGE value="Adds documentation to IBlock and fills out README for com.d_m.code and com.d_m.cfg" />
     <MESSAGE value="Add more references to Modern Compiler Implementation in ML" />
@@ -641,7 +639,8 @@
     <MESSAGE value="Update README.md for global value numbering" />
     <MESSAGE value="Start types for selection dag" />
     <MESSAGE value="Adds register and more selection dag types" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adds register and more selection dag types" />
+    <MESSAGE value="More stubs" />
+    <option name="LAST_COMMIT_MESSAGE" value="More stubs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
