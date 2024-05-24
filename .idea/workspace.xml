@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="More stubs">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/DAG.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/DAGSelect.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/Tile.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add abstracted tile cutting dag selection">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/IntegerRegisterClass.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/RegisterClass.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/FunctionLoweringInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/FunctionLoweringInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/Register.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/Register.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,8 +22,8 @@
         <option value="Enum" />
         <option value="Record" />
         <option value="JUnit5 Test Class" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -218,14 +219,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00062" summary="Construct loop nesting tree from dominator tree and adds unit test from figure 18.3">
-      <option name="closed" value="true" />
-      <created>1712502340929</created>
-      <option name="number" value="00062" />
-      <option name="presentableId" value="LOCAL-00062" />
-      <option name="project" value="LOCAL" />
-      <updated>1712502340929</updated>
     </task>
     <task id="LOCAL-00063" summary="Remove HashSet usage from cfg.Block in favor of ArrayList, refactors unit tests">
       <option name="closed" value="true" />
@@ -611,11 +604,18 @@
       <option name="project" value="LOCAL" />
       <updated>1715539279360</updated>
     </task>
-    <option name="localTasksCounter" value="111" />
+    <task id="LOCAL-00111" summary="Add abstracted tile cutting dag selection">
+      <option name="closed" value="true" />
+      <created>1715960622011</created>
+      <option name="number" value="00111" />
+      <option name="presentableId" value="LOCAL-00111" />
+      <option name="project" value="LOCAL" />
+      <updated>1715960622012</updated>
+    </task>
+    <option name="localTasksCounter" value="112" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Delete ExpressionVisitor and StatementVisitor" />
     <MESSAGE value="Adds documentation to IBlock and fills out README for com.d_m.code and com.d_m.cfg" />
     <MESSAGE value="Add more references to Modern Compiler Implementation in ML" />
     <MESSAGE value="Fill out README for com.d_m.dom and com.d_m.construct" />
@@ -640,7 +640,8 @@
     <MESSAGE value="Start types for selection dag" />
     <MESSAGE value="Adds register and more selection dag types" />
     <MESSAGE value="More stubs" />
-    <option name="LAST_COMMIT_MESSAGE" value="More stubs" />
+    <MESSAGE value="Add abstracted tile cutting dag selection" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add abstracted tile cutting dag selection" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

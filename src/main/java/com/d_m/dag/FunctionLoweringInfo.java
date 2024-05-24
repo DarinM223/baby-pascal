@@ -18,6 +18,7 @@ public class FunctionLoweringInfo {
     }
 
     public Register createRegister(Type type) {
-        return null;
+        Register virtual = new Register.Virtual(IdGenerator.newId(), new IntegerRegisterClass());
+        return virtual;
     }
 }
