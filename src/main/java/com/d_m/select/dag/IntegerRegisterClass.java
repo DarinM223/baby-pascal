@@ -1,4 +1,4 @@
-package com.d_m.dag;
+package com.d_m.select.dag;
 
 public class IntegerRegisterClass extends RegisterClass {
     public IntegerRegisterClass() {

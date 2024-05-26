@@ -4,12 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add abstracted tile cutting dag selection">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/IntegerRegisterClass.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/RegisterClass.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add register class">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/IdGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineFunction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineInstruction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineOperand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/FunctionLoweringInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/FunctionLoweringInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/Register.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dag/Register.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/Builder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/Builder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/DAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/DAG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/DAGSelect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/DAGSelect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/FunctionLoweringInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/FunctionLoweringInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/IdGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/IdGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/IntegerRegisterClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/IntegerRegisterClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/Register.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/Register.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/RegisterClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/RegisterClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/RegistersForValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/RegistersForValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SDNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SDNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SDUse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SDUse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SDValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SDValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/SelectionDAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SelectionDAG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dag/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/Tile.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,6 +97,8 @@
       <recent name="com.d_m.ast" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.d_m.select" />
+      <recent name="com.d_m.select.instr" />
       <recent name="com.d_m.code" />
       <recent name="com.d_m.code.normalize" />
     </key>
@@ -91,6 +108,9 @@
       <recent name="com.d_m.ssa.graphviz" />
       <recent name="com.d_m.ssa" />
       <recent name="com.d_m.construct" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.d_m.select.instr" />
     </key>
   </component>
   <component name="RunManager" selected="JUnit.All tests">
@@ -219,14 +239,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00063" summary="Remove HashSet usage from cfg.Block in favor of ArrayList, refactors unit tests">
-      <option name="closed" value="true" />
-      <created>1712551088392</created>
-      <option name="number" value="00063" />
-      <option name="presentableId" value="LOCAL-00063" />
-      <option name="project" value="LOCAL" />
-      <updated>1712551088392</updated>
     </task>
     <task id="LOCAL-00064" summary="cfg.Block pretty() prints out block id and has more compact predecessor and successor lists">
       <option name="closed" value="true" />
@@ -612,11 +624,18 @@
       <option name="project" value="LOCAL" />
       <updated>1715960622012</updated>
     </task>
-    <option name="localTasksCounter" value="112" />
+    <task id="LOCAL-00112" summary="Add register class">
+      <option name="closed" value="true" />
+      <created>1716569310555</created>
+      <option name="number" value="00112" />
+      <option name="presentableId" value="LOCAL-00112" />
+      <option name="project" value="LOCAL" />
+      <updated>1716569310556</updated>
+    </task>
+    <option name="localTasksCounter" value="113" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Adds documentation to IBlock and fills out README for com.d_m.code and com.d_m.cfg" />
     <MESSAGE value="Add more references to Modern Compiler Implementation in ML" />
     <MESSAGE value="Fill out README for com.d_m.dom and com.d_m.construct" />
     <MESSAGE value="Fill out README for com.d_m.ssa" />
@@ -641,7 +660,8 @@
     <MESSAGE value="Adds register and more selection dag types" />
     <MESSAGE value="More stubs" />
     <MESSAGE value="Add abstracted tile cutting dag selection" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add abstracted tile cutting dag selection" />
+    <MESSAGE value="Add register class" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add register class" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
