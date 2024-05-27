@@ -4,16 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start machine instruction types">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/NodeType.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="More changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/Operator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/Operator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/DAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/DAGSelect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/RegistersForValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/Builder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/Builder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/FunctionLoweringInfo.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SDNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SDNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SDUse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SDUse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SelectionDAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SelectionDAG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Tile.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -228,14 +225,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00065" summary="Pass in Symbol when pretty printing three address code">
-      <option name="closed" value="true" />
-      <created>1712620897898</created>
-      <option name="number" value="00065" />
-      <option name="presentableId" value="LOCAL-00065" />
-      <option name="project" value="LOCAL" />
-      <updated>1712620897898</updated>
     </task>
     <task id="LOCAL-00066" summary="Add test for loop postbody">
       <option name="closed" value="true" />
@@ -621,12 +610,18 @@
       <option name="project" value="LOCAL" />
       <updated>1716758846751</updated>
     </task>
-    <option name="localTasksCounter" value="114" />
+    <task id="LOCAL-00114" summary="Adds STORE instruction and adds comment on tokens">
+      <option name="closed" value="true" />
+      <created>1716818413035</created>
+      <option name="number" value="00114" />
+      <option name="presentableId" value="LOCAL-00114" />
+      <option name="project" value="LOCAL" />
+      <updated>1716818413035</updated>
+    </task>
+    <option name="localTasksCounter" value="115" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fill out README for com.d_m.dom and com.d_m.construct" />
-    <MESSAGE value="Fill out README for com.d_m.ssa" />
     <MESSAGE value="Use ConstantTable to share constants for a program" />
     <MESSAGE value="Remove getId() and remove Symbol from PrettyPrinter" />
     <MESSAGE value="Remove Fresh requirement for constructing unnamed SSA, remove getId() from IBlock" />
@@ -650,7 +645,9 @@
     <MESSAGE value="Add abstracted tile cutting dag selection" />
     <MESSAGE value="Add register class" />
     <MESSAGE value="Start machine instruction types" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start machine instruction types" />
+    <MESSAGE value="Adds STORE instruction and adds comment on tokens" />
+    <MESSAGE value="More changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="More changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

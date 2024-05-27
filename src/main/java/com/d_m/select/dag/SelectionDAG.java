@@ -5,14 +5,13 @@ import com.d_m.ssa.ConstantInt;
 import java.util.List;
 
 public class SelectionDAG {
-    protected FunctionLoweringInfo functionLoweringInfo;
     private SDNode entryToken;
     private SDValue root;
     private List<SDNode> nodes;
 
     /*
     The only side effectful operations for straightline basic block code
-    is LOAD, STORE, and CALL. Nodes for these must return multiple values.
+    is LOAD, STORE, CALL, and RETURN. Nodes for these must return multiple values.
 
      LOAD takes in as a parameter, a token along with the address.
 
@@ -33,7 +32,10 @@ public class SelectionDAG {
                            |       \ /
                            |        *  123
                            |        |  /
-                           +-----> STORE
+                           +-----> STORE   0
+                                    |     /
+                                   RETURN
+                                    |
 
      LOAD takes in as a parameter, a token and the input address to load
      and has a value output (no token because it doesn't hae a side effect
@@ -45,9 +47,14 @@ public class SelectionDAG {
 
      CALL takes in as a parameter the token, and the parameters for the function
      and has two outputs, a token output and the return value of the function.
+
+     RETURN takes in as a parameter the token, and the return value
+     and has a single token output.
      */
 
-    public SDValue getConstant(ConstantInt constantInt) {
-        return null;
+    public SelectionDAG() {
+        entryToken = new SDNode(new NodeType.Entry());
+        // The last token output.
+        root = null;
     }
 }
