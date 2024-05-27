@@ -1,4 +1,4 @@
-package com.d_m.select.dag;
+package com.d_m.select;
 
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.SetMultimap;

@@ -5,6 +5,7 @@ import java.util.Objects;
 
 public class SDNode {
     private final int id = IdGenerator.newId();
+    NodeType nodeType;
     List<SDUse> operands;
     SDUse uses;
 

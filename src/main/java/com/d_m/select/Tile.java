@@ -1,4 +1,4 @@
-package com.d_m.select.dag;
+package com.d_m.select;
 
 import java.util.Collection;
 import java.util.Set;
