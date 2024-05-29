@@ -8,20 +8,22 @@ import java.util.Objects;
 
 public class SDNode {
     private final int id = IdGenerator.newId();
-    NodeType nodeType;
+    NodeOp nodeOp;
     List<SDUse> operands;
     SDUse uses;
+    public final int numOutputs;
 
-    public SDNode(NodeType nodeType, List<SDValue> operands) {
-        this.nodeType = nodeType;
+    public SDNode(NodeOp nodeOp, List<SDValue> operands, int numOutputs) {
+        this.nodeOp = nodeOp;
+        this.numOutputs = numOutputs;
         for (SDValue operand : operands) {
             SDUse use = new SDUse(operand, this);
             operand.node.linkUse(use);
         }
     }
 
-    public SDNode(NodeType nodeType) {
-        this(nodeType, List.of());
+    public SDNode(NodeOp nodeOp, int numOutputs) {
+        this(nodeOp, List.of(), numOutputs);
     }
 
     @Override

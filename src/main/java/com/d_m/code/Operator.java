@@ -49,6 +49,14 @@ public enum Operator {
         };
     }
 
+    public int numDAGOutputs() {
+        return switch (this) {
+            case CALL -> 2;
+            case RETURN -> 0;
+            default -> 1;
+        };
+    }
+
     @Override
     public String toString() {
         return switch (this) {

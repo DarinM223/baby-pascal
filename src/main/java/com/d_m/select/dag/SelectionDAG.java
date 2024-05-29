@@ -1,12 +1,10 @@
 package com.d_m.select.dag;
 
-import com.d_m.ssa.ConstantInt;
-
 import java.util.List;
 
 public class SelectionDAG {
-    private SDNode entryToken;
-    private SDValue root;
+    SDNode entryToken;
+    SDValue root;
     private List<SDNode> nodes;
 
     /*
@@ -53,7 +51,7 @@ public class SelectionDAG {
      */
 
     public SelectionDAG() {
-        entryToken = new SDNode(new NodeType.Entry());
+        entryToken = new SDNode(new NodeOp.Entry(), 1);
         // The last token output.
         root = null;
     }
