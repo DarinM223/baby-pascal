@@ -9,6 +9,8 @@ import java.util.*;
 
 /**
  * A SSA basic block with extra methods.
+ * A drawback with doing this is that side effects like loads and stores
+ * don't have token outputs to enforce ordering.
  */
 public class SSADAG implements DAG<Value> {
     private final Block block;
@@ -39,7 +41,7 @@ public class SSADAG implements DAG<Value> {
                     continue;
                 }
                 visited.add(top);
-                if (top instanceof Instruction topInstruction) {
+                if (top instanceof Instruction topInstruction && checkInstruction(topInstruction)) {
                     for (Use use : topInstruction.operands()) {
                         stack.add(use.getValue());
                     }
@@ -49,9 +51,31 @@ public class SSADAG implements DAG<Value> {
     }
 
     @Override
-    public Collection<Value> reverseTopologicalSort() {
-        // TODO: postorder from roots
-        return List.of();
+    public Collection<Value> postorder() {
+        List<Value> results = new ArrayList<>();
+        Set<Value> visited = new HashSet<>();
+        Stack<Value> stack = new Stack<>();
+        for (Value root : roots) {
+            stack.push(root);
+        }
+        while (!stack.isEmpty()) {
+            Value top = stack.peek();
+            boolean allVisited = true;
+            if (top instanceof Instruction instruction && checkInstruction(instruction)) {
+                for (Use use : instruction.operands()) {
+                    Value child = use.getValue();
+                    if (!(allVisited &= visited.contains(child))) {
+                        stack.push(child);
+                    }
+                }
+            }
+            if (allVisited) {
+                results.add(top);
+                visited.add(top);
+                stack.pop();
+            }
+        }
+        return results;
     }
 
     @Override
@@ -79,12 +103,16 @@ public class SSADAG implements DAG<Value> {
             if (top.equals(destination)) {
                 return true;
             }
-            if (top instanceof Instruction instruction) {
+            if (top instanceof Instruction instruction && checkInstruction(instruction)) {
                 for (Use use : instruction.operands()) {
                     stack.add(use.getValue());
                 }
             }
         }
         return false;
+    }
+
+    private boolean checkInstruction(Instruction instruction) {
+        return instruction.getParent() == null || instruction.getParent().equals(block);
     }
 }

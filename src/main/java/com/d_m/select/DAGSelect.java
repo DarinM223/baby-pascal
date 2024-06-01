@@ -43,7 +43,7 @@ public class DAGSelect<Node extends Comparable<Node>, TileImpl extends Tile<Node
     }
 
     private void bottomUpDP() {
-        for (Node n : dag.reverseTopologicalSort()) {
+        for (Node n : dag.postorder()) {
             bestChoiceForNodeCost.put(n, Integer.MAX_VALUE);
             for (TileImpl tile : matchingTiles.apply(n)) {
                 boolean hasInteriorFixedNode = false;
