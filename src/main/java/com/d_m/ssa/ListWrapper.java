@@ -47,4 +47,8 @@ public class ListWrapper<T extends Listable<T>> implements Iterable<T> {
     public Iterator<T> iterator() {
         return new LinkedIterator<>(first);
     }
+
+    public Iterator<T> reversed() {
+        return new ReverseLinkedIterator<>(last);
+    }
 }

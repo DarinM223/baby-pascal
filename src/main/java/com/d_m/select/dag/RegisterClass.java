@@ -16,4 +16,14 @@ public class RegisterClass {
         this.weight = other.weight;
         this.priority = other.priority;
     }
+
+    public String toString() {
+        return "RegisterClass(" +
+                String.format("%32s", Integer.toBinaryString(mask)).replace(" ", "0") +
+                "," +
+                weight +
+                "," +
+                priority +
+                ")";
+    }
 }

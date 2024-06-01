@@ -25,14 +25,21 @@ public class DAGSelect<Node extends Comparable<Node>, TileImpl extends Tile<Node
         coveringTiles = LinkedHashMultimap.create();
     }
 
-    public Collection<TileImpl> select() {
+    public void select() {
         fixedNodes.clear();
         bottomUpDP();
         topDownSelect();
         improveCSEDecisions();
         bottomUpDP();
         topDownSelect();
+    }
+
+    public Collection<TileImpl> matchedTiles() {
         return matchedTiles;
+    }
+
+    public Collection<TileImpl> coveringTiles(Node node) {
+        return coveringTiles.get(node);
     }
 
     private void bottomUpDP() {

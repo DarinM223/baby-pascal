@@ -1,5 +1,6 @@
 package com.d_m.select.dag;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SelectionDAG {
@@ -51,8 +52,19 @@ public class SelectionDAG {
      */
 
     public SelectionDAG() {
-        entryToken = new SDNode(new NodeOp.Entry(), 1);
+        nodes = new ArrayList<>();
         // The last token output.
         root = null;
+        entryToken = newNode(new NodeOp.Entry(), 1);
+    }
+
+    public SDNode newNode(NodeOp op, List<SDValue> operands, int numOutputs) {
+        SDNode node = new SDNode(op, operands, numOutputs);
+        nodes.add(node);
+        return node;
+    }
+
+    public SDNode newNode(NodeOp op, int numOutputs) {
+        return newNode(op, List.of(), numOutputs);
     }
 }

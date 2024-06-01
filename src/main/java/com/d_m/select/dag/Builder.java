@@ -11,6 +11,7 @@ public class Builder {
     private Instruction currentInstruction;
     private SelectionDAG dag;
     private Map<Value, SDValue> nodeMap;
+    private Map<SDValue, Register> valueRegisterMap;
 
     public void convertFunction(Function function) {
         for (Block block : function.getBlocks()) {
@@ -55,7 +56,7 @@ public class Builder {
             default -> List.of(new NodeType.Type(instruction.getType()));
         };
 
-        SDNode node = new SDNode(new NodeOp.Operator(instruction.getOperator()), operands, 1);
+        SDNode node = dag.newNode(new NodeOp.Operator(instruction.getOperator()), operands, 1);
         int numOutputs = instruction.getOperator().numDAGOutputs();
         SDValue result;
         if (numOutputs == 1) {
@@ -65,7 +66,7 @@ public class Builder {
             for (int i = 0; i < numOutputs; i++) {
                 outputs.add(new SDValue(node, i));
             }
-            SDNode merge = new SDNode(new NodeOp.Merge(outputTypes), outputs, 1);
+            SDNode merge = dag.newNode(new NodeOp.Merge(outputTypes), outputs, 1);
             result = new SDValue(merge, 0);
         }
         nodeMap.put(instruction, result);
