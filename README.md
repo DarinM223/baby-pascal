@@ -172,3 +172,12 @@ of [LLVM's implementation](https://github.com/llvm/llvm-project/blob/7a484d3a1f6
 This implementation handles
 various properties like commutativity and associativity and is fairly separated from the global value numbering
 implementation.
+
+## com.d_m.select
+
+Instruction selection is currently done on the block level.
+There are two types of ways we can represent blocks in a way
+where we can do pattern matching instruction selection on:
+lists of trees, or DAGs. Lists of trees are broken so that side
+effects happen in order, and DAGs pass through side effect tokens as inputs 
+and outputs starting at an entry node to enforce the ordering.

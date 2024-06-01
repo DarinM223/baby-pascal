@@ -4,18 +4,33 @@ import com.d_m.ssa.*;
 import com.google.common.collect.Iterables;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Builder {
-    private Instruction currentInstruction;
     private SelectionDAG dag;
-    private Map<Value, SDValue> nodeMap;
-    private Map<SDValue, Register> valueRegisterMap;
+    private final Map<Block, SelectionDAG> blockMap;
+    private final Map<Value, SDValue> nodeMap;
+    private final Map<SDValue, Register> valueRegisterMap;
+
+    public Builder() {
+        dag = null;
+        nodeMap = new HashMap<>();
+        blockMap = new HashMap<>();
+        valueRegisterMap = new HashMap<>();
+    }
 
     public void convertFunction(Function function) {
+        for (Argument argument : function.getArguments()) {
+            // TODO: Argument virtual register classes are based off the ISA's calling convention.
+            // For now we will just keep the classes for everything.
+            // TODO: add argument virtual register to valueRegisterMap
+        }
         for (Block block : function.getBlocks()) {
+            dag = new SelectionDAG();
             convertBlock(block);
+            blockMap.put(block, dag);
         }
     }
 
@@ -77,6 +92,8 @@ public class Builder {
 
     public SDValue getValue(Value v) {
         SDValue value = nodeMap.get(v);
+        // TODO: handle arguments or values outside the current block.
+        // Both of them should be handled by a CopyFromReg with the register of the argument or value.
         return switch (value.node.nodeOp) {
             case NodeOp.Merge(var outputTypes) -> {
                 int outputIndex = outputTypes.indexOf(new NodeType.Type(v.getType()));

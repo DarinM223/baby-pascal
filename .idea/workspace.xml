@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Refactor register classes and start SSA DAG">
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/SSADAGTest.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add postorder to SSA DAG">
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/dag/BuilderTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/Builder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/Builder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/NodeOp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/NodeOp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SelectionDAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SelectionDAG.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +46,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.Main.executor": "Run",
-    "JUnit.All tests.executor": "Run",
+    "JUnit.All tests.executor": "Debug",
     "JUnit.BlockTest.createBlocks.executor": "Run",
     "JUnit.BlockTest.executor": "Run",
     "JUnit.DataflowTest.genKill.executor": "Run",
@@ -89,11 +90,11 @@
       <recent name="com.d_m.code.normalize" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.d_m.select.dag" />
       <recent name="com.d_m.select" />
       <recent name="com.d_m.pass" />
       <recent name="com.d_m.dom" />
       <recent name="com.d_m.ssa.graphviz" />
-      <recent name="com.d_m.ssa" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.d_m.select.instr" />
@@ -222,14 +223,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00069" summary="Add unit test that opens the SSA graph graphviz image using Swing">
-      <option name="closed" value="true" />
-      <created>1712939050684</created>
-      <option name="number" value="00069" />
-      <option name="presentableId" value="LOCAL-00069" />
-      <option name="project" value="LOCAL" />
-      <updated>1712939050684</updated>
     </task>
     <task id="LOCAL-00070" summary="Delete unreachable blocks when creating CFG and add nested loop SSA graph unit test">
       <option name="closed" value="true" />
@@ -615,11 +608,18 @@
       <option name="project" value="LOCAL" />
       <updated>1717201662044</updated>
     </task>
-    <option name="localTasksCounter" value="118" />
+    <task id="LOCAL-00118" summary="Add postorder to SSA DAG">
+      <option name="closed" value="true" />
+      <created>1717255403076</created>
+      <option name="number" value="00118" />
+      <option name="presentableId" value="LOCAL-00118" />
+      <option name="project" value="LOCAL" />
+      <updated>1717255403076</updated>
+    </task>
+    <option name="localTasksCounter" value="119" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Remove Fresh requirement for constructing unnamed SSA, remove getId() from IBlock" />
     <MESSAGE value="Simplify subtraction instructions" />
     <MESSAGE value="InstructionSimplify folds constants and expands commutative binary operations" />
     <MESSAGE value="Fill out more instruction simplifications" />
@@ -644,19 +644,21 @@
     <MESSAGE value="More changes" />
     <MESSAGE value="Start converting instructions merging multiple outputs with a node" />
     <MESSAGE value="Refactor register classes and start SSA DAG" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor register classes and start SSA DAG" />
+    <MESSAGE value="Add postorder to SSA DAG" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add postorder to SSA DAG" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/pass/InstructionSimplify.java</url>
-          <line>7</line>
-          <properties class="com.d_m.pass.InstructionSimplify" method="simplifyInstruction">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="11" />
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/d_m/select/dag/BuilderTest.java</url>
+          <line>55</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/dag/Builder.java</url>
+          <line>62</line>
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

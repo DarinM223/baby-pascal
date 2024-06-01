@@ -49,6 +49,8 @@ public class SelectionDAG {
 
      RETURN takes in as a parameter the token, and the return value
      and has a single token output.
+
+     Every node has a virtual register associated with it.
      */
 
     public SelectionDAG() {
