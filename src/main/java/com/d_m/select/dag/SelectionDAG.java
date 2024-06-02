@@ -60,6 +60,10 @@ public class SelectionDAG {
         entryToken = newNode(new NodeOp.Entry(), 1);
     }
 
+    public List<SDNode> nodes() {
+        return nodes;
+    }
+
     public SDNode newNode(NodeOp op, List<SDValue> operands, int numOutputs) {
         SDNode node = new SDNode(op, operands, numOutputs);
         nodes.add(node);

@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start selection dag builder test">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fix exceptions from Builder unit test">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/graphviz/SelectionDagGraph.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/Builder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/Builder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/NodeOp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/NodeOp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SDNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SDNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SelectionDAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SelectionDAG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/dag/BuilderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/dag/BuilderTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,8 +23,8 @@
         <option value="Enum" />
         <option value="Record" />
         <option value="Interface" />
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -44,9 +46,10 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.Main.executor": "Run",
-    "JUnit.All tests.executor": "Debug",
+    "JUnit.All tests.executor": "Run",
     "JUnit.BlockTest.createBlocks.executor": "Run",
     "JUnit.BlockTest.executor": "Run",
+    "JUnit.BuilderTest.convertFunction.executor": "Debug",
     "JUnit.DataflowTest.genKill.executor": "Run",
     "JUnit.DataflowTest.genKillAndLiveness.executor": "Run",
     "JUnit.LengauerTarjanTest.idom.executor": "Run",
@@ -221,14 +224,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00071" summary="Graphviz viewer has the size of the graphviz image it is viewing">
-      <option name="closed" value="true" />
-      <created>1712968894416</created>
-      <option name="number" value="00071" />
-      <option name="presentableId" value="LOCAL-00071" />
-      <option name="project" value="LOCAL" />
-      <updated>1712968894416</updated>
     </task>
     <task id="LOCAL-00072" summary="Add postorder traversals #1 and close graphviz window with ESC">
       <option name="closed" value="true" />
@@ -614,11 +609,18 @@
       <option name="project" value="LOCAL" />
       <updated>1717269326389</updated>
     </task>
-    <option name="localTasksCounter" value="120" />
+    <task id="LOCAL-00120" summary="Fix exceptions from Builder unit test">
+      <option name="closed" value="true" />
+      <created>1717352393739</created>
+      <option name="number" value="00120" />
+      <option name="presentableId" value="LOCAL-00120" />
+      <option name="project" value="LOCAL" />
+      <updated>1717352393739</updated>
+    </task>
+    <option name="localTasksCounter" value="121" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="InstructionSimplify folds constants and expands commutative binary operations" />
     <MESSAGE value="Fill out more instruction simplifications" />
     <MESSAGE value="Fix compile error" />
     <MESSAGE value="Skip value numbering if instruction can be simplified" />
@@ -643,25 +645,16 @@
     <MESSAGE value="Refactor register classes and start SSA DAG" />
     <MESSAGE value="Add postorder to SSA DAG" />
     <MESSAGE value="Start selection dag builder test" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start selection dag builder test" />
+    <MESSAGE value="Fix exceptions from Builder unit test" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix exceptions from Builder unit test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/d_m/select/dag/BuilderTest.java</url>
-          <line>55</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/dag/Builder.java</url>
-          <line>51</line>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/dag/Builder.java</url>
-          <line>85</line>
-          <option name="timeStamp" value="20" />
+          <line>73</line>
+          <option name="timeStamp" value="21" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

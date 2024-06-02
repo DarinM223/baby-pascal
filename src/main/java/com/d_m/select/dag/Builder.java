@@ -27,6 +27,10 @@ public class Builder {
         valueRegisterMap = new HashMap<>();
     }
 
+    public SelectionDAG getDag(Block block) {
+        return blockMap.get(block);
+    }
+
     public void convertFunction(Function function) {
         for (Block block : function.getBlocks()) {
             currentBlock = block;

@@ -10,6 +10,7 @@ import java.util.Objects;
 
 public class SDNode {
     private final int id = IdGenerator.newId();
+
     NodeOp nodeOp;
     List<SDUse> operands;
     SDUse uses;
@@ -84,5 +85,17 @@ public class SDNode {
         public Iterator<SDUse> iterator() {
             return new LinkedIterator<SDUse>(uses);
         }
+    }
+
+    public NodeOp getNodeOp() {
+        return nodeOp;
+    }
+
+    public List<SDUse> getOperands() {
+        return operands;
+    }
+
+    public int getNumOutputs() {
+        return numOutputs;
     }
 }
