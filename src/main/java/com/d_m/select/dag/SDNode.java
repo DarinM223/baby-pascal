@@ -2,6 +2,8 @@ package com.d_m.select.dag;
 
 import com.d_m.ssa.LinkedIterator;
 
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -16,9 +18,11 @@ public class SDNode {
     public SDNode(NodeOp nodeOp, List<SDValue> operands, int numOutputs) {
         this.nodeOp = nodeOp;
         this.numOutputs = numOutputs;
+        this.operands = new ArrayList<>(operands.size());
         for (SDValue operand : operands) {
             SDUse use = new SDUse(operand, this);
             operand.node.linkUse(use);
+            this.operands.add(use);
         }
     }
 

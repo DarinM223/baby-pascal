@@ -1,6 +1,8 @@
 package com.d_m.select.dag;
 
 import com.d_m.ssa.*;
+import com.d_m.util.Fresh;
+import com.d_m.util.FreshImpl;
 import com.google.common.collect.Iterables;
 
 import java.util.ArrayList;
@@ -9,25 +11,25 @@ import java.util.List;
 import java.util.Map;
 
 public class Builder {
+    private final Fresh virtualRegisterGen;
     private SelectionDAG dag;
+    private Block currentBlock;
     private final Map<Block, SelectionDAG> blockMap;
     private final Map<Value, SDValue> nodeMap;
     private final Map<SDValue, Register> valueRegisterMap;
 
     public Builder() {
         dag = null;
+        currentBlock = null;
+        virtualRegisterGen = new FreshImpl();
         nodeMap = new HashMap<>();
         blockMap = new HashMap<>();
         valueRegisterMap = new HashMap<>();
     }
 
     public void convertFunction(Function function) {
-        for (Argument argument : function.getArguments()) {
-            // TODO: Argument virtual register classes are based off the ISA's calling convention.
-            // For now we will just keep the classes for everything.
-            // TODO: add argument virtual register to valueRegisterMap
-        }
         for (Block block : function.getBlocks()) {
+            currentBlock = block;
             dag = new SelectionDAG();
             convertBlock(block);
             blockMap.put(block, dag);
@@ -92,8 +94,18 @@ public class Builder {
 
     public SDValue getValue(Value v) {
         SDValue value = nodeMap.get(v);
-        // TODO: handle arguments or values outside the current block.
+        // TODO: Handle arguments or values outside the current block.
         // Both of them should be handled by a CopyFromReg with the register of the argument or value.
+        if (v instanceof Argument argument) {
+            return getArgument(value, argument);
+        }
+        if (v instanceof ConstantInt constantInt) {
+            return getConstant(constantInt);
+        }
+        if (v instanceof Instruction instruction && !currentBlock.equals(instruction.getParent())) {
+            // TODO: register class should be based off of instruction type.
+            return getCopyFromReg(instruction, X86RegisterClass.allIntegerRegs());
+        }
         return switch (value.node.nodeOp) {
             case NodeOp.Merge(var outputTypes) -> {
                 int outputIndex = outputTypes.indexOf(new NodeType.Type(v.getType()));
@@ -101,5 +113,33 @@ public class Builder {
             }
             default -> value;
         };
+    }
+
+    private SDValue getConstant(ConstantInt constantInt) {
+        SDNode constant = dag.newNode(new NodeOp.ConstantInt(constantInt.getValue()), 1);
+        SDValue value = new SDValue(constant, 0);
+        nodeMap.put(constantInt, value);
+        return value;
+    }
+
+    private SDValue getArgument(SDValue value, Argument argument) {
+        if (value == null) {
+            // TODO: use register classes based on the target calling convention
+            return getCopyFromReg(argument, X86RegisterClass.allIntegerRegs());
+        } else {
+            var register = valueRegisterMap.get(value);
+            SDNode copyFromReg = dag.newNode(new NodeOp.CopyFromReg(register), 1);
+            value = new SDValue(copyFromReg, 0);
+        }
+        return value;
+    }
+
+    private SDValue getCopyFromReg(Value value, RegisterClass registerClass) {
+        var register = new Register.Virtual(virtualRegisterGen.fresh(), registerClass);
+        SDNode copyFromReg = dag.newNode(new NodeOp.CopyFromReg(register), 1);
+        SDValue newValue = new SDValue(copyFromReg, 0);
+        nodeMap.put(value, newValue);
+        valueRegisterMap.put(newValue, register);
+        return newValue;
     }
 }
