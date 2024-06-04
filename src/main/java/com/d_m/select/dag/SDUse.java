@@ -34,4 +34,8 @@ public class SDUse implements Listable<SDUse> {
     public void setNext(SDUse next) {
         this.next = next;
     }
+
+    public SDValue getValue() {
+        return value;
+    }
 }

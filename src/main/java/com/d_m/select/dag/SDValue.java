@@ -26,4 +26,12 @@ public class SDValue {
     public int hashCode() {
         return Objects.hash(node, resultNumber);
     }
+
+    public SDNode getNode() {
+        return node;
+    }
+
+    public int getResultNumber() {
+        return resultNumber;
+    }
 }
