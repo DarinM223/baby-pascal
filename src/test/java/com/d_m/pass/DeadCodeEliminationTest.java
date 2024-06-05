@@ -77,44 +77,41 @@ class DeadCodeEliminationTest {
                     block l1 [l0] {
                       %1 <- 2 + 3
                       number <- %1
-                      %2 <- PARAM number
-                      %3 <- fibonacci CALL 1
-                      %4 <- GOTO() [l2]
+                      %2 <- CALL(fibonacci, 1, number)
+                      %3 <- GOTO() [l2]
                     }
                     block l2 [l1] {
                     }
                   }
                   fibonacci(n : int) : int {
                     block l3 [] {
-                      %5 <- GOTO() [l4]
+                      %4 <- GOTO() [l4]
                     }
                     block l4 [l3] {
-                      %6 <- n <= 1 [l5, l6]
+                      %5 <- n <= 1 [l5, l6]
                     }
                     block l5 [l4] {
                       fibonacci2 <- n
-                      %7 <- GOTO 12 [l7]
+                      %6 <- GOTO 12 [l7]
                     }
                     block l6 [l4] {
-                      %8 <- GOTO 4 [l8]
+                      %7 <- GOTO 4 [l8]
                     }
                     block l7 [l5, l8] {
                       fibonacci3 <- Φ(fibonacci2, fibonacci4)
-                      %9 <- GOTO() [l9]
+                      %8 <- GOTO() [l9]
                     }
                     block l8 [l6] {
-                      %10 <- n - 1
-                      %11 <- PARAM %10
-                      %12 <- fibonacci CALL 1
-                      %13 <- n - 2
-                      %14 <- PARAM %13
-                      %15 <- fibonacci CALL 1
-                      %16 <- %12 + %15
-                      fibonacci4 <- %16
-                      %17 <- GOTO() [l7]
+                      %9 <- n - 1
+                      %10 <- CALL(fibonacci, 1, %9)
+                      %11 <- n - 2
+                      %12 <- CALL(fibonacci, 1, %11)
+                      %13 <- %10 + %12
+                      fibonacci4 <- %13
+                      %14 <- GOTO() [l7]
                     }
                     block l9 [l7] {
-                      %18 <- RETURN fibonacci3
+                      %15 <- RETURN fibonacci3
                     }
                   }
                 }

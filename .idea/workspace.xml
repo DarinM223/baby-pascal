@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start graphviz viewer for selection dag nodes">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Write operand edges to graphviz">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SDUse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SDUse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SDValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SDValue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/graphviz/SelectionDagGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/graphviz/SelectionDagGraph.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/DeadCodeEliminationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/DeadCodeEliminationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -222,14 +222,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00073" summary="Constant propagation deletes empty blocks and single argument phi nodes">
-      <option name="closed" value="true" />
-      <created>1713055262436</created>
-      <option name="number" value="00073" />
-      <option name="presentableId" value="LOCAL-00073" />
-      <option name="project" value="LOCAL" />
-      <updated>1713055262437</updated>
     </task>
     <task id="LOCAL-00074" summary="Start global value numbering">
       <option name="closed" value="true" />
@@ -615,11 +607,18 @@
       <option name="project" value="LOCAL" />
       <updated>1717367079451</updated>
     </task>
-    <option name="localTasksCounter" value="122" />
+    <task id="LOCAL-00122" summary="Write operand edges to graphviz">
+      <option name="closed" value="true" />
+      <created>1717462316515</created>
+      <option name="number" value="00122" />
+      <option name="presentableId" value="LOCAL-00122" />
+      <option name="project" value="LOCAL" />
+      <updated>1717462316515</updated>
+    </task>
+    <option name="localTasksCounter" value="123" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix compile error" />
     <MESSAGE value="Skip value numbering if instruction can be simplified" />
     <MESSAGE value="Start unit test for global value numbering" />
     <MESSAGE value="Debugging global value numbering" />
@@ -644,7 +643,8 @@
     <MESSAGE value="Start selection dag builder test" />
     <MESSAGE value="Fix exceptions from Builder unit test" />
     <MESSAGE value="Start graphviz viewer for selection dag nodes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start graphviz viewer for selection dag nodes" />
+    <MESSAGE value="Write operand edges to graphviz" />
+    <option name="LAST_COMMIT_MESSAGE" value="Write operand edges to graphviz" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

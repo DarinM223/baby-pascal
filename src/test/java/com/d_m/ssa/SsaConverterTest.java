@@ -132,47 +132,44 @@ class SsaConverterTest {
                     block l1 [l0] {
                       %1 <- 2 + 3
                       number <- %1
-                      %2 <- PARAM number
-                      %3 <- fibonacci CALL 1
-                      result <- %3
-                      %4 <- NOP()
-                      %5 <- GOTO() [l2]
+                      %2 <- CALL(fibonacci, 1, number)
+                      result <- %2
+                      %3 <- NOP()
+                      %4 <- GOTO() [l2]
                     }
                     block l2 [l1] {
                     }
                   }
                   fibonacci(n : int) : int {
                     block l3 [] {
-                      %6 <- GOTO() [l4]
+                      %5 <- GOTO() [l4]
                     }
                     block l4 [l3] {
-                      %7 <- n <= 1 [l5, l6]
+                      %6 <- n <= 1 [l5, l6]
                     }
                     block l5 [l4] {
                       fibonacci2 <- n
-                      %8 <- GOTO 12 [l7]
+                      %7 <- GOTO 12 [l7]
                     }
                     block l6 [l4] {
-                      %9 <- GOTO 4 [l8]
+                      %8 <- GOTO 4 [l8]
                     }
                     block l7 [l5, l8] {
                       fibonacci3 <- Φ(fibonacci2, fibonacci4)
-                      %10 <- NOP()
-                      %11 <- GOTO() [l9]
+                      %9 <- NOP()
+                      %10 <- GOTO() [l9]
                     }
                     block l8 [l6] {
-                      %12 <- n - 1
-                      %13 <- PARAM %12
-                      %14 <- fibonacci CALL 1
-                      %15 <- n - 2
-                      %16 <- PARAM %15
-                      %17 <- fibonacci CALL 1
-                      %18 <- %14 + %17
-                      fibonacci4 <- %18
-                      %19 <- GOTO() [l7]
+                      %11 <- n - 1
+                      %12 <- CALL(fibonacci, 1, %11)
+                      %13 <- n - 2
+                      %14 <- CALL(fibonacci, 1, %13)
+                      %15 <- %12 + %14
+                      fibonacci4 <- %15
+                      %16 <- GOTO() [l7]
                     }
                     block l9 [l7] {
-                      %20 <- RETURN fibonacci3
+                      %17 <- RETURN fibonacci3
                     }
                   }
                 }

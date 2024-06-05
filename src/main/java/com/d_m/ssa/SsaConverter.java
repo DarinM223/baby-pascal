@@ -17,12 +17,14 @@ public class SsaConverter {
     private final Map<Address, Value> env;
     private final Multimap<Address, Use> unfilled;
     private final Map<com.d_m.cfg.Block, Block> rewrittenBlocks;
+    private final List<Use> params;
 
     public SsaConverter(Symbol symbol) {
         this.symbol = symbol;
         this.env = new HashMap<>();
         this.unfilled = ArrayListMultimap.create();
         this.rewrittenBlocks = new HashMap<>();
+        params = new ArrayList<>();
     }
 
     public Module convertProgram(Program<com.d_m.cfg.Block> program) {
@@ -111,7 +113,9 @@ public class SsaConverter {
             instructions.add(convertPhi(phi));
         }
         for (Quad quad : block.getCode()) {
-            instructions.add(convertQuad(quad));
+            if (convertQuad(quad) instanceof Instruction instruction) {
+                instructions.add(instruction);
+            }
         }
         Block converted = new Block(parent, instructions);
         if (!block.getSuccessors().isEmpty() &&
@@ -133,12 +137,23 @@ public class SsaConverter {
     }
 
     public Instruction convertQuad(Quad quad) {
+        if (quad.op() == Operator.PARAM) {
+            params.add(lookupAddress(null, quad.input1()));
+            return null;
+        }
         Instruction instruction = new Instruction(nameOfAddress(quad.result()), null, quad.op());
         if (!(quad.input1() instanceof EmptyAddress())) {
             instruction.addOperand(lookupAddress(instruction, quad.input1()));
         }
         if (!(quad.input2() instanceof EmptyAddress())) {
             instruction.addOperand(lookupAddress(instruction, quad.input2()));
+        }
+        if (quad.op() == Operator.CALL) {
+            for (Use use : params) {
+                use.setUser(instruction);
+                instruction.addOperand(use);
+            }
+            params.clear();
         }
         if (!(quad.result() instanceof ConstantAddress)) {
             env.put(quad.result(), instruction);
