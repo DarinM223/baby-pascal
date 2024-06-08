@@ -4,10 +4,7 @@ import com.google.common.io.Files;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -38,9 +35,12 @@ public class GraphvizViewer {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            frame.add(new JLabel(new ImageIcon(image)));
-
+            var imagePanel = new PanImage(image);
+            frame.add(imagePanel);
             frame.pack();
+
+            frame.addMouseListener(imagePanel);
+            frame.addMouseMotionListener(imagePanel);
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
