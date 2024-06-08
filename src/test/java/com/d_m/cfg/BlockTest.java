@@ -41,6 +41,7 @@ class BlockTest {
                 block -2 predecessors: [12] successors: [] {
                 }
                 block -1 predecessors: [] successors: [0] {
+                  %-1 <- _ START _
                 }
                 block 0 predecessors: [-1] successors: [1] {
                   %1 <- 1 := _

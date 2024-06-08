@@ -51,6 +51,7 @@ class UniqueRenamerTest {
         }
         String expected = """
                 block -1 predecessors: [] successors: [0] {
+                  _TOKEN_1 <- _ START _
                 }
                 block 0 predecessors: [-1] successors: [3] {
                   i_1 <- 1 := _
@@ -104,6 +105,7 @@ class UniqueRenamerTest {
         }
         String expected = """
                 block -1 predecessors: [] successors: [0] {
+                  _TOKEN_1 <- _ START _
                 }
                 block 0 predecessors: [-1] successors: [2, 1] {
                   2 <- i < 2

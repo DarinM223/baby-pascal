@@ -52,6 +52,7 @@ class SsaConverterTest {
                 module main {
                   main() : void {
                     block l0 [] {
+                      _TOKEN <- START()
                       %0 <- GOTO() [l1]
                     }
                     block l1 [l0] {
@@ -127,6 +128,7 @@ class SsaConverterTest {
                 module main {
                   main() : void {
                     block l0 [] {
+                      _TOKEN <- START()
                       %0 <- GOTO() [l1]
                     }
                     block l1 [l0] {
@@ -142,6 +144,7 @@ class SsaConverterTest {
                   }
                   fibonacci(n : int) : int {
                     block l3 [] {
+                      _TOKEN2 <- START()
                       %5 <- GOTO() [l4]
                     }
                     block l4 [l3] {

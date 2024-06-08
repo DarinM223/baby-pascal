@@ -24,7 +24,9 @@ public enum Operator {
     NOP,
     PHI,
     PCOPY,
-    RETURN;
+    RETURN,
+    START,
+    PROJ;
 
     public boolean isComparison() {
         return this == EQ || this == NE || this == GT || this == GE || this == LT || this == LE;
@@ -43,9 +45,9 @@ public enum Operator {
 
     public boolean hasSideEffects() {
         return switch (this) {
-            case NEG, NOT, ADD, SUB, MUL, DIV, AND, OR, GOTO, LT, LE, GT, GE, EQ, NE, ASSIGN, LOAD, NOP, PHI, PCOPY ->
-                    false;
-            case PARAM, CALL, RETURN, STORE -> true;
+            case NEG, NOT, ADD, SUB, MUL, DIV, AND, OR, GOTO, LT, LE, GT, GE, EQ, NE, ASSIGN, LOAD, NOP, PHI, PCOPY,
+                 PROJ -> false;
+            case START, PARAM, CALL, RETURN, STORE -> true;
         };
     }
 
@@ -84,6 +86,8 @@ public enum Operator {
             case PHI -> "Φ";
             case PCOPY -> "PCOPY";
             case RETURN -> "RETURN";
+            case START -> "START";
+            case PROJ -> "PROJ";
         };
     }
 }

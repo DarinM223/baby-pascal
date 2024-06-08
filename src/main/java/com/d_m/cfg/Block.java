@@ -1,10 +1,9 @@
 package com.d_m.cfg;
 
-import com.d_m.code.ConstantAddress;
-import com.d_m.code.Operator;
-import com.d_m.code.Quad;
+import com.d_m.code.*;
 import com.d_m.dom.PostOrder;
 import com.d_m.util.Symbol;
+import com.d_m.util.SymbolImpl;
 
 import java.util.*;
 
@@ -53,6 +52,9 @@ public class Block implements Comparable<Block>, IBlock<Block> {
         }
         blocks.addLink(Blocks.ENTRY, 0);
         blocks.addLink(ranges.getLast().i(), Blocks.EXIT);
+
+        // The START instruction should be in the entry block.
+        this.code.add(new Quad(Operator.START, new NameAddress(SymbolImpl.TOKEN), new EmptyAddress(), new EmptyAddress()));
 
         // Delete unreachable blocks from predecessors to prevent issues
         // when converting to unnamed SSA.

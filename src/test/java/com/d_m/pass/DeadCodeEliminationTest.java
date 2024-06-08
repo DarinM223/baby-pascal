@@ -72,6 +72,7 @@ class DeadCodeEliminationTest {
                 module main {
                   main() : void {
                     block l0 [] {
+                      _TOKEN <- START()
                       %0 <- GOTO() [l1]
                     }
                     block l1 [l0] {
@@ -85,6 +86,7 @@ class DeadCodeEliminationTest {
                   }
                   fibonacci(n : int) : int {
                     block l3 [] {
+                      _TOKEN2 <- START()
                       %4 <- GOTO() [l4]
                     }
                     block l4 [l3] {

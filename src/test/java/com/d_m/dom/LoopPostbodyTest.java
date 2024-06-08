@@ -64,6 +64,7 @@ class LoopPostbodyTest {
         }
         String expected = """
                 block -1 predecessors: [] successors: [0] {
+                  _TOKEN <- _ START _
                 }
                 block 0 predecessors: [-1] successors: [3] {
                   i <- 1 := _
@@ -117,6 +118,7 @@ class LoopPostbodyTest {
                 module main {
                   main() : void {
                     block l0 [] {
+                      _TOKEN <- START()
                       %0 <- GOTO() [l1]
                     }
                     block l1 [l0] {

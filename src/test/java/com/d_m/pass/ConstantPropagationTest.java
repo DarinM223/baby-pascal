@@ -57,10 +57,11 @@ class ConstantPropagationTest {
         PrettyPrinter printer = new PrettyPrinter(writer);
         printer.writeModule(module);
 
-        String expected = """
+        String expected = """ 
                 module main {
                   main() : void {
                     block l0 [] {
+                      _TOKEN <- START()
                       %0 <- GOTO() [l1]
                     }
                     block l1 [l0, l2] {
