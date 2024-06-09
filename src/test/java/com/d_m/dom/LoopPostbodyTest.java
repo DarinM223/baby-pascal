@@ -41,7 +41,7 @@ class LoopPostbodyTest {
     Block toCfg(List<Statement> statements) throws ShortCircuitException {
         threeAddressCode = new ThreeAddressCode(fresh, symbol);
         List<Quad> code = threeAddressCode.normalize(statements);
-        com.d_m.cfg.Block cfg = new Block(code);
+        com.d_m.cfg.Block cfg = new Block(threeAddressCode.getTokenSymbol(), code);
         LengauerTarjan<Block> dominators = new LengauerTarjan<>(cfg.blocks(), cfg.getEntry());
         nesting = new LoopNesting<>(dominators, cfg.blocks());
         LoopPostbody postbody = new LoopPostbody(nesting, cfg.blocks());
@@ -82,8 +82,8 @@ class LoopPostbodyTest {
                 }
                 block 7 predecessors: [5] successors: [17] {
                   j <- i := _
-                  %3 <- k + 1
-                  k <- %3 := _
+                  %4 <- k + 1
+                  k <- %4 := _
                   _ <- 3 GOTO _
                 }
                 block 6 predecessors: [5] successors: [11] {
@@ -96,8 +96,8 @@ class LoopPostbodyTest {
                 }
                 block 11 predecessors: [6] successors: [17] {
                   j <- k := _
-                  %4 <- k + 2
-                  k <- %4 := _
+                  %5 <- k + 2
+                  k <- %5 := _
                   _ <- 3 GOTO _
                 }
                 block -2 predecessors: [15] successors: [] {

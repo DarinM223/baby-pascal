@@ -29,9 +29,9 @@ class ThreeAddressCodeTest {
         List<Quad> result = threeAddressCode.normalize(stmts);
         String resultString = String.join("\n", result.stream().map(quad -> quad.pretty(symbol)).toList());
         String expected = """
-                %0 <- 2 * 3
-                %1 <- 1 + %0
-                a <- %1 := _
+                %1 <- 2 * 3
+                %2 <- 1 + %1
+                a <- %2 := _
                 5 <- a == 1
                 _ <- 15 GOTO _
                 7 <- a < 5
@@ -40,8 +40,8 @@ class ThreeAddressCodeTest {
                 _ <- 16 GOTO _
                 11 <- a < 5
                 _ <- 16 GOTO _
-                %3 <- a + 1
-                a <- %3 := _
+                %4 <- a + 1
+                a <- %4 := _
                 _ <- 7 GOTO _
                 _ <- 16 GOTO _
                 result <- 60 := _

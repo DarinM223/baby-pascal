@@ -40,7 +40,7 @@ class SsaGraphTest {
     Block toCfg(List<Statement> statements) throws ShortCircuitException {
         threeAddressCode = new ThreeAddressCode(fresh, symbol);
         List<Quad> code = threeAddressCode.normalize(statements);
-        com.d_m.cfg.Block cfg = new Block(code);
+        com.d_m.cfg.Block cfg = new Block(threeAddressCode.getTokenSymbol(), code);
         LengauerTarjan<Block> dominators = new LengauerTarjan<>(cfg.blocks(), cfg.getEntry());
         nesting = new LoopNesting<>(dominators, cfg.blocks());
         LoopPostbody postbody = new LoopPostbody(nesting, cfg.blocks());

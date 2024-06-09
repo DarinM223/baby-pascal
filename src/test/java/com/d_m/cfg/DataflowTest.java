@@ -29,7 +29,7 @@ public class DataflowTest {
                 new Quad(Operator.ASSIGN, new NameAddress(I.i()), new NameAddress(U3.i()), new EmptyAddress()),
                 new Quad(Operator.LT, new ConstantAddress(3), new NameAddress(I.i()), new ConstantAddress(5))
         );
-        Block cfg = new Block(example);
+        Block cfg = new Block(-1, example);
         cfg.runLiveness();
         StringBuilder builder = new StringBuilder();
         List<Block> blocks = cfg.blocks();

@@ -3,7 +3,6 @@ package com.d_m.cfg;
 import com.d_m.code.*;
 import com.d_m.dom.PostOrder;
 import com.d_m.util.Symbol;
-import com.d_m.util.SymbolImpl;
 
 import java.util.*;
 
@@ -19,7 +18,7 @@ public class Block implements Comparable<Block>, IBlock<Block> {
     private final LivenessInfo live;
     private int dominatorTreeLevel;
 
-    public Block(List<Quad> code) {
+    public Block(int token, List<Quad> code) {
         this.id = Blocks.ENTRY;
         this.phis = new ArrayList<>();
         this.code = new ArrayList<>();
@@ -54,7 +53,7 @@ public class Block implements Comparable<Block>, IBlock<Block> {
         blocks.addLink(ranges.getLast().i(), Blocks.EXIT);
 
         // The START instruction should be in the entry block.
-        this.code.add(new Quad(Operator.START, new NameAddress(SymbolImpl.TOKEN), new EmptyAddress(), new EmptyAddress()));
+        this.code.add(new Quad(Operator.START, new NameAddress(token), new EmptyAddress(), new EmptyAddress()));
 
         // Delete unreachable blocks from predecessors to prevent issues
         // when converting to unnamed SSA.

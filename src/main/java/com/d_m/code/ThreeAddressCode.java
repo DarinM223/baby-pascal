@@ -15,10 +15,16 @@ public class ThreeAddressCode {
     private final Symbol symbol;
     private Label label;
     private List<Quad> results;
+    private final int token;
 
     public ThreeAddressCode(Fresh fresh, Symbol symbol) {
         this.fresh = fresh;
         this.symbol = symbol;
+        token = symbol.getSymbol(SymbolImpl.TOKEN_STRING);
+    }
+
+    public int getTokenSymbol() {
+        return token;
     }
 
     public Program<Block> normalizeProgram(Program<List<Statement>> program) throws ShortCircuitException {
@@ -28,7 +34,7 @@ public class ThreeAddressCode {
                     switch (declaration) {
                         case FunctionDeclaration(var functionName, var parameters, var returnType, var body) -> {
                             List<Quad> quads = normalize(body);
-                            Block block = new Block(quads);
+                            Block block = new Block(token, quads);
                             if (returnType.isPresent()) {
                                 var funReturn = new Quad(
                                         Operator.RETURN,
@@ -43,7 +49,7 @@ public class ThreeAddressCode {
                     };
             declarations.add(newDeclaration);
         }
-        Block main = new Block(normalize(program.getMain()));
+        Block main = new Block(token, normalize(program.getMain()));
         return new Program<>(program.getGlobals(), declarations, main);
     }
 
@@ -121,7 +127,7 @@ public class ThreeAddressCode {
             case StoreStatement(Type _, Expression addressExpr, Expression store) -> {
                 Address address = normalizeExpression(addressExpr);
                 Address storeAddress = normalizeExpression(store);
-                results.add(new Quad(Operator.STORE, address, new NameAddress(SymbolImpl.TOKEN), storeAddress));
+                results.add(new Quad(Operator.STORE, address, new NameAddress(token), storeAddress));
             }
         }
     }
@@ -158,7 +164,7 @@ public class ThreeAddressCode {
             case LoadExpression(Type _, Expression addressExpr) -> {
                 Address temp = new TempAddress(fresh.fresh());
                 Address address = normalizeExpression(addressExpr);
-                results.add(new Quad(Operator.LOAD, temp, new NameAddress(SymbolImpl.TOKEN), address));
+                results.add(new Quad(Operator.LOAD, temp, new NameAddress(token), address));
                 yield temp;
             }
         };

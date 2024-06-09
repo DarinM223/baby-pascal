@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SymbolImpl implements Symbol {
-    public static final int TOKEN = -1;
+    public static final int TOKEN = 0;
     public static final String TOKEN_STRING = "_TOKEN";
 
     private final Fresh fresh;

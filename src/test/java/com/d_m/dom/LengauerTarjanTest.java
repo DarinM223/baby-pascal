@@ -25,7 +25,7 @@ class LengauerTarjanTest {
         Symbol symbol = new SymbolImpl(fresh);
         ThreeAddressCode threeAddressCode = new ThreeAddressCode(fresh, symbol);
         List<Quad> code = threeAddressCode.normalize(Examples.figure_19_4());
-        Block cfg = new Block(code);
+        Block cfg = new Block(threeAddressCode.getTokenSymbol(), code);
         dominators = new LengauerTarjan<>(cfg.blocks(), cfg.getEntry());
         blocks = cfg.blocks();
         blocks.sort(null);

@@ -30,7 +30,7 @@ class BlockTest {
                 incrementOne,
                 new Quad(Operator.LE, new ConstantAddress(12), new NameAddress(1), new ConstantAddress(10))
         );
-        Block block = new Block(example);
+        Block block = new Block(-1, example);
         StringBuilder builder = new StringBuilder();
         List<Block> blocks = block.blocks();
         blocks.sort(null);

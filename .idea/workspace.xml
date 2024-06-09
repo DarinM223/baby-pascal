@@ -4,13 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add load expression and store statement">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add example and unit test for SSA conversion of loads and stores">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/LoadExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/LoadExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/StoreStatement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/StoreStatement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/Examples.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/Examples.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/util/SymbolImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/util/SymbolImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/BlockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/BlockTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/DataflowTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/DataflowTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/code/ThreeAddressCodeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/code/ThreeAddressCodeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/construct/UniqueRenamerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/construct/UniqueRenamerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/DominanceFrontierTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/DominanceFrontierTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LengauerTarjanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LengauerTarjanTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LoopPostbodyTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LoopPostbodyTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/graphviz/SsaGraphTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/graphviz/SsaGraphTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -224,14 +231,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00077" summary="Add stubs for running blocks in a function">
-      <option name="closed" value="true" />
-      <created>1713321328409</created>
-      <option name="number" value="00077" />
-      <option name="presentableId" value="LOCAL-00077" />
-      <option name="project" value="LOCAL" />
-      <updated>1713321328410</updated>
     </task>
     <task id="LOCAL-00078" summary="GVN iterates multiple times until there are no more changes">
       <option name="closed" value="true" />
@@ -617,11 +616,18 @@
       <option name="project" value="LOCAL" />
       <updated>1717945000297</updated>
     </task>
-    <option name="localTasksCounter" value="126" />
+    <task id="LOCAL-00126" summary="Add example and unit test for SSA conversion of loads and stores">
+      <option name="closed" value="true" />
+      <created>1717956837919</created>
+      <option name="number" value="00126" />
+      <option name="presentableId" value="LOCAL-00126" />
+      <option name="project" value="LOCAL" />
+      <updated>1717956837919</updated>
+    </task>
+    <option name="localTasksCounter" value="127" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Adds unit test assertion for global value numbering" />
     <MESSAGE value="Fix PhiNodeHashWrapper's hashing so that eliminateDuplicatePhis works in unit test" />
     <MESSAGE value="Simplifies phi nodes with all incoming values the same" />
     <MESSAGE value="Add unit test for basic simplification of instructions" />
@@ -646,7 +652,8 @@
     <MESSAGE value="Add a START instruction to entry blocks of functions" />
     <MESSAGE value="Graphviz image viewer allows for panning of images larger than the screen" />
     <MESSAGE value="Add load expression and store statement" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add load expression and store statement" />
+    <MESSAGE value="Add example and unit test for SSA conversion of loads and stores" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add example and unit test for SSA conversion of loads and stores" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

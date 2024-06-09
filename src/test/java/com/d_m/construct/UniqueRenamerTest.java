@@ -32,7 +32,7 @@ class UniqueRenamerTest {
         symbol = new SymbolImpl(fresh);
         threeAddressCode = new ThreeAddressCode(fresh, symbol);
         List<Quad> code = threeAddressCode.normalize(statements);
-        Block cfg = new Block(code);
+        Block cfg = new Block(threeAddressCode.getTokenSymbol(), code);
         cfg.runLiveness();
         LengauerTarjan<Block> dominators = new LengauerTarjan<>(cfg.blocks(), cfg.getEntry());
         frontier = new DominanceFrontier<>(dominators, cfg);
@@ -71,8 +71,8 @@ class UniqueRenamerTest {
                 }
                 block 7 predecessors: [5] successors: [3] {
                   j_3 <- i_1 := _
-                  %3 <- k_2 + 1
-                  k_3 <- %3 := _
+                  %4 <- k_2 + 1
+                  k_3 <- %4 := _
                   _ <- 3 GOTO _
                 }
                 block 6 predecessors: [5] successors: [11] {
@@ -83,8 +83,8 @@ class UniqueRenamerTest {
                 }
                 block 11 predecessors: [6] successors: [3] {
                   j_4 <- k_2 := _
-                  %4 <- k_2 + 2
-                  k_4 <- %4 := _
+                  %5 <- k_2 + 2
+                  k_4 <- %5 := _
                   _ <- 3 GOTO _
                 }
                 block -2 predecessors: [15] successors: [] {

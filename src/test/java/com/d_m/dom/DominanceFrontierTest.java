@@ -22,7 +22,7 @@ class DominanceFrontierTest {
         Symbol symbol = new SymbolImpl(fresh);
         ThreeAddressCode threeAddressCode = new ThreeAddressCode(fresh, symbol);
         List<Quad> code = threeAddressCode.normalize(Examples.figure_19_4());
-        Block cfg = new Block(code);
+        Block cfg = new Block(threeAddressCode.getTokenSymbol(), code);
         LengauerTarjan<Block> dominators = new LengauerTarjan<>(cfg.blocks(), cfg.getEntry());
         DominanceFrontier<Block> frontier = new DominanceFrontier<>(dominators, cfg);
 
