@@ -179,4 +179,19 @@ class SsaConverterTest {
                 """;
         assertEquals(writer.toString(), expected);
     }
+
+    @Test
+    void convertLoadStore() throws IOException, ShortCircuitException {
+        Program<List<Statement>> program = new Program<>(List.of(), List.of(), Examples.loadStore());
+        Program<Block> cfg = toCfg(program);
+        SsaConverter converter = new SsaConverter(symbol);
+        Module module = converter.convertProgram(cfg);
+
+        StringWriter writer = new StringWriter();
+        PrettyPrinter printer = new PrettyPrinter(writer);
+        printer.writeModule(module);
+        String expected = """
+                """;
+        assertEquals(writer.toString(), expected);
+    }
 }

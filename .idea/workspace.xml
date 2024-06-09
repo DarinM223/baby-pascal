@@ -4,13 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Graphviz image viewer allows for panning of images larger than the screen">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/LoadExpression.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/StoreStatement.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add load expression and store statement">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Expression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Expression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Statement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Statement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/LoadExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/LoadExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/StoreStatement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/StoreStatement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/Examples.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/Examples.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -224,14 +224,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00076" summary="Fix constant propagation to choose the right branch">
-      <option name="closed" value="true" />
-      <created>1713311973660</created>
-      <option name="number" value="00076" />
-      <option name="presentableId" value="LOCAL-00076" />
-      <option name="project" value="LOCAL" />
-      <updated>1713311973660</updated>
     </task>
     <task id="LOCAL-00077" summary="Add stubs for running blocks in a function">
       <option name="closed" value="true" />
@@ -617,11 +609,18 @@
       <option name="project" value="LOCAL" />
       <updated>1717877778970</updated>
     </task>
-    <option name="localTasksCounter" value="125" />
+    <task id="LOCAL-00125" summary="Add load expression and store statement">
+      <option name="closed" value="true" />
+      <created>1717945000297</created>
+      <option name="number" value="00125" />
+      <option name="presentableId" value="LOCAL-00125" />
+      <option name="project" value="LOCAL" />
+      <updated>1717945000297</updated>
+    </task>
+    <option name="localTasksCounter" value="126" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Debugging global value numbering" />
     <MESSAGE value="Adds unit test assertion for global value numbering" />
     <MESSAGE value="Fix PhiNodeHashWrapper's hashing so that eliminateDuplicatePhis works in unit test" />
     <MESSAGE value="Simplifies phi nodes with all incoming values the same" />
@@ -646,7 +645,8 @@
     <MESSAGE value="Write operand edges to graphviz" />
     <MESSAGE value="Add a START instruction to entry blocks of functions" />
     <MESSAGE value="Graphviz image viewer allows for panning of images larger than the screen" />
-    <option name="LAST_COMMIT_MESSAGE" value="Graphviz image viewer allows for panning of images larger than the screen" />
+    <MESSAGE value="Add load expression and store statement" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add load expression and store statement" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -118,9 +118,10 @@ public class ThreeAddressCode {
                 }
                 results.add(new Quad(Operator.GOTO, new EmptyAddress(), new ConstantAddress(beginLabel), new EmptyAddress()));
             }
-            case StoreStatement(Type _, int address, Expression store) -> {
+            case StoreStatement(Type _, Expression addressExpr, Expression store) -> {
+                Address address = normalizeExpression(addressExpr);
                 Address storeAddress = normalizeExpression(store);
-                results.add(new Quad(Operator.STORE, new ConstantAddress(address), new NameAddress(SymbolImpl.TOKEN), storeAddress));
+                results.add(new Quad(Operator.STORE, address, new NameAddress(SymbolImpl.TOKEN), storeAddress));
             }
         }
     }
@@ -154,9 +155,10 @@ public class ThreeAddressCode {
                 results.add(new Quad(Operator.CALL, temp, nameAddress, numArgs));
                 yield temp;
             }
-            case LoadExpression(Type _, int address) -> {
+            case LoadExpression(Type _, Expression addressExpr) -> {
                 Address temp = new TempAddress(fresh.fresh());
-                results.add(new Quad(Operator.LOAD, temp, new NameAddress(SymbolImpl.TOKEN), new ConstantAddress(address)));
+                Address address = normalizeExpression(addressExpr);
+                results.add(new Quad(Operator.LOAD, temp, new NameAddress(SymbolImpl.TOKEN), address));
                 yield temp;
             }
         };

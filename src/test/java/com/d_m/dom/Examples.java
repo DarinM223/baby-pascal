@@ -66,4 +66,17 @@ public class Examples {
                 )
         );
     }
+
+    public static List<Statement> loadStore() {
+        var address = new IntExpression(10);
+        return List.of(
+                new StoreStatement(new IntegerType(), address,
+                        new BinaryOpExpression(
+                                BinaryOp.ADD,
+                                new LoadExpression(new IntegerType(), address),
+                                new LoadExpression(new IntegerType(), new BinaryOpExpression(BinaryOp.ADD, new IntExpression(5), new IntExpression(6)))
+                        )),
+                new AssignStatement("result", new LoadExpression(new IntegerType(), address))
+        );
+    }
 }
