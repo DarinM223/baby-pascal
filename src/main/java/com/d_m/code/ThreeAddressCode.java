@@ -5,6 +5,7 @@ import com.d_m.cfg.Block;
 import com.d_m.util.Fresh;
 import com.d_m.util.Label;
 import com.d_m.util.Symbol;
+import com.d_m.util.SymbolImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,6 +118,10 @@ public class ThreeAddressCode {
                 }
                 results.add(new Quad(Operator.GOTO, new EmptyAddress(), new ConstantAddress(beginLabel), new EmptyAddress()));
             }
+            case StoreStatement(Type _, int address, Expression store) -> {
+                Address storeAddress = normalizeExpression(store);
+                results.add(new Quad(Operator.STORE, new ConstantAddress(address), new NameAddress(SymbolImpl.TOKEN), storeAddress));
+            }
         }
     }
 
@@ -149,12 +154,18 @@ public class ThreeAddressCode {
                 results.add(new Quad(Operator.CALL, temp, nameAddress, numArgs));
                 yield temp;
             }
+            case LoadExpression(Type _, int address) -> {
+                Address temp = new TempAddress(fresh.fresh());
+                results.add(new Quad(Operator.LOAD, temp, new NameAddress(SymbolImpl.TOKEN), new ConstantAddress(address)));
+                yield temp;
+            }
         };
     }
 
     private void shortCircuit(int trueLabel, int falseLabel, Expression shortCircuit) throws ShortCircuitException {
         switch (shortCircuit) {
-            case IntExpression _, VarExpression _, CallExpression _ -> throw new ShortCircuitException();
+            case IntExpression _, VarExpression _, CallExpression _, LoadExpression(_, _) ->
+                    throw new ShortCircuitException();
             case BoolExpression(boolean value) -> {
                 Address jump = new ConstantAddress(value ? trueLabel : falseLabel);
                 results.add(new Quad(Operator.GOTO, new EmptyAddress(), jump, new EmptyAddress()));
