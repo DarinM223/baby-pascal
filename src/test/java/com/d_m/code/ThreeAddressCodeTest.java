@@ -31,21 +31,21 @@ class ThreeAddressCodeTest {
         String expected = """
                 %1 <- 2 * 3
                 %2 <- 1 + %1
-                a <- %2 := _
+                a <- := %2
                 5 <- a == 1
-                _ <- 15 GOTO _
+                _ <- GOTO 15
                 7 <- a < 5
-                _ <- 15 GOTO _
+                _ <- GOTO 15
                 9 <- a == 1
-                _ <- 16 GOTO _
+                _ <- GOTO 16
                 11 <- a < 5
-                _ <- 16 GOTO _
+                _ <- GOTO 16
                 %4 <- a + 1
-                a <- %4 := _
-                _ <- 7 GOTO _
-                _ <- 16 GOTO _
-                result <- 60 := _
-                _ <- _ NOP _""";
+                a <- := %4
+                _ <- GOTO 7
+                _ <- GOTO 16
+                result <- := 60
+                _ <- NOP()""";
         assertEquals(resultString, expected);
     }
 }

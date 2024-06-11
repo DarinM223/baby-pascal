@@ -1,5 +1,6 @@
 package com.d_m.cfg;
 
+import com.d_m.code.Address;
 import com.d_m.code.NameAddress;
 import com.d_m.code.Quad;
 
@@ -29,11 +30,10 @@ public class GenKillInfo {
 
         for (int i = code.size() - 1; i >= 0; i--) {
             Quad quad = code.get(i);
-            if (quad.input1() instanceof NameAddress(int n, _)) {
-                gen.get(i).set(n);
-            }
-            if (quad.input2() instanceof NameAddress(int n, _)) {
-                gen.get(i).set(n);
+            for (Address operand : quad.operands()) {
+                if (operand instanceof NameAddress(int n, _)) {
+                    gen.get(i).set(n);
+                }
             }
             if (quad.result() instanceof NameAddress(int r, _)) {
                 kill.get(i).set(r);

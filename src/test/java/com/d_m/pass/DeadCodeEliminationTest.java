@@ -94,7 +94,7 @@ class DeadCodeEliminationTest {
                     }
                     block l5 [l4] {
                       fibonacci2 <- n
-                      %6 <- GOTO 12 [l7]
+                      %6 <- GOTO 10 [l7]
                     }
                     block l6 [l4] {
                       %7 <- GOTO 4 [l8]

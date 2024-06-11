@@ -4,20 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add example and unit test for SSA conversion of loads and stores">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Token symbol starts at 0 instead of -1&#10;&#10;Symbols can't be negative because they are indexed in bitsets">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/GenKillInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/GenKillInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/Quad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/Quad.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/util/SymbolImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/util/SymbolImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/construct/UniqueRenamer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/construct/UniqueRenamer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dom/DefinitionSites.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/DefinitionSites.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/BlockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/BlockTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/DataflowTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/DataflowTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/code/ThreeAddressCodeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/code/ThreeAddressCodeTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/construct/UniqueRenamerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/construct/UniqueRenamerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/DominanceFrontierTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/DominanceFrontierTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LengauerTarjanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LengauerTarjanTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LoopPostbodyTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LoopPostbodyTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/DeadCodeEliminationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/DeadCodeEliminationTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/graphviz/SsaGraphTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/graphviz/SsaGraphTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -231,14 +233,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00078" summary="GVN iterates multiple times until there are no more changes">
-      <option name="closed" value="true" />
-      <created>1713395252313</created>
-      <option name="number" value="00078" />
-      <option name="presentableId" value="LOCAL-00078" />
-      <option name="project" value="LOCAL" />
-      <updated>1713395252313</updated>
     </task>
     <task id="LOCAL-00079" summary="Add phi node wrapper that hashes based off of operands and successors and attempts removal of duplicate phis in a block.">
       <option name="closed" value="true" />
@@ -624,11 +618,18 @@
       <option name="project" value="LOCAL" />
       <updated>1717956837919</updated>
     </task>
-    <option name="localTasksCounter" value="127" />
+    <task id="LOCAL-00127" summary="Token symbol starts at 0 instead of -1&#10;&#10;Symbols can't be negative because they are indexed in bitsets">
+      <option name="closed" value="true" />
+      <created>1717961778579</created>
+      <option name="number" value="00127" />
+      <option name="presentableId" value="LOCAL-00127" />
+      <option name="project" value="LOCAL" />
+      <updated>1717961778579</updated>
+    </task>
+    <option name="localTasksCounter" value="128" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix PhiNodeHashWrapper's hashing so that eliminateDuplicatePhis works in unit test" />
     <MESSAGE value="Simplifies phi nodes with all incoming values the same" />
     <MESSAGE value="Add unit test for basic simplification of instructions" />
     <MESSAGE value="Add return instructions to functions with a return type and add helpers for transforming Programs" />
@@ -653,7 +654,8 @@
     <MESSAGE value="Graphviz image viewer allows for panning of images larger than the screen" />
     <MESSAGE value="Add load expression and store statement" />
     <MESSAGE value="Add example and unit test for SSA conversion of loads and stores" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add example and unit test for SSA conversion of loads and stores" />
+    <MESSAGE value="Token symbol starts at 0 instead of -1&#10;&#10;Symbols can't be negative because they are indexed in bitsets" />
+    <option name="LAST_COMMIT_MESSAGE" value="Token symbol starts at 0 instead of -1&#10;&#10;Symbols can't be negative because they are indexed in bitsets" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -670,7 +672,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/construct/UniqueRenamer.java</url>
-          <line>79</line>
+          <line>80</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>

@@ -152,7 +152,7 @@ class SsaConverterTest {
                     }
                     block l5 [l4] {
                       fibonacci2 <- n
-                      %7 <- GOTO 12 [l7]
+                      %7 <- GOTO 10 [l7]
                     }
                     block l6 [l4] {
                       %8 <- GOTO 4 [l8]

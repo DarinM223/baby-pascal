@@ -39,8 +39,7 @@ public class ThreeAddressCode {
                                 var funReturn = new Quad(
                                         Operator.RETURN,
                                         new EmptyAddress(),
-                                        new NameAddress(symbol.getSymbol(functionName)),
-                                        new EmptyAddress()
+                                        new NameAddress(symbol.getSymbol(functionName))
                                 );
                                 block.getExit().getCode().add(funReturn);
                             }
@@ -63,15 +62,17 @@ public class ThreeAddressCode {
         }
         for (int i = 0; i < results.size(); i++) {
             switch (results.get(i)) {
-                case Quad(Operator op, var r, ConstantAddress(int l), var b) when op == Operator.GOTO ->
-                        results.set(i, new Quad(Operator.GOTO, r, new ConstantAddress(label.lookup(l)), b));
-                case Quad(Operator op, ConstantAddress(int r), var a, var b) when op.isComparison() ->
-                        results.set(i, new Quad(op, new ConstantAddress(label.lookup(r)), a, b));
+                case Quad(
+                        Operator op, var r, var operands
+                ) when op == Operator.GOTO && operands[0] instanceof ConstantAddress(int l) ->
+                        results.set(i, new Quad(Operator.GOTO, r, new ConstantAddress(label.lookup(l))));
+                case Quad(Operator op, ConstantAddress(int r), var operands) when op.isComparison() ->
+                        results.set(i, new Quad(op, new ConstantAddress(label.lookup(r)), operands));
                 default -> {
                 }
             }
         }
-        results.add(new Quad(Operator.NOP, new EmptyAddress(), new EmptyAddress(), new EmptyAddress()));
+        results.add(new Quad(Operator.NOP, new EmptyAddress()));
         return results;
     }
 
@@ -80,16 +81,18 @@ public class ThreeAddressCode {
             case AssignStatement(String name, Expression expr) -> {
                 Address expressionAddress = normalizeExpression(expr);
                 Address nameAddress = new NameAddress(symbol.getSymbol(name));
-                results.add(new Quad(Operator.ASSIGN, nameAddress, expressionAddress, new EmptyAddress()));
+                results.add(new Quad(Operator.ASSIGN, nameAddress, expressionAddress));
             }
             case CallStatement(String functionName, List<Expression> arguments) -> {
-                for (Expression expression : arguments) {
-                    Address address = normalizeExpression(expression);
-                    results.add(new Quad(Operator.PARAM, new EmptyAddress(), address, new EmptyAddress()));
-                }
+                Address[] operands = new Address[arguments.size() + 2];
                 Address nameAddress = new NameAddress(symbol.getSymbol(functionName));
                 Address numArgs = new ConstantAddress(arguments.size());
-                results.add(new Quad(Operator.CALL, new EmptyAddress(), nameAddress, numArgs));
+                operands[0] = nameAddress;
+                operands[1] = numArgs;
+                for (int i = 0; i < arguments.size(); i++) {
+                    operands[i + 2] = normalizeExpression(arguments.get(i));
+                }
+                results.add(new Quad(Operator.CALL, new EmptyAddress(), operands));
             }
             case IfStatement(Expression predicate, List<Statement> then, List<Statement> els) -> {
                 int trueLabel = label.fresh();
@@ -106,7 +109,7 @@ public class ThreeAddressCode {
                     for (Statement statement : then) {
                         normalizeStatement(nextLabel, statement);
                     }
-                    results.add(new Quad(Operator.GOTO, new EmptyAddress(), new ConstantAddress(nextLabel), new EmptyAddress()));
+                    results.add(new Quad(Operator.GOTO, new EmptyAddress(), new ConstantAddress(nextLabel)));
                     label.label(falseLabel);
                     for (Statement statement : els) {
                         normalizeStatement(nextLabel, statement);
@@ -122,7 +125,7 @@ public class ThreeAddressCode {
                 for (Statement statement : body) {
                     normalizeStatement(beginLabel, statement);
                 }
-                results.add(new Quad(Operator.GOTO, new EmptyAddress(), new ConstantAddress(beginLabel), new EmptyAddress()));
+                results.add(new Quad(Operator.GOTO, new EmptyAddress(), new ConstantAddress(beginLabel)));
             }
             case StoreStatement(Type _, Expression addressExpr, Expression store) -> {
                 Address address = normalizeExpression(addressExpr);
@@ -140,7 +143,7 @@ public class ThreeAddressCode {
             case UnaryOpExpression(UnaryOp op, Expression expr) -> {
                 Address address = normalizeExpression(expr);
                 Address temp = new TempAddress(fresh.fresh());
-                results.add(new Quad(op.toOperator(), temp, address, new EmptyAddress()));
+                results.add(new Quad(op.toOperator(), temp, address));
                 yield temp;
             }
             case BinaryOpExpression(BinaryOp op, Expression expr1, Expression expr2) -> {
@@ -151,14 +154,16 @@ public class ThreeAddressCode {
                 yield temp;
             }
             case CallExpression(String functionName, List<Expression> arguments) -> {
-                for (Expression expression : arguments) {
-                    Address address = normalizeExpression(expression);
-                    results.add(new Quad(Operator.PARAM, new EmptyAddress(), address, new EmptyAddress()));
-                }
-                Address temp = new TempAddress(fresh.fresh());
+                Address[] operands = new Address[arguments.size() + 2];
                 Address nameAddress = new NameAddress(symbol.getSymbol(functionName));
                 Address numArgs = new ConstantAddress(arguments.size());
-                results.add(new Quad(Operator.CALL, temp, nameAddress, numArgs));
+                operands[0] = nameAddress;
+                operands[1] = numArgs;
+                for (int i = 0; i < arguments.size(); i++) {
+                    operands[i + 2] = normalizeExpression(arguments.get(i));
+                }
+                Address temp = new TempAddress(fresh.fresh());
+                results.add(new Quad(Operator.CALL, temp, operands));
                 yield temp;
             }
             case LoadExpression(Type _, Expression addressExpr) -> {
@@ -176,7 +181,7 @@ public class ThreeAddressCode {
                     throw new ShortCircuitException();
             case BoolExpression(boolean value) -> {
                 Address jump = new ConstantAddress(value ? trueLabel : falseLabel);
-                results.add(new Quad(Operator.GOTO, new EmptyAddress(), jump, new EmptyAddress()));
+                results.add(new Quad(Operator.GOTO, new EmptyAddress(), jump));
             }
             case UnaryOpExpression(UnaryOp op, Expression expr) -> {
                 if (op == UnaryOp.NOT) {
@@ -203,7 +208,7 @@ public class ThreeAddressCode {
                         Address addr1 = normalizeExpression(expr1);
                         Address addr2 = normalizeExpression(expr2);
                         results.add(new Quad(op.toOperator(), new ConstantAddress(trueLabel), addr1, addr2));
-                        results.add(new Quad(Operator.GOTO, new EmptyAddress(), new ConstantAddress(falseLabel), new EmptyAddress()));
+                        results.add(new Quad(Operator.GOTO, new EmptyAddress(), new ConstantAddress(falseLabel)));
                     }
                 }
             }

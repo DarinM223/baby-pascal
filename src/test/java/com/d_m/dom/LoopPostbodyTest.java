@@ -64,12 +64,12 @@ class LoopPostbodyTest {
         }
         String expected = """
                 block -1 predecessors: [] successors: [0] {
-                  _TOKEN <- _ START _
+                  _TOKEN <- START()
                 }
                 block 0 predecessors: [-1] successors: [3] {
-                  i <- 1 := _
-                  j <- 1 := _
-                  k <- 0 := _
+                  i <- := 1
+                  j <- := 1
+                  k <- := 0
                 }
                 block 3 predecessors: [0, 17] successors: [5, 4] {
                   5 <- k < 100
@@ -78,27 +78,27 @@ class LoopPostbodyTest {
                   7 <- j < 20
                 }
                 block 4 predecessors: [3] successors: [15] {
-                  _ <- 15 GOTO _
+                  _ <- GOTO 15
                 }
                 block 7 predecessors: [5] successors: [17] {
-                  j <- i := _
+                  j <- := i
                   %4 <- k + 1
-                  k <- %4 := _
-                  _ <- 3 GOTO _
+                  k <- := %4
+                  _ <- GOTO 3
                 }
                 block 6 predecessors: [5] successors: [11] {
-                  _ <- 11 GOTO _
+                  _ <- GOTO 11
                 }
                 block 15 predecessors: [4] successors: [-2] {
-                  _ <- _ NOP _
+                  _ <- NOP()
                 }
                 block 17 predecessors: [7, 11] successors: [3] {
                 }
                 block 11 predecessors: [6] successors: [17] {
-                  j <- k := _
+                  j <- := k
                   %5 <- k + 2
-                  k <- %5 := _
-                  _ <- 3 GOTO _
+                  k <- := %5
+                  _ <- GOTO 3
                 }
                 block -2 predecessors: [15] successors: [] {
                 }

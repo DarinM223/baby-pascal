@@ -10,10 +10,7 @@ import com.d_m.util.Symbol;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class UniqueRenamer {
     private final Map<Integer, Integer> count;
@@ -68,8 +65,12 @@ public class UniqueRenamer {
     }
 
     private Quad renameInstruction(Set<Integer> defs, Quad quad) {
-        if (quad instanceof Quad(Operator op, Address result, Address input1, Address input2)) {
-            return new Quad(op, replaceDefinition(defs, result), replaceOperand(input1), replaceOperand(input2));
+        if (quad instanceof Quad(Operator op, Address result, var operands)) {
+            Address[] newOperands = new Address[operands.length];
+            for (int i = 0; i < operands.length; i++) {
+                newOperands[i] = replaceOperand(operands[i]);
+            }
+            return new Quad(op, replaceDefinition(defs, result), newOperands);
         }
         return null;
     }

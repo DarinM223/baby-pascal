@@ -137,16 +137,9 @@ public class SsaConverter {
     }
 
     public Instruction convertQuad(Quad quad) {
-        if (quad.op() == Operator.PARAM) {
-            params.add(lookupAddress(null, quad.input1()));
-            return null;
-        }
         Instruction instruction = new Instruction(nameOfAddress(quad.result()), null, quad.op());
-        if (!(quad.input1() instanceof EmptyAddress())) {
-            instruction.addOperand(lookupAddress(instruction, quad.input1()));
-        }
-        if (!(quad.input2() instanceof EmptyAddress())) {
-            instruction.addOperand(lookupAddress(instruction, quad.input2()));
+        for (Address address : quad.operands()) {
+            instruction.addOperand(lookupAddress(instruction, address));
         }
         if (quad.op() == Operator.CALL) {
             for (Use use : params) {

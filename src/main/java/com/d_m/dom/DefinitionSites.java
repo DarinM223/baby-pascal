@@ -40,7 +40,7 @@ public class DefinitionSites {
     private void calcAOrig(Block graph) {
         for (Block block : graph.blocks()) {
             for (Quad quad : block.getCode()) {
-                if (quad instanceof Quad(_, NameAddress(int name, _), _, _)) {
+                if (quad instanceof Quad(_, NameAddress(int name, _), _)) {
                     aOrig.put(block, name);
                 }
             }
