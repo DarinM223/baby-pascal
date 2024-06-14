@@ -42,6 +42,7 @@ public class SelectionDagGraph {
     public void writeNode(SDNode node) throws IOException {
         switch (node.getNodeOp()) {
             case NodeOp.ConstantInt(int value) -> writer.write(nodeName(node) + "[label=\"" + value + "\"];\n");
+            case NodeOp.Function(String name) -> writer.write(nodeName(node) + "[label=\"" + name + "\"];\n");
             case NodeOp.CopyFromReg(Register register) ->
                     writer.write(nodeName(node) + "[label=\"" + register.toString() + "\"];\n");
             case NodeOp.CopyToReg(Register register) ->

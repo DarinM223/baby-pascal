@@ -17,14 +17,12 @@ public class SsaConverter {
     private final Map<Address, Value> env;
     private final Multimap<Address, Use> unfilled;
     private final Map<com.d_m.cfg.Block, Block> rewrittenBlocks;
-    private final List<Use> params;
 
     public SsaConverter(Symbol symbol) {
         this.symbol = symbol;
         this.env = new HashMap<>();
         this.unfilled = ArrayListMultimap.create();
         this.rewrittenBlocks = new HashMap<>();
-        params = new ArrayList<>();
     }
 
     public Module convertProgram(Program<com.d_m.cfg.Block> program) {
@@ -140,13 +138,6 @@ public class SsaConverter {
         Instruction instruction = new Instruction(nameOfAddress(quad.result()), null, quad.op());
         for (Address address : quad.operands()) {
             instruction.addOperand(lookupAddress(instruction, address));
-        }
-        if (quad.op() == Operator.CALL) {
-            for (Use use : params) {
-                use.setUser(instruction);
-                instruction.addOperand(use);
-            }
-            params.clear();
         }
         if (!(quad.result() instanceof ConstantAddress)) {
             env.put(quad.result(), instruction);

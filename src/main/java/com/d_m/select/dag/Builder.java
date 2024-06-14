@@ -62,7 +62,14 @@ public class Builder {
             case STORE -> List.of(entryValue,
                     getValue(instruction.getOperand(0).getValue()),
                     getValue(instruction.getOperand(1).getValue()));
-            case CALL -> List.of(entryValue); // TODO: track parameters and put them in here
+            case CALL -> {
+                List<SDValue> newOperands = new ArrayList<>(Iterables.size(instruction.operands()) + 1);
+                for (Use operand : instruction.operands()) {
+                    newOperands.add(getValue(operand.getValue()));
+                }
+                newOperands.addFirst(entryValue);
+                yield newOperands;
+            }
             default -> {
                 List<SDValue> newOperands = new ArrayList<>(Iterables.size(instruction.operands()));
                 for (Use operand : instruction.operands()) {
@@ -106,6 +113,9 @@ public class Builder {
         if (v instanceof ConstantInt constantInt) {
             return getConstant(constantInt);
         }
+        if (v instanceof Function function) {
+            return getFunction(function);
+        }
         if (v instanceof Instruction instruction && !currentBlock.equals(instruction.getParent())) {
             // TODO: register class should be based off of instruction type.
             return getCopyFromReg(instruction, X86RegisterClass.allIntegerRegs());
@@ -123,6 +133,13 @@ public class Builder {
         SDNode constant = dag.newNode(new NodeOp.ConstantInt(constantInt.getValue()), 1);
         SDValue value = new SDValue(constant, 0);
         nodeMap.put(constantInt, value);
+        return value;
+    }
+
+    private SDValue getFunction(Function function) {
+        SDNode functionNode = dag.newNode(new NodeOp.Function(function.getName()), 1);
+        SDValue value = new SDValue(functionNode, 0);
+        nodeMap.put(function, value);
         return value;
     }
 

@@ -16,7 +16,6 @@ public enum Operator {
     GE,
     EQ,
     NE,
-    PARAM,
     CALL,
     ASSIGN,
     LOAD,
@@ -47,7 +46,7 @@ public enum Operator {
         return switch (this) {
             case NEG, NOT, ADD, SUB, MUL, DIV, AND, OR, GOTO, LT, LE, GT, GE, EQ, NE, ASSIGN, LOAD, NOP, PHI, PCOPY,
                  PROJ -> false;
-            case START, PARAM, CALL, RETURN, STORE -> true;
+            case START, CALL, RETURN, STORE -> true;
         };
     }
 
@@ -77,7 +76,6 @@ public enum Operator {
             case GE -> ">=";
             case EQ -> "==";
             case NE -> "!=";
-            case PARAM -> "PARAM";
             case CALL -> "CALL";
             case ASSIGN -> ":=";
             case LOAD -> "LOAD";

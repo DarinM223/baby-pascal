@@ -262,7 +262,7 @@ public class ConstantPropagation extends BooleanFunctionPass {
                 }
             }
             case GOTO -> markExecutable(instruction.getSuccessors().getFirst());
-            case START, PARAM, CALL, LOAD -> markOverdefined(instruction);
+            case START, CALL, LOAD -> markOverdefined(instruction);
             case ASSIGN -> {
                 switch (lookupValue(instruction.getOperand(0).getValue())) {
                     case Lattice.NeverDefined() -> {

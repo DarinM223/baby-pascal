@@ -12,6 +12,9 @@ public sealed interface NodeOp {
     record Entry() implements NodeOp {
     }
 
+    record Function(String name) implements NodeOp {
+    }
+
     /**
      * Merge multiple SDValues into a node.
      */
