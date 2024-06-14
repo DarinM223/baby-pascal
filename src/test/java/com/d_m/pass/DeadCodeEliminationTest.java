@@ -78,7 +78,7 @@ class DeadCodeEliminationTest {
                     block l1 [l0] {
                       %1 <- 2 + 3
                       number <- %1
-                      %2 <- CALL(fibonacci, 1, number)
+                      %2 <- CALL(_TOKEN, fibonacci, 1, number)
                       %3 <- GOTO() [l2]
                     }
                     block l2 [l1] {
@@ -94,7 +94,7 @@ class DeadCodeEliminationTest {
                     }
                     block l5 [l4] {
                       fibonacci2 <- n
-                      %6 <- GOTO 10 [l7]
+                      %6 <- GOTO 14 [l7]
                     }
                     block l6 [l4] {
                       %7 <- GOTO 4 [l8]
@@ -105,15 +105,18 @@ class DeadCodeEliminationTest {
                     }
                     block l8 [l6] {
                       %9 <- n - 1
-                      %10 <- CALL(fibonacci, 1, %9)
-                      %11 <- n - 2
-                      %12 <- CALL(fibonacci, 1, %11)
-                      %13 <- %10 + %12
-                      fibonacci4 <- %13
-                      %14 <- GOTO() [l7]
+                      %10 <- CALL(_TOKEN2, fibonacci, 1, %9)
+                      _TOKEN3 <- %10 PROJ 0
+                      %11 <- %10 PROJ 1
+                      %12 <- n - 2
+                      %13 <- CALL(_TOKEN3, fibonacci, 1, %12)
+                      %14 <- %13 PROJ 1
+                      %15 <- %11 + %14
+                      fibonacci4 <- %15
+                      %16 <- GOTO() [l7]
                     }
                     block l9 [l7] {
-                      %15 <- RETURN fibonacci3
+                      %17 <- RETURN fibonacci3
                     }
                   }
                 }

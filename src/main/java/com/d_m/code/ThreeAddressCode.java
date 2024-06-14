@@ -84,15 +84,18 @@ public class ThreeAddressCode {
                 results.add(new Quad(Operator.ASSIGN, nameAddress, expressionAddress));
             }
             case CallStatement(String functionName, List<Expression> arguments) -> {
-                Address[] operands = new Address[arguments.size() + 2];
+                Address[] operands = new Address[arguments.size() + 3];
                 Address nameAddress = new NameAddress(symbol.getSymbol(functionName));
                 Address numArgs = new ConstantAddress(arguments.size());
-                operands[0] = nameAddress;
-                operands[1] = numArgs;
+                operands[0] = new NameAddress(SymbolImpl.TOKEN);
+                operands[1] = nameAddress;
+                operands[2] = numArgs;
                 for (int i = 0; i < arguments.size(); i++) {
-                    operands[i + 2] = normalizeExpression(arguments.get(i));
+                    operands[i + 3] = normalizeExpression(arguments.get(i));
                 }
-                results.add(new Quad(Operator.CALL, new EmptyAddress(), operands));
+                Address temp = new TempAddress(fresh.fresh());
+                results.add(new Quad(Operator.CALL, temp, operands));
+                results.add(new Quad(Operator.PROJ, new NameAddress(SymbolImpl.TOKEN), temp, new ConstantAddress(0)));
             }
             case IfStatement(Expression predicate, List<Statement> then, List<Statement> els) -> {
                 int trueLabel = label.fresh();
@@ -154,17 +157,21 @@ public class ThreeAddressCode {
                 yield temp;
             }
             case CallExpression(String functionName, List<Expression> arguments) -> {
-                Address[] operands = new Address[arguments.size() + 2];
+                Address[] operands = new Address[arguments.size() + 3];
                 Address nameAddress = new NameAddress(symbol.getSymbol(functionName));
                 Address numArgs = new ConstantAddress(arguments.size());
-                operands[0] = nameAddress;
-                operands[1] = numArgs;
+                operands[0] = new NameAddress(SymbolImpl.TOKEN);
+                operands[1] = nameAddress;
+                operands[2] = numArgs;
                 for (int i = 0; i < arguments.size(); i++) {
-                    operands[i + 2] = normalizeExpression(arguments.get(i));
+                    operands[i + 3] = normalizeExpression(arguments.get(i));
                 }
                 Address temp = new TempAddress(fresh.fresh());
+                Address resultTemp = new TempAddress(fresh.fresh());
                 results.add(new Quad(Operator.CALL, temp, operands));
-                yield temp;
+                results.add(new Quad(Operator.PROJ, new NameAddress(SymbolImpl.TOKEN), temp, new ConstantAddress(0)));
+                results.add(new Quad(Operator.PROJ, resultTemp, temp, new ConstantAddress(1)));
+                yield resultTemp;
             }
             case LoadExpression(Type _, Expression addressExpr) -> {
                 Address temp = new TempAddress(fresh.fresh());
