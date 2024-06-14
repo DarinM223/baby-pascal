@@ -39,6 +39,7 @@ public class ThreeAddressCode {
                                 var funReturn = new Quad(
                                         Operator.RETURN,
                                         new EmptyAddress(),
+                                        new NameAddress(SymbolImpl.TOKEN),
                                         new NameAddress(symbol.getSymbol(functionName))
                                 );
                                 block.getExit().getCode().add(funReturn);

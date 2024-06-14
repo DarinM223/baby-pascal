@@ -179,7 +179,7 @@ class SsaConverterTest {
                       %19 <- GOTO() [l7]
                     }
                     block l9 [l7] {
-                      %20 <- RETURN fibonacci3
+                      %20 <- _TOKEN4 RETURN fibonacci3
                     }
                   }
                 }
