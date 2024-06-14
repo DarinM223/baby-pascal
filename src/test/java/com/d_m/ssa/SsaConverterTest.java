@@ -202,11 +202,11 @@ class SsaConverterTest {
                       %2 <- 5 + 6
                       %3 <- _TOKEN LOAD %2
                       %4 <- %1 + %3
-                      %5 <- _TOKEN STORE %4
-                      %6 <- _TOKEN LOAD 10
-                      result <- %6
-                      %7 <- NOP()
-                      %8 <- GOTO() [l2]
+                      _TOKEN2 <- STORE(_TOKEN, 10, %4)
+                      %5 <- _TOKEN2 LOAD 10
+                      result <- %5
+                      %6 <- NOP()
+                      %7 <- GOTO() [l2]
                     }
                     block l2 [l1] {
                     }

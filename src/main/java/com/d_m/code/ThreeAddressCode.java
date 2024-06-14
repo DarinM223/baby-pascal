@@ -130,7 +130,7 @@ public class ThreeAddressCode {
             case StoreStatement(Type _, Expression addressExpr, Expression store) -> {
                 Address address = normalizeExpression(addressExpr);
                 Address storeAddress = normalizeExpression(store);
-                results.add(new Quad(Operator.STORE, address, new NameAddress(token), storeAddress));
+                results.add(new Quad(Operator.STORE, new NameAddress(token), new NameAddress(token), address, storeAddress));
             }
         }
     }
