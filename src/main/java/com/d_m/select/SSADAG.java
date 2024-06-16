@@ -1,6 +1,5 @@
 package com.d_m.select;
 
-import com.d_m.ast.IntegerType;
 import com.d_m.code.Operator;
 import com.d_m.select.dag.Register;
 import com.d_m.select.dag.RegisterClass;
@@ -18,14 +17,16 @@ public class SSADAG implements DAG<Value> {
     private final Set<Value> roots;
     private final Set<Value> shared;
     private final FunctionLoweringInfo functionLoweringInfo;
-    private Instruction startToken;
+    private final Instruction startToken;
+    private Instruction currToken;
 
     public SSADAG(FunctionLoweringInfo functionLoweringInfo, Block block) {
         this.block = block;
         this.functionLoweringInfo = functionLoweringInfo;
+        this.startToken = functionLoweringInfo.getStartToken(block);
         roots = new HashSet<>();
         shared = new HashSet<>();
-        startToken = null;
+        currToken = startToken;
         splitIntoDAG();
         calculate();
     }
@@ -36,18 +37,68 @@ public class SSADAG implements DAG<Value> {
     // instructions.
     private void splitIntoDAG() {
         List<Instruction> addToStart = new ArrayList<>();
+        List<Instruction> addToEnd = new ArrayList<>();
 
         for (Instruction instruction : block.getInstructions()) {
-            rewriteFirstSideEffects(addToStart, instruction);
+            rewriteOutOfBlockSideEffects(instruction);
             rewriteOutOfBlockOperands(addToStart, instruction);
+            if (!rewriteOutOfBlockUses(instruction)) {
+                rewriteSideEffectOutputs(instruction);
+            }
             if (instruction.getOperator() == Operator.CALL) {
                 rewriteCall(instruction);
             }
         }
 
         for (Instruction instruction : addToStart.reversed()) {
-            block.getInstructions().addToFront(instruction);
+            block.getInstructions().addAfter(startToken, instruction);
         }
+    }
+
+    private boolean rewriteOutOfBlockUses(Instruction instruction) {
+        boolean changed = false;
+        if (instruction.getOperator() == Operator.COPYFROMREG || instruction.getOperator() == Operator.COPYTOREG) {
+            return changed;
+        }
+        Set<Register> seenCopyToRegs = new HashSet<>();
+        for (Use use : instruction.uses()) {
+            if (use.getUser() instanceof Instruction user && !user.getParent().equals(block)) {
+                changed = true;
+                RegisterClass registerClass = X86RegisterClass.allIntegerRegs();
+                Register register = functionLoweringInfo.getRegister(instruction);
+                if (register == null) {
+                    register = functionLoweringInfo.createRegister(registerClass);
+                    functionLoweringInfo.addRegister(instruction, register);
+                }
+                if (seenCopyToRegs.contains(register)) {
+                    continue;
+                }
+                seenCopyToRegs.add(register);
+                Instruction copyFromReg = new Instruction(instruction.getName(), instruction.getType(), Operator.COPYFROMREG);
+                copyFromReg.setParent(user.getParent());
+                copyFromReg.addOperand(new Use(functionLoweringInfo.getStartToken(user.getParent()), copyFromReg));
+                functionLoweringInfo.addRegister(copyFromReg, register);
+
+                Instruction copyToReg = new Instruction(SymbolImpl.TOKEN_STRING, null, Operator.COPYTOREG);
+                copyToReg.setParent(block);
+                functionLoweringInfo.addRegister(copyToReg, register);
+
+                // Unlink use from instruction and add COPYTOREG to the current block.
+                instruction.removeUse(user);
+                Use copyToRegUse = new Use(instruction, copyToReg);
+                instruction.linkUse(copyToRegUse);
+                copyToReg.addOperand(new Use(currToken, copyToReg));
+                copyToReg.addOperand(copyToRegUse);
+                block.getInstructions().addAfter(instruction, copyToReg);
+                currToken = copyToReg;
+
+                // Set use to COPYFROMREG and add it to the start of the user's block.
+                use.setValue(copyFromReg);
+                copyFromReg.linkUse(use);
+                user.getParent().getInstructions().addAfter(functionLoweringInfo.getStartToken(user.getParent()), copyFromReg);
+            }
+        }
+        return changed;
     }
 
     private void rewriteCall(Instruction instruction) {
@@ -66,35 +117,10 @@ public class SSADAG implements DAG<Value> {
                     Register register = functionLoweringInfo.getRegister(argument);
                     Instruction copyFromReg = new Instruction(argument.getName(), argument.getType(), Operator.COPYFROMREG);
                     copyFromReg.setParent(block);
+                    copyFromReg.addOperand(new Use(currToken, copyFromReg));
                     functionLoweringInfo.addRegister(copyFromReg, register);
 
                     argument.removeUse(instruction);
-                    use.setValue(copyFromReg);
-                    copyFromReg.linkUse(use);
-                    addToStart.add(copyFromReg);
-                }
-                case Instruction operand when !operand.getParent().equals(block) -> {
-                    RegisterClass registerClass = X86RegisterClass.allIntegerRegs();
-                    Register register = functionLoweringInfo.getRegister(operand);
-                    if (register == null) {
-                        register = functionLoweringInfo.createRegister(registerClass);
-                        functionLoweringInfo.addRegister(operand, register);
-                    }
-                    Instruction copyFromReg = new Instruction(operand.getName(), operand.getType(), Operator.COPYFROMREG);
-                    copyFromReg.setParent(block);
-                    Instruction copyToReg = new Instruction(operand.getName(), operand.getType(), Operator.COPYTOREG);
-                    copyToReg.setParent(operand.getParent());
-                    functionLoweringInfo.addRegister(copyFromReg, register);
-                    functionLoweringInfo.addRegister(copyToReg, register);
-
-                    // Unlink use from operand and add COPYTOREG to the end of the operand's block.
-                    operand.removeUse(instruction);
-                    Use copyToRegUse = new Use(operand, copyToReg);
-                    operand.linkUse(new Use(operand, copyToReg));
-                    copyToReg.addOperand(copyToRegUse);
-                    operand.getParent().getInstructions().addBeforeLast(copyToReg);
-
-                    // Set use to COPYFROMREG and add it to the start of the current block.
                     use.setValue(copyFromReg);
                     copyFromReg.linkUse(use);
                     addToStart.add(copyFromReg);
@@ -106,20 +132,29 @@ public class SSADAG implements DAG<Value> {
     }
 
     // Rewrite side effect tokens inputs to out of block values to the start token.
-    private void rewriteFirstSideEffects(List<Instruction> addToStart, Instruction instruction) {
-        switch (instruction.getOperator()) {
-            // NOTE: Currently the side effect input is always in the operand at index 0.
-            case LOAD, STORE, RETURN, CALL -> {
-                if (instruction.getOperand(0).getValue() instanceof Instruction token && token.getParent().equals(block)) {
-                    return;
-                }
+    private void rewriteOutOfBlockSideEffects(Instruction instruction) {
+        if (!instruction.getOperator().hasSideEffects() || instruction.getOperator() == Operator.START) {
+            return;
+        }
 
-                if (startToken == null) {
-                    startToken = new Instruction(SymbolImpl.TOKEN_STRING, new IntegerType(), Operator.START);
-                    startToken.setParent(block);
-                    addToStart.add(startToken);
-                }
-                instruction.setOperand(0, new Use(startToken, instruction));
+        // NOTE: Currently the side effect input is always in the operand at index 0.
+        if (instruction.getOperand(0).getValue() instanceof Instruction token && !token.getParent().equals(block)) {
+            instruction.setOperand(0, new Use(currToken, instruction));
+        }
+    }
+
+    private void rewriteSideEffectOutputs(Instruction instruction) {
+        if (instruction.getOperator() == Operator.PROJ &&
+                instruction.getOperand(0).getValue() instanceof Instruction operand &&
+                operand.getOperator() == Operator.CALL &&
+                instruction.getOperand(1).getValue() instanceof ConstantInt constant
+                && constant.getValue() == 0) {
+            currToken = instruction;
+            return;
+        }
+        switch (instruction.getOperator()) {
+            case STORE, COPYTOREG -> currToken = instruction;
+            default -> {
             }
         }
     }

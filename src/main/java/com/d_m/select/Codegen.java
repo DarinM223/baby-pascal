@@ -1,9 +1,13 @@
 package com.d_m.select;
 
+import com.d_m.ast.IntegerType;
+import com.d_m.code.Operator;
 import com.d_m.select.dag.X86RegisterClass;
 import com.d_m.ssa.Argument;
 import com.d_m.ssa.Block;
 import com.d_m.ssa.Function;
+import com.d_m.ssa.Instruction;
+import com.d_m.util.SymbolImpl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +35,12 @@ public class Codegen {
             // TODO: get register class based on calling convention
             Argument argument = function.getArguments().get(argumentNumber);
             functionLoweringInfo.addRegister(argument, functionLoweringInfo.createRegister(X86RegisterClass.allIntegerRegs()));
+        }
+        for (Block block : function.getBlocks()) {
+            Instruction start = new Instruction(SymbolImpl.TOKEN_STRING, new IntegerType(), Operator.START);
+            start.setParent(block);
+            block.getInstructions().addToFront(start);
+            functionLoweringInfo.setStartToken(block, start);
         }
         for (Block block : function.getBlocks()) {
             SSADAG dag = new SSADAG(functionLoweringInfo, block);

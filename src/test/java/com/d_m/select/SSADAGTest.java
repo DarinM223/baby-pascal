@@ -61,12 +61,15 @@ class SSADAGTest {
         for (Function function : module.getFunctionList()) {
             Codegen codegen = new Codegen(function);
         }
+        printer.writeModule(module);
+        System.out.println("DAG:");
+        System.out.println(writer.toString());
+
         File file = new File("builder_ssa_dag.dot");
         file.deleteOnExit();
         SsaGraph graph = new SsaGraph(new FileWriter(file));
         graph.writeModule(module);
         GraphvizViewer.viewFile("SSA DAG", file);
-        System.out.println(writer);
     }
 
     @Test

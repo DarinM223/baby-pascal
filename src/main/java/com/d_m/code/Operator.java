@@ -48,8 +48,8 @@ public enum Operator {
     public boolean hasSideEffects() {
         return switch (this) {
             case NEG, NOT, ADD, SUB, MUL, DIV, AND, OR, GOTO, LT, LE, GT, GE, EQ, NE, ASSIGN, LOAD, NOP, PHI, PCOPY,
-                 PROJ, COPYFROMREG, COPYTOREG -> false;
-            case START, CALL, RETURN, STORE -> true;
+                 PROJ -> false;
+            case START, CALL, RETURN, STORE, COPYFROMREG, COPYTOREG -> true;
         };
     }
 
