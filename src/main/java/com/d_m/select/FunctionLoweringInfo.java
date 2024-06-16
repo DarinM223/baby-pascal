@@ -18,13 +18,15 @@ public class FunctionLoweringInfo {
         this.virtualRegisterGen = new FreshImpl();
     }
 
-    public Register getRegister(Value value, RegisterClass registerClass) {
-        Register register = valueRegisterMap.get(value);
+    public Register createRegister(RegisterClass registerClass) {
+        return new Register.Virtual(virtualRegisterGen.fresh(), registerClass);
+    }
 
-        if (register == null) {
-            register = new Register.Virtual(virtualRegisterGen.fresh(), registerClass);
-            valueRegisterMap.put(value, register);
-        }
-        return register;
+    public void addRegister(Value value, Register register) {
+        valueRegisterMap.put(value, register);
+    }
+
+    public Register getRegister(Value value) {
+        return valueRegisterMap.get(value);
     }
 }

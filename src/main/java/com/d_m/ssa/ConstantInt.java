@@ -8,7 +8,7 @@ import java.io.IOException;
 public class ConstantInt extends Constant {
     private final int value;
 
-    protected ConstantInt(int value) {
+    public ConstantInt(int value) {
         super(null, new IntegerType());
         this.value = value;
     }

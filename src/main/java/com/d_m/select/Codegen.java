@@ -1,5 +1,13 @@
 package com.d_m.select;
 
+import com.d_m.select.dag.X86RegisterClass;
+import com.d_m.ssa.Argument;
+import com.d_m.ssa.Block;
+import com.d_m.ssa.Function;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class Codegen {
     // TODO:
     // Step 1: All operands that are not in a basic block are
@@ -14,8 +22,19 @@ public class Codegen {
     // After this, the SSA graph should be split per block. Now we can do DAG instruction
     // selection without issues with cross-block sharing.
     private final FunctionLoweringInfo functionLoweringInfo;
+    private final Map<Block, SSADAG> blockDagMap;
 
-    public Codegen() {
+    public Codegen(Function function) {
         functionLoweringInfo = new FunctionLoweringInfo();
+        blockDagMap = new HashMap<>();
+        for (int argumentNumber = 0; argumentNumber < function.getArguments().size(); argumentNumber++) {
+            // TODO: get register class based on calling convention
+            Argument argument = function.getArguments().get(argumentNumber);
+            functionLoweringInfo.addRegister(argument, functionLoweringInfo.createRegister(X86RegisterClass.allIntegerRegs()));
+        }
+        for (Block block : function.getBlocks()) {
+            SSADAG dag = new SSADAG(functionLoweringInfo, block);
+            blockDagMap.put(block, dag);
+        }
     }
 }

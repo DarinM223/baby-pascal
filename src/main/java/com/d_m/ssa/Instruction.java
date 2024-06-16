@@ -35,6 +35,8 @@ public class Instruction extends Value implements Listable<Instruction> {
     }
 
     public Use setOperand(int i, Use use) {
+        Use oldUse = operands.get(i);
+        oldUse.getValue().removeUse(this);
         return operands.set(i, use);
     }
 

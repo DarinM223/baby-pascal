@@ -7,6 +7,8 @@ import com.d_m.construct.ConstructSSA;
 import com.d_m.dom.Examples;
 import com.d_m.ssa.*;
 import com.d_m.ssa.Module;
+import com.d_m.ssa.graphviz.GraphvizViewer;
+import com.d_m.ssa.graphviz.SsaGraph;
 import com.d_m.util.Fresh;
 import com.d_m.util.FreshImpl;
 import com.d_m.util.Symbol;
@@ -14,6 +16,8 @@ import com.d_m.util.SymbolImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
@@ -54,39 +58,14 @@ class SSADAGTest {
     void postorder() throws IOException {
         StringWriter writer = new StringWriter();
         PrettyPrinter printer = new PrettyPrinter(writer);
-        var info = new FunctionLoweringInfo();
         for (Function function : module.getFunctionList()) {
-            for (Block block : function.getBlocks()) {
-                SSADAG dag = new SSADAG(info, block);
-                writer.append("Block: \n");
-                printer.writeBlock(block);
-                writer.append("Roots: \n");
-                for (Value value : dag.roots()) {
-                    switch (value) {
-                        case ConstantInt constantInt -> {
-                            printer.writeConstantInt(constantInt);
-                            writer.append('\n');
-                        }
-                        case Argument argument -> printer.writeArgument(argument);
-                        case Instruction instruction -> printer.writeInstructionDef(instruction);
-                        default -> {}
-                    }
-                }
-                writer.append('\n');
-                for (Value value : dag.postorder()) {
-                    switch (value) {
-                        case ConstantInt constantInt -> {
-                            printer.writeConstantInt(constantInt);
-                            writer.append('\n');
-                        }
-                        case Argument argument -> printer.writeArgument(argument);
-                        case Instruction instruction -> printer.writeInstructionDef(instruction);
-                        default -> {}
-                    }
-                }
-                writer.append('\n').append('\n');
-            }
+            Codegen codegen = new Codegen(function);
         }
+        File file = new File("builder_ssa_dag.dot");
+        file.deleteOnExit();
+        SsaGraph graph = new SsaGraph(new FileWriter(file));
+        graph.writeModule(module);
+        GraphvizViewer.viewFile("SSA DAG", file);
         System.out.println(writer);
     }
 

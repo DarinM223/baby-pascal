@@ -1,9 +1,12 @@
 package com.d_m.select;
 
-import com.d_m.ssa.Block;
-import com.d_m.ssa.Instruction;
-import com.d_m.ssa.Use;
-import com.d_m.ssa.Value;
+import com.d_m.ast.IntegerType;
+import com.d_m.code.Operator;
+import com.d_m.select.dag.Register;
+import com.d_m.select.dag.RegisterClass;
+import com.d_m.select.dag.X86RegisterClass;
+import com.d_m.ssa.*;
+import com.d_m.util.SymbolImpl;
 
 import java.util.*;
 
@@ -15,12 +18,14 @@ public class SSADAG implements DAG<Value> {
     private final Set<Value> roots;
     private final Set<Value> shared;
     private final FunctionLoweringInfo functionLoweringInfo;
+    private Instruction startToken;
 
     public SSADAG(FunctionLoweringInfo functionLoweringInfo, Block block) {
         this.block = block;
         this.functionLoweringInfo = functionLoweringInfo;
         roots = new HashSet<>();
         shared = new HashSet<>();
+        startToken = null;
         splitIntoDAG();
         calculate();
     }
@@ -30,6 +35,93 @@ public class SSADAG implements DAG<Value> {
     // and cross block values will be handled with COPYFROMREG or COPYTOREG
     // instructions.
     private void splitIntoDAG() {
+        List<Instruction> addToStart = new ArrayList<>();
+
+        for (Instruction instruction : block.getInstructions()) {
+            rewriteFirstSideEffects(addToStart, instruction);
+            rewriteOutOfBlockOperands(addToStart, instruction);
+            if (instruction.getOperator() == Operator.CALL) {
+                rewriteCall(instruction);
+            }
+        }
+
+        for (Instruction instruction : addToStart.reversed()) {
+            block.getInstructions().addToFront(instruction);
+        }
+    }
+
+    private void rewriteCall(Instruction instruction) {
+    }
+
+    private void rewriteOutOfBlockOperands(List<Instruction> addToStart, Instruction instruction) {
+        for (Use use : instruction.operands()) {
+            switch (use.getValue()) {
+                case ConstantInt constantInt -> {
+                    ConstantInt newConstantInt = new ConstantInt(constantInt.getValue());
+                    use.getValue().removeUse(instruction);
+                    use.setValue(newConstantInt);
+                    newConstantInt.linkUse(use);
+                }
+                case Argument argument -> {
+                    Register register = functionLoweringInfo.getRegister(argument);
+                    Instruction copyFromReg = new Instruction(argument.getName(), argument.getType(), Operator.COPYFROMREG);
+                    copyFromReg.setParent(block);
+                    functionLoweringInfo.addRegister(copyFromReg, register);
+
+                    argument.removeUse(instruction);
+                    use.setValue(copyFromReg);
+                    copyFromReg.linkUse(use);
+                    addToStart.add(copyFromReg);
+                }
+                case Instruction operand when !operand.getParent().equals(block) -> {
+                    RegisterClass registerClass = X86RegisterClass.allIntegerRegs();
+                    Register register = functionLoweringInfo.getRegister(operand);
+                    if (register == null) {
+                        register = functionLoweringInfo.createRegister(registerClass);
+                        functionLoweringInfo.addRegister(operand, register);
+                    }
+                    Instruction copyFromReg = new Instruction(operand.getName(), operand.getType(), Operator.COPYFROMREG);
+                    copyFromReg.setParent(block);
+                    Instruction copyToReg = new Instruction(operand.getName(), operand.getType(), Operator.COPYTOREG);
+                    copyToReg.setParent(operand.getParent());
+                    functionLoweringInfo.addRegister(copyFromReg, register);
+                    functionLoweringInfo.addRegister(copyToReg, register);
+
+                    // Unlink use from operand and add COPYTOREG to the end of the operand's block.
+                    operand.removeUse(instruction);
+                    Use copyToRegUse = new Use(operand, copyToReg);
+                    operand.linkUse(new Use(operand, copyToReg));
+                    copyToReg.addOperand(copyToRegUse);
+                    operand.getParent().getInstructions().addBeforeLast(copyToReg);
+
+                    // Set use to COPYFROMREG and add it to the start of the current block.
+                    use.setValue(copyFromReg);
+                    copyFromReg.linkUse(use);
+                    addToStart.add(copyFromReg);
+                }
+                default -> {
+                }
+            }
+        }
+    }
+
+    // Rewrite side effect tokens inputs to out of block values to the start token.
+    private void rewriteFirstSideEffects(List<Instruction> addToStart, Instruction instruction) {
+        switch (instruction.getOperator()) {
+            // NOTE: Currently the side effect input is always in the operand at index 0.
+            case LOAD, STORE, RETURN, CALL -> {
+                if (instruction.getOperand(0).getValue() instanceof Instruction token && token.getParent().equals(block)) {
+                    return;
+                }
+
+                if (startToken == null) {
+                    startToken = new Instruction(SymbolImpl.TOKEN_STRING, new IntegerType(), Operator.START);
+                    startToken.setParent(block);
+                    addToStart.add(startToken);
+                }
+                instruction.setOperand(0, new Use(startToken, instruction));
+            }
+        }
     }
 
     private void calculate() {
