@@ -54,9 +54,10 @@ class SSADAGTest {
     void postorder() throws IOException {
         StringWriter writer = new StringWriter();
         PrettyPrinter printer = new PrettyPrinter(writer);
+        var info = new FunctionLoweringInfo();
         for (Function function : module.getFunctionList()) {
             for (Block block : function.getBlocks()) {
-                SSADAG dag = new SSADAG(block);
+                SSADAG dag = new SSADAG(info, block);
                 writer.append("Block: \n");
                 printer.writeBlock(block);
                 writer.append("Roots: \n");

@@ -25,7 +25,10 @@ public enum Operator {
     PCOPY,
     RETURN,
     START,
-    PROJ;
+    PROJ,
+    // Used for instruction selection.
+    COPYTOREG,
+    COPYFROMREG;
 
     public boolean isComparison() {
         return this == EQ || this == NE || this == GT || this == GE || this == LT || this == LE;
@@ -45,7 +48,7 @@ public enum Operator {
     public boolean hasSideEffects() {
         return switch (this) {
             case NEG, NOT, ADD, SUB, MUL, DIV, AND, OR, GOTO, LT, LE, GT, GE, EQ, NE, ASSIGN, LOAD, NOP, PHI, PCOPY,
-                 PROJ -> false;
+                 PROJ, COPYFROMREG, COPYTOREG -> false;
             case START, CALL, RETURN, STORE -> true;
         };
     }
@@ -86,6 +89,8 @@ public enum Operator {
             case RETURN -> "RETURN";
             case START -> "START";
             case PROJ -> "PROJ";
+            case COPYFROMREG -> "COPYFROMREG";
+            case COPYTOREG -> "COPYTOREG";
         };
     }
 }

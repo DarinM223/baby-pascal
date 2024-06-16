@@ -11,6 +11,7 @@ import com.d_m.ssa.Function;
 import com.d_m.ssa.Module;
 import com.d_m.ssa.SsaConverter;
 import com.d_m.ssa.graphviz.GraphvizViewer;
+import com.d_m.ssa.graphviz.SsaGraph;
 import com.d_m.util.Fresh;
 import com.d_m.util.FreshImpl;
 import com.d_m.util.Symbol;
@@ -61,17 +62,28 @@ class BuilderTest {
         Builder builder = new Builder();
         builder.convertFunction(fibonacci);
 
-        File file = new File("builder.dot");
-        file.deleteOnExit();
-        SelectionDagGraph graph = new SelectionDagGraph(new FileWriter(file));
-        graph.start(() -> {
-            for (Block block : fibonacci.getBlocks()) {
-                SelectionDAG dag = builder.getDag(block);
-                graph.writeDag(dag);
-            }
-        });
+        {
+            File file = new File("builder_ssa.dot");
+            file.deleteOnExit();
+            SsaGraph graph = new SsaGraph(new FileWriter(file));
+            graph.writeModule(module);
+            GraphvizViewer.viewFile("Builder SSA", file);
+        }
 
-        System.out.println("Time to view the DAG!");
-        GraphvizViewer.viewFile("Conversion to Selection DAG", file);
+
+        {
+            File file = new File("builder.dot");
+            file.deleteOnExit();
+            SelectionDagGraph graph = new SelectionDagGraph(new FileWriter(file));
+            graph.start(() -> {
+                for (Block block : fibonacci.getBlocks()) {
+                    SelectionDAG dag = builder.getDag(block);
+                    graph.writeDag(dag);
+                }
+            });
+
+            System.out.println("Time to view the DAG!");
+            GraphvizViewer.viewFile("Conversion to Selection DAG", file);
+        }
     }
 }

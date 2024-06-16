@@ -9,19 +9,27 @@ import java.util.*;
 
 /**
  * A SSA basic block with extra methods.
- * A drawback with doing this is that side effects like loads and stores
- * don't have token outputs to enforce ordering.
  */
 public class SSADAG implements DAG<Value> {
     private final Block block;
     private final Set<Value> roots;
     private final Set<Value> shared;
+    private final FunctionLoweringInfo functionLoweringInfo;
 
-    public SSADAG(Block block) {
+    public SSADAG(FunctionLoweringInfo functionLoweringInfo, Block block) {
         this.block = block;
+        this.functionLoweringInfo = functionLoweringInfo;
         roots = new HashSet<>();
         shared = new HashSet<>();
+        splitIntoDAG();
         calculate();
+    }
+
+    // TODO: Separates this basic block from the whole function.
+    // After this, every value will be local to the basic block
+    // and cross block values will be handled with COPYFROMREG or COPYTOREG
+    // instructions.
+    private void splitIntoDAG() {
     }
 
     private void calculate() {

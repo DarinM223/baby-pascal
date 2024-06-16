@@ -1,0 +1,30 @@
+package com.d_m.select;
+
+import com.d_m.select.dag.Register;
+import com.d_m.select.dag.RegisterClass;
+import com.d_m.ssa.Value;
+import com.d_m.util.Fresh;
+import com.d_m.util.FreshImpl;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class FunctionLoweringInfo {
+    private final Map<Value, Register> valueRegisterMap;
+    private final Fresh virtualRegisterGen;
+
+    public FunctionLoweringInfo() {
+        this.valueRegisterMap = new HashMap<>();
+        this.virtualRegisterGen = new FreshImpl();
+    }
+
+    public Register getRegister(Value value, RegisterClass registerClass) {
+        Register register = valueRegisterMap.get(value);
+
+        if (register == null) {
+            register = new Register.Virtual(virtualRegisterGen.fresh(), registerClass);
+            valueRegisterMap.put(value, register);
+        }
+        return register;
+    }
+}
