@@ -118,7 +118,9 @@ public class SsaConverter {
         Block converted = new Block(parent, instructions);
         if (!block.getSuccessors().isEmpty() &&
                 (converted.getTerminator() == null || !converted.getTerminator().getOperator().isBranch())) {
-            converted.getInstructions().addToEnd(new Instruction(null, null, Operator.GOTO));
+            Instruction gotoInstruction = new Instruction(null, null, Operator.GOTO);
+            gotoInstruction.setParent(converted);
+            converted.getInstructions().addToEnd(gotoInstruction);
         }
         rewrittenBlocks.put(block, converted);
         converted.setDominatorTreeLevel(block.getDominatorTreeLevel());

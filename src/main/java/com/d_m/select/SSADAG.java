@@ -70,14 +70,20 @@ public class SSADAG implements DAG<Value> {
                     register = functionLoweringInfo.createRegister(registerClass);
                     functionLoweringInfo.addRegister(instruction, register);
                 }
-                if (seenCopyToRegs.contains(register)) {
-                    continue;
-                }
-                seenCopyToRegs.add(register);
                 Instruction copyFromReg = new Instruction(instruction.getName(), instruction.getType(), Operator.COPYFROMREG);
                 copyFromReg.setParent(user.getParent());
                 copyFromReg.addOperand(new Use(functionLoweringInfo.getStartToken(user.getParent()), copyFromReg));
                 functionLoweringInfo.addRegister(copyFromReg, register);
+
+                // Set use to COPYFROMREG and add it to the start of the user's block.
+                use.setValue(copyFromReg);
+                copyFromReg.linkUse(use);
+                user.getParent().getInstructions().addAfter(functionLoweringInfo.getStartToken(user.getParent()), copyFromReg);
+
+                if (seenCopyToRegs.contains(register)) {
+                    continue;
+                }
+                seenCopyToRegs.add(register);
 
                 Instruction copyToReg = new Instruction(SymbolImpl.TOKEN_STRING, null, Operator.COPYTOREG);
                 copyToReg.setParent(block);
@@ -91,11 +97,6 @@ public class SSADAG implements DAG<Value> {
                 copyToReg.addOperand(copyToRegUse);
                 block.getInstructions().addAfter(instruction, copyToReg);
                 currToken = copyToReg;
-
-                // Set use to COPYFROMREG and add it to the start of the user's block.
-                use.setValue(copyFromReg);
-                copyFromReg.linkUse(use);
-                user.getParent().getInstructions().addAfter(functionLoweringInfo.getStartToken(user.getParent()), copyFromReg);
             }
         }
         return changed;
