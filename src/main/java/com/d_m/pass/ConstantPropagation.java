@@ -94,7 +94,6 @@ public class ConstantPropagation extends BooleanFunctionPass {
             for (Instruction instruction : successor.getInstructions()) {
                 if (instruction instanceof PhiNode phi) {
                     // Delete operand at the index of the edge between block and successor.
-                    phi.getOperand(index).getValue().removeUse(phi);
                     phi.removeOperand(index);
                 } else {
                     break;

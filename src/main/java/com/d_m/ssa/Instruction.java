@@ -41,6 +41,8 @@ public class Instruction extends Value implements Listable<Instruction> {
     }
 
     public void removeOperand(int index) {
+        Use oldUse = operands.get(index);
+        oldUse.getValue().removeUse(this);
         operands.remove(index);
     }
 

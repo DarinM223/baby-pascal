@@ -6,6 +6,7 @@ import com.d_m.select.dag.RegisterClass;
 import com.d_m.select.dag.X86RegisterClass;
 import com.d_m.ssa.*;
 import com.d_m.util.SymbolImpl;
+import com.google.common.collect.Iterables;
 
 import java.util.*;
 
@@ -102,7 +103,40 @@ public class SSADAG implements DAG<Value> {
         return changed;
     }
 
+    // Rewrites call nodes so that the inputs into the function get rewritten into
+    // CopyToReg with the virtual registers that conform to the ISA's calling convention.
     private void rewriteCall(Instruction instruction) {
+        int operandsSize = Iterables.size(instruction.operands());
+        SortedSet<Integer> removeOperands = new TreeSet<>(Collections.reverseOrder());
+        for (int i = 3; i < operandsSize; i++) {
+            removeOperands.add(i);
+
+            // Thread side effect from Call into CopyToReg.
+            Instruction copyToReg = new Instruction(SymbolImpl.TOKEN_STRING, null, Operator.COPYTOREG);
+            copyToReg.setParent(block);
+
+            // TODO: use register class that conforms to the calling convention for functions.
+            var register = functionLoweringInfo.createRegister(X86RegisterClass.allIntegerRegs());
+            functionLoweringInfo.addRegister(copyToReg, register);
+
+            Use tokenUse = new Use(currToken, copyToReg);
+            copyToReg.addOperand(tokenUse);
+            currToken.linkUse(tokenUse);
+
+            Value operand = instruction.getOperand(i).getValue();
+            Use operandUse = new Use(operand, copyToReg);
+            copyToReg.addOperand(operandUse);
+            operand.linkUse(operandUse);
+
+            currToken = copyToReg;
+            block.getInstructions().addBefore(instruction, copyToReg);
+        }
+        Use lastSideEffectUse = new Use(currToken, instruction);
+        currToken.linkUse(lastSideEffectUse);
+        instruction.setOperand(0, lastSideEffectUse);
+        for (int i : removeOperands) {
+            instruction.removeOperand(i);
+        }
     }
 
     private void rewriteOutOfBlockOperands(List<Instruction> addToStart, Instruction instruction) {

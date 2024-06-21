@@ -28,6 +28,16 @@ public class ListWrapper<T extends Listable<T>> implements Iterable<T> {
         }
     }
 
+    public void addBefore(T node, T add) {
+        T prev = node.getPrev();
+        node.setPrev(add);
+        add.setNext(node);
+        add.setPrev(prev);
+        if (prev != null) {
+            prev.setNext(add);
+        }
+    }
+
     public void addBeforeLast(T node) {
         if (last != null) {
             if (last.getPrev() != null) {
