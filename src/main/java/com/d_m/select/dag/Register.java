@@ -5,6 +5,10 @@ public sealed interface Register {
     }
 
     record Virtual(int registerNumber, RegisterClass registerClass) implements Register {
+        @Override
+        public String toString() {
+            return "vreg" + registerNumber + " " + registerClass.getName();
+        }
     }
 
     /**

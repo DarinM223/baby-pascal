@@ -47,4 +47,8 @@ public class Codegen {
             blockDagMap.put(block, dag);
         }
     }
+
+    public FunctionLoweringInfo getFunctionLoweringInfo() {
+        return functionLoweringInfo;
+    }
 }

@@ -20,7 +20,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,8 +60,10 @@ class SSADAGTest {
     void postorder() throws IOException {
         StringWriter writer = new StringWriter();
         PrettyPrinter printer = new PrettyPrinter(writer);
+        Map<Function, FunctionLoweringInfo> infoMap = new HashMap<>();
         for (Function function : module.getFunctionList()) {
             Codegen codegen = new Codegen(function);
+            infoMap.put(function, codegen.getFunctionLoweringInfo());
         }
         printer.writeModule(module);
         System.out.println("DAG:");
@@ -68,7 +72,7 @@ class SSADAGTest {
         File file = new File("builder_ssa_dag.dot");
         file.deleteOnExit();
         SsaGraph graph = new SsaGraph(new FileWriter(file));
-        graph.writeModule(module);
+        graph.writeModule(module, infoMap);
         GraphvizViewer.viewFile("SSA DAG", file);
     }
 

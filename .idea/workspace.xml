@@ -4,12 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Allows COPYFROMREGs to be created even though a COPYTOREG has already been created.">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Rewrites CALL inputs to copy to virtual registers beforehand">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ListWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ListWrapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/Register.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/Register.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/RegisterClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/RegisterClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/X86RegisterClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/X86RegisterClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/SsaGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/SsaGraph.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/SSADAGTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/SSADAGTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/dag/BuilderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/dag/BuilderTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,34 +45,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "JUnit.All tests.executor": "Debug",
-    "JUnit.BlockTest.createBlocks.executor": "Run",
-    "JUnit.BlockTest.executor": "Run",
-    "JUnit.BuilderTest.convertFunction.executor": "Debug",
-    "JUnit.DataflowTest.genKill.executor": "Run",
-    "JUnit.DataflowTest.genKillAndLiveness.executor": "Run",
-    "JUnit.LengauerTarjanTest.idom.executor": "Run",
-    "JUnit.SSADAGTest.postorder.executor": "Run",
-    "JUnit.ThreeAddressCodeTest.normalize.executor": "Run",
-    "JUnit.UniqueRenamerTest.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "master",
-    "ignore.preview.features.used": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/d/Documents/java/baby-pascal/target/classes",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All tests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BlockTest.createBlocks.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BlockTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BuilderTest.convertFunction.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.DataflowTest.genKill.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.DataflowTest.genKillAndLiveness.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LengauerTarjanTest.idom.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SSADAGTest.postorder.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ThreeAddressCodeTest.normalize.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UniqueRenamerTest.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/d/Documents/java/baby-pascal/target/classes&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.d_m.dag" />
@@ -223,14 +226,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00088" summary="Add more references to Modern Compiler Implementation in ML">
-      <option name="closed" value="true" />
-      <created>1713662695812</created>
-      <option name="number" value="00088" />
-      <option name="presentableId" value="LOCAL-00088" />
-      <option name="project" value="LOCAL" />
-      <updated>1713662695812</updated>
     </task>
     <task id="LOCAL-00089" summary="Fill out README for com.d_m.dom and com.d_m.construct">
       <option name="closed" value="true" />
@@ -616,11 +611,18 @@
       <option name="project" value="LOCAL" />
       <updated>1718675336784</updated>
     </task>
-    <option name="localTasksCounter" value="137" />
+    <task id="LOCAL-00137" summary="Rewrites CALL inputs to copy to virtual registers beforehand">
+      <option name="closed" value="true" />
+      <created>1718983794666</created>
+      <option name="number" value="00137" />
+      <option name="presentableId" value="LOCAL-00137" />
+      <option name="project" value="LOCAL" />
+      <updated>1718983794666</updated>
+    </task>
+    <option name="localTasksCounter" value="138" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add register class" />
     <MESSAGE value="Start machine instruction types" />
     <MESSAGE value="Adds STORE instruction and adds comment on tokens" />
     <MESSAGE value="More changes" />
@@ -645,7 +647,8 @@
     <MESSAGE value="Starting to break an SSA function into DAGS with COPYFROMREG and COPYTOREG" />
     <MESSAGE value="Threads side effect tokens through the created COPYFROMREG and COPYTOREG instructions" />
     <MESSAGE value="Allows COPYFROMREGs to be created even though a COPYTOREG has already been created." />
-    <option name="LAST_COMMIT_MESSAGE" value="Allows COPYFROMREGs to be created even though a COPYTOREG has already been created." />
+    <MESSAGE value="Rewrites CALL inputs to copy to virtual registers beforehand" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rewrites CALL inputs to copy to virtual registers beforehand" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

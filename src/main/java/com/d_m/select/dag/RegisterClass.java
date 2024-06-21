@@ -1,11 +1,13 @@
 package com.d_m.select.dag;
 
 public class RegisterClass {
+    private final String name;
     private int mask;
     private int weight;
     private int priority;
 
-    public RegisterClass(int mask, int weight, int priority) {
+    public RegisterClass(String name, int mask, int weight, int priority) {
+        this.name = name;
         this.mask = mask;
         this.weight = weight;
         this.priority = priority;
@@ -15,6 +17,10 @@ public class RegisterClass {
         this.mask = other.mask;
         this.weight = other.weight;
         this.priority = other.priority;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public String toString() {
