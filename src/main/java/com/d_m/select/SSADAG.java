@@ -108,15 +108,17 @@ public class SSADAG implements DAG<Value> {
     private void rewriteCall(Instruction instruction) {
         int operandsSize = Iterables.size(instruction.operands());
         SortedSet<Integer> removeOperands = new TreeSet<>(Collections.reverseOrder());
-        for (int i = 3; i < operandsSize; i++) {
+        final int START_OPERAND = 3;
+        for (int i = START_OPERAND; i < operandsSize; i++) {
             removeOperands.add(i);
 
             // Thread side effect from Call into CopyToReg.
             Instruction copyToReg = new Instruction(SymbolImpl.TOKEN_STRING, null, Operator.COPYTOREG);
             copyToReg.setParent(block);
 
-            // TODO: use register class that conforms to the calling convention for functions.
-            var register = functionLoweringInfo.createRegister(X86RegisterClass.allIntegerRegs());
+            // Use register class that conforms to the calling convention for functions.
+            RegisterClass registerClass = X86RegisterClass.functionIntegerCallingConvention(i - START_OPERAND);
+            Register register = functionLoweringInfo.createRegister(registerClass);
             functionLoweringInfo.addRegister(copyToReg, register);
 
             Use tokenUse = new Use(currToken, copyToReg);

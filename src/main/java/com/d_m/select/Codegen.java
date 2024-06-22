@@ -2,6 +2,7 @@ package com.d_m.select;
 
 import com.d_m.ast.IntegerType;
 import com.d_m.code.Operator;
+import com.d_m.select.dag.RegisterClass;
 import com.d_m.select.dag.X86RegisterClass;
 import com.d_m.ssa.Argument;
 import com.d_m.ssa.Block;
@@ -32,9 +33,9 @@ public class Codegen {
         functionLoweringInfo = new FunctionLoweringInfo();
         blockDagMap = new HashMap<>();
         for (int argumentNumber = 0; argumentNumber < function.getArguments().size(); argumentNumber++) {
-            // TODO: get register class based on calling convention
+            RegisterClass registerClass = X86RegisterClass.functionIntegerCallingConvention(argumentNumber);
             Argument argument = function.getArguments().get(argumentNumber);
-            functionLoweringInfo.addRegister(argument, functionLoweringInfo.createRegister(X86RegisterClass.allIntegerRegs()));
+            functionLoweringInfo.addRegister(argument, functionLoweringInfo.createRegister(registerClass));
         }
         for (Block block : function.getBlocks()) {
             Instruction start = new Instruction(SymbolImpl.TOKEN_STRING, new IntegerType(), Operator.START);
