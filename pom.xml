@@ -42,6 +42,9 @@
                 <version>3.1.0</version>
                 <configuration>
                     <mainClass>com.d_m.gen.Gen</mainClass>
+                    <commandlineArgs>
+                        rules/x86_64.rule
+                    </commandlineArgs>
                 </configuration>
             </plugin>
         </plugins>

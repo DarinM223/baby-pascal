@@ -4,13 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start lexer adapted from crafting interpreters">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Parser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Scanner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Token.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/TokenType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Tree.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start pattern lexer adapted from crafting interpreters">
+      <change afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Gen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Gen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Scanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Scanner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/TokenType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/TokenType.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,35 +43,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.All tests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BlockTest.createBlocks.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BlockTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BuilderTest.convertFunction.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.DataflowTest.genKill.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DataflowTest.genKillAndLiveness.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.LengauerTarjanTest.idom.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.SSADAGTest.postorder.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ThreeAddressCodeTest.normalize.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UniqueRenamerTest.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [org.codehaus.mojo:exec-maven-plugin:3.1.0:java].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/d/Documents/java/baby-pascal/target/classes&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "JUnit.All tests.executor": "Run",
+    "JUnit.BlockTest.createBlocks.executor": "Run",
+    "JUnit.BlockTest.executor": "Run",
+    "JUnit.BuilderTest.convertFunction.executor": "Debug",
+    "JUnit.DataflowTest.genKill.executor": "Run",
+    "JUnit.DataflowTest.genKillAndLiveness.executor": "Run",
+    "JUnit.LengauerTarjanTest.idom.executor": "Run",
+    "JUnit.SSADAGTest.postorder.executor": "Run",
+    "JUnit.ThreeAddressCodeTest.normalize.executor": "Run",
+    "JUnit.UniqueRenamerTest.executor": "Run",
+    "Maven.baby-pascal [clean,compile,exec:java].executor": "Run",
+    "Maven.baby-pascal [clean].executor": "Run",
+    "Maven.baby-pascal [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor": "Run",
+    "Maven.baby-pascal [org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile].executor": "Run",
+    "Maven.baby-pascal [org.codehaus.mojo:exec-maven-plugin:3.1.0:java].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "master",
+    "ignore.preview.features.used": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/d/Documents/java/baby-pascal/target/classes",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.d_m.dag" />
@@ -101,6 +105,12 @@
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.d_m.select.instr" />
     </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn clean" />
+      <command value="mvn clean compile exec:java" />
+    </option>
   </component>
   <component name="RunManager" selected="JUnit.All tests">
     <configuration name="All tests" type="JUnit" factoryName="JUnit">
@@ -201,10 +211,10 @@
     </configuration>
     <list>
       <item itemvalue="JUnit.All tests" />
-      <item itemvalue="JUnit.SSADAGTest.postorder" />
       <item itemvalue="JUnit.BlockTest.createBlocks" />
       <item itemvalue="JUnit.DataflowTest.genKillAndLiveness" />
       <item itemvalue="JUnit.LengauerTarjanTest.idom" />
+      <item itemvalue="JUnit.SSADAGTest.postorder" />
       <item itemvalue="JUnit.UniqueRenamerTest" />
     </list>
     <recent_temporary>
@@ -225,14 +235,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00091" summary="Use ConstantTable to share constants for a program">
-      <option name="closed" value="true" />
-      <created>1713925887393</created>
-      <option name="number" value="00091" />
-      <option name="presentableId" value="LOCAL-00091" />
-      <option name="project" value="LOCAL" />
-      <updated>1713925887394</updated>
     </task>
     <task id="LOCAL-00092" summary="Remove getId() and remove Symbol from PrettyPrinter">
       <option name="closed" value="true" />
@@ -618,11 +620,21 @@
       <option name="project" value="LOCAL" />
       <updated>1719154380397</updated>
     </task>
-    <option name="localTasksCounter" value="140" />
+    <task id="LOCAL-00140" summary="Start pattern lexer adapted from crafting interpreters">
+      <option name="closed" value="true" />
+      <created>1719194627841</created>
+      <option name="number" value="00140" />
+      <option name="presentableId" value="LOCAL-00140" />
+      <option name="project" value="LOCAL" />
+      <updated>1719194627841</updated>
+    </task>
+    <option name="localTasksCounter" value="141" />
     <servers />
   </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
+  </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Start converting instructions merging multiple outputs with a node" />
     <MESSAGE value="Refactor register classes and start SSA DAG" />
     <MESSAGE value="Add postorder to SSA DAG" />
     <MESSAGE value="Start selection dag builder test" />
@@ -647,7 +659,8 @@
     <MESSAGE value="Graphviz writer takes an optional FunctionLoweringInfo for printing registers for COPYFROMREG and COPYTOREG values" />
     <MESSAGE value="Setup maven exec plugin to call Gen class" />
     <MESSAGE value="Start lexer adapted from crafting interpreters" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start lexer adapted from crafting interpreters" />
+    <MESSAGE value="Start pattern lexer adapted from crafting interpreters" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start pattern lexer adapted from crafting interpreters" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
