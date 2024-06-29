@@ -65,8 +65,20 @@ public class Scanner {
             default -> {
                 if (isDigit(c)) {
                     number();
+                } else if (isAlpha(c)) {
+                    identifier();
                 }
             }
+        }
+    }
+
+    private void identifier() {
+        while (isAlphaNumeric(peek())) advance();
+        String result = source.substring(start, current);
+        if (result.equals("_")) {
+            addToken(TokenType.WILDCARD);
+        } else {
+            addToken(TokenType.VARIABLE);
         }
     }
 
@@ -112,5 +124,13 @@ public class Scanner {
 
     private boolean isDigit(char c) {
         return c >= '0' && c <= '9';
+    }
+
+    private boolean isAlpha(char c) {
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
+    }
+
+    private boolean isAlphaNumeric(char c) {
+        return isAlpha(c) || isDigit(c);
     }
 }
