@@ -4,6 +4,29 @@ import java.util.List;
 
 public class MachineInstruction {
     private final int id = IdGenerator.newId();
-    private List<MachineOperand> operands;
+    private final String instruction;
+    private final List<MachineOperand> operands;
+
     private MachineBasicBlock parent;
+
+    public MachineInstruction(String instruction, List<MachineOperand> operands) {
+        this.instruction = instruction;
+        this.operands = operands;
+    }
+
+    public String getInstruction() {
+        return instruction;
+    }
+
+    public List<MachineOperand> getOperands() {
+        return operands;
+    }
+
+    public MachineBasicBlock getParent() {
+        return parent;
+    }
+
+    public void setParent(MachineBasicBlock parent) {
+        this.parent = parent;
+    }
 }
