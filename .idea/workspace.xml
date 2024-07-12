@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Parses simple rule">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Automata.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start automaton">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Automata.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Automata.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Gen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Gen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Token.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Tree.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -248,14 +252,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00096" summary="Fill out more instruction simplifications">
-      <option name="closed" value="true" />
-      <created>1714236145117</created>
-      <option name="number" value="00096" />
-      <option name="presentableId" value="LOCAL-00096" />
-      <option name="project" value="LOCAL" />
-      <updated>1714236145117</updated>
     </task>
     <task id="LOCAL-00097" summary="Fix compile error">
       <option name="closed" value="true" />
@@ -641,14 +637,21 @@
       <option name="project" value="LOCAL" />
       <updated>1719762952583</updated>
     </task>
-    <option name="localTasksCounter" value="145" />
+    <task id="LOCAL-00145" summary="Start automaton">
+      <option name="closed" value="true" />
+      <created>1720378231874</created>
+      <option name="number" value="00145" />
+      <option name="presentableId" value="LOCAL-00145" />
+      <option name="project" value="LOCAL" />
+      <updated>1720378231875</updated>
+    </task>
+    <option name="localTasksCounter" value="146" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Start graphviz viewer for selection dag nodes" />
     <MESSAGE value="Write operand edges to graphviz" />
     <MESSAGE value="Add a START instruction to entry blocks of functions" />
     <MESSAGE value="Graphviz image viewer allows for panning of images larger than the screen" />
@@ -673,7 +676,8 @@
     <MESSAGE value="Lex identifiers" />
     <MESSAGE value="Start rule parser" />
     <MESSAGE value="Parses simple rule" />
-    <option name="LAST_COMMIT_MESSAGE" value="Parses simple rule" />
+    <MESSAGE value="Start automaton" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start automaton" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

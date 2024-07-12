@@ -1,23 +1,34 @@
 package com.d_m.gen;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Automata {
-    private List<State> automaton;
+    private final List<State> automaton;
+    private final Map<Integer, Rule> ruleMap;
 
-    public Automata() {
+    public Automata(List<Rule> rules) {
         automaton = new ArrayList<>();
+        automaton.add(new State()); // Root state at index 0.
+        ruleMap = new HashMap<>(rules.size());
+        int ruleNumber = 1;
+        for (Rule rule : rules) {
+            ruleMap.put(ruleNumber, rule);
+            addPattern(ruleNumber, 0, 1, rule.pattern());
+            ruleNumber++;
+        }
+        constructFailure();
     }
 
-    public record Final(int ruleNumber, int length, String nonterminal) {
+    public Rule getRule(int rule) {
+        return ruleMap.get(rule);
+    }
+
+    public record Final(int ruleNumber, int length) {
     }
 
     public static class State {
         private final List<Final> finals;
-        private Map<Alpha, Integer> transitions;
+        private final Map<Alpha, Integer> transitions;
         private int failure;
 
         public State() {
@@ -39,20 +50,59 @@ public class Automata {
         }
     }
 
-    public void addArc(int stateIndex, Alpha alpha) {
+    private int addArc(int stateIndex, Alpha alpha) {
         State state = automaton.get(stateIndex);
         automaton.add(new State());
         state.transitions.put(alpha, automaton.size() - 1);
+        return automaton.size() - 1;
     }
 
-    public void setFailure(int stateIndex, int failure) {
-        automaton.get(stateIndex).failure = failure;
+    private void addPattern(int ruleNumber, int currentState, int length, Tree tree) {
+        switch (tree) {
+            case Tree.Bound(Token name) -> {
+                Token updatedName = name.updateLexeme(name.lexeme() + "0");
+                int newState = addArc(currentState, new Alpha.Symbol(updatedName));
+                automaton.get(newState).finals.add(new Final(ruleNumber, length));
+            }
+            case Tree.Node(Token name, List<Tree> children) -> {
+                Token updatedName = name.updateLexeme(name.lexeme() + children.size());
+                int newState = addArc(currentState, new Alpha.Symbol(updatedName));
+                for (int i = 0; i < children.size(); i++) {
+                    int childNumber = i + 1;
+                    int childState = addArc(newState, new Alpha.Child(childNumber));
+                    addPattern(ruleNumber, childState, length + 1, children.get(i));
+                }
+            }
+            case Tree.Wildcard() -> automaton.get(currentState).finals.add(new Final(ruleNumber, length));
+        }
     }
 
-    public int getFailure(int stateIndex) {
-        return automaton.get(stateIndex).failure;
+    private void constructFailure() {
+        State rootState = automaton.getFirst();
+        Queue<Integer> queue = new LinkedList<>(rootState.transitions.values());
+        while (!queue.isEmpty()) {
+            int stateIndex = queue.poll();
+            State state = automaton.get(stateIndex);
+            // Parent nodes propagate their failures down to their children.
+            for (Alpha transitionKey : state.transitions.keySet()) {
+                int failure = fail(transitionKey, state.failure);
+                int transitionStateIndex = state.transitions.get(transitionKey);
+                State transitionState = automaton.get(transitionStateIndex);
+                transitionState.failure = failure;
+                transitionState.finals.addAll(automaton.get(failure).finals);
+            }
+            queue.addAll(state.transitions.values());
+        }
     }
 
-    public void addPattern(int ruleNumber, Tree tree) {
+    private int fail(Alpha transitionKey, int failure) {
+        State failureState = automaton.get(failure);
+        if (failureState.transitions.containsKey(transitionKey)) { // if you can step the failure, then do so.
+            return failureState.transitions.get(transitionKey);
+        } else if (failure == 0) { // if failure is the root, stop there.
+            return 0;
+        } else { // otherwise, keep going down the failures.
+            return fail(transitionKey, failureState.failure);
+        }
     }
 }

@@ -15,13 +15,16 @@ public class Gen {
         System.out.println("Tokens: " + tokens);
         Parser parser = new Parser(tokens);
         List<Rule> rules = new ArrayList<>();
-        while (parser.peek().type != TokenType.EOF) {
+        while (parser.peek().type() != TokenType.EOF) {
             rules.add(parser.parseRule());
         }
 
         for (Rule rule : rules) {
             System.out.println("Rule: " + rule);
         }
+
+        Automata automata = new Automata(rules);
+        System.out.println("Automata: " + automata);
     }
 
     public static void main(String[] args) throws IOException {

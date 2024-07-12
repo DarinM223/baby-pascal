@@ -1,16 +1,8 @@
 package com.d_m.gen;
 
-public class Token {
-    public final TokenType type;
-    public final String lexeme;
-    public final Object literal;
-    public final int line;
-
-    public Token(TokenType type, String lexeme, Object literal, int line) {
-        this.type = type;
-        this.lexeme = lexeme;
-        this.literal = literal;
-        this.line = line;
+public record Token(TokenType type, String lexeme, Object literal, int line) {
+    public Token updateLexeme(String lexeme) {
+        return new Token(type, lexeme, literal, line);
     }
 
     @Override
