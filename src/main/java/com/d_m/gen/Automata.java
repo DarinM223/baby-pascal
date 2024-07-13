@@ -3,7 +3,7 @@ package com.d_m.gen;
 import java.util.*;
 
 public class Automata {
-    private final List<State> automaton;
+    protected final List<State> automaton;
     private final Map<Integer, Rule> ruleMap;
 
     public Automata(List<Rule> rules) {
@@ -27,9 +27,9 @@ public class Automata {
     }
 
     public static class State {
-        private final List<Final> finals;
-        private final Map<Alpha, Integer> transitions;
-        private int failure;
+        protected final List<Final> finals;
+        protected final Map<Alpha, Integer> transitions;
+        protected int failure;
 
         public State() {
             this(new ArrayList<>(), new HashMap<>(), 0);

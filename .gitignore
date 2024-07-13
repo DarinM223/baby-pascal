@@ -36,3 +36,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Generated Rules ###
+/src/main/java/com/d_m/gen/rules/X86_64.java

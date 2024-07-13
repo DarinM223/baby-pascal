@@ -1,14 +1,18 @@
 package com.d_m.gen;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Gen {
     public static void generateFile(String filename) throws IOException {
-        String content = Files.readString(Paths.get(filename));
+        Path path = Paths.get(filename);
+        String content = Files.readString(path);
         System.out.println("Content: " + content);
         Scanner scanner = new Scanner(content);
         List<Token> tokens = scanner.scanTokens();
@@ -24,7 +28,11 @@ public class Gen {
         }
 
         Automata automata = new Automata(rules);
-        System.out.println("Automata: " + automata);
+        String name = com.google.common.io.Files.getNameWithoutExtension(path.getFileName().toString()).toUpperCase();
+        System.out.println("Generating class: " + name);
+        File automataJava = new File("src/main/java/com/d_m/gen/rules/" + name + ".java");
+        AutomataWriter writer = new AutomataWriter(automata, new FileWriter(automataJava));
+        writer.write(name);
     }
 
     public static void main(String[] args) throws IOException {
@@ -34,3 +42,4 @@ public class Gen {
         }
     }
 }
+
