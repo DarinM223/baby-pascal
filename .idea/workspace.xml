@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Starts writing automaton to file, failure cases still not written yet">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Generate failure cases for automaton">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/GeneratedAutomata.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/AutomataWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/AutomataWriter.java" afterDir="false" />
     </list>
@@ -110,7 +111,7 @@
       <command value="mvn clean compile exec:java" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.All tests">
+  <component name="RunManager" selected="Application.Gen">
     <configuration name="Gen" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.d_m.gen.Gen" />
       <module name="baby-pascal" />
@@ -248,14 +249,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00099" summary="Start unit test for global value numbering">
-      <option name="closed" value="true" />
-      <created>1714267637074</created>
-      <option name="number" value="00099" />
-      <option name="presentableId" value="LOCAL-00099" />
-      <option name="project" value="LOCAL" />
-      <updated>1714267637077</updated>
     </task>
     <task id="LOCAL-00100" summary="Debugging global value numbering">
       <option name="closed" value="true" />
@@ -641,14 +634,21 @@
       <option name="project" value="LOCAL" />
       <updated>1720888850074</updated>
     </task>
-    <option name="localTasksCounter" value="148" />
+    <task id="LOCAL-00148" summary="Generate failure cases for automaton">
+      <option name="closed" value="true" />
+      <created>1720987117475</created>
+      <option name="number" value="00148" />
+      <option name="presentableId" value="LOCAL-00148" />
+      <option name="project" value="LOCAL" />
+      <updated>1720987117475</updated>
+    </task>
+    <option name="localTasksCounter" value="149" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Graphviz image viewer allows for panning of images larger than the screen" />
     <MESSAGE value="Add load expression and store statement" />
     <MESSAGE value="Add example and unit test for SSA conversion of loads and stores" />
     <MESSAGE value="Token symbol starts at 0 instead of -1&#10;&#10;Symbols can't be negative because they are indexed in bitsets" />
@@ -673,7 +673,8 @@
     <MESSAGE value="Start automaton" />
     <MESSAGE value="Attempt to build automaton from a list of parsed Rules" />
     <MESSAGE value="Starts writing automaton to file, failure cases still not written yet" />
-    <option name="LAST_COMMIT_MESSAGE" value="Starts writing automaton to file, failure cases still not written yet" />
+    <MESSAGE value="Generate failure cases for automaton" />
+    <option name="LAST_COMMIT_MESSAGE" value="Generate failure cases for automaton" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
