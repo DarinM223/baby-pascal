@@ -2,8 +2,6 @@ package com.d_m.gen;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AutomataWriter {
     private final Automata automata;
@@ -48,52 +46,51 @@ public class AutomataWriter {
 
     private void writeGoto() throws IOException {
         writer.write("public int go(int s, int child) {\n");
-        writer.write("switch (s) {\n");
+        writer.write("return switch (s) {\n");
         for (int stateIndex = 0; stateIndex < automata.automaton.size(); stateIndex++) {
             Automata.State state = automata.automaton.get(stateIndex);
-            writer.write("case " + stateIndex + " -> {");
-            List<String> cases = new ArrayList<>(state.transitions.size());
+            writer.write("case " + stateIndex + " ->");
+            writer.write("switch (child) {\n");
             for (Automata.Alpha alpha : state.transitions.keySet()) {
                 if (alpha instanceof Automata.Alpha.Child(int child)) {
-                    cases.add("case " + child + " -> { return " + state.transitions.get(alpha) + "; }\n");
+                    writer.write("case " + child + " -> " + state.transitions.get(alpha) + ";\n");
                 }
             }
-            if (!cases.isEmpty()) {
-                writer.write("switch (child) {\n");
-                for (String c : cases) {
-                    writer.write(c);
-                }
-                writer.write("}\n");
+            // write failure cases
+            writer.write("default -> \n");
+            if (stateIndex == 0) {
+                writer.write("0;\n");
+            } else {
+                writer.write("go(" + automata.automaton.get(stateIndex).failure + ", child);\n");
             }
-            writer.write("}\n");
+            writer.write("};\n");
         }
-        writer.write("}\n");
-        writer.write("throw new RuntimeException(\"No match\");");
+        writer.write("default -> throw new RuntimeException(\"No match\");");
+        writer.write("};\n");
         writer.write("}\n");
 
         writer.write("public int go(int s, String symbol) {\n");
-        writer.write("switch (s) {\n");
+        writer.write("return switch (s) {\n");
         for (int stateIndex = 0; stateIndex < automata.automaton.size(); stateIndex++) {
             Automata.State state = automata.automaton.get(stateIndex);
-            writer.write("case " + stateIndex + " -> {");
-            List<String> cases = new ArrayList<>(state.transitions.size());
+            writer.write("case " + stateIndex + " ->");
+            writer.write("switch (symbol) {\n");
             for (Automata.Alpha alpha : state.transitions.keySet()) {
                 if (alpha instanceof Automata.Alpha.Symbol(Token token)) {
-                    cases.add("case \"" + token.lexeme() + "\" -> { return " + state.transitions.get(alpha) + "; }\n");
+                    writer.write("case \"" + token.lexeme() + "\" -> " + state.transitions.get(alpha) + ";\n");
                 }
             }
-            // TODO: write failure cases
-            if (!cases.isEmpty()) {
-                writer.write("switch (symbol) {\n");
-                for (String c : cases) {
-                    writer.write(c);
-                }
-                writer.write("}\n");
+            // write failure cases
+            writer.write("default -> ");
+            if (stateIndex == 0) {
+                writer.write("0;\n");
+            } else {
+                writer.write("go(" + automata.automaton.get(stateIndex).failure + ", symbol);\n");
             }
-            writer.write("}\n");
+            writer.write("};\n");
         }
-        writer.write("}\n");
-        writer.write("throw new RuntimeException(\"No match\");");
+        writer.write("default -> throw new RuntimeException(\"No match\");");
+        writer.write("};\n");
         writer.write("}\n");
     }
 }
