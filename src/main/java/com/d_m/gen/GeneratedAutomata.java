@@ -4,6 +4,15 @@ import java.util.List;
 
 public interface GeneratedAutomata {
     /**
+     * The root state of the automaton.
+     *
+     * @return the root state of the automaton.
+     */
+    default int root() {
+        return 0;
+    }
+
+    /**
      * Get the list of outputs from the state.
      *
      * @param s the state of the automaton.

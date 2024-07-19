@@ -6,7 +6,7 @@ import com.d_m.select.dag.RegisterClass;
 import com.d_m.select.dag.X86RegisterClass;
 import com.d_m.ssa.*;
 import com.d_m.util.SymbolImpl;
-import com.google.common.collect.Iterables;
+import com.google.common.collect.*;
 
 import java.util.*;
 
@@ -19,17 +19,27 @@ public class SSADAG implements DAG<Value> {
     private final Set<Value> shared;
     private final FunctionLoweringInfo functionLoweringInfo;
     private final Instruction startToken;
+    private final SortedSetMultimap<Value, Integer> matches;
     private Instruction currToken;
 
     public SSADAG(FunctionLoweringInfo functionLoweringInfo, Block block) {
         this.block = block;
         this.functionLoweringInfo = functionLoweringInfo;
         this.startToken = functionLoweringInfo.getStartToken(block);
+        this.matches = TreeMultimap.create();
         roots = new HashSet<>();
         shared = new HashSet<>();
         currToken = startToken;
         splitIntoDAG();
         calculate();
+    }
+
+    public void addRuleMatch(Value value, int rule) {
+        matches.put(value, rule);
+    }
+
+    public Collection<Integer> getRuleMatches(Value value) {
+        return matches.get(value);
     }
 
     // TODO: Separates this basic block from the whole function.

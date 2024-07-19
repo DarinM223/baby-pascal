@@ -1,12 +1,13 @@
 package com.d_m.ssa;
 
 import com.d_m.ast.Type;
+import com.d_m.cfg.Block;
 
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Objects;
 
-public abstract class Value {
+public abstract class Value implements Comparable<Value> {
     protected final int id;
     protected String name;
     protected Type type;
@@ -86,4 +87,9 @@ public abstract class Value {
     public abstract void acceptDef(PrettyPrinter printer) throws IOException;
 
     public abstract void acceptUse(PrettyPrinter printer) throws IOException;
+
+    @Override
+    public int compareTo(Value v) {
+        return Integer.compare(this.id, v.id);
+    }
 }
