@@ -1,20 +1,24 @@
 package com.d_m.select;
 
+import com.d_m.gen.Automata;
 import com.d_m.gen.GeneratedAutomata;
 import com.d_m.ssa.Instruction;
 import com.d_m.ssa.Value;
 import com.google.common.collect.Iterables;
 
-import java.util.Collection;
-import java.util.Stack;
+import java.util.*;
 
 public class AlgorithmD {
     private final SSADAG dag;
     private final GeneratedAutomata automata;
+    private final Map<Value, long[]> valueBitset;
+    private final int numRules;
 
-    public AlgorithmD(SSADAG dag, GeneratedAutomata automata) {
+    public AlgorithmD(int numRules, SSADAG dag, GeneratedAutomata automata) {
         this.dag = dag;
         this.automata = automata;
+        this.numRules = numRules;
+        this.valueBitset = new HashMap<>();
     }
 
     private static class State {
@@ -33,26 +37,21 @@ public class AlgorithmD {
         Collection<Value> roots = dag.roots();
         Stack<State> stack = new Stack<>();
         for (Value root : roots) {
-            // TODO: instead of using the root state, have the state be the root state
-            // followed by the root Value's label.
-            stack.push(new State(root, automata.root()));
+            stack.push(new State(root, automata.go(automata.root(), label(root))));
         }
 
         while (!stack.isEmpty()) {
             State state = stack.peek();
-            int childrenArity = 0;
-            if (state.value instanceof Instruction instruction) {
-                childrenArity = Iterables.size(instruction.operands());
-            }
-            if (state.visited == childrenArity - 1) {
+            if (state.visited == arity(state.value) - 1) {
+                merge(state.value);
                 stack.pop();
             } else {
                 state.visited++;
                 int intState = automata.go(state.state, state.visited);
                 if (state.value instanceof Instruction instruction) {
                     Value child = instruction.getOperand(state.visited).getValue();
-                    // TODO: step by instruction operator label
-                    int nodeState = automata.go(intState, "");
+                    tabulate(child, intState, true);
+                    int nodeState = automata.go(intState, label(child));
                     tabulate(child, nodeState, false);
                     stack.push(new State(child, nodeState));
                 }
@@ -60,6 +59,60 @@ public class AlgorithmD {
         }
     }
 
-    private void tabulate(Value child, int nodeState, boolean isArity) {
+    private void merge(Value value) {
+        long[] originalBitset = getBitset(value);
+        if (value instanceof Instruction instruction) {
+            var it = instruction.operands().iterator();
+            long[] bitset = getBitset(it.next().getValue());
+            while (it.hasNext()) {
+                Value child = it.next().getValue();
+                long[] childBitset = getBitset(child);
+                for (int rule = 0; rule < bitset.length; rule++) {
+                    bitset[rule] &= childBitset[rule];
+                }
+            }
+            for (int rule = 0; rule < originalBitset.length; rule++) {
+                originalBitset[rule] |= bitset[rule] >> 1;
+                // Check if the original bitset now has a match
+                if ((originalBitset[rule] & 1L) > 0) {
+                    dag.addRuleMatch(value, rule);
+                }
+            }
+        }
+    }
+
+    private void tabulate(Value node, int nodeState, boolean isArity) {
+        for (Automata.Final fin : automata.getFinals(nodeState)) {
+            int ruleNumber = fin.ruleNumber();
+            // If the path matches when following an arity, we set the length at the child's depth.
+            int length = isArity ? fin.length() : fin.length() - 1;
+            getBitset(node)[ruleNumber] |= 1L << length;
+            if (length == 0) {
+                dag.addRuleMatch(node, ruleNumber);
+            }
+        }
+    }
+
+    private long[] getBitset(Value value) {
+        if (valueBitset.containsKey(value)) {
+            return valueBitset.get(value);
+        }
+        long[] bitset = new long[numRules];
+        valueBitset.put(value, bitset);
+        return bitset;
+    }
+
+    private int arity(Value value) {
+        if (value instanceof Instruction instruction) {
+            return Iterables.size(instruction.operands());
+        }
+        return 0;
+    }
+
+    private String label(Value value) {
+        if (value instanceof Instruction instruction) {
+            return instruction.getOperator().toString();
+        }
+        throw new RuntimeException("Unknown label for value");
     }
 }

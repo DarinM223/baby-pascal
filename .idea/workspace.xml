@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Generated automata implements interface">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/rules/DefaultAutomata.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start algorithm d matching on SSA dag">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/GeneratedAutomata.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/GeneratedAutomata.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -252,14 +249,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00101" summary="Adds unit test assertion for global value numbering">
-      <option name="closed" value="true" />
-      <created>1714351529157</created>
-      <option name="number" value="00101" />
-      <option name="presentableId" value="LOCAL-00101" />
-      <option name="project" value="LOCAL" />
-      <updated>1714351529158</updated>
     </task>
     <task id="LOCAL-00102" summary="Fix PhiNodeHashWrapper's hashing so that eliminateDuplicatePhis works in unit test">
       <option name="closed" value="true" />
@@ -645,14 +634,21 @@
       <option name="project" value="LOCAL" />
       <updated>1720987723708</updated>
     </task>
-    <option name="localTasksCounter" value="150" />
+    <task id="LOCAL-00150" summary="Start algorithm d matching on SSA dag">
+      <option name="closed" value="true" />
+      <created>1721410666995</created>
+      <option name="number" value="00150" />
+      <option name="presentableId" value="LOCAL-00150" />
+      <option name="project" value="LOCAL" />
+      <updated>1721410666995</updated>
+    </task>
+    <option name="localTasksCounter" value="151" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add example and unit test for SSA conversion of loads and stores" />
     <MESSAGE value="Token symbol starts at 0 instead of -1&#10;&#10;Symbols can't be negative because they are indexed in bitsets" />
     <MESSAGE value="Quads use variadic parameters instead of three address code" />
     <MESSAGE value="Remove PARAM and add function node to DAG" />
@@ -677,7 +673,8 @@
     <MESSAGE value="Starts writing automaton to file, failure cases still not written yet" />
     <MESSAGE value="Generate failure cases for automaton" />
     <MESSAGE value="Generated automata implements interface" />
-    <option name="LAST_COMMIT_MESSAGE" value="Generated automata implements interface" />
+    <MESSAGE value="Start algorithm d matching on SSA dag" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start algorithm d matching on SSA dag" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
