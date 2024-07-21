@@ -2,6 +2,7 @@ package com.d_m.select;
 
 import com.d_m.ast.IntegerType;
 import com.d_m.code.Operator;
+import com.d_m.gen.GeneratedAutomata;
 import com.d_m.select.dag.RegisterClass;
 import com.d_m.select.dag.X86RegisterClass;
 import com.d_m.ssa.Argument;
@@ -29,7 +30,7 @@ public class Codegen {
     private final FunctionLoweringInfo functionLoweringInfo;
     private final Map<Block, SSADAG> blockDagMap;
 
-    public Codegen(Function function) {
+    public Codegen(GeneratedAutomata automata, Function function) {
         functionLoweringInfo = new FunctionLoweringInfo();
         blockDagMap = new HashMap<>();
         for (int argumentNumber = 0; argumentNumber < function.getArguments().size(); argumentNumber++) {
@@ -45,6 +46,8 @@ public class Codegen {
         }
         for (Block block : function.getBlocks()) {
             SSADAG dag = new SSADAG(functionLoweringInfo, block);
+            AlgorithmD algorithmD = new AlgorithmD(dag, automata);
+            algorithmD.run();
             blockDagMap.put(block, dag);
         }
     }

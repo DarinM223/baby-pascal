@@ -12,12 +12,10 @@ public class AlgorithmD {
     private final SSADAG dag;
     private final GeneratedAutomata automata;
     private final Map<Value, long[]> valueBitset;
-    private final int numRules;
 
-    public AlgorithmD(int numRules, SSADAG dag, GeneratedAutomata automata) {
+    public AlgorithmD(SSADAG dag, GeneratedAutomata automata) {
         this.dag = dag;
         this.automata = automata;
-        this.numRules = numRules;
         this.valueBitset = new HashMap<>();
     }
 
@@ -97,7 +95,7 @@ public class AlgorithmD {
         if (valueBitset.containsKey(value)) {
             return valueBitset.get(value);
         }
-        long[] bitset = new long[numRules];
+        long[] bitset = new long[automata.numRules()];
         valueBitset.put(value, bitset);
         return bitset;
     }

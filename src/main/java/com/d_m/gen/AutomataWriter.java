@@ -18,10 +18,15 @@ public class AutomataWriter {
         writer.write("import com.d_m.gen.GeneratedAutomata;");
         writer.write("import java.util.List;");
         writer.write("public class " + className + " implements GeneratedAutomata {\n");
+        writeNumRules();
         writeFinals();
         writeGoto();
         writer.write("}\n");
         writer.flush();
+    }
+
+    private void writeNumRules() throws IOException {
+        writer.write("public int numRules() { return " + automata.getNumRules() + "; }\n");
     }
 
     private void writeFinals() throws IOException {

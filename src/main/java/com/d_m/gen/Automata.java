@@ -5,18 +5,24 @@ import java.util.*;
 public class Automata {
     protected final List<State> automaton;
     private final Map<Integer, Rule> ruleMap;
+    private final int numRules;
 
     public Automata(List<Rule> rules) {
         automaton = new ArrayList<>();
         automaton.add(new State()); // Root state at index 0.
         ruleMap = new HashMap<>(rules.size());
-        int ruleNumber = 1;
+        numRules = rules.size();
+        int ruleNumber = 0;
         for (Rule rule : rules) {
             ruleMap.put(ruleNumber, rule);
             addPattern(ruleNumber, 0, 1, rule.pattern());
             ruleNumber++;
         }
         constructFailure();
+    }
+
+    public int getNumRules() {
+        return numRules;
     }
 
     public Rule getRule(int rule) {

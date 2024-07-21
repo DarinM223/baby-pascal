@@ -13,6 +13,13 @@ public interface GeneratedAutomata {
     }
 
     /**
+     * The number of rules in the automaton.
+     *
+     * @return the number of rules in the automaton.
+     */
+    int numRules();
+
+    /**
      * Get the list of outputs from the state.
      *
      * @param s the state of the automaton.

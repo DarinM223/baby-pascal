@@ -5,7 +5,12 @@ import com.d_m.gen.GeneratedAutomata;
 
 import java.util.List;
 
-public class DefaultAutomata implements GeneratedAutomata  {
+public class DefaultAutomata implements GeneratedAutomata {
+    @Override
+    public int numRules() {
+        return 0;
+    }
+
     @Override
     public List<Automata.Final> getFinals(int s) {
         return List.of();
