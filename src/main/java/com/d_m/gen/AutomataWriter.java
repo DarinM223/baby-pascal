@@ -14,15 +14,29 @@ public class AutomataWriter {
 
     public void write(String className) throws IOException {
         writer.write("package com.d_m.gen.rules;\n");
-        writer.write("import com.d_m.gen.Automata;");
-        writer.write("import com.d_m.gen.GeneratedAutomata;");
+        writer.write("import com.d_m.gen.*;");
         writer.write("import java.util.List;");
         writer.write("public class " + className + " implements GeneratedAutomata {\n");
+        writeGetRule();
         writeNumRules();
         writeFinals();
         writeGoto();
         writer.write("}\n");
         writer.flush();
+    }
+
+    private void writeGetRule() throws IOException {
+        writer.write("public Rule getRule(int ruleNumber) {\n");
+        writer.write("return switch (ruleNumber) {\n");
+        for (int ruleNumber = 0; ruleNumber < automata.getNumRules(); ruleNumber++) {
+            Rule rule = automata.getRule(ruleNumber);
+            writer.write("case " + ruleNumber + " -> ");
+            rule.write(writer);
+            writer.write(";");
+        }
+        writer.write("default -> null;");
+        writer.write("};\n");
+        writer.write("}\n");
     }
 
     private void writeNumRules() throws IOException {

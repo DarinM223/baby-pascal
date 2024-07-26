@@ -13,6 +13,13 @@ public interface GeneratedAutomata {
     }
 
     /**
+     * Gets the rule in the automata.
+     * @param ruleNumber the index of the rule number (from 0 to numRules() - 1).
+     * @return the rule at the rule number.
+     */
+    Rule getRule(int ruleNumber);
+
+    /**
      * The number of rules in the automaton.
      *
      * @return the number of rules in the automaton.

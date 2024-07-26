@@ -2,10 +2,16 @@ package com.d_m.gen.rules;
 
 import com.d_m.gen.Automata;
 import com.d_m.gen.GeneratedAutomata;
+import com.d_m.gen.Rule;
 
 import java.util.List;
 
 public class DefaultAutomata implements GeneratedAutomata {
+    @Override
+    public Rule getRule(int ruleNumber) {
+        return null;
+    }
+
     @Override
     public int numRules() {
         return 0;
