@@ -4,17 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add numRules() to generated automaton and dynamically load it in SSADAG test">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Generate rules in automaton so that the matcher can look up the rule from the rule number">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Asm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Asm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/AutomataWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/AutomataWriter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/GeneratedAutomata.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/GeneratedAutomata.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Instruction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Operand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Operand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Rule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Rule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Token.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Tree.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/rules/DefaultAutomata.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/rules/DefaultAutomata.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -256,14 +248,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00104" summary="Add unit test for basic simplification of instructions">
-      <option name="closed" value="true" />
-      <created>1714522931448</created>
-      <option name="number" value="00104" />
-      <option name="presentableId" value="LOCAL-00104" />
-      <option name="project" value="LOCAL" />
-      <updated>1714522931448</updated>
     </task>
     <task id="LOCAL-00105" summary="Add return instructions to functions with a return type and add helpers for transforming Programs">
       <option name="closed" value="true" />
@@ -649,14 +633,21 @@
       <option name="project" value="LOCAL" />
       <updated>1721584049331</updated>
     </task>
-    <option name="localTasksCounter" value="153" />
+    <task id="LOCAL-00153" summary="Generate rules in automaton so that the matcher can look up the rule from the rule number">
+      <option name="closed" value="true" />
+      <created>1722008049873</created>
+      <option name="number" value="00153" />
+      <option name="presentableId" value="LOCAL-00153" />
+      <option name="project" value="LOCAL" />
+      <updated>1722008049873</updated>
+    </task>
+    <option name="localTasksCounter" value="154" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Remove PARAM and add function node to DAG" />
     <MESSAGE value="Store takes in token as parameter and return" />
     <MESSAGE value="CALL takes in side effect token" />
     <MESSAGE value="RETURN takes in side effect token" />
@@ -681,7 +672,8 @@
     <MESSAGE value="Start algorithm d matching on SSA dag" />
     <MESSAGE value="Attempt bitstring algorithm d implementation" />
     <MESSAGE value="Add numRules() to generated automaton and dynamically load it in SSADAG test" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add numRules() to generated automaton and dynamically load it in SSADAG test" />
+    <MESSAGE value="Generate rules in automaton so that the matcher can look up the rule from the rule number" />
+    <option name="LAST_COMMIT_MESSAGE" value="Generate rules in automaton so that the matcher can look up the rule from the rule number" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

@@ -173,7 +173,20 @@ This implementation handles
 various properties like commutativity and associativity and is fairly separated from the global value numbering
 implementation.
 
-## com.d_m.select
+### com.d_m.gen
+
+This package contains a main class `com.d_m.gen.Gen` which is a program that parses a rule
+file for a specific ISA and generates a Java file with the parsed rules and the compiled
+Aho-Corasick automaton for matching the rules on the SSA DAG.
+
+This generator is designed to be ran through the maven-exec-plugin. The rule files to parse
+are contained as command line arguments to the plugin in [pom.xml](./pom.xml). To run the generator, run:
+
+```
+mvn clean compile exec:java
+```
+
+### com.d_m.select
 
 Instruction selection is currently done on the block level.
 There are two types of ways we can represent blocks in a way
