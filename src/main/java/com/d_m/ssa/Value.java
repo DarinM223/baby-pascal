@@ -87,6 +87,25 @@ public abstract class Value implements Comparable<Value> {
 
     public abstract void acceptUse(PrettyPrinter printer) throws IOException;
 
+    /**
+     * The arity of the value.
+     *
+     * @return the arity as an integer.
+     */
+    public int arity() {
+        return 0;
+    }
+
+    /**
+     * The label of the value with its arity. Used for pattern matching on the SSA.
+     *
+     * @return the label as a string with the arity appended to the string.
+     * Example: "COPYFROMREG2" is a COPYFROMREG with arity 2.
+     */
+    public String label() {
+        return name;
+    }
+
     @Override
     public int compareTo(Value v) {
         return Integer.compare(this.id, v.id);

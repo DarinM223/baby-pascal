@@ -34,12 +34,12 @@ public class AlgorithmD {
         Collection<Value> roots = dag.roots();
         Stack<State> stack = new Stack<>();
         for (Value root : roots) {
-            stack.push(new State(root, automata.go(automata.root(), label(root))));
+            stack.push(new State(root, automata.go(automata.root(), root.label())));
         }
 
         while (!stack.isEmpty()) {
             State state = stack.peek();
-            if (state.visited == arity(state.value)) {
+            if (state.visited == state.value.arity()) {
                 merge(state.value);
                 stack.pop();
             } else {
@@ -48,7 +48,7 @@ public class AlgorithmD {
                 if (state.value instanceof Instruction instruction) {
                     Value child = instruction.getOperand(state.visited - 1).getValue();
                     tabulate(child, intState);
-                    int nodeState = automata.go(intState, label(child));
+                    int nodeState = automata.go(intState, child.label());
                     tabulate(child, nodeState);
                     stack.push(new State(child, nodeState));
                 }
@@ -73,7 +73,7 @@ public class AlgorithmD {
                     originalBitset[rule] |= bitset[rule] >> 1;
                     // Check if the original bitset now has a match
                     if ((originalBitset[rule] & 1L) > 0) {
-                        dag.addRuleMatch(value, rule);
+                        dag.addRuleMatch(value, rule, automata.getRule(rule));
                     }
                 }
             }
@@ -87,7 +87,7 @@ public class AlgorithmD {
             int length = fin.length() - 1;
             getBitset(node)[ruleNumber] |= 1L << length;
             if (length == 0) {
-                dag.addRuleMatch(node, ruleNumber);
+                dag.addRuleMatch(node, ruleNumber, automata.getRule(ruleNumber));
             }
         }
     }
@@ -99,21 +99,5 @@ public class AlgorithmD {
         long[] bitset = new long[automata.numRules()];
         valueBitset.put(value, bitset);
         return bitset;
-    }
-
-    private int arity(Value value) {
-        if (value instanceof Instruction instruction) {
-            return Iterables.size(instruction.operands());
-        }
-        return 0;
-    }
-
-    private String label(Value value) {
-        return switch (value) {
-            case PhiNode phiNode -> phiNode.getOperator().toString() + arity(phiNode);
-            case Instruction instruction -> instruction.getOperator().toString() + arity(instruction);
-            case ConstantInt constant -> Integer.toString(constant.getValue());
-            default -> value.getName();
-        };
     }
 }

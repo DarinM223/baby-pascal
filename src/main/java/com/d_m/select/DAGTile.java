@@ -1,6 +1,9 @@
 package com.d_m.select;
 
 import com.d_m.gen.Rule;
+import com.d_m.gen.Token;
+import com.d_m.gen.Tree;
+import com.d_m.ssa.Instruction;
 import com.d_m.ssa.Value;
 
 import java.util.Collection;
@@ -17,7 +20,23 @@ public class DAGTile implements Tile<Value> {
         this.rule = rule;
         this.root = root;
         this.covered = new HashSet<>();
-        // TODO: calculate covered set given the rule tree.
+        calculateCovered(root, rule.pattern());
+    }
+
+    private void calculateCovered(Value value, Tree pattern) {
+        covered.add(value);
+        switch (pattern) {
+            case Tree.Node(
+                    _, List<Tree> children
+            ) when value.arity() == children.size() && value instanceof Instruction instruction -> {
+                for (int i = 0; i < value.arity(); i++) {
+                    calculateCovered(instruction.getOperand(i).getValue(), children.get(i));
+                }
+            }
+            case Tree.Bound(_), Tree.Wildcard() when value.arity() == 0 -> {
+            }
+            default -> throw new RuntimeException("Value: " + value + " doesn't match pattern arity");
+        }
     }
 
     @Override

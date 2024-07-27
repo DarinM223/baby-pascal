@@ -4,16 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Modifies lexer to handle operator rule names and fixes AlgorithmD to match on the sample rules">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add fixed constant cost to rule syntax and start tile implementation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rules/x86_64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Rule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Rule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Tile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ConstantInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ConstantInt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,40 +45,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Gen.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.All tests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BlockTest.createBlocks.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BlockTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BuilderTest.convertFunction.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.DataflowTest.genKill.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DataflowTest.genKillAndLiveness.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.LengauerTarjanTest.idom.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.SSADAGTest.postorder.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ThreeAddressCodeTest.normalize.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UniqueRenamerTest.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [clean,compile,exec:java].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [org.codehaus.mojo:exec-maven-plugin:3.1.0:java].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/d/Documents/java/baby-pascal/target/classes&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Gen.executor": "Run",
+    "Application.Main.executor": "Run",
+    "JUnit.All tests.executor": "Run",
+    "JUnit.BlockTest.createBlocks.executor": "Run",
+    "JUnit.BlockTest.executor": "Run",
+    "JUnit.BuilderTest.convertFunction.executor": "Debug",
+    "JUnit.DataflowTest.genKill.executor": "Run",
+    "JUnit.DataflowTest.genKillAndLiveness.executor": "Run",
+    "JUnit.LengauerTarjanTest.idom.executor": "Run",
+    "JUnit.SSADAGTest.postorder.executor": "Run",
+    "JUnit.ThreeAddressCodeTest.normalize.executor": "Run",
+    "JUnit.UniqueRenamerTest.executor": "Run",
+    "Maven.baby-pascal [clean,compile,exec:java].executor": "Run",
+    "Maven.baby-pascal [clean].executor": "Run",
+    "Maven.baby-pascal [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor": "Run",
+    "Maven.baby-pascal [org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile].executor": "Run",
+    "Maven.baby-pascal [org.codehaus.mojo:exec-maven-plugin:3.1.0:java].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "master",
+    "ignore.preview.features.used": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/d/Documents/java/baby-pascal/target/classes",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.d_m.gen" />
@@ -255,14 +254,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00107" summary="Update README.md for global value numbering">
-      <option name="closed" value="true" />
-      <created>1714884207150</created>
-      <option name="number" value="00107" />
-      <option name="presentableId" value="LOCAL-00107" />
-      <option name="project" value="LOCAL" />
-      <updated>1714884207150</updated>
     </task>
     <task id="LOCAL-00108" summary="Start types for selection dag">
       <option name="closed" value="true" />
@@ -648,14 +639,21 @@
       <option name="project" value="LOCAL" />
       <updated>1722082999680</updated>
     </task>
-    <option name="localTasksCounter" value="156" />
+    <task id="LOCAL-00156" summary="Add fixed constant cost to rule syntax and start tile implementation">
+      <option name="closed" value="true" />
+      <created>1722092038748</created>
+      <option name="number" value="00156" />
+      <option name="presentableId" value="LOCAL-00156" />
+      <option name="project" value="LOCAL" />
+      <updated>1722092038749</updated>
+    </task>
+    <option name="localTasksCounter" value="157" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="RETURN takes in side effect token" />
     <MESSAGE value="Writing more stubs for thoughts on how to implement SSA dag selection" />
     <MESSAGE value="Starting to break an SSA function into DAGS with COPYFROMREG and COPYTOREG" />
     <MESSAGE value="Threads side effect tokens through the created COPYFROMREG and COPYTOREG instructions" />
@@ -680,7 +678,8 @@
     <MESSAGE value="Generate rules in automaton so that the matcher can look up the rule from the rule number" />
     <MESSAGE value="Update README.md with com.d_m.gen package" />
     <MESSAGE value="Modifies lexer to handle operator rule names and fixes AlgorithmD to match on the sample rules" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modifies lexer to handle operator rule names and fixes AlgorithmD to match on the sample rules" />
+    <MESSAGE value="Add fixed constant cost to rule syntax and start tile implementation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add fixed constant cost to rule syntax and start tile implementation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -694,6 +693,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java</url>
           <line>75</line>
           <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java</url>
+          <line>49</line>
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

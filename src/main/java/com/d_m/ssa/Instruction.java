@@ -50,6 +50,16 @@ public class Instruction extends Value implements Listable<Instruction> {
         operands.add(use);
     }
 
+    @Override
+    public int arity() {
+        return operands.size();
+    }
+
+    @Override
+    public String label() {
+        return operator.toString() + arity();
+    }
+
     public void remove() {
         if (prev != null) {
             prev.next = next;

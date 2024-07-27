@@ -61,4 +61,9 @@ public class ConstantInt extends Constant {
         }
         throw new UnsupportedOperationException("ConstantInt can only apply to other ConstantInt");
     }
+
+    @Override
+    public String label() {
+        return Integer.toString(value);
+    }
 }

@@ -1,6 +1,7 @@
 package com.d_m.select;
 
 import com.d_m.code.Operator;
+import com.d_m.gen.Rule;
 import com.d_m.select.dag.Register;
 import com.d_m.select.dag.RegisterClass;
 import com.d_m.select.dag.X86RegisterClass;
@@ -20,6 +21,7 @@ public class SSADAG implements DAG<Value> {
     private final FunctionLoweringInfo functionLoweringInfo;
     private final Instruction startToken;
     private final SortedSetMultimap<Value, Integer> matches;
+    private final Map<Integer, Rule> ruleMap;
     private Instruction currToken;
 
     public SSADAG(FunctionLoweringInfo functionLoweringInfo, Block block) {
@@ -27,6 +29,7 @@ public class SSADAG implements DAG<Value> {
         this.functionLoweringInfo = functionLoweringInfo;
         this.startToken = functionLoweringInfo.getStartToken(block);
         this.matches = TreeMultimap.create();
+        this.ruleMap = new HashMap<>();
         roots = new HashSet<>();
         shared = new HashSet<>();
         currToken = startToken;
@@ -34,12 +37,18 @@ public class SSADAG implements DAG<Value> {
         calculate();
     }
 
-    public void addRuleMatch(Value value, int rule) {
-        matches.put(value, rule);
+    public void addRuleMatch(Value value, int ruleNumber, Rule rule) {
+        matches.put(value, ruleNumber);
+        ruleMap.put(ruleNumber, rule);
     }
 
-    public Collection<Integer> getRuleMatches(Value value) {
-        return matches.get(value);
+    public Set<DAGTile> getTiles(Value value) {
+        Set<Integer> matchedRules = matches.get(value);
+        Set<DAGTile> tiles = new HashSet<>(matchedRules.size());
+        for (int ruleNumber : matchedRules) {
+            tiles.add(new DAGTile(ruleMap.get(ruleNumber), value));
+        }
+        return tiles;
     }
 
     // TODO: Separates this basic block from the whole function.
