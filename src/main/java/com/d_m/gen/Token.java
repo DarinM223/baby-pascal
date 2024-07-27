@@ -18,7 +18,7 @@ public record Token(TokenType type, String lexeme, Object literal, int line) {
         writer.write("TokenType." + type.toString());
         writer.write(", ");
         writer.write("\"" + lexeme + "\"");
-        writer.write(", null, ");
+        writer.write(", " + (literal == null ? "null" : literal.toString()) + ", ");
         writer.write(Integer.toString(line));
         writer.write(")");
     }

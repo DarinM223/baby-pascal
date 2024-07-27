@@ -40,6 +40,9 @@ public class Parser {
             }
         } else if (match(TokenType.WILDCARD)) {
             return new Tree.Wildcard();
+        } else if (match(TokenType.NUMBER)) {
+            Token number = previous();
+            return new Tree.Bound(number);
         }
         throw new ParseError("Pattern not variable or wildcard");
     }

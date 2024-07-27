@@ -97,7 +97,8 @@ public class AutomataWriter {
             writer.write("switch (symbol) {\n");
             for (Automata.Alpha alpha : state.transitions.keySet()) {
                 if (alpha instanceof Automata.Alpha.Symbol(Token token)) {
-                    writer.write("case \"" + token.lexeme() + "\" -> " + state.transitions.get(alpha) + ";\n");
+                    String tokenString = token.literal() == null ? token.lexeme() : token.literal().toString();
+                    writer.write("case \"" + tokenString + "\" -> " + state.transitions.get(alpha) + ";\n");
                 }
             }
             // write failure cases

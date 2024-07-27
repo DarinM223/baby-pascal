@@ -38,6 +38,8 @@ public class Scanner {
             case '=' -> {
                 if (match('>')) {
                     addToken(TokenType.ARROW);
+                } else {
+                    identifier();
                 }
             }
             case '/' -> {
@@ -45,6 +47,8 @@ public class Scanner {
                     while (peek() != '\n' && !isAtEnd()) {
                         advance();
                     }
+                } else {
+                    identifier();
                 }
             }
             case ' ', '\r', '\t' -> {
@@ -65,7 +69,7 @@ public class Scanner {
             default -> {
                 if (isDigit(c)) {
                     number();
-                } else if (isAlpha(c)) {
+                } else if (isAlpha(c) || isSpecial(c)) {
                     identifier();
                 }
             }
@@ -73,7 +77,7 @@ public class Scanner {
     }
 
     private void identifier() {
-        while (isAlphaNumeric(peek())) advance();
+        while (isAlphaNumeric(peek()) || isSpecial(peek())) advance();
         String result = source.substring(start, current);
         if (result.equals("_")) {
             addToken(TokenType.WILDCARD);
@@ -128,6 +132,13 @@ public class Scanner {
 
     private boolean isAlpha(char c) {
         return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
+    }
+
+    private boolean isSpecial(char c) {
+        return switch (c) {
+            case '~', '!', '+', '-', '*', '/', '&', '|', '<', '=', '>', ':', 'Φ' -> true;
+            default -> false;
+        };
     }
 
     private boolean isAlphaNumeric(char c) {

@@ -1,6 +1,9 @@
-PLUS(_, _) => {
++(_, _) => {
     // Move first parameter to virtual register and then
     // add the second parameter to it.
     mov %1, $1
     add %1, $2
+}
+
+-(_, 1) => {
 }

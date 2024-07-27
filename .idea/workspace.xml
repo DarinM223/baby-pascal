@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Generate rules in automaton so that the matcher can look up the rule from the rule number">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Update README.md with com.d_m.gen package">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rules/x86_64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/AutomataWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/AutomataWriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Scanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Scanner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Token.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -248,14 +253,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00105" summary="Add return instructions to functions with a return type and add helpers for transforming Programs">
-      <option name="closed" value="true" />
-      <created>1714754900731</created>
-      <option name="number" value="00105" />
-      <option name="presentableId" value="LOCAL-00105" />
-      <option name="project" value="LOCAL" />
-      <updated>1714754900732</updated>
     </task>
     <task id="LOCAL-00106" summary="ConstructSSA adds loop postbody and updates SSA unit tests">
       <option name="closed" value="true" />
@@ -641,14 +638,21 @@
       <option name="project" value="LOCAL" />
       <updated>1722008049873</updated>
     </task>
-    <option name="localTasksCounter" value="154" />
+    <task id="LOCAL-00154" summary="Update README.md with com.d_m.gen package">
+      <option name="closed" value="true" />
+      <created>1722009388413</created>
+      <option name="number" value="00154" />
+      <option name="presentableId" value="LOCAL-00154" />
+      <option name="project" value="LOCAL" />
+      <updated>1722009388413</updated>
+    </task>
+    <option name="localTasksCounter" value="155" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Store takes in token as parameter and return" />
     <MESSAGE value="CALL takes in side effect token" />
     <MESSAGE value="RETURN takes in side effect token" />
     <MESSAGE value="Writing more stubs for thoughts on how to implement SSA dag selection" />
@@ -673,9 +677,24 @@
     <MESSAGE value="Attempt bitstring algorithm d implementation" />
     <MESSAGE value="Add numRules() to generated automaton and dynamically load it in SSADAG test" />
     <MESSAGE value="Generate rules in automaton so that the matcher can look up the rule from the rule number" />
-    <option name="LAST_COMMIT_MESSAGE" value="Generate rules in automaton so that the matcher can look up the rule from the rule number" />
+    <MESSAGE value="Update README.md with com.d_m.gen package" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update README.md with com.d_m.gen package" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java</url>
+          <line>89</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java</url>
+          <line>75</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="com.d_m.ssa.Instruction" memberName="operands" />
@@ -690,6 +709,7 @@
     <watches-manager>
       <configuration name="JUnit">
         <watch expression="function.blocks.get(1).instructions.first" />
+        <watch expression="dag.matches" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>
