@@ -4,14 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Update README.md with com.d_m.gen package">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Modifies lexer to handle operator rule names and fixes AlgorithmD to match on the sample rules">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rules/x86_64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/AutomataWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/AutomataWriter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Scanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Scanner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Token.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Rule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Rule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Tile.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -253,14 +255,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00106" summary="ConstructSSA adds loop postbody and updates SSA unit tests">
-      <option name="closed" value="true" />
-      <created>1714759397113</created>
-      <option name="number" value="00106" />
-      <option name="presentableId" value="LOCAL-00106" />
-      <option name="project" value="LOCAL" />
-      <updated>1714759397113</updated>
     </task>
     <task id="LOCAL-00107" summary="Update README.md for global value numbering">
       <option name="closed" value="true" />
@@ -646,14 +640,21 @@
       <option name="project" value="LOCAL" />
       <updated>1722009388413</updated>
     </task>
-    <option name="localTasksCounter" value="155" />
+    <task id="LOCAL-00155" summary="Modifies lexer to handle operator rule names and fixes AlgorithmD to match on the sample rules">
+      <option name="closed" value="true" />
+      <created>1722082999680</created>
+      <option name="number" value="00155" />
+      <option name="presentableId" value="LOCAL-00155" />
+      <option name="project" value="LOCAL" />
+      <updated>1722082999680</updated>
+    </task>
+    <option name="localTasksCounter" value="156" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="CALL takes in side effect token" />
     <MESSAGE value="RETURN takes in side effect token" />
     <MESSAGE value="Writing more stubs for thoughts on how to implement SSA dag selection" />
     <MESSAGE value="Starting to break an SSA function into DAGS with COPYFROMREG and COPYTOREG" />
@@ -678,7 +679,8 @@
     <MESSAGE value="Add numRules() to generated automaton and dynamically load it in SSADAG test" />
     <MESSAGE value="Generate rules in automaton so that the matcher can look up the rule from the rule number" />
     <MESSAGE value="Update README.md with com.d_m.gen package" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update README.md with com.d_m.gen package" />
+    <MESSAGE value="Modifies lexer to handle operator rule names and fixes AlgorithmD to match on the sample rules" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modifies lexer to handle operator rule names and fixes AlgorithmD to match on the sample rules" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

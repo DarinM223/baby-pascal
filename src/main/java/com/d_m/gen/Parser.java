@@ -20,9 +20,15 @@ public class Parser {
     public Rule parseRule() {
         Tree pattern = parseTree();
         consume(TokenType.ARROW, "Expected rule arrow");
+        consume(TokenType.LEFT_PAREN, "Expected left paren surrounding cost");
+        if (!match(TokenType.NUMBER)) {
+            throw new ParseError("Expected cost number");
+        }
+        Token number = previous();
+        consume(TokenType.RIGHT_PAREN, "Expected right parent surrounding cost");
         consume(TokenType.LEFT_BRACE, "Expected rule starting brace");
         Asm code = parseCode();
-        return new Rule(pattern, code);
+        return new Rule((int) number.literal(), pattern, code);
     }
 
     private Tree parseTree() {

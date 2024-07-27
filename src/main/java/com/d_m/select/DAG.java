@@ -9,5 +9,7 @@ public interface DAG<Node> {
 
     Collection<Node> sharedNodes();
 
+    Collection<Collection<Node>> paths(Node source, Node destination);
+
     boolean reachable(Node source, Node destination);
 }

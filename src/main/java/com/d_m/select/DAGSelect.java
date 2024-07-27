@@ -141,7 +141,7 @@ public class DAGSelect<Node extends Comparable<Node>, TileImpl extends Tile<Node
         }
         // Subtract edge costs of original tile.
         for (Node otherNode : tile.edgeNodes()) {
-            for (Set<Node> path : tile.paths(root, otherNode)) {
+            for (Collection<Node> path : dag.paths(root, otherNode)) {
                 if (!path.contains(node)) {
                     bestCost -= bestChoiceForNodeCost.get(otherNode);
                     break;

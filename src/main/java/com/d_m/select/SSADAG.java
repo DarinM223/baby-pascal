@@ -271,6 +271,12 @@ public class SSADAG implements DAG<Value> {
     }
 
     @Override
+    public Collection<Collection<Value>> paths(Value source, Value destination) {
+        // TODO: implement this
+        return List.of();
+    }
+
+    @Override
     public boolean reachable(Value source, Value destination) {
         Set<Value> visited = new HashSet<>();
         Stack<Value> stack = new Stack<>();

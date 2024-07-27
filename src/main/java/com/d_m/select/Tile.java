@@ -13,6 +13,4 @@ public interface Tile<Node> {
     int cost();
 
     Node root();
-
-    Collection<Set<Node>> paths(Node source, Node destination);
 }
