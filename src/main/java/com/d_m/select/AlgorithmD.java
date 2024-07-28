@@ -3,7 +3,6 @@ package com.d_m.select;
 import com.d_m.gen.Automata;
 import com.d_m.gen.GeneratedAutomata;
 import com.d_m.ssa.*;
-import com.google.common.collect.Iterables;
 
 import java.util.*;
 
@@ -47,6 +46,9 @@ public class AlgorithmD {
                 int intState = automata.go(state.state, state.visited);
                 if (state.value instanceof Instruction instruction) {
                     Value child = instruction.getOperand(state.visited - 1).getValue();
+                    // Make sure that the bitset from past traversals is cleared since we are
+                    // matching on a DAG where there can be multiple paths to a node.
+                    clearBitset(child);
                     tabulate(child, intState);
                     int nodeState = automata.go(intState, child.label());
                     tabulate(child, nodeState);
@@ -96,6 +98,10 @@ public class AlgorithmD {
         if (valueBitset.containsKey(value)) {
             return valueBitset.get(value);
         }
+        return clearBitset(value);
+    }
+
+    private long[] clearBitset(Value value) {
         long[] bitset = new long[automata.numRules()];
         valueBitset.put(value, bitset);
         return bitset;

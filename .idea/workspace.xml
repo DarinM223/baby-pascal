@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Arity and label are overloaded methods of Value and runs DAGSelect in Codegen with tile matching">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fix selection throwing exceptions and attempt edgeNodes() for tiles">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rules/x86_64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +44,7 @@
   "keyToString": {
     "Application.Gen.executor": "Run",
     "Application.Main.executor": "Run",
-    "JUnit.All tests.executor": "Debug",
+    "JUnit.All tests.executor": "Run",
     "JUnit.BlockTest.createBlocks.executor": "Run",
     "JUnit.BlockTest.executor": "Run",
     "JUnit.BuilderTest.convertFunction.executor": "Debug",
@@ -250,14 +249,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00109" summary="Adds register and more selection dag types">
-      <option name="closed" value="true" />
-      <created>1715450061207</created>
-      <option name="number" value="00109" />
-      <option name="presentableId" value="LOCAL-00109" />
-      <option name="project" value="LOCAL" />
-      <updated>1715450061208</updated>
     </task>
     <task id="LOCAL-00110" summary="More stubs">
       <option name="closed" value="true" />
@@ -643,14 +634,21 @@
       <option name="project" value="LOCAL" />
       <updated>1722098194361</updated>
     </task>
-    <option name="localTasksCounter" value="158" />
+    <task id="LOCAL-00158" summary="Fix selection throwing exceptions and attempt edgeNodes() for tiles">
+      <option name="closed" value="true" />
+      <created>1722182912694</created>
+      <option name="number" value="00158" />
+      <option name="presentableId" value="LOCAL-00158" />
+      <option name="project" value="LOCAL" />
+      <updated>1722182912694</updated>
+    </task>
+    <option name="localTasksCounter" value="159" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Starting to break an SSA function into DAGS with COPYFROMREG and COPYTOREG" />
     <MESSAGE value="Threads side effect tokens through the created COPYFROMREG and COPYTOREG instructions" />
     <MESSAGE value="Allows COPYFROMREGs to be created even though a COPYTOREG has already been created." />
     <MESSAGE value="Rewrites CALL inputs to copy to virtual registers beforehand" />
@@ -675,25 +673,38 @@
     <MESSAGE value="Modifies lexer to handle operator rule names and fixes AlgorithmD to match on the sample rules" />
     <MESSAGE value="Add fixed constant cost to rule syntax and start tile implementation" />
     <MESSAGE value="Arity and label are overloaded methods of Value and runs DAGSelect in Codegen with tile matching" />
-    <option name="LAST_COMMIT_MESSAGE" value="Arity and label are overloaded methods of Value and runs DAGSelect in Codegen with tile matching" />
+    <MESSAGE value="Fix selection throwing exceptions and attempt edgeNodes() for tiles" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix selection throwing exceptions and attempt edgeNodes() for tiles" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java</url>
-          <line>89</line>
+          <line>91</line>
           <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java</url>
-          <line>75</line>
-          <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java</url>
           <line>47</line>
           <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java</url>
+          <line>45</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="value.id == 492" language="JAVA" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java</url>
+          <line>77</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="value.id == 492" language="JAVA" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java</url>
+          <line>62</line>
+          <option name="timeStamp" value="27" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

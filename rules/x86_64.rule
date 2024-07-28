@@ -8,3 +8,15 @@
 -(_, 1) => (1) {
     dec $1
 }
+
+COPYTOREG(_, _) => (0) {
+    // TODO: This isn't correct, figure out how to get
+    // the virtual register from the node.
+    mov %1, $2
+}
+
+COPYFROMREG(_) => (0) {
+    // TODO: This isn't correct, figure out how to get
+    // the virtual register from the node.
+    mov %2, %1
+}
