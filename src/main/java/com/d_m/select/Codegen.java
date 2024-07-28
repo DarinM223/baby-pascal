@@ -45,15 +45,10 @@ public class Codegen {
             SSADAG dag = new SSADAG(functionLoweringInfo, block);
             AlgorithmD algorithmD = new AlgorithmD(dag, automata);
             algorithmD.run();
-            // TODO: fix these exceptions so that the try statement is unnecessary
-            try {
-                DAGSelect<Value, DAGTile, SSADAG> dagSelection = new DAGSelect<>(dag, dag::getTiles);
-                dagSelection.select();
-                for (DAGTile tile : dagSelection.matchedTiles()) {
-                    System.out.println("Matched tile: " + tile);
-                }
-            } catch (Exception e) {
-                System.err.println("Caught exception: " + e.getMessage());
+            DAGSelect<Value, DAGTile, SSADAG> dagSelection = new DAGSelect<>(dag, dag::getTiles);
+            dagSelection.select();
+            for (DAGTile tile : dagSelection.matchedTiles()) {
+                System.out.println("Matched tile: " + tile);
             }
             blockDagMap.put(block, dag);
         }

@@ -4,15 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add fixed constant cost to rule syntax and start tile implementation">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Arity and label are overloaded methods of Value and runs DAGSelect in Codegen with tile matching">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ConstantInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ConstantInt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +45,7 @@
   "keyToString": {
     "Application.Gen.executor": "Run",
     "Application.Main.executor": "Run",
-    "JUnit.All tests.executor": "Run",
+    "JUnit.All tests.executor": "Debug",
     "JUnit.BlockTest.createBlocks.executor": "Run",
     "JUnit.BlockTest.executor": "Run",
     "JUnit.BuilderTest.convertFunction.executor": "Debug",
@@ -254,14 +250,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00108" summary="Start types for selection dag">
-      <option name="closed" value="true" />
-      <created>1715441552389</created>
-      <option name="number" value="00108" />
-      <option name="presentableId" value="LOCAL-00108" />
-      <option name="project" value="LOCAL" />
-      <updated>1715441552389</updated>
     </task>
     <task id="LOCAL-00109" summary="Adds register and more selection dag types">
       <option name="closed" value="true" />
@@ -647,14 +635,21 @@
       <option name="project" value="LOCAL" />
       <updated>1722092038749</updated>
     </task>
-    <option name="localTasksCounter" value="157" />
+    <task id="LOCAL-00157" summary="Arity and label are overloaded methods of Value and runs DAGSelect in Codegen with tile matching">
+      <option name="closed" value="true" />
+      <created>1722098194361</created>
+      <option name="number" value="00157" />
+      <option name="presentableId" value="LOCAL-00157" />
+      <option name="project" value="LOCAL" />
+      <updated>1722098194361</updated>
+    </task>
+    <option name="localTasksCounter" value="158" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Writing more stubs for thoughts on how to implement SSA dag selection" />
     <MESSAGE value="Starting to break an SSA function into DAGS with COPYFROMREG and COPYTOREG" />
     <MESSAGE value="Threads side effect tokens through the created COPYFROMREG and COPYTOREG instructions" />
     <MESSAGE value="Allows COPYFROMREGs to be created even though a COPYTOREG has already been created." />
@@ -679,7 +674,8 @@
     <MESSAGE value="Update README.md with com.d_m.gen package" />
     <MESSAGE value="Modifies lexer to handle operator rule names and fixes AlgorithmD to match on the sample rules" />
     <MESSAGE value="Add fixed constant cost to rule syntax and start tile implementation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add fixed constant cost to rule syntax and start tile implementation" />
+    <MESSAGE value="Arity and label are overloaded methods of Value and runs DAGSelect in Codegen with tile matching" />
+    <option name="LAST_COMMIT_MESSAGE" value="Arity and label are overloaded methods of Value and runs DAGSelect in Codegen with tile matching" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -696,8 +692,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java</url>
-          <line>49</line>
-          <option name="timeStamp" value="12" />
+          <line>47</line>
+          <option name="timeStamp" value="22" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -714,8 +710,9 @@
     </pin-to-top-manager>
     <watches-manager>
       <configuration name="JUnit">
-        <watch expression="function.blocks.get(1).instructions.first" />
-        <watch expression="dag.matches" language="JAVA" />
+        <watch expression="dagSelection.matchedTiles()" language="JAVA" />
+        <watch expression="matchingTiles.apply(n)" language="JAVA" />
+        <watch expression="dag.getTiles(dag.matches.keys().iterator().next())" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>

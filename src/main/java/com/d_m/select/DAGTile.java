@@ -2,6 +2,7 @@ package com.d_m.select;
 
 import com.d_m.gen.Rule;
 import com.d_m.gen.Token;
+import com.d_m.gen.TokenType;
 import com.d_m.gen.Tree;
 import com.d_m.ssa.Instruction;
 import com.d_m.ssa.Value;
@@ -15,11 +16,13 @@ public class DAGTile implements Tile<Value> {
     private final Rule rule;
     private final Value root;
     private final Set<Value> covered;
+    private final Set<Value> edgeNodes;
 
     public DAGTile(Rule rule, Value root) {
         this.rule = rule;
         this.root = root;
         this.covered = new HashSet<>();
+        this.edgeNodes = new HashSet<>();
         calculateCovered(root, rule.pattern());
     }
 
@@ -33,8 +36,13 @@ public class DAGTile implements Tile<Value> {
                     calculateCovered(instruction.getOperand(i).getValue(), children.get(i));
                 }
             }
-            case Tree.Bound(_), Tree.Wildcard() when value.arity() == 0 -> {
+            case Tree.Bound(Token(TokenType tokenType, _, _, _)) -> {
+                // Only add as an edge node if its a bound variable, not a constant.
+                if (tokenType == TokenType.VARIABLE) {
+                    edgeNodes.add(value);
+                }
             }
+            case Tree.Wildcard() -> edgeNodes.add(value);
             default -> throw new RuntimeException("Value: " + value + " doesn't match pattern arity");
         }
     }
@@ -46,8 +54,7 @@ public class DAGTile implements Tile<Value> {
 
     @Override
     public Collection<Value> edgeNodes() {
-        // TODO: implement this
-        return List.of();
+        return edgeNodes;
     }
 
     @Override

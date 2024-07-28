@@ -72,12 +72,13 @@ public class DAGSelect<Node extends Comparable<Node>, TileImpl extends Tile<Node
         Queue<Node> queue = new LinkedList<>(dag.roots());
         while (!queue.isEmpty()) {
             Node node = queue.poll();
-            TileImpl bestTile = bestChoiceForNodeTile.get(node);
-            matchedTiles.add(bestTile);
-            for (Node coveredNode : bestTile.covered()) {
-                coveringTiles.put(coveredNode, bestTile);
+            if (bestChoiceForNodeTile.get(node) instanceof TileImpl bestTile) {
+                matchedTiles.add(bestTile);
+                for (Node coveredNode : bestTile.covered()) {
+                    coveringTiles.put(coveredNode, bestTile);
+                }
+                queue.addAll(bestTile.edgeNodes());
             }
-            queue.addAll(bestTile.edgeNodes());
         }
     }
 
