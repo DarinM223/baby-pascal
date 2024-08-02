@@ -9,6 +9,13 @@
     dec $1
 }
 
+Φ(_, _) => (0) {
+    phi $1, $2
+}
+
+:=(_) => (0) {
+}
+
 COPYTOREG(_, _) => (0) {
     // TODO: This isn't correct, figure out how to get
     // the virtual register from the node.
@@ -19,4 +26,7 @@ COPYFROMREG(_) => (0) {
     // TODO: This isn't correct, figure out how to get
     // the virtual register from the node.
     mov %2, %1
+}
+
+START => (0) {
 }

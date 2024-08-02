@@ -43,14 +43,19 @@ public class Codegen {
         }
         for (Block block : function.getBlocks()) {
             SSADAG dag = new SSADAG(functionLoweringInfo, block);
+            blockDagMap.put(block, dag);
+        }
+        // Do these after creating all the DAGs because the
+        // out of block edges are not completely cut until all the
+        // blocks have been converted into SSADAGs.
+        for (SSADAG dag : blockDagMap.values()) {
             AlgorithmD algorithmD = new AlgorithmD(dag, automata);
             algorithmD.run();
             DAGSelect<Value, DAGTile, SSADAG> dagSelection = new DAGSelect<>(dag, dag::getTiles);
             dagSelection.select();
             for (DAGTile tile : dagSelection.matchedTiles()) {
-                System.out.println("Matched tile: " + tile);
+                System.out.println("Matched tile with rule: " + tile.getRule() + " at root: " + tile.getRoot());
             }
-            blockDagMap.put(block, dag);
         }
     }
 

@@ -54,7 +54,7 @@ public class DAGSelect<Node extends Comparable<Node>, TileImpl extends Tile<Node
                 if (!hasInteriorFixedNode) {
                     int val = tile.cost();
                     for (Node n2 : tile.edgeNodes()) {
-                        val += bestChoiceForNodeCost.get(n2);
+                        val = addCost(val, bestChoiceForNodeCost.get(n2));
                     }
 
                     if (val < bestChoiceForNodeCost.get(n)) {
@@ -88,7 +88,7 @@ public class DAGSelect<Node extends Comparable<Node>, TileImpl extends Tile<Node
                 int overlapCost = getOverlapCost(n);
                 int cseCost = bestChoiceForNodeCost.get(n);
                 for (TileImpl tile : coveringTiles.get(n)) {
-                    cseCost += getTileCutCost(tile, n);
+                    cseCost = addCost(cseCost, getTileCutCost(tile, n));
                 }
                 if (cseCost < overlapCost) {
                     fixedNodes.add(n);
@@ -113,7 +113,7 @@ public class DAGSelect<Node extends Comparable<Node>, TileImpl extends Tile<Node
                 if (dag.reachable(node, otherNode)) {
                     TileImpl otherTile = bestChoiceForNodeTile.get(otherNode);
                     if (coveringTiles.get(otherNode).size() == 1) {
-                        cost += bestChoiceForNodeCost.get(otherNode);
+                        cost = addCost(cost, bestChoiceForNodeCost.get(otherNode));
                     } else if (!seen.contains(otherTile)) {
                         seen.add(otherTile);
                         queue.add(otherTile);
@@ -132,7 +132,7 @@ public class DAGSelect<Node extends Comparable<Node>, TileImpl extends Tile<Node
                 int cost = otherTile.cost();
                 for (Node otherNode : otherTile.edgeNodes()) {
                     if (!otherNode.equals(node)) {
-                        cost += bestChoiceForNodeCost.get(otherNode);
+                        cost = addCost(cost, bestChoiceForNodeCost.get(otherNode));
                     }
                 }
                 if (cost < bestCost) {
@@ -150,5 +150,13 @@ public class DAGSelect<Node extends Comparable<Node>, TileImpl extends Tile<Node
             }
         }
         return bestCost;
+    }
+
+    // Helper function for incrementing the cost propagating "infinite" costs.
+    private int addCost(int value, int cost) {
+        if (cost == Integer.MAX_VALUE || value == Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        }
+        return value + cost;
     }
 }

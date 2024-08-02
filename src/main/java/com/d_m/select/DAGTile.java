@@ -36,15 +36,28 @@ public class DAGTile implements Tile<Value> {
                     calculateCovered(instruction.getOperand(i).getValue(), children.get(i));
                 }
             }
-            case Tree.Bound(Token(TokenType tokenType, _, _, _)) -> {
-                // Only add as an edge node if its a bound variable, not a constant.
-                if (tokenType == TokenType.VARIABLE) {
+            case Tree.Bound(Token(TokenType tokenType, String lexeme, _, _)) -> {
+                // Only add as an edge node if its a bound variable, not a constant, and
+                // it is not an operator or all caps (which would mean a 0 arity pattern like START).
+                if (tokenType == TokenType.VARIABLE && !lexeme.equals(lexeme.toUpperCase())) {
                     edgeNodes.add(value);
                 }
             }
-            case Tree.Wildcard() -> edgeNodes.add(value);
+            case Tree.Wildcard() -> {
+                if (value instanceof Instruction) {
+                    edgeNodes.add(value);
+                }
+            }
             default -> throw new RuntimeException("Value: " + value + " doesn't match pattern arity");
         }
+    }
+
+    public Rule getRule() {
+        return rule;
+    }
+
+    public Value getRoot() {
+        return root;
     }
 
     @Override
