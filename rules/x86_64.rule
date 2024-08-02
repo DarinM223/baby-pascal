@@ -1,3 +1,9 @@
++(_, 1) => (1) {
+}
+
++(_, 2) => (1) {
+}
+
 +(_, _) => (2) {
     // Move first parameter to virtual register and then
     // add the second parameter to it.
@@ -7,6 +13,9 @@
 
 -(_, 1) => (1) {
     dec $1
+}
+
+<(_, _) => (0) {
 }
 
 Φ(_, _) => (0) {
@@ -26,6 +35,9 @@ COPYFROMREG(_) => (0) {
     // TODO: This isn't correct, figure out how to get
     // the virtual register from the node.
     mov %2, %1
+}
+
+GOTO(_) => (0) {
 }
 
 START => (0) {

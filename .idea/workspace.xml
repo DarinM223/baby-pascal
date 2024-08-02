@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start rules for COPYTOREG and COPYFROMREG and fix DAG matching bug">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Small fixes to get some tiles matching">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rules/x86_64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Automata.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Automata.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Token.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -251,14 +250,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00111" summary="Add abstracted tile cutting dag selection">
-      <option name="closed" value="true" />
-      <created>1715960622011</created>
-      <option name="number" value="00111" />
-      <option name="presentableId" value="LOCAL-00111" />
-      <option name="project" value="LOCAL" />
-      <updated>1715960622012</updated>
     </task>
     <task id="LOCAL-00112" summary="Add register class">
       <option name="closed" value="true" />
@@ -644,14 +635,21 @@
       <option name="project" value="LOCAL" />
       <updated>1722189507058</updated>
     </task>
-    <option name="localTasksCounter" value="160" />
+    <task id="LOCAL-00160" summary="Small fixes to get some tiles matching">
+      <option name="closed" value="true" />
+      <created>1722615596883</created>
+      <option name="number" value="00160" />
+      <option name="presentableId" value="LOCAL-00160" />
+      <option name="project" value="LOCAL" />
+      <updated>1722615596883</updated>
+    </task>
+    <option name="localTasksCounter" value="161" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Allows COPYFROMREGs to be created even though a COPYTOREG has already been created." />
     <MESSAGE value="Rewrites CALL inputs to copy to virtual registers beforehand" />
     <MESSAGE value="Graphviz writer takes an optional FunctionLoweringInfo for printing registers for COPYFROMREG and COPYTOREG values" />
     <MESSAGE value="Setup maven exec plugin to call Gen class" />
@@ -676,7 +674,8 @@
     <MESSAGE value="Arity and label are overloaded methods of Value and runs DAGSelect in Codegen with tile matching" />
     <MESSAGE value="Fix selection throwing exceptions and attempt edgeNodes() for tiles" />
     <MESSAGE value="Start rules for COPYTOREG and COPYFROMREG and fix DAG matching bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start rules for COPYTOREG and COPYFROMREG and fix DAG matching bug" />
+    <MESSAGE value="Small fixes to get some tiles matching" />
+    <option name="LAST_COMMIT_MESSAGE" value="Small fixes to get some tiles matching" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -707,6 +706,16 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java</url>
           <line>48</line>
           <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/gen/Automata.java</url>
+          <line>62</line>
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/gen/Automata.java</url>
+          <line>60</line>
+          <option name="timeStamp" value="36" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

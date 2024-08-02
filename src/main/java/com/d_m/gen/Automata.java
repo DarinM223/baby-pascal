@@ -58,6 +58,10 @@ public class Automata {
 
     private int addArc(int stateIndex, Alpha alpha) {
         State state = automaton.get(stateIndex);
+        Integer existingArc = state.transitions.get(alpha);
+        if (existingArc != null) {
+            return existingArc;
+        }
         automaton.add(new State());
         state.transitions.put(alpha, automaton.size() - 1);
         return automaton.size() - 1;
