@@ -46,16 +46,16 @@ public class AlgorithmD {
                 int intState = automata.go(state.state, state.visited);
                 if (state.value instanceof Instruction instruction) {
                     Value child = instruction.getOperand(state.visited - 1).getValue();
-                    tabulate(child, intState);
+                    tabulate(intState);
                     int nodeState = automata.go(intState, child.label());
                     stack.push(new State(child, nodeState));
-                    tabulate(child, nodeState);
+                    tabulate(nodeState);
                 }
             }
         }
     }
 
-    private void tabulate(Value node, int nodeState) {
+    private void tabulate(int nodeState) {
         for (Automata.Final fin : automata.getFinals(nodeState)) {
             int ruleNumber = fin.ruleNumber();
             // If the path matches when following an arity, we set the length at the child's depth.

@@ -34,8 +34,9 @@ public class DAGSelect<Node extends Comparable<Node>, TileImpl extends Tile<Node
         topDownSelect();
     }
 
-    public Collection<TileImpl> matchedTiles() {
-        return matchedTiles;
+    public Iterable<TileImpl> matchedTiles() {
+        LinkedList<TileImpl> list = new LinkedList<>(matchedTiles);
+        return list::descendingIterator;
     }
 
     public Collection<TileImpl> coveringTiles(Node node) {

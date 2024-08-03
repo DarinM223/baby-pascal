@@ -56,6 +56,7 @@ public class Codegen {
             for (DAGTile tile : dagSelection.matchedTiles()) {
                 System.out.println("Matched tile with rule: " + tile.getRule() + " at root: " + tile.getRoot());
             }
+            System.out.println("\n");
         }
     }
 

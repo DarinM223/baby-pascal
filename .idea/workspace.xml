@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Properly hashes tokens and merges duplicate paths in automaton">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fixes wildcard path length and starts refactor towards counters">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Automata.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Automata.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Rule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Rule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rules/x86_64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -251,14 +251,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00113" summary="Start machine instruction types">
-      <option name="closed" value="true" />
-      <created>1716758846751</created>
-      <option name="number" value="00113" />
-      <option name="presentableId" value="LOCAL-00113" />
-      <option name="project" value="LOCAL" />
-      <updated>1716758846751</updated>
     </task>
     <task id="LOCAL-00114" summary="Adds STORE instruction and adds comment on tokens">
       <option name="closed" value="true" />
@@ -644,14 +636,21 @@
       <option name="project" value="LOCAL" />
       <updated>1722632533967</updated>
     </task>
-    <option name="localTasksCounter" value="162" />
+    <task id="LOCAL-00162" summary="Fixes wildcard path length and starts refactor towards counters">
+      <option name="closed" value="true" />
+      <created>1722697593718</created>
+      <option name="number" value="00162" />
+      <option name="presentableId" value="LOCAL-00162" />
+      <option name="project" value="LOCAL" />
+      <updated>1722697593718</updated>
+    </task>
+    <option name="localTasksCounter" value="163" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Graphviz writer takes an optional FunctionLoweringInfo for printing registers for COPYFROMREG and COPYTOREG values" />
     <MESSAGE value="Setup maven exec plugin to call Gen class" />
     <MESSAGE value="Start lexer adapted from crafting interpreters" />
     <MESSAGE value="Start pattern lexer adapted from crafting interpreters" />
@@ -676,7 +675,8 @@
     <MESSAGE value="Start rules for COPYTOREG and COPYFROMREG and fix DAG matching bug" />
     <MESSAGE value="Small fixes to get some tiles matching" />
     <MESSAGE value="Properly hashes tokens and merges duplicate paths in automaton" />
-    <option name="LAST_COMMIT_MESSAGE" value="Properly hashes tokens and merges duplicate paths in automaton" />
+    <MESSAGE value="Fixes wildcard path length and starts refactor towards counters" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixes wildcard path length and starts refactor towards counters" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -710,7 +710,7 @@
         <line-breakpoint enabled="true" type="java-line">
           <condition expression="n.id == 518" language="JAVA" />
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java</url>
-          <line>46</line>
+          <line>47</line>
           <option name="timeStamp" value="39" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -718,11 +718,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java</url>
           <line>40</line>
           <option name="timeStamp" value="42" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java</url>
-          <line>62</line>
-          <option name="timeStamp" value="47" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
