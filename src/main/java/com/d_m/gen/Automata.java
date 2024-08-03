@@ -15,7 +15,7 @@ public class Automata {
         int ruleNumber = 0;
         for (Rule rule : rules) {
             ruleMap.put(ruleNumber, rule);
-            addPattern(ruleNumber, 0, 1, rule.pattern());
+            addPattern(ruleNumber, 0, 1, rule.getPattern());
             ruleNumber++;
         }
         constructFailure();
@@ -83,7 +83,7 @@ public class Automata {
                     addPattern(ruleNumber, childState, length + 1, children.get(i));
                 }
             }
-            case Tree.Wildcard() -> automaton.get(currentState).finals.add(new Final(ruleNumber, length));
+            case Tree.Wildcard() -> automaton.get(currentState).finals.add(new Final(ruleNumber, length - 1));
         }
     }
 

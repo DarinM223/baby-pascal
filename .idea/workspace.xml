@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Small fixes to get some tiles matching">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Properly hashes tokens and merges duplicate paths in automaton">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rules/x86_64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Automata.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Automata.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Token.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Rule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Rule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -250,14 +251,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00112" summary="Add register class">
-      <option name="closed" value="true" />
-      <created>1716569310555</created>
-      <option name="number" value="00112" />
-      <option name="presentableId" value="LOCAL-00112" />
-      <option name="project" value="LOCAL" />
-      <updated>1716569310556</updated>
     </task>
     <task id="LOCAL-00113" summary="Start machine instruction types">
       <option name="closed" value="true" />
@@ -643,14 +636,21 @@
       <option name="project" value="LOCAL" />
       <updated>1722615596883</updated>
     </task>
-    <option name="localTasksCounter" value="161" />
+    <task id="LOCAL-00161" summary="Properly hashes tokens and merges duplicate paths in automaton">
+      <option name="closed" value="true" />
+      <created>1722632533966</created>
+      <option name="number" value="00161" />
+      <option name="presentableId" value="LOCAL-00161" />
+      <option name="project" value="LOCAL" />
+      <updated>1722632533967</updated>
+    </task>
+    <option name="localTasksCounter" value="162" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Rewrites CALL inputs to copy to virtual registers beforehand" />
     <MESSAGE value="Graphviz writer takes an optional FunctionLoweringInfo for printing registers for COPYFROMREG and COPYTOREG values" />
     <MESSAGE value="Setup maven exec plugin to call Gen class" />
     <MESSAGE value="Start lexer adapted from crafting interpreters" />
@@ -675,7 +675,8 @@
     <MESSAGE value="Fix selection throwing exceptions and attempt edgeNodes() for tiles" />
     <MESSAGE value="Start rules for COPYTOREG and COPYFROMREG and fix DAG matching bug" />
     <MESSAGE value="Small fixes to get some tiles matching" />
-    <option name="LAST_COMMIT_MESSAGE" value="Small fixes to get some tiles matching" />
+    <MESSAGE value="Properly hashes tokens and merges duplicate paths in automaton" />
+    <option name="LAST_COMMIT_MESSAGE" value="Properly hashes tokens and merges duplicate paths in automaton" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -686,26 +687,9 @@
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <condition expression="value.id == 492" language="JAVA" />
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java</url>
-          <line>77</line>
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <condition expression="value.id == 492" language="JAVA" />
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java</url>
-          <line>62</line>
-          <option name="timeStamp" value="27" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java</url>
           <line>55</line>
           <option name="timeStamp" value="30" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java</url>
-          <line>48</line>
-          <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/gen/Automata.java</url>
@@ -716,6 +700,29 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/gen/Automata.java</url>
           <line>60</line>
           <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="value instanceof Instruction instruction &amp;&amp; instruction.getOperator().equals(Operator.ADD)" language="JAVA" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java</url>
+          <line>29</line>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="n.id == 518" language="JAVA" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java</url>
+          <line>46</line>
+          <option name="timeStamp" value="39" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="state.value.id == 518" language="JAVA" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java</url>
+          <line>40</line>
+          <option name="timeStamp" value="42" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java</url>
+          <line>62</line>
+          <option name="timeStamp" value="47" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -735,6 +742,7 @@
         <watch expression="matchingTiles.apply(n)" language="JAVA" />
         <watch expression="dag.getTiles(dag.matches.keys().iterator().next())" language="JAVA" />
         <watch expression="bestChoiceForNodeCost.get(n2)" language="JAVA" />
+        <watch expression="valueBitset" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>

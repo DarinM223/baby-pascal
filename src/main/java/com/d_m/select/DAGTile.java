@@ -23,7 +23,7 @@ public class DAGTile implements Tile<Value> {
         this.root = root;
         this.covered = new HashSet<>();
         this.edgeNodes = new HashSet<>();
-        calculateCovered(root, rule.pattern());
+        calculateCovered(root, rule.getPattern());
     }
 
     private void calculateCovered(Value value, Tree pattern) {
@@ -77,7 +77,7 @@ public class DAGTile implements Tile<Value> {
 
     @Override
     public int cost() {
-        return rule.cost();
+        return rule.getCost();
     }
 
     @Override
