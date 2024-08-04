@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fixes wildcard path length and starts refactor towards counters">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Attempt to print matched tiles in reverse order, add rules to match more nodes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rules/x86_64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +43,7 @@
   "keyToString": {
     "Application.Gen.executor": "Run",
     "Application.Main.executor": "Run",
-    "JUnit.All tests.executor": "Run",
+    "JUnit.All tests.executor": "Debug",
     "JUnit.BlockTest.createBlocks.executor": "Run",
     "JUnit.BlockTest.executor": "Run",
     "JUnit.BuilderTest.convertFunction.executor": "Debug",
@@ -251,14 +248,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00114" summary="Adds STORE instruction and adds comment on tokens">
-      <option name="closed" value="true" />
-      <created>1716818413035</created>
-      <option name="number" value="00114" />
-      <option name="presentableId" value="LOCAL-00114" />
-      <option name="project" value="LOCAL" />
-      <updated>1716818413035</updated>
     </task>
     <task id="LOCAL-00115" summary="More changes">
       <option name="closed" value="true" />
@@ -644,14 +633,21 @@
       <option name="project" value="LOCAL" />
       <updated>1722697593718</updated>
     </task>
-    <option name="localTasksCounter" value="163" />
+    <task id="LOCAL-00163" summary="Attempt to print matched tiles in reverse order, add rules to match more nodes">
+      <option name="closed" value="true" />
+      <created>1722702964332</created>
+      <option name="number" value="00163" />
+      <option name="presentableId" value="LOCAL-00163" />
+      <option name="project" value="LOCAL" />
+      <updated>1722702964332</updated>
+    </task>
+    <option name="localTasksCounter" value="164" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Setup maven exec plugin to call Gen class" />
     <MESSAGE value="Start lexer adapted from crafting interpreters" />
     <MESSAGE value="Start pattern lexer adapted from crafting interpreters" />
     <MESSAGE value="Lexing more tokens for rules" />
@@ -676,7 +672,8 @@
     <MESSAGE value="Small fixes to get some tiles matching" />
     <MESSAGE value="Properly hashes tokens and merges duplicate paths in automaton" />
     <MESSAGE value="Fixes wildcard path length and starts refactor towards counters" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixes wildcard path length and starts refactor towards counters" />
+    <MESSAGE value="Attempt to print matched tiles in reverse order, add rules to match more nodes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Attempt to print matched tiles in reverse order, add rules to match more nodes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -702,12 +699,6 @@
           <option name="timeStamp" value="36" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <condition expression="value instanceof Instruction instruction &amp;&amp; instruction.getOperator().equals(Operator.ADD)" language="JAVA" />
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java</url>
-          <line>29</line>
-          <option name="timeStamp" value="37" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <condition expression="n.id == 518" language="JAVA" />
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java</url>
           <line>47</line>
@@ -718,6 +709,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java</url>
           <line>40</line>
           <option name="timeStamp" value="42" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java</url>
+          <line>145</line>
+          <option name="timeStamp" value="45" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

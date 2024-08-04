@@ -51,7 +51,7 @@ public class SSADAG implements DAG<Value> {
         return tiles;
     }
 
-    // TODO: Separates this basic block from the whole function.
+    // Separates this basic block from the whole function.
     // After this, every value will be local to the basic block
     // and cross block values will be handled with COPYFROMREG or COPYTOREG
     // instructions.
@@ -281,8 +281,32 @@ public class SSADAG implements DAG<Value> {
 
     @Override
     public Collection<Collection<Value>> paths(Value source, Value destination) {
-        // TODO: implement this
-        return List.of();
+        Collection<Collection<Value>> paths = new ArrayList<>();
+        Set<Value> visited = new HashSet<>();
+        Set<Value> currentPath = new LinkedHashSet<>();
+        currentPath.add(source);
+        pathsHelper(source, destination, visited, paths, currentPath);
+        return paths;
+    }
+
+    private void pathsHelper(Value source, Value destination, Set<Value> visited, Collection<Collection<Value>> paths, Set<Value> currentPath) {
+        if (source.equals(destination)) {
+            paths.add(Set.copyOf(currentPath));
+            return;
+        }
+
+        visited.add(source);
+        if (source instanceof Instruction instruction && checkInstruction(instruction)) {
+            for (Use use : instruction.operands()) {
+                Value child = use.getValue();
+                if (!visited.contains(child)) {
+                    currentPath.add(child);
+                    pathsHelper(child, destination, visited, paths, currentPath);
+                    currentPath.remove(child);
+                }
+            }
+        }
+        visited.remove(source);
     }
 
     @Override
