@@ -34,9 +34,13 @@ public class DAGSelect<Node extends Comparable<Node>, TileImpl extends Tile<Node
         topDownSelect();
     }
 
+    /**
+     * Return the matched tiles in the order of a top down selection on the DAG.
+     *
+     * @return an iterable of the matched tiles in top down order.
+     */
     public Iterable<TileImpl> matchedTiles() {
-        LinkedList<TileImpl> list = new LinkedList<>(matchedTiles);
-        return list::descendingIterator;
+        return matchedTiles;
     }
 
     public Collection<TileImpl> coveringTiles(Node node) {

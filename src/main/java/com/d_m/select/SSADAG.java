@@ -92,13 +92,16 @@ public class SSADAG implements DAG<Value> {
                 }
                 Instruction copyFromReg = new Instruction(instruction.getName(), instruction.getType(), Operator.COPYFROMREG);
                 copyFromReg.setParent(user.getParent());
-                copyFromReg.addOperand(new Use(functionLoweringInfo.getStartToken(user.getParent()), copyFromReg));
+                Instruction userStartToken = functionLoweringInfo.getStartToken(user.getParent());
+                Use copyFromRegUse = new Use(userStartToken, copyFromReg);
+                userStartToken.linkUse(copyFromRegUse);
+                copyFromReg.addOperand(copyFromRegUse);
                 functionLoweringInfo.addRegister(copyFromReg, register);
 
                 // Set use to COPYFROMREG and add it to the start of the user's block.
                 use.setValue(copyFromReg);
                 copyFromReg.linkUse(use);
-                user.getParent().getInstructions().addAfter(functionLoweringInfo.getStartToken(user.getParent()), copyFromReg);
+                user.getParent().getInstructions().addAfter(userStartToken, copyFromReg);
 
                 if (seenCopyToRegs.contains(register)) {
                     continue;
@@ -111,10 +114,12 @@ public class SSADAG implements DAG<Value> {
 
                 // Unlink use from instruction and add COPYTOREG to the current block.
                 instruction.removeUse(user);
-                Use copyToRegUse = new Use(instruction, copyToReg);
-                instruction.linkUse(copyToRegUse);
-                copyToReg.addOperand(new Use(currToken, copyToReg));
-                copyToReg.addOperand(copyToRegUse);
+                Use copyToRegTokenUse = new Use(currToken, copyToReg);
+                currToken.linkUse(copyToRegTokenUse);
+                Use copyToRegInstrUse = new Use(instruction, copyToReg);
+                instruction.linkUse(copyToRegInstrUse);
+                copyToReg.addOperand(copyToRegTokenUse);
+                copyToReg.addOperand(copyToRegInstrUse);
                 block.getInstructions().addAfter(instruction, copyToReg);
                 currToken = copyToReg;
             }
