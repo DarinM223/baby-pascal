@@ -5,11 +5,12 @@ import com.d_m.code.Operator;
 import com.d_m.gen.GeneratedAutomata;
 import com.d_m.select.dag.RegisterClass;
 import com.d_m.select.dag.X86RegisterClass;
+import com.d_m.select.instr.MachineInstruction;
+import com.d_m.select.instr.MachineOperand;
 import com.d_m.ssa.*;
 import com.d_m.util.SymbolImpl;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Codegen {
     // TODO:
@@ -45,6 +46,7 @@ public class Codegen {
             SSADAG dag = new SSADAG(functionLoweringInfo, block);
             blockDagMap.put(block, dag);
         }
+        Map<Value, MachineOperand> valueOperandMap = new HashMap<>();
         // Do these after creating all the DAGs because the
         // out of block edges are not completely cut until all the
         // blocks have been converted into SSADAGs.
@@ -53,14 +55,59 @@ public class Codegen {
             algorithmD.run();
             DAGSelect<Value, DAGTile, SSADAG> dagSelection = new DAGSelect<>(dag, dag::getTiles);
             dagSelection.select();
-            for (DAGTile tile : dagSelection.matchedTiles()) {
+            Set<DAGTile> matched = dagSelection.matchedTiles();
+            // Convert tiles from Set<DAGTile> to Map<Value, DAGTile> for mapping from tile root to tile.
+            Map<Value, DAGTile> tileMapping = new HashMap<>(matched.size());
+            Map<Value, MachineOperand> emitResultMapping = new HashMap<>();
+            List<MachineInstruction> blockInstructions = new ArrayList<>();
+            for (DAGTile tile : matched) {
                 System.out.println("Matched tile with rule: " + tile.getRule() + " at root: " + tile.getRoot());
+                tileMapping.put(tile.root(), tile);
             }
+
+            // For each tile, go bottom up emitting the code and marking the node
+            // with the machine operand result. if a node's result has already been computed,
+            // skip it.
+            for (DAGTile tile : matched) {
+                bottomUpEmit(tileMapping, emitResultMapping, blockInstructions, tile);
+            }
+
+            System.out.println("Emitted instructions: ");
+            for (MachineInstruction instruction : blockInstructions) {
+                System.out.println("Instruction: " + instruction);
+            }
+
+            // TODO: create a MachineBasicBlock with the blockInstructions and add that to a mapping from Block.
             System.out.println("\n");
         }
     }
 
     public FunctionLoweringInfo getFunctionLoweringInfo() {
         return functionLoweringInfo;
+    }
+
+    private MachineOperand bottomUpEmit(Map<Value, DAGTile> tileMapping, Map<Value, MachineOperand> emitResultMapping, List<MachineInstruction> blockInstructions, DAGTile tile) {
+        if (emitResultMapping.containsKey(tile.root())) {
+            return emitResultMapping.get(tile.root());
+        }
+
+        List<MachineOperand> args = new ArrayList<>(tile.edgeNodes().size());
+        for (Value edgeNode : tile.edgeNodes()) {
+            DAGTile edgeTile = tileMapping.get(edgeNode);
+            MachineOperand arg;
+            if (edgeTile != null) {
+                arg = bottomUpEmit(tileMapping, emitResultMapping, blockInstructions, tileMapping.get(edgeNode));
+            } else if (edgeNode instanceof ConstantInt constantInt) {
+                arg = new MachineOperand.Immediate(constantInt.getValue());
+            } else {
+                throw new RuntimeException("Edge node: " + edgeNode + " doesn't have a tile");
+            }
+            args.add(arg);
+        }
+
+        System.out.println("Emitting for tile: " + tile.getRule());
+        MachineOperand result = tile.emit(functionLoweringInfo, args, blockInstructions);
+        emitResultMapping.put(tile.root(), result);
+        return result;
     }
 }

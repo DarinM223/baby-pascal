@@ -13,7 +13,6 @@ public class Gen {
     public static void generateFile(String filename) throws IOException {
         Path path = Paths.get(filename);
         String content = Files.readString(path);
-        System.out.println("Content: " + content);
         Scanner scanner = new Scanner(content);
         List<Token> tokens = scanner.scanTokens();
         System.out.println("Tokens: " + tokens);

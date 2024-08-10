@@ -21,7 +21,7 @@ public class DAGSelect<Node extends Comparable<Node>, TileImpl extends Tile<Node
         bestChoiceForNodeTile = new HashMap<>();
         bestChoiceForNodeCost = new HashMap<>();
         fixedNodes = new HashSet<>();
-        matchedTiles = new LinkedHashSet<>();
+        matchedTiles = new HashSet<>();
         coveringTiles = LinkedHashMultimap.create();
     }
 
@@ -34,12 +34,7 @@ public class DAGSelect<Node extends Comparable<Node>, TileImpl extends Tile<Node
         topDownSelect();
     }
 
-    /**
-     * Return the matched tiles in the order of a top down selection on the DAG.
-     *
-     * @return an iterable of the matched tiles in top down order.
-     */
-    public Iterable<TileImpl> matchedTiles() {
+    public Set<TileImpl> matchedTiles() {
         return matchedTiles;
     }
 

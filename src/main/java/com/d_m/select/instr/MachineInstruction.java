@@ -29,4 +29,12 @@ public class MachineInstruction {
     public void setParent(MachineBasicBlock parent) {
         this.parent = parent;
     }
+
+    @Override
+    public String toString() {
+        return "MachineInstruction{" +
+                "instruction='" + instruction + '\'' +
+                ", operands=" + operands +
+                '}';
+    }
 }

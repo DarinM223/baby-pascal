@@ -74,8 +74,8 @@ class SSADAGTest {
             infoMap.put(function, codegen.getFunctionLoweringInfo());
         }
         printer.writeModule(module);
-        System.out.println("DAG:");
-        System.out.println(writer.toString());
+//        System.out.println("DAG:");
+//        System.out.println(writer.toString());
 
         File file = new File("builder_ssa_dag.dot");
         file.deleteOnExit();

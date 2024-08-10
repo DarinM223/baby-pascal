@@ -1,16 +1,13 @@
 package com.d_m.select;
 
-import com.d_m.gen.Rule;
-import com.d_m.gen.Token;
-import com.d_m.gen.TokenType;
-import com.d_m.gen.Tree;
+import com.d_m.gen.*;
+import com.d_m.select.dag.X86RegisterClass;
+import com.d_m.select.instr.MachineInstruction;
+import com.d_m.select.instr.MachineOperand;
 import com.d_m.ssa.Instruction;
 import com.d_m.ssa.Value;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class DAGTile implements Tile<Value> {
     private final Rule rule;
@@ -22,7 +19,7 @@ public class DAGTile implements Tile<Value> {
         this.rule = rule;
         this.root = root;
         this.covered = new HashSet<>();
-        this.edgeNodes = new HashSet<>();
+        this.edgeNodes = new LinkedHashSet<>();
         calculateCovered(root, rule.getPattern());
     }
 
@@ -43,13 +40,32 @@ public class DAGTile implements Tile<Value> {
                     edgeNodes.add(value);
                 }
             }
-            case Tree.Wildcard() -> {
-                if (value instanceof Instruction) {
-                    edgeNodes.add(value);
-                }
-            }
+            case Tree.Wildcard() -> edgeNodes.add(value);
             default -> throw new RuntimeException("Value: " + value + " doesn't match pattern arity");
         }
+    }
+
+    public MachineOperand emit(FunctionLoweringInfo info, List<MachineOperand> arguments, List<MachineInstruction> instructions) {
+        for (com.d_m.gen.Instruction instruction : rule.getCode().instructions()) {
+            if (instruction.name().equals("out")) {
+                return toOperand(info, arguments, instruction.operands().getFirst());
+            }
+
+            List<MachineOperand> operands = instruction.operands().stream().map(operand -> toOperand(info, arguments, operand)).toList();
+            MachineInstruction converted = new MachineInstruction(instruction.name(), operands);
+            instructions.add(converted);
+        }
+
+        return null;
+    }
+
+    private MachineOperand toOperand(FunctionLoweringInfo info, List<MachineOperand> arguments, Operand operand) {
+        return switch (operand) {
+            case Operand.Immediate(int value) -> new MachineOperand.Immediate(value);
+            case Operand.Parameter(int parameter) -> arguments.get(parameter - 1);
+            case Operand.VirtualRegister(_) ->
+                    new MachineOperand.Register(info.createRegister(X86RegisterClass.allIntegerRegs()));
+        };
     }
 
     public Rule getRule() {
