@@ -64,8 +64,8 @@ GOTO(_) => (0) {
 START => (0) {
 }
 
-// TODO: pattern for handling integer immediates.
-// _ => (1) {
-//     mov %1, $1
-//     out %1
-// }
+// pattern for handling immediates.
+CONST => (1) {
+    mov %1, $1
+    out %1
+}

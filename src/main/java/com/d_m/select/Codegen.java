@@ -91,17 +91,16 @@ public class Codegen {
             return emitResultMapping.get(tile.root());
         }
 
-        List<MachineOperand> args = new ArrayList<>(tile.edgeNodes().size());
+        List<MachineOperand> args = new ArrayList<>(tile.edgeNodes().size() + 1);
+        // If a tile is a constant matching tile, add itself
+        // as its first operand.
+        // TODO: this is a hack for now.
+        if (tile.root() instanceof Constant constant) {
+            args.add(constantToOperand(constant));
+        }
         for (Value edgeNode : tile.edgeNodes()) {
             DAGTile edgeTile = tileMapping.get(edgeNode);
-            MachineOperand arg;
-            if (edgeTile != null) {
-                arg = bottomUpEmit(tileMapping, emitResultMapping, blockInstructions, tileMapping.get(edgeNode));
-            } else if (edgeNode instanceof ConstantInt constantInt) {
-                arg = new MachineOperand.Immediate(constantInt.getValue());
-            } else {
-                throw new RuntimeException("Edge node: " + edgeNode + " doesn't have a tile");
-            }
+            MachineOperand arg = bottomUpEmit(tileMapping, emitResultMapping, blockInstructions, edgeTile);
             args.add(arg);
         }
 
@@ -109,5 +108,13 @@ public class Codegen {
         MachineOperand result = tile.emit(functionLoweringInfo, args, blockInstructions);
         emitResultMapping.put(tile.root(), result);
         return result;
+    }
+
+    private MachineOperand constantToOperand(Constant constant) {
+        return switch (constant) {
+            case ConstantInt constantInt -> new MachineOperand.Immediate(constantInt.getValue());
+            case Function function -> new MachineOperand.Immediate(0); // TODO: Lookup function offset and pass it in here.
+            default -> throw new IllegalStateException("Unexpected value: " + constant);
+        };
     }
 }

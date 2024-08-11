@@ -4,15 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fix COPYTOREG and COPYFROMREG linking with start token">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start generating machine instructions from matched tiles (currently doesn't match numbers)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rules/x86_64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Gen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Gen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGSelect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineInstruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineInstruction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/SSADAGTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/SSADAGTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -254,14 +251,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00117" summary="Refactor register classes and start SSA DAG">
-      <option name="closed" value="true" />
-      <created>1717201662044</created>
-      <option name="number" value="00117" />
-      <option name="presentableId" value="LOCAL-00117" />
-      <option name="project" value="LOCAL" />
-      <updated>1717201662044</updated>
     </task>
     <task id="LOCAL-00118" summary="Add postorder to SSA DAG">
       <option name="closed" value="true" />
@@ -647,14 +636,21 @@
       <option name="project" value="LOCAL" />
       <updated>1723218583468</updated>
     </task>
-    <option name="localTasksCounter" value="166" />
+    <task id="LOCAL-00166" summary="Start generating machine instructions from matched tiles (currently doesn't match numbers)">
+      <option name="closed" value="true" />
+      <created>1723302738589</created>
+      <option name="number" value="00166" />
+      <option name="presentableId" value="LOCAL-00166" />
+      <option name="project" value="LOCAL" />
+      <updated>1723302738590</updated>
+    </task>
+    <option name="localTasksCounter" value="167" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Lexing more tokens for rules" />
     <MESSAGE value="Lex identifiers" />
     <MESSAGE value="Start rule parser" />
     <MESSAGE value="Parses simple rule" />
@@ -679,7 +675,8 @@
     <MESSAGE value="Attempt to print matched tiles in reverse order, add rules to match more nodes" />
     <MESSAGE value="Attempt implementation of paths()" />
     <MESSAGE value="Fix COPYTOREG and COPYFROMREG linking with start token" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix COPYTOREG and COPYFROMREG linking with start token" />
+    <MESSAGE value="Start generating machine instructions from matched tiles (currently doesn't match numbers)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start generating machine instructions from matched tiles (currently doesn't match numbers)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -701,21 +698,15 @@
           <option name="timeStamp" value="39" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <condition expression="state.value.id == 518" language="JAVA" />
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java</url>
-          <line>40</line>
-          <option name="timeStamp" value="42" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java</url>
-          <line>89</line>
-          <option name="timeStamp" value="50" />
+          <condition expression="arguments.isEmpty()" language="JAVA" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java</url>
+          <line>64</line>
+          <option name="timeStamp" value="65" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
-        <PinnedItemInfo parentTag="com.d_m.ssa.Instruction" memberName="operands" />
         <PinnedItemInfo parentTag="com.d_m.ssa.Instruction" memberName="uses" />
         <PinnedItemInfo parentTag="com.d_m.cfg.Block" memberName="successors" />
         <PinnedItemInfo parentTag="java.util.HashMap$Node" memberName="value" />

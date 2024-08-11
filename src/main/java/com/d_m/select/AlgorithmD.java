@@ -7,6 +7,11 @@ import com.d_m.ssa.*;
 import java.util.*;
 
 public class AlgorithmD {
+    /**
+     * The generic constant label is "CONST". The rules can specify
+     * "CONST" as a variable name to match all constants.
+     */
+    public static final String CONSTANT = "CONST0";
     private final SSADAG dag;
     private final GeneratedAutomata automata;
     private final Map<Value, int[]> valueCounter;
@@ -44,9 +49,18 @@ public class AlgorithmD {
             } else {
                 state.visited++;
                 int intState = automata.go(state.state, state.visited);
+                tabulate(intState);
                 if (state.value instanceof Instruction instruction) {
                     Value child = instruction.getOperand(state.visited - 1).getValue();
-                    tabulate(intState);
+                    // If child is a constant try the generic constant label also.
+                    // The reason is the generic constant label matches all constants, not
+                    // just the specific constant.
+                    if (child instanceof Constant) {
+                        int constantState = automata.go(intState, CONSTANT);
+                        stack.push(new State(child, constantState));
+                        tabulate(constantState);
+                        stack.pop();
+                    }
                     int nodeState = automata.go(intState, child.label());
                     stack.push(new State(child, nodeState));
                     tabulate(nodeState);
