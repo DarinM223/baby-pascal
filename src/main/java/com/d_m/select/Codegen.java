@@ -5,6 +5,8 @@ import com.d_m.code.Operator;
 import com.d_m.gen.GeneratedAutomata;
 import com.d_m.select.dag.RegisterClass;
 import com.d_m.select.dag.X86RegisterClass;
+import com.d_m.select.instr.MachineBasicBlock;
+import com.d_m.select.instr.MachineFunction;
 import com.d_m.select.instr.MachineInstruction;
 import com.d_m.select.instr.MachineOperand;
 import com.d_m.ssa.*;
@@ -25,12 +27,26 @@ public class Codegen {
     // handled wrt duplication or sharing with the dag selection.
     // After this, the SSA graph should be split per block. Now we can do DAG instruction
     // selection without issues with cross-block sharing.
+    private final GeneratedAutomata automata;
     private final FunctionLoweringInfo functionLoweringInfo;
-    private final Map<Block, SSADAG> blockDagMap;
+    private final Map<Function, MachineFunction> functionMap;
+    private final Map<Block, MachineBasicBlock> blockMap;
 
-    public Codegen(GeneratedAutomata automata, Function function) {
-        functionLoweringInfo = new FunctionLoweringInfo();
-        blockDagMap = new HashMap<>();
+    public Codegen(GeneratedAutomata automata) {
+        this.automata = automata;
+        this.functionLoweringInfo = new FunctionLoweringInfo();
+        this.functionMap = new HashMap<>();
+        this.blockMap = new HashMap<>();
+    }
+
+    public void startFunction(Function function) {
+        MachineFunction machineFunction = new MachineFunction();
+        functionMap.put(function, machineFunction);
+    }
+
+    public void lowerFunction(Function function) {
+        blockMap.clear();
+        Map<Block, SSADAG> blockDagMap = new HashMap<>();
         for (int argumentNumber = 0; argumentNumber < function.getArguments().size(); argumentNumber++) {
             RegisterClass registerClass = X86RegisterClass.functionIntegerCallingConvention(argumentNumber);
             Argument argument = function.getArguments().get(argumentNumber);
@@ -43,7 +59,9 @@ public class Codegen {
             functionLoweringInfo.setStartToken(block, start);
         }
         for (Block block : function.getBlocks()) {
+            MachineBasicBlock machineBlock = new MachineBasicBlock();
             SSADAG dag = new SSADAG(functionLoweringInfo, block);
+            blockMap.put(block, machineBlock);
             blockDagMap.put(block, dag);
         }
         Map<Value, MachineOperand> valueOperandMap = new HashMap<>();
@@ -113,7 +131,8 @@ public class Codegen {
     private MachineOperand constantToOperand(Constant constant) {
         return switch (constant) {
             case ConstantInt constantInt -> new MachineOperand.Immediate(constantInt.getValue());
-            case Function function -> new MachineOperand.Immediate(0); // TODO: Lookup function offset and pass it in here.
+            case Function function -> new MachineOperand.Function(functionMap.get(function));
+            case Block block -> new MachineOperand.BasicBlock(blockMap.get(block));
             default -> throw new IllegalStateException("Unexpected value: " + constant);
         };
     }

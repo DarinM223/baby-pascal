@@ -8,7 +8,7 @@ import com.google.common.collect.TreeMultimap;
 
 import java.util.*;
 
-public class LengauerTarjan<Block extends IBlock<Block> & Comparable<Block>> {
+public class LengauerTarjan<Block extends IBlock<Block> & Comparable<? super Block>> {
     private int N;
     private final Map<Block, Integer> dfnum;
     private final Map<Block, Block> parent;

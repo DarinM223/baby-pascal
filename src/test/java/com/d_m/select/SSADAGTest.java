@@ -69,8 +69,12 @@ class SSADAGTest {
         } catch (Exception e) {
             automata = new DefaultAutomata();
         }
+        Codegen codegen = new Codegen(automata);
         for (Function function : module.getFunctionList()) {
-            Codegen codegen = new Codegen(automata, function);
+            codegen.startFunction(function);
+        }
+        for (Function function : module.getFunctionList()) {
+            codegen.lowerFunction(function);
             infoMap.put(function, codegen.getFunctionLoweringInfo());
         }
         printer.writeModule(module);

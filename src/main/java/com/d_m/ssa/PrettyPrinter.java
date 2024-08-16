@@ -113,6 +113,10 @@ public class PrettyPrinter {
         out.write("}\n");
     }
 
+    public void writeBlockValue(Block block) throws IOException {
+        out.write(getName(block));
+    }
+
     public void writePhi(PhiNode phi) throws IOException {
         start();
         out.write(getName(phi));

@@ -1,13 +1,14 @@
 package com.d_m.ssa;
 
 import com.d_m.cfg.IBlock;
+import com.d_m.code.Operator;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Block implements IBlock<Block>, Comparable<Block> {
-    private final int id;
+public class Block extends Constant implements IBlock<Block> {
     private int dominatorTreeLevel;
     private final Function parent;
     private final ListWrapper<Instruction> instructions;
@@ -18,7 +19,7 @@ public class Block implements IBlock<Block>, Comparable<Block> {
     }
 
     public Block(Function parent, List<Instruction> instructions, List<Block> predecessors) {
-        this.id = IdGenerator.newId();
+        super(null, null);
         this.parent = parent;
         this.instructions = new ListWrapper<>();
         this.predecessors = predecessors;
@@ -85,7 +86,16 @@ public class Block implements IBlock<Block>, Comparable<Block> {
     }
 
     @Override
-    public int compareTo(Block o) {
-        return Integer.compare(this.id, o.id);
+    public void acceptDef(PrettyPrinter printer) throws IOException {
+        printer.writeBlock(this);
+    }
+
+    @Override
+    public void acceptUse(PrettyPrinter printer) throws IOException {
+        printer.writeBlockValue(this);
+    }
+    @Override
+    public Constant applyOp(Operator op, Constant other) {
+        throw new UnsupportedOperationException("Cannot apply operator to Block");
     }
 }

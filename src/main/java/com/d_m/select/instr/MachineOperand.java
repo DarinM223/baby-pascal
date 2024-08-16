@@ -16,9 +16,9 @@ public sealed interface MachineOperand {
     record MemoryAddress(int base, int offset, int index) implements MachineOperand {
     }
 
-    record BasicBlock(MachineBasicBlock block) {
+    record BasicBlock(MachineBasicBlock block) implements MachineOperand {
     }
 
-    record Function(MachineFunction function) {
+    record Function(MachineFunction function) implements MachineOperand {
     }
 }
