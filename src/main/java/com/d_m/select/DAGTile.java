@@ -46,12 +46,13 @@ public class DAGTile implements Tile<Value> {
     }
 
     public MachineOperand emit(FunctionLoweringInfo info, List<MachineOperand> arguments, List<MachineInstruction> instructions) {
+        Map<Integer, MachineOperand> tempRegisterMap = new HashMap<>();
         for (com.d_m.gen.Instruction instruction : rule.getCode().instructions()) {
             if (instruction.name().equals("out")) {
-                return toOperand(info, arguments, instruction.operands().getFirst());
+                return toOperand(info, arguments, tempRegisterMap, instruction.operands().getFirst());
             }
 
-            List<MachineOperand> operands = instruction.operands().stream().map(operand -> toOperand(info, arguments, operand)).toList();
+            List<MachineOperand> operands = instruction.operands().stream().map(operand -> toOperand(info, arguments, tempRegisterMap, operand)).toList();
             MachineInstruction converted = new MachineInstruction(instruction.name(), operands);
             instructions.add(converted);
         }
@@ -59,12 +60,18 @@ public class DAGTile implements Tile<Value> {
         return null;
     }
 
-    private MachineOperand toOperand(FunctionLoweringInfo info, List<MachineOperand> arguments, Operand operand) {
+    private MachineOperand toOperand(FunctionLoweringInfo info, List<MachineOperand> arguments, Map<Integer, MachineOperand> tempRegisterMap, Operand operand) {
         return switch (operand) {
             case Operand.Immediate(int value) -> new MachineOperand.Immediate(value);
             case Operand.Parameter(int parameter) -> arguments.get(parameter - 1);
-            case Operand.VirtualRegister(_) ->
-                    new MachineOperand.Register(info.createRegister(X86RegisterClass.allIntegerRegs()));
+            case Operand.VirtualRegister(int register) -> {
+                MachineOperand machineOperand = tempRegisterMap.get(register);
+                if (machineOperand == null) {
+                    machineOperand = new MachineOperand.Register(info.createRegister(X86RegisterClass.allIntegerRegs()));
+                    tempRegisterMap.put(register, machineOperand);
+                }
+                yield machineOperand;
+            }
         };
     }
 

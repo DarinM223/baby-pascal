@@ -3,6 +3,7 @@ package com.d_m.select;
 import com.d_m.ast.IntegerType;
 import com.d_m.code.Operator;
 import com.d_m.gen.GeneratedAutomata;
+import com.d_m.select.dag.Register;
 import com.d_m.select.dag.RegisterClass;
 import com.d_m.select.dag.X86RegisterClass;
 import com.d_m.select.instr.MachineBasicBlock;
@@ -110,11 +111,15 @@ public class Codegen {
         }
 
         List<MachineOperand> args = new ArrayList<>(tile.edgeNodes().size() + 1);
-        // If a tile is a constant matching tile, add itself
+        // If a tile is a constant matching tile or a COPYFROMREG/COPYTOREG, add itself
         // as its first operand.
         // TODO: this is a hack for now.
         if (tile.root() instanceof Constant constant) {
             args.add(constantToOperand(constant));
+        } else if (tile.root() instanceof Instruction instruction &&
+                (instruction.getOperator() == Operator.COPYTOREG || instruction.getOperator() == Operator.COPYFROMREG) &&
+                functionLoweringInfo.getRegister(tile.root()) instanceof Register register) {
+            args.add(new MachineOperand.Register(register));
         }
         for (Value edgeNode : tile.edgeNodes()) {
             DAGTile edgeTile = tileMapping.get(edgeNode);
