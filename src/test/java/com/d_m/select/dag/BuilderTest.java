@@ -5,6 +5,7 @@ import com.d_m.code.ShortCircuitException;
 import com.d_m.code.ThreeAddressCode;
 import com.d_m.construct.ConstructSSA;
 import com.d_m.dom.Examples;
+import com.d_m.select.FunctionLoweringInfo;
 import com.d_m.select.dag.graphviz.SelectionDagGraph;
 import com.d_m.ssa.Block;
 import com.d_m.ssa.Function;
@@ -59,7 +60,7 @@ class BuilderTest {
     @Test
     void convertFunction() throws IOException {
         Function fibonacci = module.getFunctionList().get(1);
-        Builder builder = new Builder();
+        Builder builder = new Builder(new FunctionLoweringInfo(new X86RegisterClass()));
         builder.convertFunction(fibonacci);
 
         {

@@ -3,9 +3,9 @@ package com.d_m.select;
 import com.d_m.ast.IntegerType;
 import com.d_m.code.Operator;
 import com.d_m.gen.GeneratedAutomata;
+import com.d_m.select.dag.ISARegisterClass;
 import com.d_m.select.dag.Register;
 import com.d_m.select.dag.RegisterClass;
-import com.d_m.select.dag.X86RegisterClass;
 import com.d_m.select.instr.MachineBasicBlock;
 import com.d_m.select.instr.MachineFunction;
 import com.d_m.select.instr.MachineInstruction;
@@ -33,9 +33,9 @@ public class Codegen {
     private final Map<Function, MachineFunction> functionMap;
     private final Map<Block, MachineBasicBlock> blockMap;
 
-    public Codegen(GeneratedAutomata automata) {
+    public Codegen(ISARegisterClass<RegisterClass> isaRegisterClass, GeneratedAutomata automata) {
         this.automata = automata;
-        this.functionLoweringInfo = new FunctionLoweringInfo();
+        this.functionLoweringInfo = new FunctionLoweringInfo(isaRegisterClass);
         this.functionMap = new HashMap<>();
         this.blockMap = new HashMap<>();
     }
@@ -49,7 +49,7 @@ public class Codegen {
         blockMap.clear();
         Map<Block, SSADAG> blockDagMap = new HashMap<>();
         for (int argumentNumber = 0; argumentNumber < function.getArguments().size(); argumentNumber++) {
-            RegisterClass registerClass = X86RegisterClass.functionIntegerCallingConvention(argumentNumber);
+            RegisterClass registerClass = functionLoweringInfo.isaRegisterClass.functionCallingConvention(new IntegerType(), argumentNumber);
             Argument argument = function.getArguments().get(argumentNumber);
             functionLoweringInfo.addRegister(argument, functionLoweringInfo.createRegister(registerClass));
         }

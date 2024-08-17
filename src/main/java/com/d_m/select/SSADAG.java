@@ -1,10 +1,10 @@
 package com.d_m.select;
 
+import com.d_m.ast.IntegerType;
 import com.d_m.code.Operator;
 import com.d_m.gen.Rule;
 import com.d_m.select.dag.Register;
 import com.d_m.select.dag.RegisterClass;
-import com.d_m.select.dag.X86RegisterClass;
 import com.d_m.ssa.*;
 import com.d_m.util.SymbolImpl;
 import com.google.common.collect.*;
@@ -84,7 +84,7 @@ public class SSADAG implements DAG<Value> {
         for (Use use : instruction.uses()) {
             if (use.getUser() instanceof Instruction user && !user.getParent().equals(block)) {
                 changed = true;
-                RegisterClass registerClass = X86RegisterClass.allIntegerRegs();
+                RegisterClass registerClass = functionLoweringInfo.isaRegisterClass.allIntegerRegs();
                 Register register = functionLoweringInfo.getRegister(instruction);
                 if (register == null) {
                     register = functionLoweringInfo.createRegister(registerClass);
@@ -141,7 +141,7 @@ public class SSADAG implements DAG<Value> {
             copyToReg.setParent(block);
 
             // Use register class that conforms to the calling convention for functions.
-            RegisterClass registerClass = X86RegisterClass.functionIntegerCallingConvention(i - START_OPERAND);
+            RegisterClass registerClass = functionLoweringInfo.isaRegisterClass.functionCallingConvention(new IntegerType(), i - START_OPERAND);
             Register register = functionLoweringInfo.createRegister(registerClass);
             functionLoweringInfo.addRegister(copyToReg, register);
 

@@ -64,6 +64,10 @@ public class Scanner {
                 if (isDigit(peek())) {
                     start++;
                     number(TokenType.VIRTUAL_REG);
+                } else if (isAlpha(peek())) {
+                    start++;
+                    while (isAlphaNumeric(peek())) advance();
+                    addToken(TokenType.REG);
                 }
             }
             default -> {

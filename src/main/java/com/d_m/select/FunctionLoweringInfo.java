@@ -1,5 +1,6 @@
 package com.d_m.select;
 
+import com.d_m.select.dag.ISARegisterClass;
 import com.d_m.select.dag.Register;
 import com.d_m.select.dag.RegisterClass;
 import com.d_m.ssa.Block;
@@ -12,11 +13,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FunctionLoweringInfo {
+    public final ISARegisterClass<RegisterClass> isaRegisterClass;
     private final Map<Value, Register> valueRegisterMap;
     private final Map<Block, Instruction> startTokenMap;
     private final Fresh virtualRegisterGen;
 
-    public FunctionLoweringInfo() {
+    public FunctionLoweringInfo(ISARegisterClass<RegisterClass> isaRegisterClass) {
+        this.isaRegisterClass = isaRegisterClass;
         this.valueRegisterMap = new HashMap<>();
         this.startTokenMap = new HashMap<>();
         this.virtualRegisterGen = new FreshImpl();

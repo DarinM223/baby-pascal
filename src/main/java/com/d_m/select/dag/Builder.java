@@ -1,5 +1,6 @@
 package com.d_m.select.dag;
 
+import com.d_m.select.FunctionLoweringInfo;
 import com.d_m.ssa.*;
 import com.d_m.util.Fresh;
 import com.d_m.util.FreshImpl;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Builder {
+    private final FunctionLoweringInfo info;
     private final Fresh virtualRegisterGen;
     private SelectionDAG dag;
     private Block currentBlock;
@@ -18,7 +20,8 @@ public class Builder {
     private final Map<Value, SDValue> nodeMap;
     private final Map<SDValue, Register> valueRegisterMap;
 
-    public Builder() {
+    public Builder(FunctionLoweringInfo info) {
+        this.info = info;
         dag = null;
         currentBlock = null;
         virtualRegisterGen = new FreshImpl();
@@ -118,7 +121,7 @@ public class Builder {
         }
         if (v instanceof Instruction instruction && !currentBlock.equals(instruction.getParent())) {
             // TODO: register class should be based off of instruction type.
-            return getCopyFromReg(instruction, X86RegisterClass.allIntegerRegs());
+            return getCopyFromReg(instruction, info.isaRegisterClass.allIntegerRegs());
         }
         return switch (value.node.nodeOp) {
             case NodeOp.Merge(var outputTypes) -> {
@@ -146,7 +149,7 @@ public class Builder {
     private SDValue getArgument(SDValue value, Argument argument) {
         if (value == null) {
             // TODO: use register classes based on the target calling convention
-            return getCopyFromReg(argument, X86RegisterClass.allIntegerRegs());
+            return getCopyFromReg(argument, info.isaRegisterClass.allIntegerRegs());
         } else {
             var register = valueRegisterMap.get(value);
             SDNode copyFromReg = dag.newNode(new NodeOp.CopyFromReg(register), 1);

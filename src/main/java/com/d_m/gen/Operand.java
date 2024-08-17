@@ -11,6 +11,13 @@ public sealed interface Operand {
         }
     }
 
+    record Register(String registerName) implements Operand {
+        @Override
+        public void write(Writer writer) throws IOException {
+            writer.write("new Operand.Register(\"" + registerName + "\")");
+        }
+    }
+
     record VirtualRegister(int register) implements Operand {
         @Override
         public void write(Writer writer) throws IOException {

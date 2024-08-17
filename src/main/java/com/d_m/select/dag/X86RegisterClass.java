@@ -1,7 +1,10 @@
 package com.d_m.select.dag;
 
-public class X86RegisterClass {
-    public static RegisterClass allIntegerRegs() {
+import com.d_m.ast.IntegerType;
+import com.d_m.ast.Type;
+
+public class X86RegisterClass implements ISARegisterClass<RegisterClass> {
+    public RegisterClass allIntegerRegs() {
         return new RegisterClass("int", ~0 >>> 16, 1, 8);
     }
 
@@ -69,7 +72,15 @@ public class X86RegisterClass {
         return new RegisterClass("r15", 1 << 15, 1, 1);
     }
 
-    public static RegisterClass functionIntegerCallingConvention(int param) {
+    @Override
+    public RegisterClass functionCallingConvention(Type type, int param) {
+        return switch (type) {
+            case IntegerType _ -> functionIntegerCallingConvention(param);
+            default -> allIntegerRegs();
+        };
+    }
+
+    public RegisterClass functionIntegerCallingConvention(int param) {
         return switch (param) {
             case 0 -> rdi();
             case 1 -> rsi();
@@ -78,6 +89,29 @@ public class X86RegisterClass {
             case 4 -> r8();
             case 5 -> r9();
             default -> allIntegerRegs();
+        };
+    }
+
+    @Override
+    public RegisterClass fromRegisterName(String registerName) {
+        return switch (registerName) {
+            case "rax" -> rax();
+            case "rbx" -> rbx();
+            case "rcx" -> rcx();
+            case "rdx" -> rdx();
+            case "rdi" -> rdi();
+            case "rsi" -> rsi();
+            case "rbp" -> rbp();
+            case "rsp" -> rsp();
+            case "r8" -> r8();
+            case "r9" -> r9();
+            case "r10" -> r10();
+            case "r11" -> r11();
+            case "r12" -> r12();
+            case "r13" -> r13();
+            case "r14" -> r14();
+            case "r15" -> r15();
+            default -> throw new UnsupportedOperationException("Unknown register name " + registerName);
         };
     }
 }

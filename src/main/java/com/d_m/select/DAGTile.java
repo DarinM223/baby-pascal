@@ -1,7 +1,6 @@
 package com.d_m.select;
 
 import com.d_m.gen.*;
-import com.d_m.select.dag.X86RegisterClass;
 import com.d_m.select.instr.MachineInstruction;
 import com.d_m.select.instr.MachineOperand;
 import com.d_m.ssa.Instruction;
@@ -64,10 +63,12 @@ public class DAGTile implements Tile<Value> {
         return switch (operand) {
             case Operand.Immediate(int value) -> new MachineOperand.Immediate(value);
             case Operand.Parameter(int parameter) -> arguments.get(parameter - 1);
+            case Operand.Register(String registerName) ->
+                    new MachineOperand.Register(info.createRegister(info.isaRegisterClass.fromRegisterName(registerName)));
             case Operand.VirtualRegister(int register) -> {
                 MachineOperand machineOperand = tempRegisterMap.get(register);
                 if (machineOperand == null) {
-                    machineOperand = new MachineOperand.Register(info.createRegister(X86RegisterClass.allIntegerRegs()));
+                    machineOperand = new MachineOperand.Register(info.createRegister(info.isaRegisterClass.allIntegerRegs()));
                     tempRegisterMap.put(register, machineOperand);
                 }
                 yield machineOperand;
