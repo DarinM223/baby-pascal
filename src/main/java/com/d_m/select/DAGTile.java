@@ -60,7 +60,7 @@ public class DAGTile implements Tile<Value> {
     }
 
     private MachineOperand toOperand(FunctionLoweringInfo info, List<MachineOperand> arguments, Map<Integer, MachineOperand> tempRegisterMap, Operand operand) {
-        return switch (operand) {
+        MachineOperand result = switch (operand) {
             case Operand.Immediate(int value) -> new MachineOperand.Immediate(value);
             case Operand.Parameter(int parameter) -> arguments.get(parameter - 1);
             case Operand.Register(String registerName) ->
@@ -74,6 +74,8 @@ public class DAGTile implements Tile<Value> {
                 yield machineOperand;
             }
         };
+        Objects.requireNonNull(result);
+        return result;
     }
 
     public Rule getRule() {

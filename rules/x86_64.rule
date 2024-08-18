@@ -1,7 +1,13 @@
 +(_, 1) => (1) {
+    mov %1, $1
+    inc %1
+    out %1
 }
 
 +(_, 2) => (1) {
+    mov %1, $1
+    add %1, 2
+    out %1
 }
 
 +(_, _) => (2) {
@@ -40,13 +46,20 @@ PROJ(_, 0) => (0) {
 }
 
 PROJ(_, 1) => (0) {
+    out $1
 }
 
 CALL(_, _, _) => (5) {
     out %rax
 }
 
-COPYTOREG(_, _) => (0) {
+// Weird edge cases, don't emit anything in this case.
+COPYTOREG(_, START) => (0) {
+}
+COPYTOREG(_, PROJ(_, 0)) => (0) {
+}
+
+COPYTOREG(_, _) => (1) {
     // For COPYTOREG, the register name is the first parameter.
     mov $1, $3
 }

@@ -41,7 +41,7 @@ public class Codegen {
     }
 
     public void startFunction(Function function) {
-        MachineFunction machineFunction = new MachineFunction();
+        MachineFunction machineFunction = new MachineFunction(function.getName());
         functionMap.put(function, machineFunction);
     }
 
@@ -54,7 +54,7 @@ public class Codegen {
             Argument argument = function.getArguments().get(argumentNumber);
             Register register = functionLoweringInfo.createRegister(registerClass);
             functionLoweringInfo.addRegister(argument, register);
-            machineFunction.addOperand(new MachineOperand.Register(register));
+            machineFunction.addParameter(new MachineOperand.Register(register));
         }
         for (Block block : function.getBlocks()) {
             Instruction start = new Instruction(SymbolImpl.TOKEN_STRING, new IntegerType(), Operator.START);
@@ -97,13 +97,6 @@ public class Codegen {
             for (DAGTile tile : matched) {
                 bottomUpEmit(tileMapping, emitResultMapping, machineBlock.getInstructions(), tile);
             }
-
-            System.out.println("Emitted instructions: ");
-            for (MachineInstruction instruction : machineBlock.getInstructions()) {
-                System.out.println("Instruction: " + instruction);
-            }
-
-            System.out.println("\n");
         }
     }
 
@@ -137,7 +130,6 @@ public class Codegen {
             args.add(arg);
         }
 
-        System.out.println("Emitting for tile: " + tile.getRule());
         MachineOperand result = tile.emit(functionLoweringInfo, args, blockInstructions);
         emitResultMapping.put(tile.root(), result);
         return result;
