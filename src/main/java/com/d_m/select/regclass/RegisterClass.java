@@ -1,4 +1,4 @@
-package com.d_m.select.dag;
+package com.d_m.select.regclass;
 
 public class RegisterClass {
     private final String name;

@@ -42,7 +42,7 @@
     out $1
 }
 
-PROJ(_, 0) => (0) {
+PROJ(CALL(_, _, _), 0) => (0) {
 }
 
 PROJ(_, 1) => (0) {
@@ -56,7 +56,7 @@ CALL(_, _, _) => (5) {
 // Weird edge cases, don't emit anything in this case.
 COPYTOREG(_, START) => (0) {
 }
-COPYTOREG(_, PROJ(_, 0)) => (0) {
+COPYTOREG(_, PROJ(CALL(_, _, _), 0)) => (0) {
 }
 
 COPYTOREG(_, _) => (1) {
@@ -70,7 +70,8 @@ COPYFROMREG(_) => (0) {
     out %1
 }
 
-GOTO(_) => (0) {
+GOTO(_) => (1) {
+    goto $1
 }
 
 START => (0) {

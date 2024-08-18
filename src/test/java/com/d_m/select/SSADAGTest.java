@@ -7,7 +7,7 @@ import com.d_m.construct.ConstructSSA;
 import com.d_m.dom.Examples;
 import com.d_m.gen.GeneratedAutomata;
 import com.d_m.gen.rules.DefaultAutomata;
-import com.d_m.select.dag.X86RegisterClass;
+import com.d_m.select.regclass.X86RegisterClass;
 import com.d_m.select.instr.MachineFunction;
 import com.d_m.select.instr.MachinePrettyPrinter;
 import com.d_m.ssa.*;

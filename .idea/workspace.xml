@@ -4,14 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Sets up MachineFunction and MachineBasicBlock information in Codegen">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Pretty prints MachineFunctions and modifies rules so that none of the operands are null">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rules/x86_64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineFunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineFunction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/Builder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/ISARegisterClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/regclass/ISARegisterClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/IdGenerator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/NodeOp.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/NodeType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/Register.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/regclass/Register.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/RegisterClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/regclass/RegisterClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SDNode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SDUse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SDValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SelectionDAG.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/X86RegisterClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/regclass/X86RegisterClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/graphviz/SelectionDagGraph.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineOperand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineOperand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachinePrettyPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachinePrettyPrinter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/SSADAGTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/SSADAGTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/dag/BuilderTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -253,14 +268,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00123" summary="Add a START instruction to entry blocks of functions">
-      <option name="closed" value="true" />
-      <created>1717807177228</created>
-      <option name="number" value="00123" />
-      <option name="presentableId" value="LOCAL-00123" />
-      <option name="project" value="LOCAL" />
-      <updated>1717807177229</updated>
     </task>
     <task id="LOCAL-00124" summary="Graphviz image viewer allows for panning of images larger than the screen">
       <option name="closed" value="true" />
@@ -646,14 +653,21 @@
       <option name="project" value="LOCAL" />
       <updated>1723990303366</updated>
     </task>
-    <option name="localTasksCounter" value="172" />
+    <task id="LOCAL-00172" summary="Pretty prints MachineFunctions and modifies rules so that none of the operands are null">
+      <option name="closed" value="true" />
+      <created>1723996305869</created>
+      <option name="number" value="00172" />
+      <option name="presentableId" value="LOCAL-00172" />
+      <option name="project" value="LOCAL" />
+      <updated>1723996305869</updated>
+    </task>
+    <option name="localTasksCounter" value="173" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Starts writing automaton to file, failure cases still not written yet" />
     <MESSAGE value="Generate failure cases for automaton" />
     <MESSAGE value="Generated automata implements interface" />
     <MESSAGE value="Start algorithm d matching on SSA dag" />
@@ -678,7 +692,8 @@
     <MESSAGE value="COPYTOREG and COPYFROMREG puts register into first argument and stores mapping of temporary registers" />
     <MESSAGE value="Parses registers in rules and abstracts over register class creation" />
     <MESSAGE value="Sets up MachineFunction and MachineBasicBlock information in Codegen" />
-    <option name="LAST_COMMIT_MESSAGE" value="Sets up MachineFunction and MachineBasicBlock information in Codegen" />
+    <MESSAGE value="Pretty prints MachineFunctions and modifies rules so that none of the operands are null" />
+    <option name="LAST_COMMIT_MESSAGE" value="Pretty prints MachineFunctions and modifies rules so that none of the operands are null" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

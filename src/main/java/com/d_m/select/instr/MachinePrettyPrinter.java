@@ -1,7 +1,7 @@
 package com.d_m.select.instr;
 
-import com.d_m.select.dag.Register;
-import com.d_m.select.dag.RegisterClass;
+import com.d_m.select.regclass.Register;
+import com.d_m.select.regclass.RegisterClass;
 import com.d_m.util.Fresh;
 import com.d_m.util.FreshImpl;
 

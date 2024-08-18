@@ -6,7 +6,7 @@ public sealed interface MachineOperand {
     record Immediate(int immediate) implements MachineOperand {
     }
 
-    record Register(com.d_m.select.dag.Register register) implements MachineOperand {
+    record Register(com.d_m.select.regclass.Register register) implements MachineOperand {
     }
 
     /**

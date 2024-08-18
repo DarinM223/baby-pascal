@@ -1,8 +1,8 @@
 package com.d_m.select;
 
-import com.d_m.select.dag.ISARegisterClass;
-import com.d_m.select.dag.Register;
-import com.d_m.select.dag.RegisterClass;
+import com.d_m.select.regclass.ISARegisterClass;
+import com.d_m.select.regclass.Register;
+import com.d_m.select.regclass.RegisterClass;
 import com.d_m.ssa.Block;
 import com.d_m.ssa.Instruction;
 import com.d_m.ssa.Value;
