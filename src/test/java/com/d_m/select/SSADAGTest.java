@@ -8,6 +8,8 @@ import com.d_m.dom.Examples;
 import com.d_m.gen.GeneratedAutomata;
 import com.d_m.gen.rules.DefaultAutomata;
 import com.d_m.select.dag.X86RegisterClass;
+import com.d_m.select.instr.MachineFunction;
+import com.d_m.select.instr.MachinePrettyPrinter;
 import com.d_m.ssa.*;
 import com.d_m.ssa.Module;
 import com.d_m.ssa.graphviz.GraphvizViewer;
@@ -27,8 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class SSADAGTest {
     Fresh fresh;
@@ -62,7 +62,6 @@ class SSADAGTest {
     @Test
     void postorder() throws IOException {
         StringWriter writer = new StringWriter();
-        PrettyPrinter printer = new PrettyPrinter(writer);
         Map<Function, FunctionLoweringInfo> infoMap = new HashMap<>();
         GeneratedAutomata automata;
         try {
@@ -78,9 +77,18 @@ class SSADAGTest {
             codegen.lowerFunction(function);
             infoMap.put(function, codegen.getFunctionLoweringInfo());
         }
-        printer.writeModule(module);
+//        PrettyPrinter printer = new PrettyPrinter(writer);
+//        printer.writeModule(module);
 //        System.out.println("DAG:");
 //        System.out.println(writer.toString());
+
+        MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(writer);
+        for (Function function : module.getFunctionList()) {
+            MachineFunction machineFunction = codegen.getFunction(function);
+            machinePrinter.writeFunction(machineFunction);
+        }
+        System.out.println("Emitted:");
+        System.out.println(writer);
 
         File file = new File("builder_ssa_dag.dot");
         file.deleteOnExit();

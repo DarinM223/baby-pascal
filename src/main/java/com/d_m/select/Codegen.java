@@ -46,12 +46,15 @@ public class Codegen {
     }
 
     public void lowerFunction(Function function) {
+        MachineFunction machineFunction = functionMap.get(function);
         blockMap.clear();
         Map<Block, SSADAG> blockDagMap = new HashMap<>();
         for (int argumentNumber = 0; argumentNumber < function.getArguments().size(); argumentNumber++) {
             RegisterClass registerClass = functionLoweringInfo.isaRegisterClass.functionCallingConvention(new IntegerType(), argumentNumber);
             Argument argument = function.getArguments().get(argumentNumber);
-            functionLoweringInfo.addRegister(argument, functionLoweringInfo.createRegister(registerClass));
+            Register register = functionLoweringInfo.createRegister(registerClass);
+            functionLoweringInfo.addRegister(argument, register);
+            machineFunction.addOperand(new MachineOperand.Register(register));
         }
         for (Block block : function.getBlocks()) {
             Instruction start = new Instruction(SymbolImpl.TOKEN_STRING, new IntegerType(), Operator.START);
@@ -60,16 +63,17 @@ public class Codegen {
             functionLoweringInfo.setStartToken(block, start);
         }
         for (Block block : function.getBlocks()) {
-            MachineBasicBlock machineBlock = new MachineBasicBlock();
+            MachineBasicBlock machineBlock = new MachineBasicBlock(machineFunction);
             SSADAG dag = new SSADAG(functionLoweringInfo, block);
+            machineFunction.addBlock(machineBlock);
             blockMap.put(block, machineBlock);
             blockDagMap.put(block, dag);
         }
-        Map<Value, MachineOperand> valueOperandMap = new HashMap<>();
         // Do these after creating all the DAGs because the
         // out of block edges are not completely cut until all the
         // blocks have been converted into SSADAGs.
-        for (SSADAG dag : blockDagMap.values()) {
+        for (Block block : function.getBlocks()) {
+            SSADAG dag = blockDagMap.get(block);
             AlgorithmD algorithmD = new AlgorithmD(dag, automata);
             algorithmD.run();
             DAGSelect<Value, DAGTile, SSADAG> dagSelection = new DAGSelect<>(dag, dag::getTiles);
@@ -78,27 +82,33 @@ public class Codegen {
             // Convert tiles from Set<DAGTile> to Map<Value, DAGTile> for mapping from tile root to tile.
             Map<Value, DAGTile> tileMapping = new HashMap<>(matched.size());
             Map<Value, MachineOperand> emitResultMapping = new HashMap<>();
-            List<MachineInstruction> blockInstructions = new ArrayList<>();
             for (DAGTile tile : matched) {
                 System.out.println("Matched tile with rule: " + tile.getRule() + " at root: " + tile.getRoot());
                 tileMapping.put(tile.root(), tile);
             }
 
+            MachineBasicBlock machineBlock = blockMap.get(block);
+            machineBlock.setPredecessors(block.getPredecessors().stream().map(blockMap::get).toList());
+            machineBlock.setSuccessors(block.getSuccessors().stream().map(blockMap::get).toList());
+
             // For each tile, go bottom up emitting the code and marking the node
             // with the machine operand result. if a node's result has already been computed,
             // skip it.
             for (DAGTile tile : matched) {
-                bottomUpEmit(tileMapping, emitResultMapping, blockInstructions, tile);
+                bottomUpEmit(tileMapping, emitResultMapping, machineBlock.getInstructions(), tile);
             }
 
             System.out.println("Emitted instructions: ");
-            for (MachineInstruction instruction : blockInstructions) {
+            for (MachineInstruction instruction : machineBlock.getInstructions()) {
                 System.out.println("Instruction: " + instruction);
             }
 
-            // TODO: create a MachineBasicBlock with the blockInstructions and add that to a mapping from Block.
             System.out.println("\n");
         }
+    }
+
+    public MachineFunction getFunction(Function function) {
+        return functionMap.get(function);
     }
 
     public FunctionLoweringInfo getFunctionLoweringInfo() {
