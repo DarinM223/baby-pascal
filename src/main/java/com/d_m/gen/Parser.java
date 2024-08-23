@@ -66,22 +66,35 @@ public class Parser {
             Token instruction = previous();
             List<Operand> operands = new ArrayList<>();
             while (peek().line() == instruction.line()) {
-                Token operandToken = advance();
-                Operand operand = switch (operandToken.type()) {
-                    case NUMBER -> new Operand.Immediate((int) operandToken.literal());
-                    case VIRTUAL_REG -> new Operand.VirtualRegister((int) operandToken.literal());
-                    case REG -> new Operand.Register(operandToken.lexeme());
-                    case PARAM -> new Operand.Parameter((int) operandToken.literal());
-                    default -> throw new ParseError("Unknown operand type: " + operandToken.type());
-                };
-                operands.add(operand);
-
+                operands.add(parseOperand());
                 if (check(TokenType.COMMA)) advance();
             }
             return new Instruction(instruction.lexeme(), operands);
         }
 
         throw new ParseError("Expected instruction to start with variable");
+    }
+
+    private Operand parseOperand() {
+        Token operandToken = advance();
+        return switch (operandToken.type()) {
+            case VARIABLE -> {
+                if (!operandToken.lexeme().equals("proj")) {
+                    throw new ParseError("Unknown variable name " + operandToken.lexeme() + " expected proj()");
+                }
+                match(TokenType.LEFT_PAREN);
+                Operand value = parseOperand();
+                match(TokenType.COMMA);
+                Operand index = parseOperand();
+                match(TokenType.RIGHT_PAREN);
+                yield new Operand.Projection(value, index);
+            }
+            case NUMBER -> new Operand.Immediate((int) operandToken.literal());
+            case VIRTUAL_REG -> new Operand.VirtualRegister((int) operandToken.literal());
+            case REG -> new Operand.Register(operandToken.lexeme());
+            case PARAM -> new Operand.Parameter((int) operandToken.literal());
+            default -> throw new ParseError("Unknown operand type: " + operandToken.type());
+        };
     }
 
     private boolean match(TokenType... types) {

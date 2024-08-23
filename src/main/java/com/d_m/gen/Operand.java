@@ -32,5 +32,16 @@ public sealed interface Operand {
         }
     }
 
+    record Projection(Operand value, Operand index) implements Operand {
+        @Override
+        public void write(Writer writer) throws IOException {
+            writer.write("new Operand.Projection(");
+            value.write(writer);
+            writer.write(", ");
+            index.write(writer);
+            writer.write(")");
+        }
+    }
+
     void write(Writer writer) throws IOException;
 }

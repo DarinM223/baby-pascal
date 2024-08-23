@@ -81,7 +81,7 @@ public class Codegen {
             Set<DAGTile> matched = dagSelection.matchedTiles();
             // Convert tiles from Set<DAGTile> to Map<Value, DAGTile> for mapping from tile root to tile.
             Map<Value, DAGTile> tileMapping = new HashMap<>(matched.size());
-            Map<Value, MachineOperand> emitResultMapping = new HashMap<>();
+            Map<Value, MachineOperand[]> emitResultMapping = new HashMap<>();
             for (DAGTile tile : matched) {
                 System.out.println("Matched tile with rule: " + tile.getRule() + " at root: " + tile.getRoot());
                 tileMapping.put(tile.root(), tile);
@@ -108,29 +108,31 @@ public class Codegen {
         return functionLoweringInfo;
     }
 
-    private MachineOperand bottomUpEmit(Map<Value, DAGTile> tileMapping, Map<Value, MachineOperand> emitResultMapping, List<MachineInstruction> blockInstructions, DAGTile tile) {
+    private MachineOperand[] bottomUpEmit(Map<Value, DAGTile> tileMapping, Map<Value, MachineOperand[]> emitResultMapping, List<MachineInstruction> blockInstructions, DAGTile tile) {
         if (emitResultMapping.containsKey(tile.root())) {
             return emitResultMapping.get(tile.root());
         }
 
-        List<MachineOperand> args = new ArrayList<>(tile.edgeNodes().size() + 1);
+        List<MachineOperand[]> args = new ArrayList<>(tile.edgeNodes().size() + 1);
         // If a tile is a constant matching tile or a COPYFROMREG/COPYTOREG, add itself
         // as its first operand.
         // TODO: this is a hack for now.
         if (tile.root() instanceof Constant constant) {
-            args.add(constantToOperand(constant));
+            MachineOperand[] arg = { constantToOperand(constant) };
+            args.add(arg);
         } else if (tile.root() instanceof Instruction instruction &&
                 (instruction.getOperator() == Operator.COPYTOREG || instruction.getOperator() == Operator.COPYFROMREG) &&
                 functionLoweringInfo.getRegister(tile.root()) instanceof Register register) {
-            args.add(new MachineOperand.Register(register));
+            MachineOperand[] arg = { new MachineOperand.Register(register) };
+            args.add(arg);
         }
         for (Value edgeNode : tile.edgeNodes()) {
             DAGTile edgeTile = tileMapping.get(edgeNode);
-            MachineOperand arg = bottomUpEmit(tileMapping, emitResultMapping, blockInstructions, edgeTile);
+            MachineOperand[] arg = bottomUpEmit(tileMapping, emitResultMapping, blockInstructions, edgeTile);
             args.add(arg);
         }
 
-        MachineOperand result = tile.emit(functionLoweringInfo, args, blockInstructions);
+        MachineOperand[] result = tile.emit(functionLoweringInfo, args, blockInstructions);
         emitResultMapping.put(tile.root(), result);
         return result;
     }

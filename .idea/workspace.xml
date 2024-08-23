@@ -4,29 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Pretty prints MachineFunctions and modifies rules so that none of the operands are null">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Deletes old selection dag types and moves register class types into regclass package">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rules/x86_64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Operand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Operand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Parser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/Builder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/ISARegisterClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/regclass/ISARegisterClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/IdGenerator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/NodeOp.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/NodeType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/Register.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/regclass/Register.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/RegisterClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/regclass/RegisterClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SDNode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SDUse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SDValue.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/SelectionDAG.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/X86RegisterClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/regclass/X86RegisterClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/dag/graphviz/SelectionDagGraph.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineOperand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineOperand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachinePrettyPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachinePrettyPrinter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/SSADAGTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/SSADAGTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/dag/BuilderTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -268,14 +252,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00124" summary="Graphviz image viewer allows for panning of images larger than the screen">
-      <option name="closed" value="true" />
-      <created>1717877778969</created>
-      <option name="number" value="00124" />
-      <option name="presentableId" value="LOCAL-00124" />
-      <option name="project" value="LOCAL" />
-      <updated>1717877778970</updated>
     </task>
     <task id="LOCAL-00125" summary="Add load expression and store statement">
       <option name="closed" value="true" />
@@ -661,14 +637,21 @@
       <option name="project" value="LOCAL" />
       <updated>1723996305869</updated>
     </task>
-    <option name="localTasksCounter" value="173" />
+    <task id="LOCAL-00173" summary="Deletes old selection dag types and moves register class types into regclass package">
+      <option name="closed" value="true" />
+      <created>1723997361852</created>
+      <option name="number" value="00173" />
+      <option name="presentableId" value="LOCAL-00173" />
+      <option name="project" value="LOCAL" />
+      <updated>1723997361852</updated>
+    </task>
+    <option name="localTasksCounter" value="174" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Generate failure cases for automaton" />
     <MESSAGE value="Generated automata implements interface" />
     <MESSAGE value="Start algorithm d matching on SSA dag" />
     <MESSAGE value="Attempt bitstring algorithm d implementation" />
@@ -693,7 +676,8 @@
     <MESSAGE value="Parses registers in rules and abstracts over register class creation" />
     <MESSAGE value="Sets up MachineFunction and MachineBasicBlock information in Codegen" />
     <MESSAGE value="Pretty prints MachineFunctions and modifies rules so that none of the operands are null" />
-    <option name="LAST_COMMIT_MESSAGE" value="Pretty prints MachineFunctions and modifies rules so that none of the operands are null" />
+    <MESSAGE value="Deletes old selection dag types and moves register class types into regclass package" />
+    <option name="LAST_COMMIT_MESSAGE" value="Deletes old selection dag types and moves register class types into regclass package" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -723,10 +707,28 @@
         <line-breakpoint enabled="true" type="java-line">
           <condition expression="result == null" language="JAVA" />
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java</url>
-          <line>76</line>
-          <option name="timeStamp" value="70" />
+          <line>91</line>
+          <option name="timeStamp" value="73" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java</url>
+          <line>83</line>
+          <option name="timeStamp" value="74" />
+        </line-breakpoint>
+        <breakpoint type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang">
+            <option name="NOTIFY_CAUGHT" value="false" />
+          </properties>
+          <option name="timeStamp" value="72" />
+        </breakpoint>
       </breakpoints>
+      <default-breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties>
+            <option name="NOTIFY_CAUGHT" value="false" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
