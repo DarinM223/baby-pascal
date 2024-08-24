@@ -11,9 +11,18 @@ public sealed interface MachineOperand {
 
     /**
      * A memory address operand in X86/64.
-     * [base + offset * index]
+     * [base + index * scale + displacement]
      */
-    record MemoryAddress(int base, int offset, int index) implements MachineOperand {
+    record MemoryAddress(com.d_m.select.regclass.Register base, com.d_m.select.regclass.Register index, int scale,
+                         int displacement) implements MachineOperand {
+    }
+
+    /**
+     * A value from the stack with the given offset from the stack pointer.
+     *
+     * @param offset
+     */
+    record StackSlot(int offset) implements MachineOperand {
     }
 
     record BasicBlock(MachineBasicBlock block) implements MachineOperand {

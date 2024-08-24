@@ -7,7 +7,7 @@ import com.d_m.construct.ConstructSSA;
 import com.d_m.dom.Examples;
 import com.d_m.gen.GeneratedAutomata;
 import com.d_m.gen.rules.DefaultAutomata;
-import com.d_m.select.regclass.X86RegisterClass;
+import com.d_m.select.regclass.X86;
 import com.d_m.select.instr.MachineFunction;
 import com.d_m.select.instr.MachinePrettyPrinter;
 import com.d_m.ssa.*;
@@ -69,7 +69,7 @@ class SSADAGTest {
         } catch (Exception e) {
             automata = new DefaultAutomata();
         }
-        Codegen codegen = new Codegen(new X86RegisterClass(), automata);
+        Codegen codegen = new Codegen(new X86(), automata);
         for (Function function : module.getFunctionList()) {
             codegen.startFunction(function);
         }

@@ -1,54 +1,54 @@
 +(_, 1) => (1) {
-    mov %1, $1
-    inc %1
-    out %1
+    mov [$1, use] [%1, def]
+    inc [%1, use]
+    out [%1, use]
 }
 
 +(_, 2) => (1) {
-    mov %1, $1
-    add %1, 2
-    out %1
+    mov [$1, use], [%1, def]
+    add [%1, use], [2, use] // TODO: add reuse operand
+    out [%1, use]
 }
 
 +(_, _) => (2) {
     // Move first parameter to virtual register and then
     // add the second parameter to it.
-    mov %1, $1
-    add %1, $2
-    out %1
+    mov [$1, use], [%1, def]
+    add [%1, use], [$2, use]
+    out [%1, use]
 }
 
 -(_, 1) => (1) {
-    mov %1, $1
-    dec %1
-    out %1
+    mov [$1, use], [%1, def]
+    dec [%1, use]
+    out [%1, use]
 }
 
 -(_, 2) => (1) {
-    mov %1, $1
-    sub %1, 2
-    out %1
+    mov [$1, use] [%1, def]
+    sub [%1, use], [2, use]
+    out [%1, use]
 }
 
 <(_, _) => (0) {
 }
 
 Φ(_, _) => (0) {
-    phi %1, $1, $2
-    out %1
+    phi [$1, use], [$2, use], [%1, def]
+    out [%1, use]
 }
 
 :=(_) => (0) {
-    out $1
+    out [$1, use]
 }
 
 PROJ(_, _) => (1) {
-    out proj($1, $2)
+    out [proj($1, $2), use]
 }
 
 CALL(_, _, _) => (5) {
-    mov %1, %rax
-    out $1, %1
+    mov [%rax, use], [%1, def]
+    out [$1, use], [%1, use]
 }
 
 // Weird edge cases, don't emit anything in this case.
@@ -59,17 +59,17 @@ COPYTOREG(_, PROJ(CALL(_, _, _), 0)) => (0) {
 
 COPYTOREG(_, _) => (1) {
     // For COPYTOREG, the register name is the first parameter.
-    mov $1, $3
+    mov [$3, use], [$1, def]
 }
 
 COPYFROMREG(_) => (0) {
     // For COPYFROMREG, the register name is the first parameter
-    mov %1, $1
-    out %1
+    mov [$1, use], [%1, def]
+    out [%1, use]
 }
 
 GOTO(_) => (1) {
-    goto $1
+    goto [$1, use]
 }
 
 START => (0) {
@@ -78,5 +78,5 @@ START => (0) {
 // pattern for handling immediates.
 CONST => (1) {
     // For CONST, the first parameter is itself as an immediate.
-    out $1
+    out [$1, use]
 }

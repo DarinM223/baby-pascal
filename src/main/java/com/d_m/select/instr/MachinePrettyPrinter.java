@@ -2,6 +2,7 @@ package com.d_m.select.instr;
 
 import com.d_m.select.regclass.Register;
 import com.d_m.select.regclass.RegisterClass;
+import com.d_m.select.regclass.RegisterConstraint;
 import com.d_m.util.Fresh;
 import com.d_m.util.FreshImpl;
 
@@ -63,7 +64,7 @@ public class MachinePrettyPrinter {
         out.write(instruction.getInstruction());
         out.write(" ");
         for (var it = instruction.getOperands().iterator(); it.hasNext(); ) {
-            writeOperand(it.next());
+            writeOperandPair(it.next());
             if (it.hasNext()) {
                 out.write(", ");
             }
@@ -71,17 +72,25 @@ public class MachinePrettyPrinter {
         out.write("\n");
     }
 
+    public void writeOperandPair(MachineOperandPair pair) throws IOException {
+        out.write("[");
+        writeOperand(pair.operand());
+        out.write(",");
+        out.write(pair.kind().toString());
+        out.write("]");
+    }
+
     public void writeOperand(MachineOperand operand) throws IOException {
         switch (operand) {
             case MachineOperand.BasicBlock(MachineBasicBlock block) -> out.write("l" + getBlockId(block));
             case MachineOperand.Function(MachineFunction function) -> out.write(function.getName());
             case MachineOperand.Immediate(int immediate) -> out.write(Integer.toString(immediate));
-            case MachineOperand.MemoryAddress(int base, int offset, int index) ->
-                    out.write("[" + base + " + " + offset + " * " + index + "]");
-            case MachineOperand.Register(Register.Physical(int registerNumber)) -> out.write("%%" + registerNumber);
-            case MachineOperand.Register(Register.Virtual(int registerNumber, RegisterClass registerClass)) ->
-                    out.write("%" + registerClass.getName() + registerNumber);
-            case MachineOperand.Register(Register.StackSlot(int slot)) -> out.write("slot" + slot);
+            case MachineOperand.MemoryAddress(Register base, Register index, int scale, int displacement) ->
+                    out.write("[" + base + " + " + index + " * " + scale + " + " + displacement + "]");
+            case MachineOperand.Register(Register.Physical(int registerNumber, RegisterClass registerClass)) -> out.write("%%" + registerClass + registerNumber);
+            case MachineOperand.Register(Register.Virtual(int registerNumber, RegisterClass registerClass, RegisterConstraint constraint)) ->
+                    out.write("%" + registerClass + registerNumber + constraint);
+            case MachineOperand.StackSlot(int slot) -> out.write("slot" + slot);
         }
     }
 

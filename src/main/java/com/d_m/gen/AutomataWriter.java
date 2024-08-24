@@ -15,6 +15,7 @@ public class AutomataWriter {
     public void write(String className) throws IOException {
         writer.write("package com.d_m.gen.rules;\n");
         writer.write("import com.d_m.gen.*;");
+        writer.write("import com.d_m.select.instr.MachineOperandKind;");
         writer.write("import java.util.List;");
         writer.write("public class " + className + " implements GeneratedAutomata {\n");
         writeGetRule();

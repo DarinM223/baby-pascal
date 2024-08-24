@@ -5,11 +5,11 @@ import java.util.List;
 public class MachineInstruction {
     private final int id = IdGenerator.newId();
     private final String instruction;
-    private final List<MachineOperand> operands;
+    private final List<MachineOperandPair> operands;
 
     private MachineBasicBlock parent;
 
-    public MachineInstruction(String instruction, List<MachineOperand> operands) {
+    public MachineInstruction(String instruction, List<MachineOperandPair> operands) {
         this.instruction = instruction;
         this.operands = operands;
     }
@@ -18,7 +18,7 @@ public class MachineInstruction {
         return instruction;
     }
 
-    public List<MachineOperand> getOperands() {
+    public List<MachineOperandPair> getOperands() {
         return operands;
     }
 

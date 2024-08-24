@@ -1,10 +1,10 @@
 package com.d_m.select;
 
-import com.d_m.ast.IntegerType;
 import com.d_m.code.Operator;
 import com.d_m.gen.Rule;
 import com.d_m.select.regclass.Register;
 import com.d_m.select.regclass.RegisterClass;
+import com.d_m.select.regclass.RegisterConstraint;
 import com.d_m.ssa.*;
 import com.d_m.util.SymbolImpl;
 import com.google.common.collect.*;
@@ -84,10 +84,10 @@ public class SSADAG implements DAG<Value> {
         for (Use use : instruction.uses()) {
             if (use.getUser() instanceof Instruction user && !user.getParent().equals(block)) {
                 changed = true;
-                RegisterClass registerClass = functionLoweringInfo.isaRegisterClass.allIntegerRegs();
+                RegisterConstraint constraint = functionLoweringInfo.isa.allIntegerRegs();
                 Register register = functionLoweringInfo.getRegister(instruction);
                 if (register == null) {
-                    register = functionLoweringInfo.createRegister(registerClass);
+                    register = functionLoweringInfo.createRegister(RegisterClass.INT, constraint);
                     functionLoweringInfo.addRegister(instruction, register);
                 }
                 Instruction copyFromReg = new Instruction(instruction.getName(), instruction.getType(), Operator.COPYFROMREG);
@@ -141,8 +141,8 @@ public class SSADAG implements DAG<Value> {
             copyToReg.setParent(block);
 
             // Use register class that conforms to the calling convention for functions.
-            RegisterClass registerClass = functionLoweringInfo.isaRegisterClass.functionCallingConvention(new IntegerType(), i - START_OPERAND);
-            Register register = functionLoweringInfo.createRegister(registerClass);
+            RegisterConstraint constraint = functionLoweringInfo.isa.functionCallingConvention(RegisterClass.INT, i - START_OPERAND);
+            Register register = functionLoweringInfo.createRegister(RegisterClass.INT, constraint);
             functionLoweringInfo.addRegister(copyToReg, register);
 
             Use tokenUse = new Use(currToken, copyToReg);

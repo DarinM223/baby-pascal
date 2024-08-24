@@ -3,6 +3,9 @@ package com.d_m.select;
 import com.d_m.gen.*;
 import com.d_m.select.instr.MachineInstruction;
 import com.d_m.select.instr.MachineOperand;
+import com.d_m.select.instr.MachineOperandKind;
+import com.d_m.select.instr.MachineOperandPair;
+import com.d_m.select.regclass.RegisterClass;
 import com.d_m.ssa.Instruction;
 import com.d_m.ssa.Value;
 
@@ -50,12 +53,12 @@ public class DAGTile implements Tile<Value> {
             if (instruction.name().equals("out")) {
                 MachineOperand[] results = new MachineOperand[instruction.operands().size()];
                 for (int i = 0; i < instruction.operands().size(); i++) {
-                    results[i] = toOperand(info, arguments, tempRegisterMap, instruction.operands().get(i));
+                    results[i] = toOperand(info, arguments, tempRegisterMap, instruction.operands().get(i)).operand();
                 }
                 return results;
             }
 
-            List<MachineOperand> operands = instruction.operands().stream().map(operand -> toOperand(info, arguments, tempRegisterMap, operand)).toList();
+            List<MachineOperandPair> operands = instruction.operands().stream().map(operand -> toOperand(info, arguments, tempRegisterMap, operand)).toList();
             MachineInstruction converted = new MachineInstruction(instruction.name(), operands);
             instructions.add(converted);
         }
@@ -63,7 +66,8 @@ public class DAGTile implements Tile<Value> {
         return null;
     }
 
-    private MachineOperand toOperand(FunctionLoweringInfo info, List<MachineOperand[]> arguments, Map<Integer, MachineOperand> tempRegisterMap, Operand operand) {
+    private MachineOperandPair toOperand(FunctionLoweringInfo info, List<MachineOperand[]> arguments, Map<Integer, MachineOperand> tempRegisterMap, OperandPair operandPair) {
+        Operand operand = operandPair.operand();
         MachineOperand result = switch (operand) {
             case Operand.Immediate(int value) -> new MachineOperand.Immediate(value);
             case Operand.Parameter(int parameter) -> {
@@ -71,17 +75,17 @@ public class DAGTile implements Tile<Value> {
                 yield argument == null ? null : argument[0];
             }
             case Operand.Register(String registerName) ->
-                    new MachineOperand.Register(info.createRegister(info.isaRegisterClass.fromRegisterName(registerName)));
+                    new MachineOperand.Register(info.createRegister(RegisterClass.INT, info.isa.fromRegisterName(registerName)));
             case Operand.VirtualRegister(int register) -> {
                 MachineOperand machineOperand = tempRegisterMap.get(register);
                 if (machineOperand == null) {
-                    machineOperand = new MachineOperand.Register(info.createRegister(info.isaRegisterClass.allIntegerRegs()));
+                    machineOperand = new MachineOperand.Register(info.createRegister(RegisterClass.INT, info.isa.allIntegerRegs()));
                     tempRegisterMap.put(register, machineOperand);
                 }
                 yield machineOperand;
             }
             case Operand.Projection(Operand.Parameter(int parameter), Operand index) -> {
-                MachineOperand machineIndex = toOperand(info, arguments, tempRegisterMap, index);
+                MachineOperand machineIndex = toOperand(info, arguments, tempRegisterMap, new OperandPair(index, MachineOperandKind.USE)).operand();
                 if (machineIndex instanceof MachineOperand.Immediate(int i)) {
                     yield arguments.get(parameter - 1)[i];
                 }
@@ -89,7 +93,7 @@ public class DAGTile implements Tile<Value> {
             }
             default -> throw new UnsupportedOperationException("Invalid operand: " + operand);
         };
-        return result;
+        return new MachineOperandPair(result, operandPair.kind());
     }
 
     public Rule getRule() {

@@ -3,13 +3,14 @@ package com.d_m.select;
 import com.d_m.ast.IntegerType;
 import com.d_m.code.Operator;
 import com.d_m.gen.GeneratedAutomata;
-import com.d_m.select.regclass.ISARegisterClass;
+import com.d_m.select.regclass.ISA;
 import com.d_m.select.regclass.Register;
 import com.d_m.select.regclass.RegisterClass;
 import com.d_m.select.instr.MachineBasicBlock;
 import com.d_m.select.instr.MachineFunction;
 import com.d_m.select.instr.MachineInstruction;
 import com.d_m.select.instr.MachineOperand;
+import com.d_m.select.regclass.RegisterConstraint;
 import com.d_m.ssa.*;
 import com.d_m.util.SymbolImpl;
 
@@ -33,9 +34,9 @@ public class Codegen {
     private final Map<Function, MachineFunction> functionMap;
     private final Map<Block, MachineBasicBlock> blockMap;
 
-    public Codegen(ISARegisterClass<RegisterClass> isaRegisterClass, GeneratedAutomata automata) {
+    public Codegen(ISA isa, GeneratedAutomata automata) {
         this.automata = automata;
-        this.functionLoweringInfo = new FunctionLoweringInfo(isaRegisterClass);
+        this.functionLoweringInfo = new FunctionLoweringInfo(isa);
         this.functionMap = new HashMap<>();
         this.blockMap = new HashMap<>();
     }
@@ -50,9 +51,9 @@ public class Codegen {
         blockMap.clear();
         Map<Block, SSADAG> blockDagMap = new HashMap<>();
         for (int argumentNumber = 0; argumentNumber < function.getArguments().size(); argumentNumber++) {
-            RegisterClass registerClass = functionLoweringInfo.isaRegisterClass.functionCallingConvention(new IntegerType(), argumentNumber);
+            RegisterConstraint constraint = functionLoweringInfo.isa.functionCallingConvention(RegisterClass.INT, argumentNumber);
             Argument argument = function.getArguments().get(argumentNumber);
-            Register register = functionLoweringInfo.createRegister(registerClass);
+            Register register = functionLoweringInfo.createRegister(RegisterClass.INT, constraint);
             functionLoweringInfo.addRegister(argument, register);
             machineFunction.addParameter(new MachineOperand.Register(register));
         }

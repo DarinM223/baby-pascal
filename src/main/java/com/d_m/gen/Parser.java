@@ -1,5 +1,7 @@
 package com.d_m.gen;
 
+import com.d_m.select.instr.MachineOperandKind;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,15 +66,33 @@ public class Parser {
     private Instruction parseInstruction() {
         if (match(TokenType.VARIABLE)) {
             Token instruction = previous();
-            List<Operand> operands = new ArrayList<>();
+            List<OperandPair> operands = new ArrayList<>();
             while (peek().line() == instruction.line()) {
-                operands.add(parseOperand());
+                operands.add(parseOperandPair());
                 if (check(TokenType.COMMA)) advance();
             }
             return new Instruction(instruction.lexeme(), operands);
         }
 
         throw new ParseError("Expected instruction to start with variable");
+    }
+
+    private OperandPair parseOperandPair() {
+        match(TokenType.LEFT_BRACKET);
+        Operand operand = parseOperand();
+        match(TokenType.COMMA);
+        MachineOperandKind kind = parseOperandKind();
+        match(TokenType.RIGHT_BRACKET);
+        return new OperandPair(operand, kind);
+    }
+
+    private MachineOperandKind parseOperandKind() {
+        Token token = advance();
+        return switch (token.lexeme()) {
+            case "use" -> MachineOperandKind.USE;
+            case "def" -> MachineOperandKind.DEF;
+            default -> throw new ParseError("Unknown kind: " + token.lexeme() + " expected \"use\" or \"def\"");
+        };
     }
 
     private Operand parseOperand() {
