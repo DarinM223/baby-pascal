@@ -7,7 +7,9 @@ import com.d_m.select.regclass.RegisterClass;
 import com.d_m.select.regclass.RegisterConstraint;
 import com.d_m.ssa.*;
 import com.d_m.util.SymbolImpl;
-import com.google.common.collect.*;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.SortedSetMultimap;
+import com.google.common.collect.TreeMultimap;
 
 import java.util.*;
 
@@ -84,10 +86,9 @@ public class SSADAG implements DAG<Value> {
         for (Use use : instruction.uses()) {
             if (use.getUser() instanceof Instruction user && !user.getParent().equals(block)) {
                 changed = true;
-                RegisterConstraint constraint = functionLoweringInfo.isa.allIntegerRegs();
                 Register register = functionLoweringInfo.getRegister(instruction);
                 if (register == null) {
-                    register = functionLoweringInfo.createRegister(RegisterClass.INT, constraint);
+                    register = functionLoweringInfo.createRegister(RegisterClass.INT, new RegisterConstraint.Any());
                     functionLoweringInfo.addRegister(instruction, register);
                 }
                 Instruction copyFromReg = new Instruction(instruction.getName(), instruction.getType(), Operator.COPYFROMREG);

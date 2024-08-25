@@ -1,6 +1,9 @@
 package com.d_m.cfg;
 
-import com.d_m.code.*;
+import com.d_m.code.ConstantAddress;
+import com.d_m.code.NameAddress;
+import com.d_m.code.Operator;
+import com.d_m.code.Quad;
 
 import java.util.List;
 

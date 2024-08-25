@@ -10,7 +10,10 @@ import com.d_m.util.Symbol;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class UniqueRenamer {
     private final Map<Integer, Integer> count;

@@ -6,6 +6,7 @@ import com.d_m.select.instr.MachineOperand;
 import com.d_m.select.instr.MachineOperandKind;
 import com.d_m.select.instr.MachineOperandPair;
 import com.d_m.select.regclass.RegisterClass;
+import com.d_m.select.regclass.RegisterConstraint;
 import com.d_m.ssa.Instruction;
 import com.d_m.ssa.Value;
 
@@ -79,7 +80,7 @@ public class DAGTile implements Tile<Value> {
             case Operand.VirtualRegister(int register) -> {
                 MachineOperand machineOperand = tempRegisterMap.get(register);
                 if (machineOperand == null) {
-                    machineOperand = new MachineOperand.Register(info.createRegister(RegisterClass.INT, info.isa.allIntegerRegs()));
+                    machineOperand = new MachineOperand.Register(info.createRegister(RegisterClass.INT, new RegisterConstraint.Any()));
                     tempRegisterMap.put(register, machineOperand);
                 }
                 yield machineOperand;

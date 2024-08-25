@@ -2,9 +2,13 @@ package com.d_m.select;
 
 import com.d_m.gen.Automata;
 import com.d_m.gen.GeneratedAutomata;
-import com.d_m.ssa.*;
+import com.d_m.ssa.Constant;
+import com.d_m.ssa.Instruction;
+import com.d_m.ssa.Value;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
 
 public class AlgorithmD {
     /**

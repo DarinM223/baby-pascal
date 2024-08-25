@@ -7,11 +7,13 @@ import com.d_m.construct.ConstructSSA;
 import com.d_m.dom.Examples;
 import com.d_m.gen.GeneratedAutomata;
 import com.d_m.gen.rules.DefaultAutomata;
-import com.d_m.select.regclass.X86;
 import com.d_m.select.instr.MachineFunction;
 import com.d_m.select.instr.MachinePrettyPrinter;
-import com.d_m.ssa.*;
+import com.d_m.select.regclass.ISA;
+import com.d_m.select.regclass.X86;
+import com.d_m.ssa.Function;
 import com.d_m.ssa.Module;
+import com.d_m.ssa.SsaConverter;
 import com.d_m.ssa.graphviz.GraphvizViewer;
 import com.d_m.ssa.graphviz.SsaGraph;
 import com.d_m.util.Fresh;
@@ -69,7 +71,8 @@ class SSADAGTest {
         } catch (Exception e) {
             automata = new DefaultAutomata();
         }
-        Codegen codegen = new Codegen(new X86(), automata);
+        ISA isa = new X86();
+        Codegen codegen = new Codegen(isa, automata);
         for (Function function : module.getFunctionList()) {
             codegen.startFunction(function);
         }
@@ -82,7 +85,7 @@ class SSADAGTest {
 //        System.out.println("DAG:");
 //        System.out.println(writer.toString());
 
-        MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(writer);
+        MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(isa, writer);
         for (Function function : module.getFunctionList()) {
             MachineFunction machineFunction = codegen.getFunction(function);
             machinePrinter.writeFunction(machineFunction);

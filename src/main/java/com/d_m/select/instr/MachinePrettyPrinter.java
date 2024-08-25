@@ -1,8 +1,7 @@
 package com.d_m.select.instr;
 
+import com.d_m.select.regclass.ISA;
 import com.d_m.select.regclass.Register;
-import com.d_m.select.regclass.RegisterClass;
-import com.d_m.select.regclass.RegisterConstraint;
 import com.d_m.util.Fresh;
 import com.d_m.util.FreshImpl;
 
@@ -14,11 +13,13 @@ import java.util.Map;
 public class MachinePrettyPrinter {
     private final Writer out;
 
+    private final ISA isa;
     private final Fresh freshBlocks;
     private final Map<MachineBasicBlock, Integer> blockId;
     private int indentationLevel;
 
-    public MachinePrettyPrinter(Writer out) {
+    public MachinePrettyPrinter(ISA isa, Writer out) {
+        this.isa = isa;
         this.out = out;
         this.freshBlocks = new FreshImpl();
         this.blockId = new HashMap<>();
@@ -87,9 +88,7 @@ public class MachinePrettyPrinter {
             case MachineOperand.Immediate(int immediate) -> out.write(Integer.toString(immediate));
             case MachineOperand.MemoryAddress(Register base, Register index, int scale, int displacement) ->
                     out.write("[" + base + " + " + index + " * " + scale + " + " + displacement + "]");
-            case MachineOperand.Register(Register.Physical(int registerNumber, RegisterClass registerClass)) -> out.write("%%" + registerClass + registerNumber);
-            case MachineOperand.Register(Register.Virtual(int registerNumber, RegisterClass registerClass, RegisterConstraint constraint)) ->
-                    out.write("%" + registerClass + registerNumber + constraint);
+            case MachineOperand.Register(Register register) -> out.write("%" + isa.pretty(register));
             case MachineOperand.StackSlot(int slot) -> out.write("slot" + slot);
         }
     }

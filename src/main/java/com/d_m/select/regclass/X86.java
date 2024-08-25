@@ -1,5 +1,11 @@
 package com.d_m.select.regclass;
 
+import com.google.common.collect.ImmutableMap;
+
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 public class X86 implements ISA {
     public RegisterConstraint allIntegerRegs() {
         return new RegisterConstraint.OnRegister();
@@ -69,6 +75,25 @@ public class X86 implements ISA {
         return new Register.Physical(15, RegisterClass.INT);
     }
 
+    public static final Map<String, Register.Physical> INT_REGISTER_MAPPING = ImmutableMap.<String, Register.Physical>builder()
+            .put("rax", rax())
+            .put("rbx", rbx())
+            .put("rcx", rcx())
+            .put("rdx", rdx())
+            .put("rdi", rdi())
+            .put("rsi", rsi())
+            .put("rbp", rbp())
+            .put("rsp", rsp())
+            .put("r8", r8())
+            .put("r9", r9())
+            .put("r10", r10())
+            .put("r11", r11())
+            .put("r12", r12())
+            .put("r13", r13())
+            .put("r14", r14())
+            .put("r15", r15())
+            .build();
+
     @Override
     public RegisterConstraint functionCallingConvention(RegisterClass registerClass, int param) {
         return switch (registerClass) {
@@ -91,24 +116,28 @@ public class X86 implements ISA {
 
     @Override
     public RegisterConstraint fromRegisterName(String registerName) {
-        return new RegisterConstraint.UsePhysical(switch (registerName) {
-            case "rax" -> rax();
-            case "rbx" -> rbx();
-            case "rcx" -> rcx();
-            case "rdx" -> rdx();
-            case "rdi" -> rdi();
-            case "rsi" -> rsi();
-            case "rbp" -> rbp();
-            case "rsp" -> rsp();
-            case "r8" -> r8();
-            case "r9" -> r9();
-            case "r10" -> r10();
-            case "r11" -> r11();
-            case "r12" -> r12();
-            case "r13" -> r13();
-            case "r14" -> r14();
-            case "r15" -> r15();
-            default -> throw new UnsupportedOperationException("Unknown register name " + registerName);
-        });
+        Register.Physical register = INT_REGISTER_MAPPING.get(registerName);
+        return new RegisterConstraint.UsePhysical(Objects.requireNonNull(register));
+    }
+
+    @Override
+    public String pretty(Register register) {
+        return switch (register) {
+            case Register.Physical physical -> prettyPhysical(physical);
+            case Register.Virtual(int registerNumber, _, RegisterConstraint.UsePhysical(var physical)) ->
+                    registerNumber + prettyPhysical(physical);
+            case Register.Virtual(int registerNumber, _, RegisterConstraint.Any()) -> registerNumber + "any";
+            case Register.Virtual(int registerNumber, _, RegisterConstraint.OnStack()) -> registerNumber + "stack";
+            case Register.Virtual(int registerNumber, _, RegisterConstraint.OnRegister()) -> registerNumber + "reg";
+            case Register.Virtual(int registerNumber, _, RegisterConstraint.ReuseOperand(int operandIndex)) ->
+                    registerNumber + "[reuse=" + operandIndex + "]";
+            case Register.Virtual(_, _, _) -> throw new UnsupportedOperationException("Invalid register constraint");
+        };
+    }
+
+    private String prettyPhysical(Register.Physical register) {
+        Map<Register.Physical, String> oppositeMap = INT_REGISTER_MAPPING.entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
+        String registerName = oppositeMap.get(register);
+        return Objects.requireNonNull(registerName);
     }
 }
