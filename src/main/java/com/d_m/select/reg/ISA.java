@@ -1,4 +1,4 @@
-package com.d_m.select.regclass;
+package com.d_m.select.reg;
 
 public interface ISA {
     RegisterConstraint functionCallingConvention(RegisterClass registerClass, int param);

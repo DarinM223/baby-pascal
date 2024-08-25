@@ -6,14 +6,14 @@ public sealed interface MachineOperand {
     record Immediate(int immediate) implements MachineOperand {
     }
 
-    record Register(com.d_m.select.regclass.Register register) implements MachineOperand {
+    record Register(com.d_m.select.reg.Register register) implements MachineOperand {
     }
 
     /**
      * A memory address operand in X86/64.
      * [base + index * scale + displacement]
      */
-    record MemoryAddress(com.d_m.select.regclass.Register base, com.d_m.select.regclass.Register index, int scale,
+    record MemoryAddress(com.d_m.select.reg.Register base, com.d_m.select.reg.Register index, int scale,
                          int displacement) implements MachineOperand {
     }
 

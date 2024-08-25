@@ -1,4 +1,4 @@
-package com.d_m.select.regclass;
+package com.d_m.select.reg;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class X86 implements ISA {
+public class X86_64_ISA implements ISA {
     public RegisterConstraint allIntegerRegs() {
         return new RegisterConstraint.OnRegister();
     }

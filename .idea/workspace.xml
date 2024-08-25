@@ -4,21 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Rework registers and register constraints and modify instructions to take in operand pairs (with use/def) instead of operands">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/construct/UniqueRenamer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/construct/UniqueRenamer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/AlgorithmD.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Tile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachinePrettyPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachinePrettyPrinter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/regclass/ISA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/regclass/ISA.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Better pretty printing of machine instructions">
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/regclass/X86.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/regclass/X86.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/GraphvizViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/GraphvizViewer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/DataflowTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/DataflowTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/SSADAGTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/SSADAGTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -261,14 +248,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00127" summary="Token symbol starts at 0 instead of -1&#10;&#10;Symbols can't be negative because they are indexed in bitsets">
-      <option name="closed" value="true" />
-      <created>1717961778579</created>
-      <option name="number" value="00127" />
-      <option name="presentableId" value="LOCAL-00127" />
-      <option name="project" value="LOCAL" />
-      <updated>1717961778579</updated>
     </task>
     <task id="LOCAL-00128" summary="Quads use variadic parameters instead of three address code">
       <option name="closed" value="true" />
@@ -654,14 +633,21 @@
       <option name="project" value="LOCAL" />
       <updated>1724507966486</updated>
     </task>
-    <option name="localTasksCounter" value="176" />
+    <task id="LOCAL-00176" summary="Better pretty printing of machine instructions">
+      <option name="closed" value="true" />
+      <created>1724597519737</created>
+      <option name="number" value="00176" />
+      <option name="presentableId" value="LOCAL-00176" />
+      <option name="project" value="LOCAL" />
+      <updated>1724597519737</updated>
+    </task>
+    <option name="localTasksCounter" value="177" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Attempt bitstring algorithm d implementation" />
     <MESSAGE value="Add numRules() to generated automaton and dynamically load it in SSADAG test" />
     <MESSAGE value="Generate rules in automaton so that the matcher can look up the rule from the rule number" />
     <MESSAGE value="Update README.md with com.d_m.gen package" />
@@ -686,7 +672,8 @@
     <MESSAGE value="Deletes old selection dag types and moves register class types into regclass package" />
     <MESSAGE value="Add projection syntax to rules and allow tiles to have multiple outputs" />
     <MESSAGE value="Rework registers and register constraints and modify instructions to take in operand pairs (with use/def) instead of operands" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rework registers and register constraints and modify instructions to take in operand pairs (with use/def) instead of operands" />
+    <MESSAGE value="Better pretty printing of machine instructions" />
+    <option name="LAST_COMMIT_MESSAGE" value="Better pretty printing of machine instructions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

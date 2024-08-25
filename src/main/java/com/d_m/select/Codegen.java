@@ -7,10 +7,10 @@ import com.d_m.select.instr.MachineBasicBlock;
 import com.d_m.select.instr.MachineFunction;
 import com.d_m.select.instr.MachineInstruction;
 import com.d_m.select.instr.MachineOperand;
-import com.d_m.select.regclass.ISA;
-import com.d_m.select.regclass.Register;
-import com.d_m.select.regclass.RegisterClass;
-import com.d_m.select.regclass.RegisterConstraint;
+import com.d_m.select.reg.ISA;
+import com.d_m.select.reg.Register;
+import com.d_m.select.reg.RegisterClass;
+import com.d_m.select.reg.RegisterConstraint;
 import com.d_m.ssa.*;
 import com.d_m.util.SymbolImpl;
 

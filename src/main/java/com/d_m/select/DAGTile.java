@@ -5,8 +5,8 @@ import com.d_m.select.instr.MachineInstruction;
 import com.d_m.select.instr.MachineOperand;
 import com.d_m.select.instr.MachineOperandKind;
 import com.d_m.select.instr.MachineOperandPair;
-import com.d_m.select.regclass.RegisterClass;
-import com.d_m.select.regclass.RegisterConstraint;
+import com.d_m.select.reg.RegisterClass;
+import com.d_m.select.reg.RegisterConstraint;
 import com.d_m.ssa.Instruction;
 import com.d_m.ssa.Value;
 

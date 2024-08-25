@@ -2,9 +2,9 @@ package com.d_m.select;
 
 import com.d_m.code.Operator;
 import com.d_m.gen.Rule;
-import com.d_m.select.regclass.Register;
-import com.d_m.select.regclass.RegisterClass;
-import com.d_m.select.regclass.RegisterConstraint;
+import com.d_m.select.reg.Register;
+import com.d_m.select.reg.RegisterClass;
+import com.d_m.select.reg.RegisterConstraint;
 import com.d_m.ssa.*;
 import com.d_m.util.SymbolImpl;
 import com.google.common.collect.Iterables;
