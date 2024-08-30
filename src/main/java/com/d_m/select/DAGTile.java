@@ -48,10 +48,18 @@ public class DAGTile implements Tile<Value> {
         }
     }
 
-    public MachineOperand[] emit(FunctionLoweringInfo info, List<MachineOperand[]> arguments, List<MachineInstruction> instructions) {
+    public MachineOperand[] emit(FunctionLoweringInfo info,
+                                 List<MachineOperand[]> arguments,
+                                 List<MachineInstruction> instructions,
+                                 List<MachineInstruction> terminator) {
         Map<Integer, MachineOperand> tempRegisterMap = new HashMap<>();
+        List<MachineInstruction> emitter = instructions;
         for (com.d_m.gen.Instruction instruction : rule.getCode().instructions()) {
-            if (instruction.name().equals("out")) {
+            if (instruction.name().equals("terminator")) {
+                terminator.clear();
+                emitter = terminator;
+                continue;
+            } else if (instruction.name().equals("out")) {
                 MachineOperand[] results = new MachineOperand[instruction.operands().size()];
                 for (int i = 0; i < instruction.operands().size(); i++) {
                     results[i] = toOperand(info, arguments, tempRegisterMap, instruction.operands().get(i)).operand();
@@ -59,15 +67,22 @@ public class DAGTile implements Tile<Value> {
                 return results;
             }
 
-            List<MachineOperandPair> operands = instruction.operands().stream().map(operand -> toOperand(info, arguments, tempRegisterMap, operand)).toList();
+            List<MachineOperandPair> operands = instruction
+                    .operands()
+                    .stream()
+                    .map(operand -> toOperand(info, arguments, tempRegisterMap, operand))
+                    .toList();
             MachineInstruction converted = new MachineInstruction(instruction.name(), operands);
-            instructions.add(converted);
+            emitter.add(converted);
         }
 
         return null;
     }
 
-    private MachineOperandPair toOperand(FunctionLoweringInfo info, List<MachineOperand[]> arguments, Map<Integer, MachineOperand> tempRegisterMap, OperandPair operandPair) {
+    private MachineOperandPair toOperand(FunctionLoweringInfo info,
+                                         List<MachineOperand[]> arguments,
+                                         Map<Integer, MachineOperand> tempRegisterMap,
+                                         OperandPair operandPair) {
         Operand operand = operandPair.operand();
         MachineOperand result = switch (operand) {
             case Operand.Immediate(int value) -> new MachineOperand.Immediate(value);

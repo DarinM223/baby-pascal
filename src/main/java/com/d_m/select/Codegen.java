@@ -92,12 +92,14 @@ public class Codegen {
             machineBlock.setPredecessors(block.getPredecessors().stream().map(blockMap::get).toList());
             machineBlock.setSuccessors(block.getSuccessors().stream().map(blockMap::get).toList());
 
+            List<MachineInstruction> terminator = new ArrayList<>();
             // For each tile, go bottom up emitting the code and marking the node
             // with the machine operand result. if a node's result has already been computed,
             // skip it.
             for (DAGTile tile : matched) {
-                bottomUpEmit(tileMapping, emitResultMapping, machineBlock.getInstructions(), tile);
+                bottomUpEmit(tileMapping, emitResultMapping, machineBlock.getInstructions(), terminator, tile);
             }
+            machineBlock.getInstructions().addAll(terminator);
         }
     }
 
@@ -109,7 +111,11 @@ public class Codegen {
         return functionLoweringInfo;
     }
 
-    private MachineOperand[] bottomUpEmit(Map<Value, DAGTile> tileMapping, Map<Value, MachineOperand[]> emitResultMapping, List<MachineInstruction> blockInstructions, DAGTile tile) {
+    private MachineOperand[] bottomUpEmit(Map<Value, DAGTile> tileMapping,
+                                          Map<Value, MachineOperand[]> emitResultMapping,
+                                          List<MachineInstruction> blockInstructions,
+                                          List<MachineInstruction> terminator,
+                                          DAGTile tile) {
         if (emitResultMapping.containsKey(tile.root())) {
             return emitResultMapping.get(tile.root());
         }
@@ -119,21 +125,21 @@ public class Codegen {
         // as its first operand.
         // TODO: this is a hack for now.
         if (tile.root() instanceof Constant constant) {
-            MachineOperand[] arg = { constantToOperand(constant) };
+            MachineOperand[] arg = {constantToOperand(constant)};
             args.add(arg);
         } else if (tile.root() instanceof Instruction instruction &&
                 (instruction.getOperator() == Operator.COPYTOREG || instruction.getOperator() == Operator.COPYFROMREG) &&
                 functionLoweringInfo.getRegister(tile.root()) instanceof Register register) {
-            MachineOperand[] arg = { new MachineOperand.Register(register) };
+            MachineOperand[] arg = {new MachineOperand.Register(register)};
             args.add(arg);
         }
         for (Value edgeNode : tile.edgeNodes()) {
             DAGTile edgeTile = tileMapping.get(edgeNode);
-            MachineOperand[] arg = bottomUpEmit(tileMapping, emitResultMapping, blockInstructions, edgeTile);
+            MachineOperand[] arg = bottomUpEmit(tileMapping, emitResultMapping, blockInstructions, terminator, edgeTile);
             args.add(arg);
         }
 
-        MachineOperand[] result = tile.emit(functionLoweringInfo, args, blockInstructions);
+        MachineOperand[] result = tile.emit(functionLoweringInfo, args, blockInstructions, terminator);
         emitResultMapping.put(tile.root(), result);
         return result;
     }

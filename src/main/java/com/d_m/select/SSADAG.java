@@ -59,7 +59,6 @@ public class SSADAG implements DAG<Value> {
     // instructions.
     private void splitIntoDAG() {
         List<Instruction> addToStart = new ArrayList<>();
-        List<Instruction> addToEnd = new ArrayList<>();
 
         for (Instruction instruction : block.getInstructions()) {
             rewriteOutOfBlockSideEffects(instruction);

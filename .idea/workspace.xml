@@ -4,8 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Better pretty printing of machine instructions">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/regclass/X86.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/regclass/X86.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Rename regclass package to reg">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rules/x86_64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineInstruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineInstruction.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -248,14 +253,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00128" summary="Quads use variadic parameters instead of three address code">
-      <option name="closed" value="true" />
-      <created>1718146604992</created>
-      <option name="number" value="00128" />
-      <option name="presentableId" value="LOCAL-00128" />
-      <option name="project" value="LOCAL" />
-      <updated>1718146604994</updated>
     </task>
     <task id="LOCAL-00129" summary="Remove PARAM and add function node to DAG">
       <option name="closed" value="true" />
@@ -641,14 +638,21 @@
       <option name="project" value="LOCAL" />
       <updated>1724597519737</updated>
     </task>
-    <option name="localTasksCounter" value="177" />
+    <task id="LOCAL-00177" summary="Rename regclass package to reg">
+      <option name="closed" value="true" />
+      <created>1724597913545</created>
+      <option name="number" value="00177" />
+      <option name="presentableId" value="LOCAL-00177" />
+      <option name="project" value="LOCAL" />
+      <updated>1724597913545</updated>
+    </task>
+    <option name="localTasksCounter" value="178" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add numRules() to generated automaton and dynamically load it in SSADAG test" />
     <MESSAGE value="Generate rules in automaton so that the matcher can look up the rule from the rule number" />
     <MESSAGE value="Update README.md with com.d_m.gen package" />
     <MESSAGE value="Modifies lexer to handle operator rule names and fixes AlgorithmD to match on the sample rules" />
@@ -673,7 +677,8 @@
     <MESSAGE value="Add projection syntax to rules and allow tiles to have multiple outputs" />
     <MESSAGE value="Rework registers and register constraints and modify instructions to take in operand pairs (with use/def) instead of operands" />
     <MESSAGE value="Better pretty printing of machine instructions" />
-    <option name="LAST_COMMIT_MESSAGE" value="Better pretty printing of machine instructions" />
+    <MESSAGE value="Rename regclass package to reg" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rename regclass package to reg" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -703,7 +708,7 @@
         <line-breakpoint enabled="true" type="java-line">
           <condition expression="result == null" language="JAVA" />
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java</url>
-          <line>71</line>
+          <line>86</line>
           <option name="timeStamp" value="73" />
         </line-breakpoint>
         <breakpoint type="java-exception">

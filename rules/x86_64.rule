@@ -30,7 +30,10 @@
     out [%1, use]
 }
 
-<(_, _) => (0) {
+<(_, _) => (2) {
+    terminator // Marks terminator of block.
+    cmp [$1, use], [$2, use]
+    jlt
 }
 
 Φ(_, _) => (0) {
@@ -69,7 +72,8 @@ COPYFROMREG(_) => (0) {
 }
 
 GOTO(_) => (1) {
-    goto [$1, use]
+    terminator
+    goto
 }
 
 START => (0) {
