@@ -42,7 +42,9 @@ public class AlgorithmD {
 
     public void run() {
         for (Value root : dag.roots()) {
-            stack.push(new State(root, automata.go(automata.root(), root.label())));
+            int rootState = automata.go(automata.root(), root.label());
+            stack.push(new State(root, rootState));
+            tabulate(rootState);
         }
 
         while (!stack.isEmpty()) {

@@ -7,12 +7,14 @@ import com.d_m.construct.ConstructSSA;
 import com.d_m.dom.Examples;
 import com.d_m.gen.GeneratedAutomata;
 import com.d_m.gen.rules.DefaultAutomata;
+import com.d_m.pass.CriticalEdgeSplitting;
 import com.d_m.select.instr.MachineFunction;
 import com.d_m.select.instr.MachinePrettyPrinter;
 import com.d_m.select.reg.ISA;
 import com.d_m.select.reg.X86_64_ISA;
 import com.d_m.ssa.Function;
 import com.d_m.ssa.Module;
+import com.d_m.ssa.PrettyPrinter;
 import com.d_m.ssa.SsaConverter;
 import com.d_m.ssa.graphviz.GraphvizViewer;
 import com.d_m.ssa.graphviz.SsaGraph;
@@ -63,6 +65,8 @@ class SSADAGTest {
 
     @Test
     void postorder() throws IOException {
+        new CriticalEdgeSplitting().runModule(module);
+
         StringWriter writer = new StringWriter();
         Map<Function, FunctionLoweringInfo> infoMap = new HashMap<>();
         GeneratedAutomata automata;
@@ -80,10 +84,10 @@ class SSADAGTest {
             codegen.lowerFunction(function);
             infoMap.put(function, codegen.getFunctionLoweringInfo());
         }
-//        PrettyPrinter printer = new PrettyPrinter(writer);
-//        printer.writeModule(module);
-//        System.out.println("DAG:");
-//        System.out.println(writer.toString());
+        PrettyPrinter printer = new PrettyPrinter(writer);
+        printer.writeModule(module);
+        System.out.println("DAG:");
+        System.out.println(writer);
 
         MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(isa, writer);
         for (Function function : module.getFunctionList()) {

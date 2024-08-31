@@ -36,6 +36,12 @@
     jl
 }
 
+<=(_, _) => (2) {
+    terminator
+    cmp [$1, use], [$2, use]
+    jle
+}
+
 Φ(_, _) => (0) {
     phi [$1, use], [$2, use], [%1, def]
     out [%1, use]
@@ -76,7 +82,21 @@ GOTO(_) => (1) {
     jmp
 }
 
+GOTO => (1) {
+    terminator
+    jmp
+}
+
+NOP => (0) {
+}
+
 START => (0) {
+}
+
+RETURN(_, _) => (1) {
+    terminator
+    mov [$2, use], [%rax, def]
+    out [%rax, use]
 }
 
 // pattern for handling immediates.
