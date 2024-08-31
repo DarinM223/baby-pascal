@@ -4,4 +4,5 @@ public interface ISA {
     RegisterConstraint functionCallingConvention(RegisterClass registerClass, int param);
     RegisterConstraint fromRegisterName(String registerName);
     String pretty(Register register);
+    boolean isBranch(String opName);
 }

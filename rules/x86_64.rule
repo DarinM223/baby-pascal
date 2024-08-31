@@ -33,7 +33,7 @@
 <(_, _) => (2) {
     terminator // Marks terminator of block.
     cmp [$1, use], [$2, use]
-    jlt
+    jl
 }
 
 Φ(_, _) => (0) {
@@ -73,7 +73,7 @@ COPYFROMREG(_) => (0) {
 
 GOTO(_) => (1) {
     terminator
-    goto
+    jmp
 }
 
 START => (0) {

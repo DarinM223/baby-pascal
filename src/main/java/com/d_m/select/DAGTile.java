@@ -1,10 +1,7 @@
 package com.d_m.select;
 
 import com.d_m.gen.*;
-import com.d_m.select.instr.MachineInstruction;
-import com.d_m.select.instr.MachineOperand;
-import com.d_m.select.instr.MachineOperandKind;
-import com.d_m.select.instr.MachineOperandPair;
+import com.d_m.select.instr.*;
 import com.d_m.select.reg.RegisterClass;
 import com.d_m.select.reg.RegisterConstraint;
 import com.d_m.ssa.Instruction;
@@ -49,31 +46,41 @@ public class DAGTile implements Tile<Value> {
     }
 
     public MachineOperand[] emit(FunctionLoweringInfo info,
+                                 MachineBasicBlock block,
                                  List<MachineOperand[]> arguments,
-                                 List<MachineInstruction> instructions,
                                  List<MachineInstruction> terminator) {
         Map<Integer, MachineOperand> tempRegisterMap = new HashMap<>();
-        List<MachineInstruction> emitter = instructions;
+        List<MachineInstruction> emitter = block.getInstructions();
         for (com.d_m.gen.Instruction instruction : rule.getCode().instructions()) {
             if (instruction.name().equals("terminator")) {
                 terminator.clear();
                 emitter = terminator;
-                continue;
             } else if (instruction.name().equals("out")) {
                 MachineOperand[] results = new MachineOperand[instruction.operands().size()];
                 for (int i = 0; i < instruction.operands().size(); i++) {
                     results[i] = toOperand(info, arguments, tempRegisterMap, instruction.operands().get(i)).operand();
                 }
                 return results;
+            } else if (info.isa.isBranch(instruction.name())) {
+                // Put branch successors into operands.
+                // For multiple successors, emit jmps with those blocks.
+                // TODO: make a pass that removes jmps to blocks that come right after the current block.
+                List<MachineBasicBlock> successors = block.getSuccessors();
+                for (int i = 0; i < successors.size(); i++) {
+                    MachineBasicBlock successor = successors.get(i);
+                    List<MachineOperandPair> operands = List.of(new MachineOperandPair(new MachineOperand.BasicBlock(successor), MachineOperandKind.USE));
+                    MachineInstruction converted = new MachineInstruction(i == 0 ? instruction.name() : "jmp", operands);
+                    emitter.add(converted);
+                }
+            } else {
+                List<MachineOperandPair> operands = instruction
+                        .operands()
+                        .stream()
+                        .map(operand -> toOperand(info, arguments, tempRegisterMap, operand))
+                        .toList();
+                MachineInstruction converted = new MachineInstruction(instruction.name(), operands);
+                emitter.add(converted);
             }
-
-            List<MachineOperandPair> operands = instruction
-                    .operands()
-                    .stream()
-                    .map(operand -> toOperand(info, arguments, tempRegisterMap, operand))
-                    .toList();
-            MachineInstruction converted = new MachineInstruction(instruction.name(), operands);
-            emitter.add(converted);
         }
 
         return null;

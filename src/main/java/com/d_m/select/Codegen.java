@@ -97,7 +97,7 @@ public class Codegen {
             // with the machine operand result. if a node's result has already been computed,
             // skip it.
             for (DAGTile tile : matched) {
-                bottomUpEmit(tileMapping, emitResultMapping, machineBlock.getInstructions(), terminator, tile);
+                bottomUpEmit(machineBlock, tileMapping, emitResultMapping, terminator, tile);
             }
             machineBlock.getInstructions().addAll(terminator);
         }
@@ -111,9 +111,9 @@ public class Codegen {
         return functionLoweringInfo;
     }
 
-    private MachineOperand[] bottomUpEmit(Map<Value, DAGTile> tileMapping,
+    private MachineOperand[] bottomUpEmit(MachineBasicBlock block,
+                                          Map<Value, DAGTile> tileMapping,
                                           Map<Value, MachineOperand[]> emitResultMapping,
-                                          List<MachineInstruction> blockInstructions,
                                           List<MachineInstruction> terminator,
                                           DAGTile tile) {
         if (emitResultMapping.containsKey(tile.root())) {
@@ -135,11 +135,11 @@ public class Codegen {
         }
         for (Value edgeNode : tile.edgeNodes()) {
             DAGTile edgeTile = tileMapping.get(edgeNode);
-            MachineOperand[] arg = bottomUpEmit(tileMapping, emitResultMapping, blockInstructions, terminator, edgeTile);
+            MachineOperand[] arg = bottomUpEmit(block, tileMapping, emitResultMapping, terminator, edgeTile);
             args.add(arg);
         }
 
-        MachineOperand[] result = tile.emit(functionLoweringInfo, args, blockInstructions, terminator);
+        MachineOperand[] result = tile.emit(functionLoweringInfo, block, args, terminator);
         emitResultMapping.put(tile.root(), result);
         return result;
     }

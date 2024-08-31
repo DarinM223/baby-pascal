@@ -135,6 +135,17 @@ public class X86_64_ISA implements ISA {
         };
     }
 
+    @Override
+    public boolean isBranch(String opName) {
+        return switch (opName) {
+            case "jmp", "jo", "jno", "js", "jns", "je", "jz", "jb", "jnae", "jc", "jnb", "jae", "jnc", "jbe", "jna",
+                 "ja",
+                 "jnbe", "jl", "jnge", "jge", "jnl", "jle", "jng", "jg", "jnle", "jp", "jpe", "jnp", "jpo", "jcxz",
+                 "jecxz" -> true;
+            default -> false;
+        };
+    }
+
     private String prettyPhysical(Register.Physical register) {
         Map<Register.Physical, String> oppositeMap = INT_REGISTER_MAPPING.entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
         String registerName = oppositeMap.get(register);
