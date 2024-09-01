@@ -6,7 +6,7 @@ import com.google.common.collect.SetMultimap;
 import java.util.*;
 import java.util.function.Function;
 
-public class DAGSelect<Node extends Comparable<Node>, TileImpl extends Tile<Node>, DAGImpl extends DAG<Node>> {
+public class DAGSelect<Node extends Comparable<Node>, TileImpl extends Tile<Node> & Comparable<TileImpl>, DAGImpl extends DAG<Node>> {
     private final Map<Node, TileImpl> bestChoiceForNodeTile;
     private final Map<Node, Integer> bestChoiceForNodeCost;
     private final Set<Node> fixedNodes;
@@ -21,7 +21,7 @@ public class DAGSelect<Node extends Comparable<Node>, TileImpl extends Tile<Node
         bestChoiceForNodeTile = new HashMap<>();
         bestChoiceForNodeCost = new HashMap<>();
         fixedNodes = new HashSet<>();
-        matchedTiles = new HashSet<>();
+        matchedTiles = new TreeSet<>();
         coveringTiles = LinkedHashMultimap.create();
     }
 

@@ -33,12 +33,14 @@ public class Codegen {
     private final FunctionLoweringInfo functionLoweringInfo;
     private final Map<Function, MachineFunction> functionMap;
     private final Map<Block, MachineBasicBlock> blockMap;
+    private final Map<Block, SSADAG> blockDagMap;
 
     public Codegen(ISA isa, GeneratedAutomata automata) {
         this.automata = automata;
         this.functionLoweringInfo = new FunctionLoweringInfo(isa);
         this.functionMap = new HashMap<>();
         this.blockMap = new HashMap<>();
+        this.blockDagMap = new HashMap<>();
     }
 
     public void startFunction(Function function) {
@@ -46,10 +48,25 @@ public class Codegen {
         functionMap.put(function, machineFunction);
     }
 
-    public void lowerFunction(Function function) {
+    public Map<Block, Set<DAGTile>> matchTilesInBlocks(Function function) {
+        populateBlockDagMap(function);
+        Map<Block, Set<DAGTile>> result = new HashMap<>(function.getBlocks().size());
+        for (Block block : function.getBlocks()) {
+            result.put(block, matchedTiles(block));
+        }
+        return result;
+    }
+
+    public void emitFunction(Function function, Map<Block, Set<DAGTile>> blockTilesMap) {
+        for (Block block : function.getBlocks()) {
+            emitBlock(block, blockTilesMap.get(block));
+        }
+    }
+
+    private void populateBlockDagMap(Function function) {
         MachineFunction machineFunction = functionMap.get(function);
         blockMap.clear();
-        Map<Block, SSADAG> blockDagMap = new HashMap<>();
+        blockDagMap.clear();
         for (int argumentNumber = 0; argumentNumber < function.getArguments().size(); argumentNumber++) {
             RegisterConstraint constraint = functionLoweringInfo.isa.functionCallingConvention(RegisterClass.INT, argumentNumber);
             Argument argument = function.getArguments().get(argumentNumber);
@@ -70,37 +87,37 @@ public class Codegen {
             blockMap.put(block, machineBlock);
             blockDagMap.put(block, dag);
         }
-        // Do these after creating all the DAGs because the
-        // out of block edges are not completely cut until all the
-        // blocks have been converted into SSADAGs.
-        for (Block block : function.getBlocks()) {
-            SSADAG dag = blockDagMap.get(block);
-            AlgorithmD algorithmD = new AlgorithmD(dag, automata);
-            algorithmD.run();
-            DAGSelect<Value, DAGTile, SSADAG> dagSelection = new DAGSelect<>(dag, dag::getTiles);
-            dagSelection.select();
-            Set<DAGTile> matched = dagSelection.matchedTiles();
-            // Convert tiles from Set<DAGTile> to Map<Value, DAGTile> for mapping from tile root to tile.
-            Map<Value, DAGTile> tileMapping = new HashMap<>(matched.size());
-            Map<Value, MachineOperand[]> emitResultMapping = new HashMap<>();
-            for (DAGTile tile : matched) {
-                System.out.println("Matched tile with rule: " + tile.getRule() + " at root: " + tile.getRoot());
-                tileMapping.put(tile.root(), tile);
-            }
+    }
 
-            MachineBasicBlock machineBlock = blockMap.get(block);
-            machineBlock.setPredecessors(block.getPredecessors().stream().map(blockMap::get).toList());
-            machineBlock.setSuccessors(block.getSuccessors().stream().map(blockMap::get).toList());
+    private Set<DAGTile> matchedTiles(Block block) {
+        SSADAG dag = blockDagMap.get(block);
+        AlgorithmD algorithmD = new AlgorithmD(dag, automata);
+        algorithmD.run();
+        DAGSelect<Value, DAGTile, SSADAG> dagSelection = new DAGSelect<>(dag, dag::getTiles);
+        dagSelection.select();
+        return dagSelection.matchedTiles();
+    }
 
-            List<MachineInstruction> terminator = new ArrayList<>();
-            // For each tile, go bottom up emitting the code and marking the node
-            // with the machine operand result. if a node's result has already been computed,
-            // skip it.
-            for (DAGTile tile : matched) {
-                bottomUpEmit(machineBlock, tileMapping, emitResultMapping, terminator, tile);
-            }
-            machineBlock.getInstructions().addAll(terminator);
+    private void emitBlock(Block block, Set<DAGTile> matched) {
+        // Convert tiles from Set<DAGTile> to Map<Value, DAGTile> for mapping from tile root to tile.
+        Map<Value, DAGTile> tileMapping = new HashMap<>(matched.size());
+        Map<Value, MachineOperand[]> emitResultMapping = new HashMap<>();
+        for (DAGTile tile : matched) {
+            tileMapping.put(tile.root(), tile);
         }
+
+        MachineBasicBlock machineBlock = blockMap.get(block);
+        machineBlock.setPredecessors(block.getPredecessors().stream().map(blockMap::get).toList());
+        machineBlock.setSuccessors(block.getSuccessors().stream().map(blockMap::get).toList());
+
+        List<MachineInstruction> terminator = new ArrayList<>();
+        // For each tile, go bottom up emitting the code and marking the node
+        // with the machine operand result. if a node's result has already been computed,
+        // skip it.
+        for (DAGTile tile : matched) {
+            bottomUpEmit(machineBlock, tileMapping, emitResultMapping, terminator, tile);
+        }
+        machineBlock.getInstructions().addAll(terminator);
     }
 
     public MachineFunction getFunction(Function function) {

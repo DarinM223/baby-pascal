@@ -48,7 +48,7 @@ public class SSADAG implements DAG<Value> {
         Set<Integer> matchedRules = matches.get(value);
         Set<DAGTile> tiles = new HashSet<>(matchedRules.size());
         for (int ruleNumber : matchedRules) {
-            tiles.add(new DAGTile(ruleMap.get(ruleNumber), value));
+            tiles.add(new DAGTile(ruleNumber, ruleMap.get(ruleNumber), value));
         }
         return tiles;
     }

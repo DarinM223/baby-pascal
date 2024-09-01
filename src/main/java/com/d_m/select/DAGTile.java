@@ -9,13 +9,15 @@ import com.d_m.ssa.Value;
 
 import java.util.*;
 
-public class DAGTile implements Tile<Value> {
+public class DAGTile implements Tile<Value>, Comparable<DAGTile> {
+    private final int ruleNumber;
     private final Rule rule;
     private final Value root;
     private final Set<Value> covered;
     private final Set<Value> edgeNodes;
 
-    public DAGTile(Rule rule, Value root) {
+    public DAGTile(int ruleNumber, Rule rule, Value root) {
+        this.ruleNumber = ruleNumber;
         this.rule = rule;
         this.root = root;
         this.covered = new HashSet<>();
@@ -119,6 +121,10 @@ public class DAGTile implements Tile<Value> {
         return new MachineOperandPair(result, operandPair.kind());
     }
 
+    public int getRuleNumber() {
+        return ruleNumber;
+    }
+
     public Rule getRule() {
         return rule;
     }
@@ -150,5 +156,22 @@ public class DAGTile implements Tile<Value> {
     @Override
     public Value root() {
         return root;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DAGTile dagTile)) return false;
+        return ruleNumber == dagTile.ruleNumber && Objects.equals(root, dagTile.root);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ruleNumber, root);
+    }
+
+    @Override
+    public int compareTo(DAGTile o) {
+        return Comparator.comparing(DAGTile::getRuleNumber).thenComparing(DAGTile::getRoot).compare(this, o);
     }
 }
