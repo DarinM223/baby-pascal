@@ -17,7 +17,6 @@ import com.d_m.util.SymbolImpl;
 import java.util.*;
 
 public class Codegen {
-    // TODO:
     // Step 1: All operands that are not in a basic block are
     // created instructions COPYFROMREG at the beginning of the block.
     // If a virtual register does not exist for the operand value, then it will

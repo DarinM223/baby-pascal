@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class SSADAGTest {
+class CodegenTest {
     Fresh fresh;
     Symbol symbol;
     ThreeAddressCode threeAddressCode;
@@ -61,7 +61,7 @@ class SSADAGTest {
     }
 
     @Test
-    void matchedTiles() throws IOException {
+    void matchedTiles() {
         GeneratedAutomata automata;
         try {
             automata = (GeneratedAutomata) Class.forName("com.d_m.gen.rules.X86_64").getDeclaredConstructor().newInstance();

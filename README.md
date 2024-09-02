@@ -177,7 +177,13 @@ implementation.
 
 This package contains a main class `com.d_m.gen.Gen` which is a program that parses a rule
 file for a specific ISA and generates a Java file with the parsed rules and the compiled
-Aho-Corasick automaton for matching the rules on the SSA DAG.
+Aho-Corasick automaton for matching the rules on the SSA DAG. The compiled rules show up in the
+package `com.d_m.gen.rules`.
+
+The class `Scanner` lexes a string and returns a list of tokens. The class `Parser` takes in the list of tokens
+and has a method `parseRule` which uses recursive descent to parse a rule. The class `Automata` takes a list of
+rules and constructs an in-memory automaton from them. The class `AutomataWriter` takes an `Automata` and writes
+it to a Java file. This compiled automaton file can then be loaded dynamically through Java's class loading system.
 
 This generator is designed to be ran through the maven-exec-plugin. The rule files to parse
 are contained as command line arguments to the plugin in [pom.xml](./pom.xml). To run the generator, run:
@@ -186,11 +192,40 @@ are contained as command line arguments to the plugin in [pom.xml](./pom.xml). T
 mvn clean compile exec:java
 ```
 
+The lexer and parser is based off of the related chapters in Crafting Interpreters. Pattern matching with string
+matching using an
+Aho-Corasick automaton is covered in the paper "Pattern Matching in
+Trees"
+from Hoffman and O'Donnell. The automata code generation is based off of the code in ML-Twig.
+
 ### com.d_m.select
 
 Instruction selection is currently done on the block level.
 There are two types of ways we can represent blocks in a way
 where we can do pattern matching instruction selection on:
 lists of trees, or DAGs. Lists of trees are broken so that side
-effects happen in order, and DAGs pass through side effect tokens as inputs 
+effects happen in order, and DAGs pass through side effect tokens as inputs
 and outputs starting at an entry node to enforce the ordering.
+
+We use the latter
+method by breaking cross-block uses into COPYTOREG and COPYFROMREG. Our SSA representation
+already threads side effect tokens globally, but there is some rewriting so that every block
+has its own start token, which is done in the class `SSADAG`, which also implements
+some helper functions needed for the tile cutting instruction selection.
+
+The class `AlgorithmD` runs with a given `SSADAG` and automata and adds the matched tiles
+to a mapping in `SSADAG` so that matched tiles for a `Value` can be retrieved through the method `SSADAG::getTiles`.
+
+The class `DAGSelect` uses this information to get the optimal tiling via the tile cutting algorithm described
+in the paper "Near-Optimal Instruction Selection on DAGs" by Koes and Goldstein. It returns a set of `DAGTile`, which
+has a method `edgeNodes()` which returns the edge nodes of a tile. Since a tile has edge nodes, which correspond to
+other tiles,
+a set of tiles is its own DAG.
+
+The class `Codegen` uses `AlgorithmD` and `DAGSelect` to get the set of matched tiles. It then uses the method
+`bottomUpEmit` to traverse the tile DAG bottom up and emit each tile. The result is that each `Function` will have a
+corresponding `MachineFunction`, each `Block` will have a corresponding `MachineBlock` which contains multiple
+`MachineInstruction`s, etc. This machine representation still preserves SSA and contains phi instructions. Each definition
+in an instruction will be an unique virtual register.
+
+### com.d_m.deconstruct
