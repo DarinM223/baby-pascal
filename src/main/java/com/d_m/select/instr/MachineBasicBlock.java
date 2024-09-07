@@ -1,20 +1,24 @@
 package com.d_m.select.instr;
 
+import com.d_m.cfg.IBlock;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class MachineBasicBlock {
+public class MachineBasicBlock implements IBlock<MachineBasicBlock> {
     private final int id = IdGenerator.newId();
     private MachineFunction parent;
 
     private List<MachineBasicBlock> predecessors;
     private List<MachineBasicBlock> successors;
-    private List<MachineInstruction> instructions;
+    private final List<MachineInstruction> instructions;
+    private int dominatorTreeLevel;
 
     public MachineBasicBlock(MachineFunction parent) {
         this.parent = parent;
         instructions = new ArrayList<>();
+        dominatorTreeLevel = -1;
     }
 
     public List<MachineInstruction> getInstructions() {
@@ -27,6 +31,16 @@ public class MachineBasicBlock {
 
     public List<MachineBasicBlock> getSuccessors() {
         return successors;
+    }
+
+    @Override
+    public int getDominatorTreeLevel() {
+        return dominatorTreeLevel;
+    }
+
+    @Override
+    public void setDominatorTreeLevel(int level) {
+        dominatorTreeLevel = level;
     }
 
     public void setPredecessors(List<MachineBasicBlock> predecessors) {

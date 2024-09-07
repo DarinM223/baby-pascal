@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Modifies README">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/deconstruct/InsertParallelMoves.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/deconstruct/SequentializeParallelMoves.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/InstructionNumbering.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,40 +40,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Gen.executor": "Run",
-    "Application.Main.executor": "Run",
-    "JUnit.All tests.executor": "Run",
-    "JUnit.BlockTest.createBlocks.executor": "Run",
-    "JUnit.BlockTest.executor": "Run",
-    "JUnit.BuilderTest.convertFunction.executor": "Debug",
-    "JUnit.DataflowTest.genKill.executor": "Run",
-    "JUnit.DataflowTest.genKillAndLiveness.executor": "Run",
-    "JUnit.LengauerTarjanTest.idom.executor": "Run",
-    "JUnit.SSADAGTest.postorder.executor": "Run",
-    "JUnit.ThreeAddressCodeTest.normalize.executor": "Run",
-    "JUnit.UniqueRenamerTest.executor": "Run",
-    "Maven.baby-pascal [clean,compile,exec:java].executor": "Run",
-    "Maven.baby-pascal [clean].executor": "Run",
-    "Maven.baby-pascal [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor": "Run",
-    "Maven.baby-pascal [org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile].executor": "Run",
-    "Maven.baby-pascal [org.codehaus.mojo:exec-maven-plugin:3.1.0:java].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "master",
-    "ignore.preview.features.used": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/d/Documents/java/baby-pascal/target/classes",
-    "project.structure.last.edited": "SDKs",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Gen.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All tests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BlockTest.createBlocks.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BlockTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BuilderTest.convertFunction.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.DataflowTest.genKill.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.DataflowTest.genKillAndLiveness.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LengauerTarjanTest.idom.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SSADAGTest.postorder.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ThreeAddressCodeTest.normalize.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UniqueRenamerTest.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.baby-pascal [clean,compile,exec:java].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.baby-pascal [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.baby-pascal [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.baby-pascal [org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.baby-pascal [org.codehaus.mojo:exec-maven-plugin:3.1.0:java].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/d/Documents/java/baby-pascal/target/classes&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.d_m.gen" />
