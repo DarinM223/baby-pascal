@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Modifies README">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/InstructionNumbering.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Number instructions for linear scan">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/deconstruct/SequentializeParallelMoves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/deconstruct/SequentializeParallelMoves.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -250,14 +249,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00134" summary="Starting to break an SSA function into DAGS with COPYFROMREG and COPYTOREG">
-      <option name="closed" value="true" />
-      <created>1718555469564</created>
-      <option name="number" value="00134" />
-      <option name="presentableId" value="LOCAL-00134" />
-      <option name="project" value="LOCAL" />
-      <updated>1718555469565</updated>
     </task>
     <task id="LOCAL-00135" summary="Threads side effect tokens through the created COPYFROMREG and COPYTOREG instructions">
       <option name="closed" value="true" />
@@ -643,14 +634,21 @@
       <option name="project" value="LOCAL" />
       <updated>1725286617466</updated>
     </task>
-    <option name="localTasksCounter" value="183" />
+    <task id="LOCAL-00183" summary="Number instructions for linear scan">
+      <option name="closed" value="true" />
+      <created>1725723808460</created>
+      <option name="number" value="00183" />
+      <option name="presentableId" value="LOCAL-00183" />
+      <option name="project" value="LOCAL" />
+      <updated>1725723808460</updated>
+    </task>
+    <option name="localTasksCounter" value="184" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix selection throwing exceptions and attempt edgeNodes() for tiles" />
     <MESSAGE value="Start rules for COPYTOREG and COPYFROMREG and fix DAG matching bug" />
     <MESSAGE value="Small fixes to get some tiles matching" />
     <MESSAGE value="Properly hashes tokens and merges duplicate paths in automaton" />
@@ -675,7 +673,8 @@
     <MESSAGE value="Match root nodes and add rules so that the example generates all the instructions" />
     <MESSAGE value="Emits tiles in order of rule number then value id and adds expectation based unit tests for code generation" />
     <MESSAGE value="Modifies README" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modifies README" />
+    <MESSAGE value="Number instructions for linear scan" />
+    <option name="LAST_COMMIT_MESSAGE" value="Number instructions for linear scan" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
