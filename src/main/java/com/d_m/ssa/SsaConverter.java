@@ -89,6 +89,8 @@ public class SsaConverter {
             }
             for (com.d_m.cfg.Block block : declaration.body().blocks()) {
                 Block rewrittenBlock = rewrittenBlocks.get(block);
+                rewrittenBlock.setEntry(rewrittenBlocks.get(block.getEntry()));
+                rewrittenBlock.setExit(rewrittenBlocks.get(block.getExit()));
                 for (com.d_m.cfg.Block predecessor : block.getPredecessors().stream().sorted().toList()) {
                     Block rewrittenPredecessor = rewrittenBlocks.get(predecessor);
                     rewrittenBlock.getPredecessors().add(rewrittenPredecessor);

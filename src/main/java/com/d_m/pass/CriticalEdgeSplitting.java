@@ -26,6 +26,8 @@ public class CriticalEdgeSplitting extends BooleanFunctionPass {
                     // split edge from predecessor to block
                     Instruction jump = new Instruction(null, null, Operator.GOTO);
                     Block newBlock = new Block(function, List.of(jump), new ArrayList<>());
+                    newBlock.setEntry(block.getEntry());
+                    newBlock.setExit(block.getExit());
                     function.getBlocks().add(newBlock);
                     int predToBlockIndex = predecessor.getSuccessors().indexOf(block);
                     predecessor.getSuccessors().set(predToBlockIndex, newBlock);

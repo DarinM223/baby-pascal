@@ -4,11 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Attempt sequentialize parallel moves">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Sequentialize parallel moves in block">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/BlockLiveness.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/BlockLivenessInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineGenKillInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/deconstruct/SequentializeParallelMoves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/deconstruct/SequentializeParallelMoves.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/GenKillInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/GenKillInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/CriticalEdgeSplitting.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/CriticalEdgeSplitting.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,9 +27,9 @@
       <list>
         <option value="Record" />
         <option value="JUnit5 Test Class" />
-        <option value="Interface" />
         <option value="Enum" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -91,8 +98,8 @@
       <recent name="com.d_m.ast" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="com.d_m.select" />
       <recent name="com.d_m.select.instr" />
+      <recent name="com.d_m.select" />
       <recent name="com.d_m.code" />
       <recent name="com.d_m.code.normalize" />
     </key>
@@ -251,14 +258,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00136" summary="Allows COPYFROMREGs to be created even though a COPYTOREG has already been created.">
-      <option name="closed" value="true" />
-      <created>1718675336783</created>
-      <option name="number" value="00136" />
-      <option name="presentableId" value="LOCAL-00136" />
-      <option name="project" value="LOCAL" />
-      <updated>1718675336784</updated>
     </task>
     <task id="LOCAL-00137" summary="Rewrites CALL inputs to copy to virtual registers beforehand">
       <option name="closed" value="true" />
@@ -644,14 +643,21 @@
       <option name="project" value="LOCAL" />
       <updated>1725810023874</updated>
     </task>
-    <option name="localTasksCounter" value="185" />
+    <task id="LOCAL-00185" summary="Sequentialize parallel moves in block">
+      <option name="closed" value="true" />
+      <created>1726237671293</created>
+      <option name="number" value="00185" />
+      <option name="presentableId" value="LOCAL-00185" />
+      <option name="project" value="LOCAL" />
+      <updated>1726237671293</updated>
+    </task>
+    <option name="localTasksCounter" value="186" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Small fixes to get some tiles matching" />
     <MESSAGE value="Properly hashes tokens and merges duplicate paths in automaton" />
     <MESSAGE value="Fixes wildcard path length and starts refactor towards counters" />
     <MESSAGE value="Attempt to print matched tiles in reverse order, add rules to match more nodes" />
@@ -676,7 +682,8 @@
     <MESSAGE value="Modifies README" />
     <MESSAGE value="Number instructions for linear scan" />
     <MESSAGE value="Attempt sequentialize parallel moves" />
-    <option name="LAST_COMMIT_MESSAGE" value="Attempt sequentialize parallel moves" />
+    <MESSAGE value="Sequentialize parallel moves in block" />
+    <option name="LAST_COMMIT_MESSAGE" value="Sequentialize parallel moves in block" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

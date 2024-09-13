@@ -4,12 +4,11 @@ import com.d_m.code.ConstantAddress;
 import com.d_m.code.NameAddress;
 import com.d_m.code.Operator;
 import com.d_m.code.Quad;
-import com.d_m.dom.PostOrder;
 import com.d_m.util.Symbol;
 
 import java.util.*;
 
-public class Block implements Comparable<Block>, IBlock<Block> {
+public class Block extends BlockLiveness<Block> implements Comparable<Block>, IBlock<Block>, BlockLivenessInfo {
     private final int id;
     private final List<Phi> phis;
     private final List<Quad> code;
@@ -68,20 +67,6 @@ public class Block implements Comparable<Block>, IBlock<Block> {
         }
     }
 
-    public void runLiveness() {
-        // Calculate liveness for all the blocks.
-        // Runs reverse post order traversal on the reverse CFG
-        // because liveness analysis is backwards dataflow.
-        PostOrder<Block> postOrder = new PostOrder<Block>().runBackwards(this.exit);
-        boolean changed;
-        do {
-            changed = false;
-            for (Block block : postOrder.reversed()) {
-                changed |= block.livenessRound();
-            }
-        } while (changed);
-    }
-
     public List<Block> blocks() {
         BitSet seen = new BitSet();
         Queue<Block> blocks = new LinkedList<>();
@@ -106,22 +91,6 @@ public class Block implements Comparable<Block>, IBlock<Block> {
         }
         results.add(exit);
         return results;
-    }
-
-    private boolean livenessRound() {
-        BitSet liveIn = (BitSet) live.liveOut.clone();
-        liveIn.andNot(genKill.killBlock);
-        liveIn.or(genKill.genBlock);
-        BitSet liveOut = new BitSet();
-        for (Block successor : successors) {
-            liveOut.or(successor.live.liveIn);
-        }
-        boolean same = liveIn.equals(live.liveIn) && liveOut.equals(live.liveOut);
-        if (!same) {
-            this.live.liveIn = liveIn;
-            this.live.liveOut = liveOut;
-        }
-        return !same;
     }
 
     public String pretty(Symbol symbol) {
@@ -169,6 +138,36 @@ public class Block implements Comparable<Block>, IBlock<Block> {
 
     public Block getEntry() {
         return entry;
+    }
+
+    @Override
+    public BitSet getKillBlock() {
+        return genKill.killBlock;
+    }
+
+    @Override
+    public BitSet getGenBlock() {
+        return genKill.genBlock;
+    }
+
+    @Override
+    public BitSet getLiveOut() {
+        return live.liveOut;
+    }
+
+    @Override
+    public BitSet getLiveIn() {
+        return live.liveIn;
+    }
+
+    @Override
+    public void setLiveOut(BitSet liveOut) {
+        live.liveOut = liveOut;
+    }
+
+    @Override
+    public void setLiveIn(BitSet liveIn) {
+        live.liveIn = liveIn;
     }
 
     public Block getExit() {

@@ -18,11 +18,9 @@ public class GenKillInfo {
     public GenKillInfo(List<Quad> code) {
         int length = code.size();
         this.gen = new ArrayList<>(length);
-        for (int i = 0; i < length; i++) {
-            this.gen.add(new BitSet());
-        }
         this.kill = new ArrayList<>(length);
         for (int i = 0; i < length; i++) {
+            this.gen.add(new BitSet());
             this.kill.add(new BitSet());
         }
         genBlock = new BitSet();

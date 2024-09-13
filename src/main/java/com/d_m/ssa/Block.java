@@ -13,6 +13,8 @@ public class Block extends Constant implements IBlock<Block> {
     private final Function parent;
     private final ListWrapper<Instruction> instructions;
     private final List<Block> predecessors;
+    private Block entry;
+    private Block exit;
 
     public Block(Function parent, List<Instruction> instructions) {
         this(parent, instructions, new ArrayList<>());
@@ -24,6 +26,8 @@ public class Block extends Constant implements IBlock<Block> {
         this.instructions = new ListWrapper<>();
         this.predecessors = predecessors;
         this.dominatorTreeLevel = -1;
+        this.entry = null;
+        this.exit = null;
 
         for (Instruction instruction : instructions.reversed()) {
             instruction.setParent(this);
@@ -81,6 +85,22 @@ public class Block extends Constant implements IBlock<Block> {
         this.dominatorTreeLevel = dominatorTreeLevel;
     }
 
+    public Block getEntry() {
+        return entry;
+    }
+
+    public void setEntry(Block entry) {
+        this.entry = entry;
+    }
+
+    public Block getExit() {
+        return exit;
+    }
+
+    public void setExit(Block exit) {
+        this.exit = exit;
+    }
+
     public Function getParent() {
         return parent;
     }
@@ -94,6 +114,7 @@ public class Block extends Constant implements IBlock<Block> {
     public void acceptUse(PrettyPrinter printer) throws IOException {
         printer.writeBlockValue(this);
     }
+
     @Override
     public Constant applyOp(Operator op, Constant other) {
         throw new UnsupportedOperationException("Cannot apply operator to Block");

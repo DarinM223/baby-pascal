@@ -86,6 +86,11 @@ public class Codegen {
             blockMap.put(block, machineBlock);
             blockDagMap.put(block, dag);
         }
+        for (Block block : function.getBlocks()) {
+            MachineBasicBlock machineBlock = blockMap.get(block);
+            machineBlock.setEntry(blockMap.get(block.getEntry()));
+            machineBlock.setExit(blockMap.get(block.getExit()));
+        }
     }
 
     private Set<DAGTile> matchedTiles(Block block) {
