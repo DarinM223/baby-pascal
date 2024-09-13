@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Number instructions for linear scan">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Attempt sequentialize parallel moves">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/deconstruct/SequentializeParallelMoves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/deconstruct/SequentializeParallelMoves.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -249,14 +251,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00135" summary="Threads side effect tokens through the created COPYFROMREG and COPYTOREG instructions">
-      <option name="closed" value="true" />
-      <created>1718571170287</created>
-      <option name="number" value="00135" />
-      <option name="presentableId" value="LOCAL-00135" />
-      <option name="project" value="LOCAL" />
-      <updated>1718571170287</updated>
     </task>
     <task id="LOCAL-00136" summary="Allows COPYFROMREGs to be created even though a COPYTOREG has already been created.">
       <option name="closed" value="true" />
@@ -642,14 +636,21 @@
       <option name="project" value="LOCAL" />
       <updated>1725723808460</updated>
     </task>
-    <option name="localTasksCounter" value="184" />
+    <task id="LOCAL-00184" summary="Attempt sequentialize parallel moves">
+      <option name="closed" value="true" />
+      <created>1725810023874</created>
+      <option name="number" value="00184" />
+      <option name="presentableId" value="LOCAL-00184" />
+      <option name="project" value="LOCAL" />
+      <updated>1725810023874</updated>
+    </task>
+    <option name="localTasksCounter" value="185" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Start rules for COPYTOREG and COPYFROMREG and fix DAG matching bug" />
     <MESSAGE value="Small fixes to get some tiles matching" />
     <MESSAGE value="Properly hashes tokens and merges duplicate paths in automaton" />
     <MESSAGE value="Fixes wildcard path length and starts refactor towards counters" />
@@ -674,7 +675,8 @@
     <MESSAGE value="Emits tiles in order of rule number then value id and adds expectation based unit tests for code generation" />
     <MESSAGE value="Modifies README" />
     <MESSAGE value="Number instructions for linear scan" />
-    <option name="LAST_COMMIT_MESSAGE" value="Number instructions for linear scan" />
+    <MESSAGE value="Attempt sequentialize parallel moves" />
+    <option name="LAST_COMMIT_MESSAGE" value="Attempt sequentialize parallel moves" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

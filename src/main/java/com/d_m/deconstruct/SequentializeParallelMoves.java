@@ -1,10 +1,11 @@
 package com.d_m.deconstruct;
 
-import com.d_m.select.instr.MachineOperand;
-import com.d_m.select.instr.MachineOperandKind;
-import com.d_m.select.instr.MachineOperandPair;
+import com.d_m.select.FunctionLoweringInfo;
+import com.d_m.select.instr.*;
 import com.d_m.select.reg.Register;
+import com.d_m.select.reg.RegisterConstraint;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,6 +34,30 @@ public class SequentializeParallelMoves {
         void emitMove(MachineOperand destination, MachineOperand source);
     }
 
+    public static void sequentializeBlock(FunctionLoweringInfo info, Register.Physical tmp, MachineBasicBlock block) {
+        List<MachineInstruction> newInstructions = new ArrayList<>(block.getInstructions().size());
+        Emitter emitter = new Emitter() {
+            @Override
+            public MachineOperand makeTmp(Register.Physical register) {
+                return new MachineOperand.Register(info.createRegister(register.registerClass(), new RegisterConstraint.UsePhysical(register)));
+            }
+
+            @Override
+            public void emitMove(MachineOperand destination, MachineOperand source) {
+                newInstructions.add(info.createMoveInstruction(destination, source));
+            }
+        };
+        for (MachineInstruction instruction : block.getInstructions()) {
+            if (instruction.getInstruction().equals("parmov")) {
+                SequentializeParallelMoves sequentialize = new SequentializeParallelMoves(tmp, instruction.getOperands(), emitter);
+                sequentialize.sequentialize();
+            } else {
+                newInstructions.add(instruction);
+            }
+        }
+        block.setInstructions(newInstructions);
+    }
+
     private Status[] status;
     private List<MachineOperand> src;
     private List<MachineOperand> dst;
@@ -40,10 +65,7 @@ public class SequentializeParallelMoves {
     private Emitter emitter;
 
     public SequentializeParallelMoves(Register.Physical tmp, List<MachineOperandPair> operands, Emitter emitter) {
-        this.status = new Status[operands.size()];
         this.tmp = tmp;
-        Arrays.fill(this.status, Status.TO_MOVE);
-
         this.src = operands
                 .stream()
                 .filter(pair -> pair.kind() == MachineOperandKind.USE).map(MachineOperandPair::operand)
@@ -52,6 +74,9 @@ public class SequentializeParallelMoves {
                 .stream()
                 .filter(pair -> pair.kind() == MachineOperandKind.DEF).map(MachineOperandPair::operand)
                 .toList();
+        assert (this.src.size() == this.dst.size());
+        this.status = new Status[this.src.size()];
+        Arrays.fill(this.status, Status.TO_MOVE);
         this.emitter = emitter;
     }
 

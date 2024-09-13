@@ -1,5 +1,9 @@
 package com.d_m.select;
 
+import com.d_m.select.instr.MachineInstruction;
+import com.d_m.select.instr.MachineOperand;
+import com.d_m.select.instr.MachineOperandKind;
+import com.d_m.select.instr.MachineOperandPair;
 import com.d_m.select.reg.ISA;
 import com.d_m.select.reg.Register;
 import com.d_m.select.reg.RegisterClass;
@@ -11,6 +15,7 @@ import com.d_m.util.Fresh;
 import com.d_m.util.FreshImpl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FunctionLoweringInfo {
@@ -28,6 +33,13 @@ public class FunctionLoweringInfo {
 
     public Register createRegister(RegisterClass registerClass, RegisterConstraint constraint) {
         return new Register.Virtual(virtualRegisterGen.fresh(), registerClass, constraint);
+    }
+
+    public MachineInstruction createMoveInstruction(MachineOperand destination, MachineOperand source) {
+        return new MachineInstruction("mov", List.of(
+                new MachineOperandPair(source, MachineOperandKind.USE),
+                new MachineOperandPair(destination, MachineOperandKind.DEF)
+        ));
     }
 
     public void addRegister(Value value, Register register) {

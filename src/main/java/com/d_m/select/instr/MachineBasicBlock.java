@@ -12,7 +12,8 @@ public class MachineBasicBlock implements IBlock<MachineBasicBlock> {
 
     private List<MachineBasicBlock> predecessors;
     private List<MachineBasicBlock> successors;
-    private final List<MachineInstruction> instructions;
+
+    private List<MachineInstruction> instructions;
     private int dominatorTreeLevel;
 
     public MachineBasicBlock(MachineFunction parent) {
@@ -41,6 +42,10 @@ public class MachineBasicBlock implements IBlock<MachineBasicBlock> {
     @Override
     public void setDominatorTreeLevel(int level) {
         dominatorTreeLevel = level;
+    }
+
+    public void setInstructions(List<MachineInstruction> instructions) {
+        this.instructions = instructions;
     }
 
     public void setPredecessors(List<MachineBasicBlock> predecessors) {
