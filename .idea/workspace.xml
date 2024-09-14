@@ -4,18 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Sequentialize parallel moves in block">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/BlockLiveness.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/BlockLivenessInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineGenKillInfo.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Thread block entries and exits to machine blocks and abstract liveness analysis to also run on machine blocks">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/GenKillInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/GenKillInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/CriticalEdgeSplitting.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/CriticalEdgeSplitting.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rules/x86_64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Automata.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Automata.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Operand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Operand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Rule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Rule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Scanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Scanner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/TokenType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/TokenType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Tree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +75,7 @@
     &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/d/Documents/java/baby-pascal/target/classes&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
@@ -258,14 +257,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00137" summary="Rewrites CALL inputs to copy to virtual registers beforehand">
-      <option name="closed" value="true" />
-      <created>1718983794666</created>
-      <option name="number" value="00137" />
-      <option name="presentableId" value="LOCAL-00137" />
-      <option name="project" value="LOCAL" />
-      <updated>1718983794666</updated>
     </task>
     <task id="LOCAL-00138" summary="Graphviz writer takes an optional FunctionLoweringInfo for printing registers for COPYFROMREG and COPYTOREG values">
       <option name="closed" value="true" />
@@ -651,14 +642,21 @@
       <option name="project" value="LOCAL" />
       <updated>1726237671293</updated>
     </task>
-    <option name="localTasksCounter" value="186" />
+    <task id="LOCAL-00186" summary="Thread block entries and exits to machine blocks and abstract liveness analysis to also run on machine blocks">
+      <option name="closed" value="true" />
+      <created>1726245676890</created>
+      <option name="number" value="00186" />
+      <option name="presentableId" value="LOCAL-00186" />
+      <option name="project" value="LOCAL" />
+      <updated>1726245676894</updated>
+    </task>
+    <option name="localTasksCounter" value="187" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Properly hashes tokens and merges duplicate paths in automaton" />
     <MESSAGE value="Fixes wildcard path length and starts refactor towards counters" />
     <MESSAGE value="Attempt to print matched tiles in reverse order, add rules to match more nodes" />
     <MESSAGE value="Attempt implementation of paths()" />
@@ -683,7 +681,8 @@
     <MESSAGE value="Number instructions for linear scan" />
     <MESSAGE value="Attempt sequentialize parallel moves" />
     <MESSAGE value="Sequentialize parallel moves in block" />
-    <option name="LAST_COMMIT_MESSAGE" value="Sequentialize parallel moves in block" />
+    <MESSAGE value="Thread block entries and exits to machine blocks and abstract liveness analysis to also run on machine blocks" />
+    <option name="LAST_COMMIT_MESSAGE" value="Thread block entries and exits to machine blocks and abstract liveness analysis to also run on machine blocks" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

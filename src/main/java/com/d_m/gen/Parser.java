@@ -34,6 +34,9 @@ public class Parser {
     }
 
     private Tree parseTree() {
+        if (match(TokenType.HASH)) {
+            return new Tree.AnyArity(parseTree());
+        }
         if (match(TokenType.VARIABLE)) {
             Token variable = previous();
             if (match(TokenType.LEFT_PAREN)) {
@@ -98,6 +101,7 @@ public class Parser {
     private Operand parseOperand() {
         Token operandToken = advance();
         return switch (operandToken.type()) {
+            case HASH -> new Operand.AnyArity(parseOperand());
             case VARIABLE -> {
                 if (!operandToken.lexeme().equals("proj")) {
                     throw new ParseError("Unknown variable name " + operandToken.lexeme() + " expected proj()");

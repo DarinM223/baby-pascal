@@ -69,6 +69,10 @@ public class Automata {
 
     private void addPattern(int ruleNumber, int currentState, int length, Tree tree) {
         switch (tree) {
+            case Tree.AnyArity(Tree node) -> {
+                int newState = addArc(currentState, new Alpha.Child(-1));
+                addPattern(ruleNumber, newState, length + 1, node);
+            }
             case Tree.Bound(Token name) -> {
                 Token updatedName = name.updateLexeme(name.lexeme() + "0");
                 int newState = addArc(currentState, new Alpha.Symbol(updatedName));

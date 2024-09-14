@@ -7,6 +7,7 @@ public enum TokenType {
     RIGHT_BRACE, // '}'
     LEFT_BRACKET, // '['
     RIGHT_BRACKET, // ']'
+    HASH, // '#'
     COMMA, // ','
     ARROW, // '=>'
     WILDCARD, // '_'

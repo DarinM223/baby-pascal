@@ -5,6 +5,15 @@ import java.io.Writer;
 import java.util.List;
 
 public sealed interface Tree {
+    record AnyArity(Tree node) implements Tree {
+        @Override
+        public void write(Writer writer) throws IOException {
+            writer.write("new Tree.AnyArity(");
+            node.write(writer);
+            writer.write(")");
+        }
+    }
+
     record Node(Token name, List<Tree> children) implements Tree {
         @Override
         public void write(Writer writer) throws IOException {

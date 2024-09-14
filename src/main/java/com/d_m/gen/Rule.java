@@ -49,6 +49,7 @@ public class Rule {
         while (!stack.isEmpty()) {
             Tree tree = stack.pop();
             switch (tree) {
+                case Tree.AnyArity(Tree node) -> stack.add(node);
                 case Tree.Node(_, List<Tree> children) -> stack.addAll(children);
                 case Tree.Bound(_), Tree.Wildcard() -> counter++;
             }

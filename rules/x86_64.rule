@@ -51,6 +51,12 @@
     out [$1, use]
 }
 
+// # is for arbitrary arity arguments.
+PCOPY(#_) => (1) {
+    parmov [#$1, use], [#%1, def]
+    out [#%1, use]
+}
+
 PROJ(_, _) => (1) {
     out [proj($1, $2), use]
 }

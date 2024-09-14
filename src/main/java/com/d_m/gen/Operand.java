@@ -4,6 +4,15 @@ import java.io.IOException;
 import java.io.Writer;
 
 public sealed interface Operand {
+    record AnyArity(Operand operand) implements Operand {
+        @Override
+        public void write(Writer writer) throws IOException {
+            writer.write("new Operand.AnyArity(");
+            operand.write(writer);
+            writer.write(")");
+        }
+    }
+
     record Immediate(int value) implements Operand {
         @Override
         public void write(Writer writer) throws IOException {

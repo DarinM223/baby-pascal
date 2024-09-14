@@ -37,6 +37,7 @@ public class Scanner {
             case '[' -> addToken(TokenType.LEFT_BRACKET);
             case ']' -> addToken(TokenType.RIGHT_BRACKET);
             case ',' -> addToken(TokenType.COMMA);
+            case '#' -> addToken(TokenType.HASH);
             case '=' -> {
                 if (match('>')) {
                     addToken(TokenType.ARROW);
