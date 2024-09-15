@@ -84,7 +84,7 @@ class CodegenTest {
             matchedTilesMap.put(function.getName(), blockTilesMap);
         }
 
-        String expected = "{fibonacci={16=[6, 15, 19, 21], 17=[8, 14, 15, 16, 19, 21], 11=[16, 19, 21], 12=[2, 3, 4, 8, 10, 11, 13, 14, 15, 17, 19, 21], 13=[15, 19, 20], 14=[7, 14, 15, 17, 18, 19], 15=[12, 17, 19]}, main={0=[7, 14, 15, 17, 19], 1=[5, 15, 19, 21], 2=[16, 19, 21], 3=[17, 19], 4=[1, 8, 14, 15, 16, 19, 21], 5=[19], 6=[0, 8, 14, 15, 16, 19, 21], 7=[8, 14, 17, 19, 21], 8=[16, 19, 21], 9=[17, 18, 19], 10=[5, 7, 14, 15, 19, 21]}}";
+        String expected = "{fibonacci={16=[18, 21, 23], 17=[2, 3, 4, 8, 10, 12, 15, 16, 17, 19, 21, 23], 11=[17, 21, 22], 12=[7, 16, 17, 19, 20, 21], 13=[14, 19, 21], 14=[6, 17, 21, 23], 15=[8, 16, 17, 18, 21, 23]}, main={0=[18, 21, 23], 1=[19, 21], 2=[1, 8, 16, 17, 18, 21, 23], 3=[21], 4=[0, 8, 16, 17, 18, 21, 23], 5=[8, 16, 19, 21, 23], 6=[18, 21, 23], 7=[19, 20, 21], 8=[5, 7, 16, 17, 21, 23], 9=[7, 16, 17, 19, 21], 10=[5, 17, 21, 23]}}";
         assertEquals(matchedTilesMap.toString(), expected);
     }
 
@@ -189,45 +189,47 @@ class CodegenTest {
                     jmp [l12,USE]
                   }
                   block l12 [l11] {
-                    mov [%30rdi,USE], [%39any,DEF]
-                    cmp [%39any,USE], [1,USE]
+                    mov [%30rdi,USE], [%37any,DEF]
+                    cmp [%37any,USE], [1,USE]
                     jle [l13,USE]
                     jmp [l14,USE]
                   }
                   block l13 [l12] {
-                    mov [%30rdi,USE], [%40any,DEF]
-                    mov [%40any,USE], [%32any,DEF]
+                    mov [%30rdi,USE], [%38any,DEF]
+                    mov [%38any,USE], [%32any,DEF]
                     jmp [l15,USE]
                   }
                   block l14 [l12] {
                     jmp [l16,USE]
                   }
                   block l15 [l13, l16] {
-                    mov [%31any,USE], [%41any,DEF]
-                    mov [%37any,USE], [%42any,DEF]
-                    phi [%41any,USE], [%42any,USE], [%43any,DEF]
-                    mov [%32any,USE], [%44any,DEF]
-                    mov [%38any,USE], [%45any,DEF]
-                    phi [%44any,USE], [%45any,USE], [%46any,DEF]
-                    mov [%43any,USE], [%33any,DEF]
-                    mov [%46any,USE], [%34any,DEF]
+                    mov [%31any,USE], [%39any,DEF]
+                    mov [%35any,USE], [%40any,DEF]
+                    phi [%39any,USE], [%40any,USE], [%41any,DEF]
+                    mov [%32any,USE], [%42any,DEF]
+                    mov [%36any,USE], [%43any,DEF]
+                    phi [%42any,USE], [%43any,USE], [%44any,DEF]
+                    mov [%41any,USE], [%33any,DEF]
+                    mov [%44any,USE], [%34any,DEF]
                     jmp [l17,USE]
                   }
                   block l16 [l14] {
-                    mov [%30rdi,USE], [%47any,DEF]
-                    mov [%47any,USE], [%48any,DEF]
-                    dec [%48any,USE]
-                    mov [%48any,USE], [%35rdi,DEF]
+                    mov [%31any,USE], [%45any,DEF]
+                    mov [%30rdi,USE], [%46any,DEF]
+                    mov [%46any,USE], [%47any,DEF]
+                    dec [%47any,USE]
+                    mov [%47any,USE], [%48rdi,DEF]
+                    call [fibonacci,USE]
                     mov [%49rax,USE], [%50any,DEF]
                     mov [%30rdi,USE], [%51any,DEF]
                     mov [%51any,USE], [%52any,DEF]
                     sub [%52any,USE], [2,USE]
-                    mov [%52any,USE], [%36rdi,DEF]
-                    mov [%53rax,USE], [%54any,DEF]
-                    mov [%50any,USE], [%55any,DEF]
-                    add [%55any,USE], [%54any,USE]
-                    mov [%55any,USE], [%38any,DEF]
-                    mov [%31any,USE], [%56any,DEF]
+                    mov [%52any,USE], [%53rdi,DEF]
+                    call [fibonacci,USE]
+                    mov [%54rax,USE], [%55any,DEF]
+                    mov [%50any,USE], [%56any,DEF]
+                    add [%56any,USE], [%55any,USE]
+                    mov [%56any,USE], [%36any,DEF]
                     jmp [l15,USE]
                   }
                   block l17 [l15] {

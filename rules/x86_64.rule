@@ -62,14 +62,28 @@ PROJ(_, _) => (1) {
 }
 
 CALL(_, _, _) => (5) {
+    call [$2, use]
     mov [%rax, use], [%1, def]
     out [$1, use], [%1, use]
 }
+CALL(_, _, _, _) => (5) {
+    mov [$4, use], [%rdi, def]
+    call [$2, use]
+    mov [%rax, use], [%1, def]
+    out [$1, use], [%1, use]
+}
+CALL(_, _, _, _, _) => (5) {
+    parmov [$4, use], [$5, use], [%rdi, def], [%rsi, def]
+    call [$2, use]
+    mov [%rax, use], [%1, def]
+    out [$1, use], [%1, use]
+}
+// TODO: handle more parameters
 
 // Weird edge cases, don't emit anything in this case.
 COPYTOREG(_, START) => (0) {
 }
-COPYTOREG(_, PROJ(CALL(_, _, _), 0)) => (0) {
+COPYTOREG(_, PROJ(CALL(_, _, _, #_), 0)) => (0) {
 }
 
 COPYTOREG(_, _) => (1) {

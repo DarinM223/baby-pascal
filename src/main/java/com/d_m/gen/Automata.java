@@ -3,6 +3,7 @@ package com.d_m.gen;
 import java.util.*;
 
 public class Automata {
+    public final int MAX_ARITY_SIZE = 100;
     protected final List<State> automaton;
     private final Map<Integer, Rule> ruleMap;
     private final int numRules;
@@ -69,10 +70,6 @@ public class Automata {
 
     private void addPattern(int ruleNumber, int currentState, int length, Tree tree) {
         switch (tree) {
-            case Tree.AnyArity(Tree node) -> {
-                int newState = addArc(currentState, new Alpha.Child(-1));
-                addPattern(ruleNumber, newState, length + 1, node);
-            }
             case Tree.Bound(Token name) -> {
                 Token updatedName = name.updateLexeme(name.lexeme() + "0");
                 int newState = addArc(currentState, new Alpha.Symbol(updatedName));
@@ -82,12 +79,24 @@ public class Automata {
                 Token updatedName = name.updateLexeme(name.lexeme() + children.size());
                 int newState = addArc(currentState, new Alpha.Symbol(updatedName));
                 for (int i = 0; i < children.size(); i++) {
-                    int childNumber = i + 1;
-                    int childState = addArc(newState, new Alpha.Child(childNumber));
-                    addPattern(ruleNumber, childState, length + 1, children.get(i));
+                    if (children.get(i) instanceof Tree.AnyArity(Tree node)) {
+                        if (i != children.size() - 1) {
+                            throw new UnsupportedOperationException("Any arity parameters can only be at the end");
+                        }
+                        // Accept any arity child node.
+                        for (int child = i; child <= MAX_ARITY_SIZE; child++) {
+                            int childState = addArc(newState, new Alpha.Child(child));
+                            addPattern(ruleNumber, childState, length + 1, node);
+                        }
+                    } else {
+                        int childNumber = i + 1;
+                        int childState = addArc(newState, new Alpha.Child(childNumber));
+                        addPattern(ruleNumber, childState, length + 1, children.get(i));
+                    }
                 }
             }
             case Tree.Wildcard() -> automaton.get(currentState).finals.add(new Final(ruleNumber, length - 1));
+            case Tree.AnyArity(_) -> throw new UnsupportedOperationException("Lone any arity parameters encountered");
         }
     }
 

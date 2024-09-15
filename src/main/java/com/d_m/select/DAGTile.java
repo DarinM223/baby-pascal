@@ -30,6 +30,17 @@ public class DAGTile implements Tile<Value>, Comparable<DAGTile> {
         switch (pattern) {
             case Tree.Node(
                     _, List<Tree> children
+            ) when !children.isEmpty() && children.getLast() instanceof Tree.AnyArity(
+                    Tree anyArityTree
+            ) && value instanceof Instruction instruction -> {
+                int lastIndex = children.size() - 1;
+                for (int i = 0; i < value.arity(); i++) {
+                    Tree childTree = i >= lastIndex ? anyArityTree : children.get(i);
+                    calculateCovered(instruction.getOperand(i).getValue(), childTree);
+                }
+            }
+            case Tree.Node(
+                    _, List<Tree> children
             ) when value.arity() == children.size() && value instanceof Instruction instruction -> {
                 for (int i = 0; i < value.arity(); i++) {
                     calculateCovered(instruction.getOperand(i).getValue(), children.get(i));

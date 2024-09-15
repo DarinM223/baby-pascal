@@ -7,7 +7,6 @@ import com.d_m.select.reg.RegisterClass;
 import com.d_m.select.reg.RegisterConstraint;
 import com.d_m.ssa.*;
 import com.d_m.util.SymbolImpl;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.SortedSetMultimap;
 import com.google.common.collect.TreeMultimap;
 
@@ -66,9 +65,6 @@ public class SSADAG implements DAG<Value> {
             if (!rewriteOutOfBlockUses(instruction)) {
                 rewriteSideEffectOutputs(instruction);
             }
-            if (instruction.getOperator() == Operator.CALL) {
-                rewriteCall(instruction);
-            }
         }
 
         for (Instruction instruction : addToStart.reversed()) {
@@ -125,44 +121,6 @@ public class SSADAG implements DAG<Value> {
             }
         }
         return changed;
-    }
-
-    // Rewrites call nodes so that the inputs into the function get rewritten into
-    // CopyToReg with the virtual registers that conform to the ISA's calling convention.
-    private void rewriteCall(Instruction instruction) {
-        int operandsSize = Iterables.size(instruction.operands());
-        SortedSet<Integer> removeOperands = new TreeSet<>(Collections.reverseOrder());
-        final int START_OPERAND = 3;
-        for (int i = START_OPERAND; i < operandsSize; i++) {
-            removeOperands.add(i);
-
-            // Thread side effect from Call into CopyToReg.
-            Instruction copyToReg = new Instruction(SymbolImpl.TOKEN_STRING, null, Operator.COPYTOREG);
-            copyToReg.setParent(block);
-
-            // Use register class that conforms to the calling convention for functions.
-            RegisterConstraint constraint = functionLoweringInfo.isa.functionCallingConvention(RegisterClass.INT, i - START_OPERAND);
-            Register register = functionLoweringInfo.createRegister(RegisterClass.INT, constraint);
-            functionLoweringInfo.addRegister(copyToReg, register);
-
-            Use tokenUse = new Use(currToken, copyToReg);
-            copyToReg.addOperand(tokenUse);
-            currToken.linkUse(tokenUse);
-
-            Value operand = instruction.getOperand(i).getValue();
-            Use operandUse = new Use(operand, copyToReg);
-            copyToReg.addOperand(operandUse);
-            operand.linkUse(operandUse);
-
-            currToken = copyToReg;
-            block.getInstructions().addBefore(instruction, copyToReg);
-        }
-        Use lastSideEffectUse = new Use(currToken, instruction);
-        currToken.linkUse(lastSideEffectUse);
-        instruction.setOperand(0, lastSideEffectUse);
-        for (int i : removeOperands) {
-            instruction.removeOperand(i);
-        }
     }
 
     private void rewriteOutOfBlockOperands(List<Instruction> addToStart, Instruction instruction) {
