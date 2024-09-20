@@ -113,7 +113,15 @@ public class DAGTile implements Tile<Value>, Comparable<DAGTile> {
                 yield argument == null ? null : argument[0];
             }
             case Operand.Register(String registerName) -> switch (operandPair.kind()) {
-                case USE -> constrainedRegisterMap.get(registerName);
+                case USE -> {
+                    MachineOperand machineOperand = constrainedRegisterMap.get(registerName);
+                    // Instructions can reference physical registers without having previously defined them.
+                    // Example: parmov [%rdi, use], [%rsi, use], [%1, def], [%2, def] at the beginning
+                    // of a function call.
+                    yield machineOperand == null
+                            ? toOperand(info, arguments, constrainedRegisterMap, tempRegisterMap, new OperandPair(operand, MachineOperandKind.DEF)).operand()
+                            : machineOperand;
+                }
                 case DEF -> {
                     MachineOperand machineOperand = new MachineOperand.Register(info.createRegister(RegisterClass.INT, info.isa.fromRegisterName(registerName)));
                     constrainedRegisterMap.put(registerName, machineOperand);

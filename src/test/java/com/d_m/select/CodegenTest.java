@@ -186,56 +186,57 @@ class CodegenTest {
                 }
                 fibonacci {
                   block l11 [] {
+                    parmov [%30rdi,USE], [%31any,DEF]
                     jmp [l12,USE]
                   }
                   block l12 [l11] {
-                    mov [%30rdi,USE], [%37any,DEF]
-                    cmp [%37any,USE], [1,USE]
+                    mov [%31any,USE], [%38any,DEF]
+                    cmp [%38any,USE], [1,USE]
                     jle [l13,USE]
                     jmp [l14,USE]
                   }
                   block l13 [l12] {
-                    mov [%30rdi,USE], [%38any,DEF]
-                    mov [%38any,USE], [%32any,DEF]
+                    mov [%31any,USE], [%39any,DEF]
+                    mov [%39any,USE], [%33any,DEF]
                     jmp [l15,USE]
                   }
                   block l14 [l12] {
                     jmp [l16,USE]
                   }
                   block l15 [l13, l16] {
-                    mov [%31any,USE], [%39any,DEF]
-                    mov [%35any,USE], [%40any,DEF]
-                    phi [%39any,USE], [%40any,USE], [%41any,DEF]
-                    mov [%32any,USE], [%42any,DEF]
-                    mov [%36any,USE], [%43any,DEF]
-                    phi [%42any,USE], [%43any,USE], [%44any,DEF]
-                    mov [%41any,USE], [%33any,DEF]
-                    mov [%44any,USE], [%34any,DEF]
+                    mov [%32any,USE], [%40any,DEF]
+                    mov [%36any,USE], [%41any,DEF]
+                    phi [%40any,USE], [%41any,USE], [%42any,DEF]
+                    mov [%33any,USE], [%43any,DEF]
+                    mov [%37any,USE], [%44any,DEF]
+                    phi [%43any,USE], [%44any,USE], [%45any,DEF]
+                    mov [%42any,USE], [%34any,DEF]
+                    mov [%45any,USE], [%35any,DEF]
                     jmp [l17,USE]
                   }
                   block l16 [l14] {
-                    mov [%31any,USE], [%45any,DEF]
-                    mov [%30rdi,USE], [%46any,DEF]
-                    mov [%46any,USE], [%47any,DEF]
-                    dec [%47any,USE]
-                    mov [%47any,USE], [%48rdi,DEF]
-                    call [fibonacci,USE], [%49rax,DEF], [%50rcx,DEF], [%51rdx,DEF], [%52rsi,DEF], [%53rdi,DEF], [%54r8,DEF], [%55r9,DEF], [%56r10,DEF], [%57r11,DEF]
-                    mov [%49rax,USE], [%58any,DEF]
-                    mov [%30rdi,USE], [%59any,DEF]
-                    mov [%59any,USE], [%60any,DEF]
-                    sub [%60any,USE], [2,USE]
-                    mov [%60any,USE], [%61rdi,DEF]
-                    call [fibonacci,USE], [%62rax,DEF], [%63rcx,DEF], [%64rdx,DEF], [%65rsi,DEF], [%66rdi,DEF], [%67r8,DEF], [%68r9,DEF], [%69r10,DEF], [%70r11,DEF]
-                    mov [%62rax,USE], [%71any,DEF]
-                    mov [%58any,USE], [%72any,DEF]
-                    add [%72any,USE], [%71any,USE]
-                    mov [%72any,USE], [%36any,DEF]
+                    mov [%32any,USE], [%46any,DEF]
+                    mov [%31any,USE], [%47any,DEF]
+                    mov [%47any,USE], [%48any,DEF]
+                    dec [%48any,USE]
+                    mov [%48any,USE], [%49rdi,DEF]
+                    call [fibonacci,USE], [%50rax,DEF], [%51rcx,DEF], [%52rdx,DEF], [%53rsi,DEF], [%54rdi,DEF], [%55r8,DEF], [%56r9,DEF], [%57r10,DEF], [%58r11,DEF]
+                    mov [%50rax,USE], [%59any,DEF]
+                    mov [%31any,USE], [%60any,DEF]
+                    mov [%60any,USE], [%61any,DEF]
+                    sub [%61any,USE], [2,USE]
+                    mov [%61any,USE], [%62rdi,DEF]
+                    call [fibonacci,USE], [%63rax,DEF], [%64rcx,DEF], [%65rdx,DEF], [%66rsi,DEF], [%67rdi,DEF], [%68r8,DEF], [%69r9,DEF], [%70r10,DEF], [%71r11,DEF]
+                    mov [%63rax,USE], [%72any,DEF]
+                    mov [%59any,USE], [%73any,DEF]
+                    add [%73any,USE], [%72any,USE]
+                    mov [%73any,USE], [%37any,DEF]
                     jmp [l15,USE]
                   }
                   block l17 [l15] {
-                    mov [%33any,USE], [%73any,DEF]
                     mov [%34any,USE], [%74any,DEF]
-                    mov [%74any,USE], [%75rax,DEF]
+                    mov [%35any,USE], [%75any,DEF]
+                    mov [%75any,USE], [%76rax,DEF]
                   }
                 }
                 """;

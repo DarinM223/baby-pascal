@@ -3,10 +3,7 @@ package com.d_m.select;
 import com.d_m.ast.IntegerType;
 import com.d_m.code.Operator;
 import com.d_m.gen.GeneratedAutomata;
-import com.d_m.select.instr.MachineBasicBlock;
-import com.d_m.select.instr.MachineFunction;
-import com.d_m.select.instr.MachineInstruction;
-import com.d_m.select.instr.MachineOperand;
+import com.d_m.select.instr.*;
 import com.d_m.select.reg.ISA;
 import com.d_m.select.reg.Register;
 import com.d_m.select.reg.RegisterClass;
@@ -66,21 +63,38 @@ public class Codegen {
         MachineFunction machineFunction = functionMap.get(function);
         blockMap.clear();
         blockDagMap.clear();
+        MachineInstruction functionEntryMove = new MachineInstruction("parmov", new ArrayList<>());
+        List<MachineOperand> uses = new ArrayList<>();
+        List<MachineOperand> defs = new ArrayList<>();
         for (int argumentNumber = 0; argumentNumber < function.getArguments().size(); argumentNumber++) {
             RegisterConstraint constraint = functionLoweringInfo.isa.functionCallingConvention(RegisterClass.INT, argumentNumber);
             Argument argument = function.getArguments().get(argumentNumber);
-            Register register = functionLoweringInfo.createRegister(RegisterClass.INT, constraint);
-            functionLoweringInfo.addRegister(argument, register);
-            machineFunction.addParameter(new MachineOperand.Register(register));
+            // The constrained register is a virtual register constrained to a physical register.
+            // It shouldn't be widely used in the function because the constraint will be forced in all uses
+            // of the instruction. Instead, at the entry block of the function, there should be a parallel move from
+            // the constrained register to an unconstrained register that can be used inside the function.
+            Register constrainedRegister = functionLoweringInfo.createRegister(RegisterClass.INT, constraint);
+            Register unconstrainedRegister = functionLoweringInfo.createRegister(RegisterClass.INT, new RegisterConstraint.Any());
+            uses.add(new MachineOperand.Register(constrainedRegister));
+            defs.add(new MachineOperand.Register(unconstrainedRegister));
+            functionLoweringInfo.addRegister(argument, unconstrainedRegister);
+            machineFunction.addParameter(new MachineOperand.Register(unconstrainedRegister));
         }
+        functionEntryMove.getOperands().addAll(uses.stream().map(operand -> new MachineOperandPair(operand, MachineOperandKind.USE)).toList());
+        functionEntryMove.getOperands().addAll(defs.stream().map(operand -> new MachineOperandPair(operand, MachineOperandKind.DEF)).toList());
         for (Block block : function.getBlocks()) {
             Instruction start = new Instruction(SymbolImpl.TOKEN_STRING, new IntegerType(), Operator.START);
             start.setParent(block);
             block.getInstructions().addToFront(start);
             functionLoweringInfo.setStartToken(block, start);
         }
-        for (Block block : function.getBlocks()) {
+        for (int i = 0; i < function.getBlocks().size(); i++) {
+            Block block = function.getBlocks().get(i);
             MachineBasicBlock machineBlock = new MachineBasicBlock(machineFunction);
+            // Add the parallel move from constrained virtual registers -> unconstrained virtual registers into the function's entry block.
+            if (i == 0 && !functionEntryMove.getOperands().isEmpty()) {
+                machineBlock.getInstructions().add(functionEntryMove);
+            }
             SSADAG dag = new SSADAG(functionLoweringInfo, block);
             machineFunction.addBlock(machineBlock);
             blockMap.put(block, machineBlock);
