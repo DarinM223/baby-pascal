@@ -2,11 +2,15 @@ package com.d_m.gen;
 
 import com.d_m.select.instr.MachineOperandKind;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Parser {
     public static class ParseError extends RuntimeException {
+        @Serial
+        private static final long serialVersionUID = -1672387960114405861L;
+
         public ParseError(String reason) {
             super(reason);
         }

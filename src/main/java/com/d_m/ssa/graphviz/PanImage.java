@@ -6,8 +6,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.io.Serial;
 
 public class PanImage extends JPanel implements MouseListener, MouseMotionListener {
+    @Serial
+    private static final long serialVersionUID = 686236038272685724L;
     private final BufferedImage image;
     private int x;
     private int y;

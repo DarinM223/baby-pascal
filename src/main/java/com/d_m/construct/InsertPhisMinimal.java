@@ -6,7 +6,7 @@ import com.d_m.dom.DominanceFrontier;
 import com.d_m.util.Symbol;
 
 public class InsertPhisMinimal extends InsertPhis {
-    public InsertPhisMinimal(Symbol symbol, DefinitionSites defsites, DominanceFrontier frontier) {
+    public InsertPhisMinimal(Symbol symbol, DefinitionSites defsites, DominanceFrontier<Block> frontier) {
         super(symbol, defsites, frontier);
     }
 

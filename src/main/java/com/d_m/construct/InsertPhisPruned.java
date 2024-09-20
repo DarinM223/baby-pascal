@@ -6,7 +6,7 @@ import com.d_m.dom.DominanceFrontier;
 import com.d_m.util.Symbol;
 
 public class InsertPhisPruned extends InsertPhis {
-    public InsertPhisPruned(Symbol symbol, DefinitionSites defsites, DominanceFrontier frontier) {
+    public InsertPhisPruned(Symbol symbol, DefinitionSites defsites, DominanceFrontier<Block> frontier) {
         super(symbol, defsites, frontier);
     }
 
