@@ -62,6 +62,7 @@ public class DAGTile implements Tile<Value>, Comparable<DAGTile> {
                                  MachineBasicBlock block,
                                  List<MachineOperand[]> arguments,
                                  List<MachineInstruction> terminator) {
+        Map<String, MachineOperand> constrainedRegisterMap = new HashMap<>();
         Map<Integer, MachineOperand> tempRegisterMap = new HashMap<>();
         List<MachineInstruction> emitter = block.getInstructions();
         for (com.d_m.gen.Instruction instruction : rule.getCode().instructions()) {
@@ -71,7 +72,7 @@ public class DAGTile implements Tile<Value>, Comparable<DAGTile> {
             } else if (instruction.name().equals("out")) {
                 MachineOperand[] results = new MachineOperand[instruction.operands().size()];
                 for (int i = 0; i < instruction.operands().size(); i++) {
-                    results[i] = toOperand(info, arguments, tempRegisterMap, instruction.operands().get(i)).operand();
+                    results[i] = toOperand(info, arguments, constrainedRegisterMap, tempRegisterMap, instruction.operands().get(i)).operand();
                 }
                 return results;
             } else if (info.isa.isBranch(instruction.name())) {
@@ -89,7 +90,7 @@ public class DAGTile implements Tile<Value>, Comparable<DAGTile> {
                 List<MachineOperandPair> operands = instruction
                         .operands()
                         .stream()
-                        .map(operand -> toOperand(info, arguments, tempRegisterMap, operand))
+                        .map(operand -> toOperand(info, arguments, constrainedRegisterMap, tempRegisterMap, operand))
                         .toList();
                 MachineInstruction converted = new MachineInstruction(instruction.name(), operands);
                 emitter.add(converted);
@@ -101,6 +102,7 @@ public class DAGTile implements Tile<Value>, Comparable<DAGTile> {
 
     private MachineOperandPair toOperand(FunctionLoweringInfo info,
                                          List<MachineOperand[]> arguments,
+                                         Map<String, MachineOperand> constrainedRegisterMap,
                                          Map<Integer, MachineOperand> tempRegisterMap,
                                          OperandPair operandPair) {
         Operand operand = operandPair.operand();
@@ -110,18 +112,30 @@ public class DAGTile implements Tile<Value>, Comparable<DAGTile> {
                 MachineOperand[] argument = arguments.get(parameter - 1);
                 yield argument == null ? null : argument[0];
             }
-            case Operand.Register(String registerName) ->
-                    new MachineOperand.Register(info.createRegister(RegisterClass.INT, info.isa.fromRegisterName(registerName)));
-            case Operand.VirtualRegister(int register) -> {
-                MachineOperand machineOperand = tempRegisterMap.get(register);
-                if (machineOperand == null) {
-                    machineOperand = new MachineOperand.Register(info.createRegister(RegisterClass.INT, new RegisterConstraint.Any()));
-                    tempRegisterMap.put(register, machineOperand);
+            case Operand.Register(String registerName) -> switch (operandPair.kind()) {
+                case USE -> constrainedRegisterMap.get(registerName);
+                case DEF -> {
+                    MachineOperand machineOperand = new MachineOperand.Register(info.createRegister(RegisterClass.INT, info.isa.fromRegisterName(registerName)));
+                    constrainedRegisterMap.put(registerName, machineOperand);
+                    yield machineOperand;
                 }
-                yield machineOperand;
-            }
+            };
+            case Operand.VirtualRegister(int register) -> switch (operandPair.kind()) {
+                case USE -> tempRegisterMap.get(register);
+                case DEF -> {
+                    MachineOperand machineOperand = new MachineOperand.Register(info.createRegister(RegisterClass.INT, new RegisterConstraint.Any()));
+                    tempRegisterMap.put(register, machineOperand);
+                    yield machineOperand;
+                }
+            };
             case Operand.Projection(Operand.Parameter(int parameter), Operand index) -> {
-                MachineOperand machineIndex = toOperand(info, arguments, tempRegisterMap, new OperandPair(index, MachineOperandKind.USE)).operand();
+                MachineOperand machineIndex = toOperand(
+                        info,
+                        arguments,
+                        constrainedRegisterMap,
+                        tempRegisterMap,
+                        new OperandPair(index, MachineOperandKind.USE)
+                ).operand();
                 if (machineIndex instanceof MachineOperand.Immediate(int i)) {
                     yield arguments.get(parameter - 1)[i];
                 }

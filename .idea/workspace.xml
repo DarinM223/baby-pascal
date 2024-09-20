@@ -4,17 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Anyarity parameters add accepting child states up to a max limit, and handles multi-arity CALL patterns instead of rewriting call nodes into COPYTOREG">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Update to JDK 23 and modifies pattern matching so that Eclipse compiles">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/CheckException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/CheckException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/ShortCircuitException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/ShortCircuitException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/construct/InsertPhisMinimal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/construct/InsertPhisMinimal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/construct/InsertPhisPruned.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/construct/InsertPhisPruned.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/PanImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/graphviz/PanImage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rules/x86_64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -254,14 +248,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00140" summary="Start pattern lexer adapted from crafting interpreters">
-      <option name="closed" value="true" />
-      <created>1719194627841</created>
-      <option name="number" value="00140" />
-      <option name="presentableId" value="LOCAL-00140" />
-      <option name="project" value="LOCAL" />
-      <updated>1719194627841</updated>
     </task>
     <task id="LOCAL-00141" summary="Lexing more tokens for rules">
       <option name="closed" value="true" />
@@ -647,14 +633,21 @@
       <option name="project" value="LOCAL" />
       <updated>1726415006183</updated>
     </task>
-    <option name="localTasksCounter" value="189" />
+    <task id="LOCAL-00189" summary="Update to JDK 23 and modifies pattern matching so that Eclipse compiles">
+      <option name="closed" value="true" />
+      <created>1726843995309</created>
+      <option name="number" value="00189" />
+      <option name="presentableId" value="LOCAL-00189" />
+      <option name="project" value="LOCAL" />
+      <updated>1726843995309</updated>
+    </task>
+    <option name="localTasksCounter" value="190" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Attempt implementation of paths()" />
     <MESSAGE value="Fix COPYTOREG and COPYFROMREG linking with start token" />
     <MESSAGE value="Start generating machine instructions from matched tiles (currently doesn't match numbers)" />
     <MESSAGE value="Add pattern for matching constants and modify matching to allow this pattern for constants" />
@@ -679,7 +672,8 @@
     <MESSAGE value="Thread block entries and exits to machine blocks and abstract liveness analysis to also run on machine blocks" />
     <MESSAGE value="Start lexing and parsing support for rules with any arity arguments" />
     <MESSAGE value="Anyarity parameters add accepting child states up to a max limit, and handles multi-arity CALL patterns instead of rewriting call nodes into COPYTOREG" />
-    <option name="LAST_COMMIT_MESSAGE" value="Anyarity parameters add accepting child states up to a max limit, and handles multi-arity CALL patterns instead of rewriting call nodes into COPYTOREG" />
+    <MESSAGE value="Update to JDK 23 and modifies pattern matching so that Eclipse compiles" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update to JDK 23 and modifies pattern matching so that Eclipse compiles" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -703,7 +697,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java</url>
-          <line>129</line>
+          <line>143</line>
           <option name="timeStamp" value="75" />
         </line-breakpoint>
         <breakpoint type="java-exception">
