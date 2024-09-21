@@ -22,7 +22,6 @@ public enum Operator {
     STORE,
     NOP,
     PHI,
-    PCOPY,
     RETURN,
     START,
     PROJ,
@@ -47,8 +46,8 @@ public enum Operator {
 
     public boolean hasSideEffects() {
         return switch (this) {
-            case NEG, NOT, ADD, SUB, MUL, DIV, AND, OR, GOTO, LT, LE, GT, GE, EQ, NE, ASSIGN, LOAD, NOP, PHI, PCOPY,
-                 PROJ -> false;
+            case NEG, NOT, ADD, SUB, MUL, DIV, AND, OR, GOTO, LT, LE, GT, GE, EQ, NE, ASSIGN, LOAD, NOP, PHI, PROJ ->
+                    false;
             case START, CALL, RETURN, STORE, COPYFROMREG, COPYTOREG -> true;
         };
     }
@@ -85,7 +84,6 @@ public enum Operator {
             case STORE -> "STORE";
             case NOP -> "NOP";
             case PHI -> "Φ";
-            case PCOPY -> "PCOPY";
             case RETURN -> "RETURN";
             case START -> "START";
             case PROJ -> "PROJ";

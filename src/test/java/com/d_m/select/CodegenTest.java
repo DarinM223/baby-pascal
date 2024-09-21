@@ -12,10 +12,8 @@ import com.d_m.select.instr.MachineFunction;
 import com.d_m.select.instr.MachinePrettyPrinter;
 import com.d_m.select.reg.ISA;
 import com.d_m.select.reg.X86_64_ISA;
-import com.d_m.ssa.Block;
-import com.d_m.ssa.Function;
+import com.d_m.ssa.*;
 import com.d_m.ssa.Module;
-import com.d_m.ssa.SsaConverter;
 import com.d_m.util.Fresh;
 import com.d_m.util.FreshImpl;
 import com.d_m.util.Symbol;
@@ -31,16 +29,19 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CodegenTest {
-    Fresh fresh;
-    Symbol symbol;
-    ThreeAddressCode threeAddressCode;
-    Module module;
+    private Symbol symbol;
+    private ThreeAddressCode threeAddressCode;
+    private ISA isa;
+    private Codegen codegen;
 
     @BeforeEach
     void setUp() throws ShortCircuitException {
-        fresh = new FreshImpl();
+        Fresh fresh = new FreshImpl();
         symbol = new SymbolImpl(fresh);
         threeAddressCode = new ThreeAddressCode(fresh, symbol);
+    }
+
+    private Module initFibonacci() throws ShortCircuitException {
         Declaration<List<Statement>> fibonacciDeclaration = new FunctionDeclaration<>(
                 "fibonacci",
                 List.of(new TypedName("n", new IntegerType())),
@@ -48,28 +49,34 @@ class CodegenTest {
                 Examples.fibonacci("fibonacci", "n")
         );
         Program<List<Statement>> program = new Program<>(List.of(), List.of(fibonacciDeclaration), Examples.figure_19_4());
-        var cfg = toCfg(program);
+        Program<com.d_m.cfg.Block> cfg = toCfg(program);
         SsaConverter converter = new SsaConverter(symbol);
-        module = converter.convertProgram(cfg);
+        Module module = converter.convertProgram(cfg);
+        initModule(module);
+        return module;
+    }
+
+    private void initModule(Module module) throws ShortCircuitException {
         new CriticalEdgeSplitting().runModule(module);
-    }
-
-    private Program<com.d_m.cfg.Block> toCfg(Program<List<Statement>> program) throws ShortCircuitException {
-        var cfg = threeAddressCode.normalizeProgram(program);
-        new ConstructSSA(symbol).convertProgram(cfg);
-        return cfg;
-    }
-
-    @Test
-    void matchedTiles() {
         GeneratedAutomata automata;
         try {
             automata = (GeneratedAutomata) Class.forName("com.d_m.gen.rules.X86_64").getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             automata = new DefaultAutomata();
         }
-        ISA isa = new X86_64_ISA();
-        Codegen codegen = new Codegen(isa, automata);
+        isa = new X86_64_ISA();
+        codegen = new Codegen(isa, automata);
+    }
+
+    private Program<com.d_m.cfg.Block> toCfg(Program<List<Statement>> program) throws ShortCircuitException {
+        Program<com.d_m.cfg.Block> cfg = threeAddressCode.normalizeProgram(program);
+        new ConstructSSA(symbol).convertProgram(cfg);
+        return cfg;
+    }
+
+    @Test
+    void matchedTiles() throws ShortCircuitException {
+        Module module = initFibonacci();
         for (Function function : module.getFunctionList()) {
             codegen.startFunction(function);
         }
@@ -84,21 +91,14 @@ class CodegenTest {
             matchedTilesMap.put(function.getName(), blockTilesMap);
         }
 
-        String expected = "{fibonacci={16=[18, 21, 23], 17=[2, 3, 4, 8, 10, 12, 15, 16, 17, 19, 21, 23], 11=[17, 21, 22], 12=[7, 16, 17, 19, 20, 21], 13=[14, 19, 21], 14=[6, 17, 21, 23], 15=[8, 16, 17, 18, 21, 23]}, main={0=[18, 21, 23], 1=[19, 21], 2=[1, 8, 16, 17, 18, 21, 23], 3=[21], 4=[0, 8, 16, 17, 18, 21, 23], 5=[8, 16, 19, 21, 23], 6=[18, 21, 23], 7=[19, 20, 21], 8=[5, 7, 16, 17, 21, 23], 9=[7, 16, 17, 19, 21], 10=[5, 17, 21, 23]}}";
+        String expected = "{fibonacci={16=[17, 20, 22], 17=[2, 3, 4, 8, 9, 11, 14, 15, 16, 18, 20, 22], 11=[16, 20, 21], 12=[7, 15, 16, 18, 19, 20], 13=[13, 18, 20], 14=[6, 16, 20, 22], 15=[8, 15, 16, 17, 20, 22]}, main={0=[17, 20, 22], 1=[18, 20], 2=[1, 8, 15, 16, 17, 20, 22], 3=[20], 4=[0, 8, 15, 16, 17, 20, 22], 5=[8, 15, 18, 20, 22], 6=[17, 20, 22], 7=[18, 19, 20], 8=[5, 7, 15, 16, 20, 22], 9=[7, 15, 16, 18, 20], 10=[5, 16, 20, 22]}}";
         assertEquals(matchedTilesMap.toString(), expected);
     }
 
     @Test
-    void codegen() throws IOException {
+    void codegen() throws IOException, ShortCircuitException {
+        Module module = initFibonacci();
         StringWriter writer = new StringWriter();
-        GeneratedAutomata automata;
-        try {
-            automata = (GeneratedAutomata) Class.forName("com.d_m.gen.rules.X86_64").getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            automata = new DefaultAutomata();
-        }
-        ISA isa = new X86_64_ISA();
-        Codegen codegen = new Codegen(isa, automata);
         for (Function function : module.getFunctionList()) {
             codegen.startFunction(function);
         }
