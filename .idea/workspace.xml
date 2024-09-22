@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Remove PCOPY and refactor codegen test">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start stack slot handling">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Operand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Operand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Scanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Scanner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/TokenType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/TokenType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -252,14 +247,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00144" summary="Parses simple rule">
-      <option name="closed" value="true" />
-      <created>1719762952583</created>
-      <option name="number" value="00144" />
-      <option name="presentableId" value="LOCAL-00144" />
-      <option name="project" value="LOCAL" />
-      <updated>1719762952583</updated>
     </task>
     <task id="LOCAL-00145" summary="Start automaton">
       <option name="closed" value="true" />
@@ -645,14 +632,21 @@
       <option name="project" value="LOCAL" />
       <updated>1726934673768</updated>
     </task>
-    <option name="localTasksCounter" value="193" />
+    <task id="LOCAL-00193" summary="Start stack slot handling">
+      <option name="closed" value="true" />
+      <created>1727013377274</created>
+      <option name="number" value="00193" />
+      <option name="presentableId" value="LOCAL-00193" />
+      <option name="project" value="LOCAL" />
+      <updated>1727013377275</updated>
+    </task>
+    <option name="localTasksCounter" value="194" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Block inherits Constant and lowers blocks and functions to machine operands" />
     <MESSAGE value="COPYTOREG and COPYFROMREG puts register into first argument and stores mapping of temporary registers" />
     <MESSAGE value="Parses registers in rules and abstracts over register class creation" />
     <MESSAGE value="Sets up MachineFunction and MachineBasicBlock information in Codegen" />
@@ -677,7 +671,8 @@
     <MESSAGE value="Modifies machine operands to create new registers for definitions and otherwise reuse constrained registers" />
     <MESSAGE value="Add a parallel move in the entry block of functions from constrained to unconstrained virtual registers" />
     <MESSAGE value="Remove PCOPY and refactor codegen test" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove PCOPY and refactor codegen test" />
+    <MESSAGE value="Start stack slot handling" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start stack slot handling" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

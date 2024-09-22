@@ -225,7 +225,28 @@ a set of tiles is its own DAG.
 The class `Codegen` uses `AlgorithmD` and `DAGSelect` to get the set of matched tiles. It then uses the method
 `bottomUpEmit` to traverse the tile DAG bottom up and emit each tile. The result is that each `Function` will have a
 corresponding `MachineFunction`, each `Block` will have a corresponding `MachineBlock` which contains multiple
-`MachineInstruction`s, etc. This machine representation still preserves SSA and contains phi instructions. Each definition
+`MachineInstruction`s, etc. This machine representation still preserves SSA and contains phi instructions. Each
+definition
 in an instruction will be an unique virtual register.
 
+Parallel moves are inserted at this stage currently for calls and functions. A parallel move is inserted at every
+function entry to move arguments from virtual registers constrained to a physical register to general virtual registers
+inside the `populateBlockDagMap` function in the class `Codegen`. When lowering function calls to machine instructions, parallel
+moves are generated to move arguments from general virtual registers to virtual registers constrained to physical registers
+based on the function's calling convention inside the ISA's rule file (`x86_64.rule` as an example).
+
 ### com.d_m.deconstruct
+
+This package contains classes for destructing the machine instructions from SSA form. These are used before linear scan
+register allocation.
+
+Thee class `InsertParallelMoves` destructs from SSA form by inserting parallel moves into
+the end of predecessor blocks for phis in a block, based on Algorithm 3.5 in Chapter 3.2 (page 37) of SSA-based Compiler
+Design. Critical edge splitting is required to be performed before
+running this.
+
+The function `sequentializeBlock` in the class `SequentializeParallelMoves` turns parallel moves in a block into
+multiple move instructions using
+the algorithm in the paper "Tilting at windmills with Coq: formal verification of a compilation algorithm for parallel
+moves" by
+Rideau, Serpette, and Leroy.
