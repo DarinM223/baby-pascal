@@ -23,12 +23,14 @@ public class FunctionLoweringInfo {
     private final Map<Value, Register> valueRegisterMap;
     private final Map<Block, Instruction> startTokenMap;
     private final Fresh virtualRegisterGen;
+    private int stackOffset;
 
     public FunctionLoweringInfo(ISA isa) {
         this.isa = isa;
         this.valueRegisterMap = new HashMap<>();
         this.startTokenMap = new HashMap<>();
         this.virtualRegisterGen = new FreshImpl();
+        this.stackOffset = 0;
     }
 
     public Register createRegister(RegisterClass registerClass, RegisterConstraint constraint) {
@@ -40,6 +42,11 @@ public class FunctionLoweringInfo {
                 new MachineOperandPair(source, MachineOperandKind.USE),
                 new MachineOperandPair(destination, MachineOperandKind.DEF)
         ));
+    }
+
+    public MachineOperand createStackSlot(int size) {
+        stackOffset -= size;
+        return new MachineOperand.StackSlot(stackOffset);
     }
 
     public void addRegister(Value value, Register register) {

@@ -73,6 +73,12 @@ public class Scanner {
                     addToken(TokenType.REG);
                 }
             }
+            case '@' -> {
+                if (isDigit(peek())) {
+                    start++;
+                    number(TokenType.STACK_SLOT);
+                }
+            }
             default -> {
                 if (isDigit(c)) {
                     number();

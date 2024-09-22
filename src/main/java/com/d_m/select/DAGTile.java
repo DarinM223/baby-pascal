@@ -149,7 +149,19 @@ public class DAGTile implements Tile<Value>, Comparable<DAGTile> {
                 }
                 throw new UnsupportedOperationException("Non constant projection index: " + machineIndex);
             }
-            default -> throw new UnsupportedOperationException("Invalid operand: " + operand);
+            case Operand.Projection projection ->
+                    throw new UnsupportedOperationException("Invalid projection operand: " + projection);
+            // TODO: implement any arity parameters
+            case Operand.AnyArity _ ->
+                    throw new UnsupportedOperationException("Any arity operand parameters not supported yet");
+            case Operand.StackSlot(int slotNumber) -> switch (operandPair.kind()) {
+                case USE -> tempRegisterMap.get(slotNumber);
+                case DEF -> {
+                    MachineOperand machineOperand = info.createStackSlot(8);
+                    tempRegisterMap.put(slotNumber, machineOperand);
+                    yield machineOperand;
+                }
+            };
         };
         return new MachineOperandPair(result, operandPair.kind());
     }

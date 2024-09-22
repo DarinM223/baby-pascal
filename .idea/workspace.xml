@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add a parallel move in the entry block of functions from constrained to unconstrained virtual registers">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/ProductType.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Remove PCOPY and refactor codegen test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rules/x86_64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Type.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Type.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/Operator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/Operator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Operand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Operand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Scanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/Scanner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/gen/TokenType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/gen/TokenType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -252,14 +252,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00143" summary="Start rule parser">
-      <option name="closed" value="true" />
-      <created>1719689599620</created>
-      <option name="number" value="00143" />
-      <option name="presentableId" value="LOCAL-00143" />
-      <option name="project" value="LOCAL" />
-      <updated>1719689599620</updated>
     </task>
     <task id="LOCAL-00144" summary="Parses simple rule">
       <option name="closed" value="true" />
@@ -645,14 +637,21 @@
       <option name="project" value="LOCAL" />
       <updated>1726860109492</updated>
     </task>
-    <option name="localTasksCounter" value="192" />
+    <task id="LOCAL-00192" summary="Remove PCOPY and refactor codegen test">
+      <option name="closed" value="true" />
+      <created>1726934673767</created>
+      <option name="number" value="00192" />
+      <option name="presentableId" value="LOCAL-00192" />
+      <option name="project" value="LOCAL" />
+      <updated>1726934673768</updated>
+    </task>
+    <option name="localTasksCounter" value="193" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add pattern for matching constants and modify matching to allow this pattern for constants" />
     <MESSAGE value="Block inherits Constant and lowers blocks and functions to machine operands" />
     <MESSAGE value="COPYTOREG and COPYFROMREG puts register into first argument and stores mapping of temporary registers" />
     <MESSAGE value="Parses registers in rules and abstracts over register class creation" />
@@ -677,7 +676,8 @@
     <MESSAGE value="Update to JDK 23 and modifies pattern matching so that Eclipse compiles" />
     <MESSAGE value="Modifies machine operands to create new registers for definitions and otherwise reuse constrained registers" />
     <MESSAGE value="Add a parallel move in the entry block of functions from constrained to unconstrained virtual registers" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add a parallel move in the entry block of functions from constrained to unconstrained virtual registers" />
+    <MESSAGE value="Remove PCOPY and refactor codegen test" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove PCOPY and refactor codegen test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -698,11 +698,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java</url>
           <line>56</line>
           <option name="timeStamp" value="74" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java</url>
-          <line>151</line>
-          <option name="timeStamp" value="75" />
         </line-breakpoint>
         <breakpoint type="java-exception">
           <properties class="java.lang.NullPointerException" package="java.lang">

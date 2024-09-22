@@ -119,6 +119,7 @@ public class Parser {
             }
             case NUMBER -> new Operand.Immediate((int) operandToken.literal());
             case VIRTUAL_REG -> new Operand.VirtualRegister((int) operandToken.literal());
+            case STACK_SLOT -> new Operand.StackSlot((int) operandToken.literal());
             case REG -> new Operand.Register(operandToken.lexeme());
             case PARAM -> new Operand.Parameter((int) operandToken.literal());
             default -> throw new ParseError("Unknown operand type: " + operandToken.type());

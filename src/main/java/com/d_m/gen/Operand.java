@@ -34,6 +34,13 @@ public sealed interface Operand {
         }
     }
 
+    record StackSlot(int slotNumber) implements Operand {
+        @Override
+        public void write(Writer writer) throws IOException {
+            writer.write("new Operand.StackSlot(" + slotNumber + ")");
+        }
+    }
+
     record Parameter(int parameter) implements Operand {
         @Override
         public void write(Writer writer) throws IOException {
