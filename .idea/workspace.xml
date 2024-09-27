@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start stack slot handling">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Modify README.md">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -247,14 +247,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00145" summary="Start automaton">
-      <option name="closed" value="true" />
-      <created>1720378231874</created>
-      <option name="number" value="00145" />
-      <option name="presentableId" value="LOCAL-00145" />
-      <option name="project" value="LOCAL" />
-      <updated>1720378231875</updated>
     </task>
     <task id="LOCAL-00146" summary="Attempt to build automaton from a list of parsed Rules">
       <option name="closed" value="true" />
@@ -640,14 +632,21 @@
       <option name="project" value="LOCAL" />
       <updated>1727013377275</updated>
     </task>
-    <option name="localTasksCounter" value="194" />
+    <task id="LOCAL-00194" summary="Modify README.md">
+      <option name="closed" value="true" />
+      <created>1727036708915</created>
+      <option name="number" value="00194" />
+      <option name="presentableId" value="LOCAL-00194" />
+      <option name="project" value="LOCAL" />
+      <updated>1727036708916</updated>
+    </task>
+    <option name="localTasksCounter" value="195" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="COPYTOREG and COPYFROMREG puts register into first argument and stores mapping of temporary registers" />
     <MESSAGE value="Parses registers in rules and abstracts over register class creation" />
     <MESSAGE value="Sets up MachineFunction and MachineBasicBlock information in Codegen" />
     <MESSAGE value="Pretty prints MachineFunctions and modifies rules so that none of the operands are null" />
@@ -672,7 +671,8 @@
     <MESSAGE value="Add a parallel move in the entry block of functions from constrained to unconstrained virtual registers" />
     <MESSAGE value="Remove PCOPY and refactor codegen test" />
     <MESSAGE value="Start stack slot handling" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start stack slot handling" />
+    <MESSAGE value="Modify README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modify README.md" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
