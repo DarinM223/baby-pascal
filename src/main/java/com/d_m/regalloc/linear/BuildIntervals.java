@@ -3,14 +3,15 @@ package com.d_m.regalloc.linear;
 import com.d_m.select.instr.*;
 import com.d_m.select.reg.Register;
 
-import java.util.BitSet;
-import java.util.List;
+import java.util.*;
 
 public class BuildIntervals {
     private final InstructionNumbering numbering;
+    private final Map<Integer, List<Interval>> intervalMap;
 
     public BuildIntervals(InstructionNumbering numbering) {
         this.numbering = numbering;
+        this.intervalMap = new HashMap<>();
     }
 
     public void runFunction(MachineFunction function) {
@@ -52,5 +53,17 @@ public class BuildIntervals {
     }
 
     public void addRange(MachineInstruction i, MachineBasicBlock b, int end) {
+        int ni = numbering.getInstructionNumber(i);
+        int nbf = numbering.getInstructionNumber(b.getInstructions().getFirst());
+        int start = Math.max(ni, nbf);
+
+        // Add (start, end) end interval[i.n] merging adjacent ranges
+        List<Interval> intervals = intervalMap.get(ni);
+        if (intervals == null) {
+            intervals = new ArrayList<>();
+            intervals.add(new Interval(start, end, 0));
+        } else {
+            // TODO: add into sorted list merging adjacent ranges
+        }
     }
 }

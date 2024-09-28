@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Modify README.md">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start building live intervals">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/Interval.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rules/x86_64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,6 +87,7 @@
       <recent name="" />
     </key>
     <key name="MoveInnerDialog.RECENTS_KEY">
+      <recent name="com.d_m.regalloc.linear" />
       <recent name="com.d_m.select.instr" />
       <recent name="com.d_m.pass" />
       <recent name="com.d_m.ssa" />
@@ -247,14 +251,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00146" summary="Attempt to build automaton from a list of parsed Rules">
-      <option name="closed" value="true" />
-      <created>1720819715792</created>
-      <option name="number" value="00146" />
-      <option name="presentableId" value="LOCAL-00146" />
-      <option name="project" value="LOCAL" />
-      <updated>1720819715793</updated>
     </task>
     <task id="LOCAL-00147" summary="Starts writing automaton to file, failure cases still not written yet">
       <option name="closed" value="true" />
@@ -640,14 +636,21 @@
       <option name="project" value="LOCAL" />
       <updated>1727036708916</updated>
     </task>
-    <option name="localTasksCounter" value="195" />
+    <task id="LOCAL-00195" summary="Start building live intervals">
+      <option name="closed" value="true" />
+      <created>1727448855596</created>
+      <option name="number" value="00195" />
+      <option name="presentableId" value="LOCAL-00195" />
+      <option name="project" value="LOCAL" />
+      <updated>1727448855597</updated>
+    </task>
+    <option name="localTasksCounter" value="196" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Parses registers in rules and abstracts over register class creation" />
     <MESSAGE value="Sets up MachineFunction and MachineBasicBlock information in Codegen" />
     <MESSAGE value="Pretty prints MachineFunctions and modifies rules so that none of the operands are null" />
     <MESSAGE value="Deletes old selection dag types and moves register class types into regclass package" />
@@ -672,7 +675,8 @@
     <MESSAGE value="Remove PCOPY and refactor codegen test" />
     <MESSAGE value="Start stack slot handling" />
     <MESSAGE value="Modify README.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modify README.md" />
+    <MESSAGE value="Start building live intervals" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start building live intervals" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
