@@ -7,10 +7,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class X86_64_ISA implements ISA {
-    public RegisterConstraint allIntegerRegs() {
-        return new RegisterConstraint.OnRegister();
-    }
-
     public static Register.Physical rax() {
         return new Register.Physical(0, RegisterClass.INT);
     }
@@ -95,10 +91,15 @@ public class X86_64_ISA implements ISA {
             .build();
 
     @Override
+    public Iterable<Register.Physical> allIntegerRegs() {
+        return INT_REGISTER_MAPPING.values();
+    }
+
+    @Override
     public RegisterConstraint functionCallingConvention(RegisterClass registerClass, int param) {
         return switch (registerClass) {
             case INT -> functionIntegerCallingConvention(param);
-            default -> allIntegerRegs();
+            default -> new RegisterConstraint.OnRegister();
         };
     }
 

@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start building live intervals">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/Interval.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start addRange">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rules/x86_64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/Interval.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/Interval.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/ISA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/ISA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/X86_64_ISA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/X86_64_ISA.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -251,14 +252,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00147" summary="Starts writing automaton to file, failure cases still not written yet">
-      <option name="closed" value="true" />
-      <created>1720888850074</created>
-      <option name="number" value="00147" />
-      <option name="presentableId" value="LOCAL-00147" />
-      <option name="project" value="LOCAL" />
-      <updated>1720888850074</updated>
     </task>
     <task id="LOCAL-00148" summary="Generate failure cases for automaton">
       <option name="closed" value="true" />
@@ -644,14 +637,21 @@
       <option name="project" value="LOCAL" />
       <updated>1727448855597</updated>
     </task>
-    <option name="localTasksCounter" value="196" />
+    <task id="LOCAL-00196" summary="Start addRange">
+      <option name="closed" value="true" />
+      <created>1727537940528</created>
+      <option name="number" value="00196" />
+      <option name="presentableId" value="LOCAL-00196" />
+      <option name="project" value="LOCAL" />
+      <updated>1727537940528</updated>
+    </task>
+    <option name="localTasksCounter" value="197" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Sets up MachineFunction and MachineBasicBlock information in Codegen" />
     <MESSAGE value="Pretty prints MachineFunctions and modifies rules so that none of the operands are null" />
     <MESSAGE value="Deletes old selection dag types and moves register class types into regclass package" />
     <MESSAGE value="Add projection syntax to rules and allow tiles to have multiple outputs" />
@@ -676,7 +676,8 @@
     <MESSAGE value="Start stack slot handling" />
     <MESSAGE value="Modify README.md" />
     <MESSAGE value="Start building live intervals" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start building live intervals" />
+    <MESSAGE value="Start addRange" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start addRange" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

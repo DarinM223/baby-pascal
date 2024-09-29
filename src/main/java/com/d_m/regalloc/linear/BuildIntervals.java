@@ -57,11 +57,11 @@ public class BuildIntervals {
         int nbf = numbering.getInstructionNumber(b.getInstructions().getFirst());
         int start = Math.max(ni, nbf);
 
-        // Add (start, end) end interval[i.n] merging adjacent ranges
+        // Add (start, end) to interval[i.n] merging adjacent ranges
         List<Interval> intervals = intervalMap.get(ni);
         if (intervals == null) {
             intervals = new ArrayList<>();
-            intervals.add(new Interval(start, end, 0));
+            intervals.add(new Interval(start, end, 0, false));
         } else {
             // TODO: add into sorted list merging adjacent ranges
         }

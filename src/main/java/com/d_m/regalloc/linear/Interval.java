@@ -8,12 +8,14 @@ public class Interval {
     private int start;
     private int end;
     private int weight;
+    private final boolean fixed;
     private MachineOperand reg;
 
-    public Interval(int start, int end, int weight) {
+    public Interval(int start, int end, int weight, boolean fixed) {
         this.start = start;
         this.end = end;
         this.weight = weight;
+        this.fixed = fixed;
         this.reg = null;
     }
 
@@ -49,6 +51,10 @@ public class Interval {
         this.reg = reg;
     }
 
+    public boolean isFixed() {
+        return fixed;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,5 +65,13 @@ public class Interval {
     @Override
     public int hashCode() {
         return Objects.hash(start, end);
+    }
+
+    public boolean overlaps(int j) {
+        return start <= j && j <= end;
+    }
+
+    public boolean overlaps(Interval j) {
+        return Integer.max(start, j.start) <= Integer.min(end, j.end);
     }
 }
