@@ -23,7 +23,8 @@ public class LinearScan {
 
     /**
      * Assigns physical registers to the intervals.
-     * @param free set of free physical registers
+     *
+     * @param free      set of free physical registers
      * @param intervals list of intervals sorted by the start position
      */
     public void scan(Set<Register.Physical> free, List<Interval> intervals) {
@@ -70,12 +71,14 @@ public class LinearScan {
             // Collect available registers in f:
             Set<Register.Physical> f = new HashSet<>(free);
             for (Interval interval : inactive) {
-                if (interval.overlaps(current) && interval.getReg() instanceof MachineOperand.Register(Register.Physical physical)) {
+                if (interval.overlaps(current) &&
+                        interval.getReg() instanceof MachineOperand.Register(Register.Physical physical)) {
                     f.remove(physical);
                 }
             }
             for (Interval interval : fixedUnhandled) {
-                if (interval.overlaps(current) && interval.getReg() instanceof MachineOperand.Register(Register.Physical physical)) {
+                if (interval.overlaps(current) &&
+                        interval.getReg() instanceof MachineOperand.Register(Register.Physical physical)) {
                     f.remove(physical);
                 }
             }
@@ -84,6 +87,7 @@ public class LinearScan {
             if (!f.isEmpty()) {
                 if (!(current.getReg() instanceof MachineOperand.Register(Register.Physical _))) {
                     Register.Physical taken = f.stream().findAny().get();
+                    current.setReg(new MachineOperand.Register(taken));
                     free.remove(taken);
                 }
                 active.add(current);

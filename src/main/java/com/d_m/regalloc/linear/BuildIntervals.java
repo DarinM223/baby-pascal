@@ -7,16 +7,33 @@ import java.util.*;
 
 public class BuildIntervals {
     private final InstructionNumbering numbering;
+    private final Map<Integer, MachineInstruction> virtualRegisterToMachineInstructionMap;
     private final Map<Integer, List<Interval>> intervalMap;
 
     public BuildIntervals(InstructionNumbering numbering) {
         this.numbering = numbering;
         this.intervalMap = new HashMap<>();
+        this.virtualRegisterToMachineInstructionMap = new HashMap<>();
     }
 
     public void runFunction(MachineFunction function) {
+        initializeVirtualRegisterMap(function);
         for (MachineBasicBlock block : function.getBlocks()) {
             runBlock(block);
+        }
+    }
+
+    private void initializeVirtualRegisterMap(MachineFunction function) {
+        for (MachineBasicBlock block : function.getBlocks()) {
+            for (MachineInstruction instruction : block.getInstructions()) {
+                for (MachineOperandPair pair : instruction.getOperands()) {
+                    if (pair.kind() == MachineOperandKind.DEF && pair.operand() instanceof MachineOperand.Register(
+                            Register.Virtual(int n, _, _)
+                    )) {
+                        virtualRegisterToMachineInstructionMap.put(n, instruction);
+                    }
+                }
+            }
         }
     }
 
@@ -50,12 +67,39 @@ public class BuildIntervals {
                 }
             }
         }
+        // for each instruction i in live do addRange(i, b, b.last.n+1)
+        var it = live.stream().iterator();
+        while (it.hasNext()) {
+            int virtualRegister = it.next();
+            MachineInstruction instruction = virtualRegisterToMachineInstructionMap.get(virtualRegister);
+            addRange(instruction, block, numbering.getInstructionNumber(block.getInstructions().getLast()) + 1);
+        }
+        for (MachineInstruction instruction : block.getInstructions().reversed()) {
+            for (MachineOperandPair pair : instruction.getOperands()) {
+                switch (pair.kind()) {
+                    case USE -> {
+                        if (pair.operand() instanceof MachineOperand.Register(Register.Virtual(int n, _, _)) &&
+                                !live.get(n)) {
+                            live.set(n);
+                            MachineInstruction operandInstruction = virtualRegisterToMachineInstructionMap.get(n);
+                            addRange(operandInstruction, block, numbering.getInstructionNumber(instruction));
+                        }
+                    }
+                    case DEF -> {
+                        if (pair.operand() instanceof MachineOperand.Register(Register.Virtual(int n, _, _))) {
+                            live.clear(n);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void addRange(MachineInstruction i, MachineBasicBlock b, int end) {
         int ni = numbering.getInstructionNumber(i);
         int nbf = numbering.getInstructionNumber(b.getInstructions().getFirst());
         int start = Math.max(ni, nbf);
+        assert (start <= end);
 
         // Add (start, end) to interval[i.n] merging adjacent ranges
         List<Interval> intervals = intervalMap.get(ni);
@@ -63,7 +107,19 @@ public class BuildIntervals {
             intervals = new ArrayList<>();
             intervals.add(new Interval(start, end, 0, false));
         } else {
-            // TODO: add into sorted list merging adjacent ranges
+            // Add into sorted list merging adjacent ranges
+            boolean merged = false;
+            for (Interval interval : intervals) {
+                if (start == interval.getEnd() + 1) {
+                    interval.setEnd(end);
+                    merged = true;
+                    break;
+                }
+            }
+            if (!merged) {
+                intervals.add(new Interval(start, end, 0, false));
+                intervals.sort(null);
+            }
         }
     }
 }

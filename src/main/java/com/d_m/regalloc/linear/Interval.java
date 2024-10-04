@@ -4,7 +4,7 @@ import com.d_m.select.instr.MachineOperand;
 
 import java.util.Objects;
 
-public class Interval {
+public class Interval implements Comparable<Interval> {
     private int start;
     private int end;
     private int weight;
@@ -74,4 +74,9 @@ public class Interval {
     public boolean overlaps(Interval j) {
         return Integer.max(start, j.start) <= Integer.min(end, j.end);
     }
+
+	@Override
+	public int compareTo(Interval o) {
+		return Integer.compare(start, o.start);
+	}
 }
