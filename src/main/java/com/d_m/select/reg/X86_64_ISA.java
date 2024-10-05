@@ -103,6 +103,11 @@ public class X86_64_ISA implements ISA {
         };
     }
 
+    @Override
+    public Register.Physical physicalFromRegisterName(String registerName) {
+        return INT_REGISTER_MAPPING.get(registerName);
+    }
+
     public RegisterConstraint functionIntegerCallingConvention(int param) {
         return switch (param) {
             case 0 -> new RegisterConstraint.UsePhysical(rdi());
@@ -116,7 +121,7 @@ public class X86_64_ISA implements ISA {
     }
 
     @Override
-    public RegisterConstraint fromRegisterName(String registerName) {
+    public RegisterConstraint constraintFromRegisterName(String registerName) {
         Register.Physical register = INT_REGISTER_MAPPING.get(registerName);
         return new RegisterConstraint.UsePhysical(Objects.requireNonNull(register));
     }

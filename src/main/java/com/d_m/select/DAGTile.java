@@ -123,7 +123,7 @@ public class DAGTile implements Tile<Value>, Comparable<DAGTile> {
                             : machineOperand;
                 }
                 case DEF -> {
-                    MachineOperand machineOperand = new MachineOperand.Register(info.createRegister(RegisterClass.INT, info.isa.fromRegisterName(registerName)));
+                    MachineOperand machineOperand = new MachineOperand.Register(info.createRegister(RegisterClass.INT, info.isa.constraintFromRegisterName(registerName)));
                     constrainedRegisterMap.put(registerName, machineOperand);
                     yield machineOperand;
                 }

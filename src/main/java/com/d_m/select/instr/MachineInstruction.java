@@ -1,5 +1,6 @@
 package com.d_m.select.instr;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,7 +13,7 @@ public class MachineInstruction {
 
     public MachineInstruction(String instruction, List<MachineOperandPair> operands) {
         this.instruction = instruction;
-        this.operands = operands;
+        this.operands = new ArrayList<>(operands);
     }
 
     public String getInstruction() {

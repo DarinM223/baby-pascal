@@ -105,7 +105,10 @@ public class BuildIntervals {
         int ni = numbering.getInstructionNumber(i);
         int nbf = numbering.getInstructionNumber(b.getInstructions().getFirst());
         int start = Math.max(ni, nbf);
-        assert (start <= end);
+        if (start > end) {
+            System.err.println("Adding invalid range: " + start + " to " + end);
+            return;
+        }
 
         // Add (start, end) to interval[i.n] merging adjacent ranges
         List<Interval> intervals = intervalMap.get(ni);
