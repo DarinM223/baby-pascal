@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start linear scan">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="More progress on finding live intervals and linear scan">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/InstructionNumbering.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/InstructionNumbering.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/Interval.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/Interval.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java" afterDir="false" />
     </list>
@@ -250,14 +251,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00149" summary="Generated automata implements interface">
-      <option name="closed" value="true" />
-      <created>1720987723708</created>
-      <option name="number" value="00149" />
-      <option name="presentableId" value="LOCAL-00149" />
-      <option name="project" value="LOCAL" />
-      <updated>1720987723708</updated>
     </task>
     <task id="LOCAL-00150" summary="Start algorithm d matching on SSA dag">
       <option name="closed" value="true" />
@@ -643,14 +636,21 @@
       <option name="project" value="LOCAL" />
       <updated>1727622178729</updated>
     </task>
-    <option name="localTasksCounter" value="198" />
+    <task id="LOCAL-00198" summary="More progress on finding live intervals and linear scan">
+      <option name="closed" value="true" />
+      <created>1728048479036</created>
+      <option name="number" value="00198" />
+      <option name="presentableId" value="LOCAL-00198" />
+      <option name="project" value="LOCAL" />
+      <updated>1728048479036</updated>
+    </task>
+    <option name="localTasksCounter" value="199" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Deletes old selection dag types and moves register class types into regclass package" />
     <MESSAGE value="Add projection syntax to rules and allow tiles to have multiple outputs" />
     <MESSAGE value="Rework registers and register constraints and modify instructions to take in operand pairs (with use/def) instead of operands" />
     <MESSAGE value="Better pretty printing of machine instructions" />
@@ -675,7 +675,8 @@
     <MESSAGE value="Start building live intervals" />
     <MESSAGE value="Start addRange" />
     <MESSAGE value="Start linear scan" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start linear scan" />
+    <MESSAGE value="More progress on finding live intervals and linear scan" />
+    <option name="LAST_COMMIT_MESSAGE" value="More progress on finding live intervals and linear scan" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

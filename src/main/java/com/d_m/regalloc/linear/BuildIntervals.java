@@ -16,11 +16,17 @@ public class BuildIntervals {
         this.virtualRegisterToMachineInstructionMap = new HashMap<>();
     }
 
-    public void runFunction(MachineFunction function) {
+    public List<Interval> runFunction(MachineFunction function) {
         initializeVirtualRegisterMap(function);
         for (MachineBasicBlock block : function.getBlocks()) {
             runBlock(block);
         }
+        List<Interval> finalIntervals = new ArrayList<>();
+        for (List<Interval> intervals : intervalMap.values()) {
+            finalIntervals.addAll(intervals);
+        }
+        finalIntervals.sort(null);
+        return finalIntervals;
     }
 
     private void initializeVirtualRegisterMap(MachineFunction function) {
@@ -72,7 +78,7 @@ public class BuildIntervals {
         while (it.hasNext()) {
             int virtualRegister = it.next();
             MachineInstruction instruction = virtualRegisterToMachineInstructionMap.get(virtualRegister);
-            addRange(instruction, block, numbering.getInstructionNumber(block.getInstructions().getLast()) + 1);
+            addRange(virtualRegister, instruction, block, numbering.getInstructionNumber(block.getInstructions().getLast()) + 1);
         }
         for (MachineInstruction instruction : block.getInstructions().reversed()) {
             for (MachineOperandPair pair : instruction.getOperands()) {
@@ -82,7 +88,7 @@ public class BuildIntervals {
                                 !live.get(n)) {
                             live.set(n);
                             MachineInstruction operandInstruction = virtualRegisterToMachineInstructionMap.get(n);
-                            addRange(operandInstruction, block, numbering.getInstructionNumber(instruction));
+                            addRange(n, operandInstruction, block, numbering.getInstructionNumber(instruction));
                         }
                     }
                     case DEF -> {
@@ -95,7 +101,7 @@ public class BuildIntervals {
         }
     }
 
-    public void addRange(MachineInstruction i, MachineBasicBlock b, int end) {
+    public void addRange(int virtualRegister, MachineInstruction i, MachineBasicBlock b, int end) {
         int ni = numbering.getInstructionNumber(i);
         int nbf = numbering.getInstructionNumber(b.getInstructions().getFirst());
         int start = Math.max(ni, nbf);
@@ -105,7 +111,7 @@ public class BuildIntervals {
         List<Interval> intervals = intervalMap.get(ni);
         if (intervals == null) {
             intervals = new ArrayList<>();
-            intervals.add(new Interval(start, end, 0, false));
+            intervals.add(new Interval(start, end, 0, virtualRegister, false));
         } else {
             // Add into sorted list merging adjacent ranges
             boolean merged = false;
@@ -117,7 +123,7 @@ public class BuildIntervals {
                 }
             }
             if (!merged) {
-                intervals.add(new Interval(start, end, 0, false));
+                intervals.add(new Interval(start, end, 0, virtualRegister, false));
                 intervals.sort(null);
             }
         }

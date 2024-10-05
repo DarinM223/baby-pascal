@@ -1,7 +1,10 @@
 package com.d_m.regalloc.linear;
 
 import com.d_m.select.FunctionLoweringInfo;
+import com.d_m.select.instr.MachineInstruction;
 import com.d_m.select.instr.MachineOperand;
+import com.d_m.select.instr.MachineOperandKind;
+import com.d_m.select.instr.MachineOperandPair;
 import com.d_m.select.reg.Register;
 import com.google.common.collect.Iterables;
 
@@ -13,9 +16,11 @@ public class LinearScan {
     private final Set<Interval> active;
     private final Set<Interval> inactive;
     private final Set<Interval> handled;
+    private final InstructionNumbering numbering;
 
-    public LinearScan(FunctionLoweringInfo info) {
+    public LinearScan(FunctionLoweringInfo info, InstructionNumbering numbering) {
         this.info = info;
+        this.numbering = numbering;
         active = new HashSet<>();
         inactive = new HashSet<>();
         handled = new HashSet<>();
@@ -115,7 +120,7 @@ public class LinearScan {
         MachineOperand r = weightMap.keySet().stream().min(Comparator.comparingInt(weightMap::get)).get();
         if (current.getWeight() < weightMap.get(r)) {
             // Assign a memory location to current:
-            current.setReg(info.createStackSlot(8));
+            setRegister(current, info.createStackSlot(8));
             handled.add(current);
         } else {
             // Assign memory locations to the intervals occupied by r.
@@ -123,20 +128,39 @@ public class LinearScan {
             // and assign memory locations to them.
             for (Interval interval : active) {
                 if (interval.getReg().equals(r)) {
-                    interval.setReg(info.createStackSlot(8));
+                    setRegister(interval, info.createStackSlot(8));
                     active.remove(interval);
                     handled.add(interval);
                 }
             }
             for (Interval interval : inactive) {
                 if (interval.getReg().equals(r)) {
-                    interval.setReg(info.createStackSlot(8));
+                    setRegister(interval, info.createStackSlot(8));
                     inactive.remove(interval);
                     handled.add(interval);
                 }
             }
-            current.setReg(r);
+            setRegister(current, r);
             active.add(current);
+        }
+    }
+
+    // Also sets the machine instruction at the start of the interval.
+    private void setRegister(Interval interval, MachineOperand registerOperand) {
+        interval.setReg(registerOperand);
+        MachineInstruction instruction = numbering.getInstructionFromNumber(interval.getStart());
+        // Replace instruction's operand with the interval's virtual register with the new operand.
+        for (int i = 0; i < instruction.getOperands().size(); i++) {
+            MachineOperandPair pair = instruction.getOperands().get(i);
+            if (pair.kind() == MachineOperandKind.USE) {
+                continue;
+            }
+
+            if (pair.operand() instanceof MachineOperand.Register(Register.Virtual(int n, _, _)) &&
+                    n == interval.getVirtualReg()) {
+                instruction.getOperands().set(i, new MachineOperandPair(registerOperand, MachineOperandKind.DEF));
+                break;
+            }
         }
     }
 }

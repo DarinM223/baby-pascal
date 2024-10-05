@@ -8,13 +8,15 @@ public class Interval implements Comparable<Interval> {
     private int start;
     private int end;
     private int weight;
+    private final int virtualReg;
     private final boolean fixed;
     private MachineOperand reg;
 
-    public Interval(int start, int end, int weight, boolean fixed) {
+    public Interval(int start, int end, int weight, int virtualReg, boolean fixed) {
         this.start = start;
         this.end = end;
         this.weight = weight;
+        this.virtualReg = virtualReg;
         this.fixed = fixed;
         this.reg = null;
     }
@@ -49,6 +51,10 @@ public class Interval implements Comparable<Interval> {
 
     public void setReg(MachineOperand reg) {
         this.reg = reg;
+    }
+
+    public int getVirtualReg() {
+        return virtualReg;
     }
 
     public boolean isFixed() {
