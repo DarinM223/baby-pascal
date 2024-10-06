@@ -231,8 +231,10 @@ in an instruction will be an unique virtual register.
 
 Parallel moves are inserted at this stage currently for calls and functions. A parallel move is inserted at every
 function entry to move arguments from virtual registers constrained to a physical register to general virtual registers
-inside the `populateBlockDagMap` function in the class `Codegen`. When lowering function calls to machine instructions, parallel
-moves are generated to move arguments from general virtual registers to virtual registers constrained to physical registers
+inside the `populateBlockDagMap` function in the class `Codegen`. When lowering function calls to machine instructions,
+parallel
+moves are generated to move arguments from general virtual registers to virtual registers constrained to physical
+registers
 based on the function's calling convention inside the ISA's rule file (`x86_64.rule` as an example).
 
 ### com.d_m.deconstruct
@@ -250,3 +252,14 @@ multiple move instructions using
 the algorithm in the paper "Tilting at windmills with Coq: formal verification of a compilation algorithm for parallel
 moves" by
 Rideau, Serpette, and Leroy.
+
+### com.d_m.regalloc.linear
+
+This package contains classes for doing linear scan register allocation.
+
+The class `InstructionNumbering` goes over the blocks in the functions and assigns a unique number
+for each instruction. The function `runFunction` in the class `BuildIntervals` returns a list of live
+intervals of a function sorted with the start index in increasing order. The `scan` method in the class `LinearScan`
+assigns physical registers to values in a single linear scan over the live intervals of all values in the program. The
+code is based off the paper Linear Scan Register Allocation in the Context of SSA Form and Register Constraints by
+Mossenbock and Pfeiffer.
