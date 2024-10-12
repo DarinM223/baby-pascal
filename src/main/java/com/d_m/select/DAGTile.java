@@ -87,13 +87,22 @@ public class DAGTile implements Tile<Value>, Comparable<DAGTile> {
                     emitter.add(converted);
                 }
             } else {
-                List<MachineOperandPair> operands = instruction
-                        .operands()
-                        .stream()
-                        .map(operand -> toOperand(info, arguments, constrainedRegisterMap, tempRegisterMap, operand))
-                        .toList();
-                MachineInstruction converted = new MachineInstruction(instruction.name(), operands);
-                emitter.add(converted);
+                boolean validInstruction = true;
+                List<MachineOperandPair> operands = new ArrayList<>(instruction.operands().size());
+                for (OperandPair pair : instruction.operands()) {
+                    MachineOperandPair convertedOperand = toOperand(info, arguments, constrainedRegisterMap, tempRegisterMap, pair);
+                    if (convertedOperand.operand() == null) {
+                        validInstruction = false;
+                        break;
+                    }
+                    operands.add(convertedOperand);
+                }
+                // Don't emit instruction if it doesn't have valid operands.
+                // For example: a phi node with side effect tokens as its operands.
+                if (validInstruction) {
+                    MachineInstruction converted = new MachineInstruction(instruction.name(), operands);
+                    emitter.add(converted);
+                }
             }
         }
 

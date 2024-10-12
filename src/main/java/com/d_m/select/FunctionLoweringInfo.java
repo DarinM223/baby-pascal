@@ -34,7 +34,8 @@ public class FunctionLoweringInfo {
     }
 
     public Register createRegister(RegisterClass registerClass, RegisterConstraint constraint) {
-        return new Register.Virtual(virtualRegisterGen.fresh(), registerClass, constraint);
+        int fresh = virtualRegisterGen.fresh();
+        return new Register.Virtual(fresh, registerClass, constraint);
     }
 
     public MachineInstruction createMoveInstruction(MachineOperand destination, MachineOperand source) {

@@ -33,6 +33,10 @@ public class MachineFunction {
         return name;
     }
 
+    public List<MachineOperand> getParams() {
+        return params;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

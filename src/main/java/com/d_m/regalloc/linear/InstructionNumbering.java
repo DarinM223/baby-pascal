@@ -19,7 +19,7 @@ public class InstructionNumbering {
         numberingInstructionMap = new HashMap<>();
     }
 
-    public int getInstructionNumber(MachineInstruction instruction) {
+    public Integer getInstructionNumber(MachineInstruction instruction) {
         return instructionNumberingMap.get(instruction);
     }
 

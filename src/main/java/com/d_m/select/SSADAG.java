@@ -81,6 +81,16 @@ public class SSADAG implements DAG<Value> {
         for (Use use : instruction.uses()) {
             if (use.getUser() instanceof Instruction user && !user.getParent().equals(block)) {
                 changed = true;
+                // If the instruction is a start, link the use to the other block's start.
+                // TODO: this is a hack, instead it should be that if the instruction's type is a side effect type.
+                if (instruction.getOperator() == Operator.START) {
+                    Instruction userStartToken = functionLoweringInfo.getStartToken(user.getParent());
+                    instruction.removeUse(user);
+                    use.setValue(userStartToken);
+                    userStartToken.linkUse(use);
+                    continue;
+                }
+                // Otherwise: create matching COPYTOREG and COPYFROMREG instructions.
                 Register register = functionLoweringInfo.getRegister(instruction);
                 if (register == null) {
                     register = functionLoweringInfo.createRegister(RegisterClass.INT, new RegisterConstraint.Any());
@@ -151,6 +161,8 @@ public class SSADAG implements DAG<Value> {
     }
 
     // Rewrite side effect tokens inputs to out of block values to the start token.
+    // TODO: this doesn't work well with rewriteOutOfBlockUses because that goes off of a instruction's out of block uses
+    // instead of an instruction's out of block operands.
     private void rewriteOutOfBlockSideEffects(Instruction instruction) {
         if (!instruction.getOperator().hasSideEffects() || instruction.getOperator() == Operator.START) {
             return;
@@ -158,7 +170,10 @@ public class SSADAG implements DAG<Value> {
 
         // NOTE: Currently the side effect input is always in the operand at index 0.
         if (instruction.getOperand(0).getValue() instanceof Instruction token && !token.getParent().equals(block)) {
-            instruction.setOperand(0, new Use(currToken, instruction));
+            token.removeUse(instruction);
+            Use use = new Use(currToken, instruction);
+            instruction.setOperand(0, use);
+            currToken.linkUse(use);
         }
     }
 

@@ -17,6 +17,10 @@ public class BuildIntervals {
     }
 
     public List<Interval> runFunction(MachineFunction function) {
+        System.out.println("Function argument virtual registers: ");
+        for (MachineOperand operand : function.getParams()) {
+            System.out.println("Operand: " + operand.toString());
+        }
         initializeVirtualRegisterMap(function);
         for (MachineBasicBlock block : function.getBlocks()) {
             runBlock(block);

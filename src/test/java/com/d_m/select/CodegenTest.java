@@ -98,14 +98,20 @@ class CodegenTest {
     @Test
     void codegen() throws IOException, ShortCircuitException {
         Module module = initFibonacci();
+
+        StringWriter moduleWriter = new StringWriter();
+        PrettyPrinter printer = new PrettyPrinter(moduleWriter);
+
         StringWriter writer = new StringWriter();
         for (Function function : module.getFunctionList()) {
             codegen.startFunction(function);
         }
         for (Function function : module.getFunctionList()) {
             var blockTilesMap = codegen.matchTilesInBlocks(function);
+            printer.writeFunction(function);
             codegen.emitFunction(function, blockTilesMap);
         }
+        System.out.println(moduleWriter);
 
         MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(isa, writer);
         for (Function function : module.getFunctionList()) {
@@ -190,53 +196,49 @@ class CodegenTest {
                     jmp [l12,USE]
                   }
                   block l12 [l11] {
-                    mov [%31any,USE], [%38any,DEF]
-                    cmp [%38any,USE], [1,USE]
+                    mov [%31any,USE], [%37any,DEF]
+                    cmp [%37any,USE], [1,USE]
                     jle [l13,USE]
                     jmp [l14,USE]
                   }
                   block l13 [l12] {
-                    mov [%31any,USE], [%39any,DEF]
-                    mov [%39any,USE], [%33any,DEF]
+                    mov [%31any,USE], [%38any,DEF]
+                    mov [%38any,USE], [%32any,DEF]
                     jmp [l15,USE]
                   }
                   block l14 [l12] {
                     jmp [l16,USE]
                   }
                   block l15 [l13, l16] {
+                    mov [%35any,USE], [%39any,DEF]
                     mov [%32any,USE], [%40any,DEF]
                     mov [%36any,USE], [%41any,DEF]
                     phi [%40any,USE], [%41any,USE], [%42any,DEF]
-                    mov [%33any,USE], [%43any,DEF]
-                    mov [%37any,USE], [%44any,DEF]
-                    phi [%43any,USE], [%44any,USE], [%45any,DEF]
                     mov [%42any,USE], [%34any,DEF]
-                    mov [%45any,USE], [%35any,DEF]
                     jmp [l17,USE]
                   }
                   block l16 [l14] {
-                    mov [%32any,USE], [%46any,DEF]
-                    mov [%31any,USE], [%47any,DEF]
-                    mov [%47any,USE], [%48any,DEF]
-                    dec [%48any,USE]
-                    mov [%48any,USE], [%49rdi,DEF]
-                    call [fibonacci,USE], [%50rax,DEF], [%51rcx,DEF], [%52rdx,DEF], [%53rsi,DEF], [%54rdi,DEF], [%55r8,DEF], [%56r9,DEF], [%57r10,DEF], [%58r11,DEF]
-                    mov [%50rax,USE], [%59any,DEF]
-                    mov [%31any,USE], [%60any,DEF]
-                    mov [%60any,USE], [%61any,DEF]
-                    sub [%61any,USE], [2,USE]
-                    mov [%61any,USE], [%62rdi,DEF]
-                    call [fibonacci,USE], [%63rax,DEF], [%64rcx,DEF], [%65rdx,DEF], [%66rsi,DEF], [%67rdi,DEF], [%68r8,DEF], [%69r9,DEF], [%70r10,DEF], [%71r11,DEF]
-                    mov [%63rax,USE], [%72any,DEF]
-                    mov [%59any,USE], [%73any,DEF]
-                    add [%73any,USE], [%72any,USE]
-                    mov [%73any,USE], [%37any,DEF]
+                    mov [%31any,USE], [%43any,DEF]
+                    mov [%43any,USE], [%44any,DEF]
+                    dec [%44any,USE]
+                    mov [%44any,USE], [%45rdi,DEF]
+                    call [fibonacci,USE], [%46rax,DEF], [%47rcx,DEF], [%48rdx,DEF], [%49rsi,DEF], [%50rdi,DEF], [%51r8,DEF], [%52r9,DEF], [%53r10,DEF], [%54r11,DEF]
+                    mov [%46rax,USE], [%55any,DEF]
+                    mov [%31any,USE], [%56any,DEF]
+                    mov [%56any,USE], [%57any,DEF]
+                    sub [%57any,USE], [2,USE]
+                    mov [%57any,USE], [%58rdi,DEF]
+                    call [fibonacci,USE], [%59rax,DEF], [%60rcx,DEF], [%61rdx,DEF], [%62rsi,DEF], [%63rdi,DEF], [%64r8,DEF], [%65r9,DEF], [%66r10,DEF], [%67r11,DEF]
+                    mov [%59rax,USE], [%68any,DEF]
+                    mov [%55any,USE], [%69any,DEF]
+                    add [%69any,USE], [%68any,USE]
+                    mov [%69any,USE], [%36any,DEF]
                     jmp [l15,USE]
                   }
                   block l17 [l15] {
-                    mov [%34any,USE], [%74any,DEF]
-                    mov [%35any,USE], [%75any,DEF]
-                    mov [%75any,USE], [%76rax,DEF]
+                    mov [%33any,USE], [%70any,DEF]
+                    mov [%34any,USE], [%71any,DEF]
+                    mov [%71any,USE], [%72rax,DEF]
                   }
                 }
                 """;
