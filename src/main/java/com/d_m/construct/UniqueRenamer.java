@@ -1,5 +1,6 @@
 package com.d_m.construct;
 
+import com.d_m.ast.Type;
 import com.d_m.cfg.Block;
 import com.d_m.cfg.Phi;
 import com.d_m.code.Address;
@@ -64,16 +65,16 @@ public class UniqueRenamer {
     }
 
     private Phi renamePhiResult(Set<Integer> defs, Phi phi) {
-        return new Phi(replaceDefinition(defs, phi.name()), phi.ins());
+        return new Phi(phi.type(), replaceDefinition(defs, phi.name()), phi.ins());
     }
 
     private Quad renameInstruction(Set<Integer> defs, Quad quad) {
-        if (quad instanceof Quad(Operator op, Address result, var operands)) {
+        if (quad instanceof Quad(Type type, Operator op, Address result, var operands)) {
             Address[] newOperands = new Address[operands.length];
             for (int i = 0; i < operands.length; i++) {
                 newOperands[i] = replaceOperand(operands[i]);
             }
-            return new Quad(op, replaceDefinition(defs, result), newOperands);
+            return new Quad(type, op, replaceDefinition(defs, result), newOperands);
         }
         return null;
     }

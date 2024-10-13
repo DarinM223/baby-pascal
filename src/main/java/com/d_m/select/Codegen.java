@@ -1,6 +1,6 @@
 package com.d_m.select;
 
-import com.d_m.ast.IntegerType;
+import com.d_m.ast.SideEffectToken;
 import com.d_m.code.Operator;
 import com.d_m.gen.GeneratedAutomata;
 import com.d_m.select.instr.*;
@@ -83,7 +83,7 @@ public class Codegen {
         functionEntryMove.getOperands().addAll(uses.stream().map(operand -> new MachineOperandPair(operand, MachineOperandKind.USE)).toList());
         functionEntryMove.getOperands().addAll(defs.stream().map(operand -> new MachineOperandPair(operand, MachineOperandKind.DEF)).toList());
         for (Block block : function.getBlocks()) {
-            Instruction start = new Instruction(SymbolImpl.TOKEN_STRING, new IntegerType(), Operator.START);
+            Instruction start = new Instruction(SymbolImpl.TOKEN_STRING, new SideEffectToken(), Operator.START);
             start.setParent(block);
             block.getInstructions().addToFront(start);
             functionLoweringInfo.setStartToken(block, start);

@@ -1,5 +1,6 @@
 package com.d_m.cfg;
 
+import com.d_m.ast.SideEffectToken;
 import com.d_m.code.ConstantAddress;
 import com.d_m.code.NameAddress;
 import com.d_m.code.Operator;
@@ -42,11 +43,11 @@ public class Block extends BlockLiveness<Block> implements Comparable<Block>, IB
             int endIndex = range.j();
             switch (code.get(endIndex)) {
                 case Quad(
-                        Operator op, _, var operands
+                        _, Operator op, _, var operands
                 ) when op == Operator.GOTO && operands[0] instanceof ConstantAddress(int j) -> {
                     blocks.addLink(range.i(), j);
                 }
-                case Quad(Operator op, ConstantAddress(int j), _) when op.isComparison() -> {
+                case Quad(_, Operator op, ConstantAddress(int j), _) when op.isComparison() -> {
                     blocks.addLink(range.i(), j);
                     blocks.addNextIndex(range.i(), endIndex);
                 }
@@ -57,7 +58,7 @@ public class Block extends BlockLiveness<Block> implements Comparable<Block>, IB
         blocks.addLink(ranges.getLast().i(), Blocks.EXIT);
 
         // The START instruction should be in the entry block.
-        this.code.add(new Quad(Operator.START, new NameAddress(token)));
+        this.code.add(new Quad(new SideEffectToken(), Operator.START, new NameAddress(token)));
 
         // Delete unreachable blocks from predecessors to prevent issues
         // when converting to unnamed SSA.
@@ -268,12 +269,12 @@ public class Block extends BlockLiveness<Block> implements Comparable<Block>, IB
         for (int i = 0; i < code.size(); i++) {
             switch (code.get(i)) {
                 case Quad(
-                        Operator op, _, var operands
+                        _, Operator op, _, var operands
                 ) when op == Operator.GOTO && operands[0] instanceof ConstantAddress(int j) -> {
                     leaders.add(j);
                     leaders.add(i + 1);
                 }
-                case Quad(Operator op, ConstantAddress(int j), _) when op.isComparison() -> {
+                case Quad(_, Operator op, ConstantAddress(int j), _) when op.isComparison() -> {
                     leaders.add(j);
                     leaders.add(i + 1);
                 }

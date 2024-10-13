@@ -1,10 +1,16 @@
 package com.d_m.code;
 
+import com.d_m.ast.Type;
+import com.d_m.ast.VoidType;
 import com.d_m.util.Symbol;
 
 import java.util.Arrays;
 
-public record Quad(Operator op, Address result, Address... operands) {
+public record Quad(Type type, Operator op, Address result, Address... operands) {
+    public Quad(Operator op, Address result, Address... operands) {
+        this(new VoidType(), op, result, operands);
+    }
+
     public String pretty(Symbol symbol) {
         StringBuilder builder = new StringBuilder(result.pretty(symbol) + " <- ");
         if (operands.length == 1) {

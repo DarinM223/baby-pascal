@@ -37,6 +37,7 @@ public class ThreeAddressCode {
                             Block block = new Block(token, quads);
                             if (returnType.isPresent()) {
                                 var funReturn = new Quad(
+                                        returnType.get(),
                                         Operator.RETURN,
                                         new EmptyAddress(),
                                         new NameAddress(SymbolImpl.TOKEN),
@@ -64,11 +65,11 @@ public class ThreeAddressCode {
         for (int i = 0; i < results.size(); i++) {
             switch (results.get(i)) {
                 case Quad(
-                        Operator op, var r, var operands
+                        _, Operator op, var r, var operands
                 ) when op == Operator.GOTO && operands[0] instanceof ConstantAddress(int l) ->
-                        results.set(i, new Quad(Operator.GOTO, r, new ConstantAddress(label.lookup(l))));
-                case Quad(Operator op, ConstantAddress(int r), var operands) when op.isComparison() ->
-                        results.set(i, new Quad(op, new ConstantAddress(label.lookup(r)), operands));
+                        results.set(i, new Quad(new VoidType(), Operator.GOTO, r, new ConstantAddress(label.lookup(l))));
+                case Quad(_, Operator op, ConstantAddress(int r), var operands) when op.isComparison() ->
+                        results.set(i, new Quad(new VoidType(), op, new ConstantAddress(label.lookup(r)), operands));
                 default -> {
                 }
             }
@@ -96,7 +97,7 @@ public class ThreeAddressCode {
                 }
                 Address temp = new TempAddress(fresh.fresh());
                 results.add(new Quad(Operator.CALL, temp, operands));
-                results.add(new Quad(Operator.PROJ, new NameAddress(SymbolImpl.TOKEN), temp, new ConstantAddress(0)));
+                results.add(new Quad(new SideEffectToken(), Operator.PROJ, new NameAddress(SymbolImpl.TOKEN), temp, new ConstantAddress(0)));
             }
             case IfStatement(Expression predicate, List<Statement> then, List<Statement> els) -> {
                 int trueLabel = label.fresh();
@@ -170,7 +171,7 @@ public class ThreeAddressCode {
                 Address temp = new TempAddress(fresh.fresh());
                 Address resultTemp = new TempAddress(fresh.fresh());
                 results.add(new Quad(Operator.CALL, temp, operands));
-                results.add(new Quad(Operator.PROJ, new NameAddress(SymbolImpl.TOKEN), temp, new ConstantAddress(0)));
+                results.add(new Quad(new SideEffectToken(), Operator.PROJ, new NameAddress(SymbolImpl.TOKEN), temp, new ConstantAddress(0)));
                 results.add(new Quad(Operator.PROJ, resultTemp, temp, new ConstantAddress(1)));
                 yield resultTemp;
             }

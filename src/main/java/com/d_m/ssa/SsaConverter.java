@@ -139,7 +139,7 @@ public class SsaConverter {
     }
 
     public Instruction convertQuad(Quad quad) {
-        Instruction instruction = new Instruction(nameOfAddress(quad.result()), null, quad.op());
+        Instruction instruction = new Instruction(nameOfAddress(quad.result()), quad.type(), quad.op());
         for (Address address : quad.operands()) {
             instruction.addOperand(lookupAddress(instruction, address));
         }

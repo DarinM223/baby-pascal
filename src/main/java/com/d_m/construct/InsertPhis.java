@@ -40,7 +40,7 @@ public abstract class InsertPhis {
                 for (Block phiBlock : frontier.dominanceFrontier(definitionBlock)) {
                     if (!aPhi.containsEntry(sym, phiBlock) && test(phiBlock, sym)) {
                         List<Address> phiOperands = new ArrayList<>(phiBlock.getPredecessors().stream().map(_ -> new NameAddress(sym)).toList());
-                        Phi phi = new Phi(new NameAddress(sym), phiOperands);
+                        Phi phi = new Phi(defsites.symbolType(sym), new NameAddress(sym), phiOperands);
                         phiBlock.getPhis().add(phi);
                         aPhi.put(sym, phiBlock);
                         // If phi block is a new block that defines sym, then add it to the worklist.
