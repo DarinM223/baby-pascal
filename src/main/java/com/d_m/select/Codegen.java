@@ -101,6 +101,18 @@ public class Codegen {
             blockDagMap.put(block, dag);
         }
         for (Block block : function.getBlocks()) {
+            SSADAG dag = blockDagMap.get(block);
+            dag.initializeStep1();
+        }
+        for (Block block : function.getBlocks()) {
+            SSADAG dag = blockDagMap.get(block);
+            dag.initializeStep2();
+        }
+        for (Block block : function.getBlocks()) {
+            SSADAG dag = blockDagMap.get(block);
+            dag.initializeStep3();
+        }
+        for (Block block : function.getBlocks()) {
             MachineBasicBlock machineBlock = blockMap.get(block);
             machineBlock.setEntry(blockMap.get(block.getEntry()));
             machineBlock.setExit(blockMap.get(block.getExit()));

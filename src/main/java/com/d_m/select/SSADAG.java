@@ -34,7 +34,34 @@ public class SSADAG implements DAG<Value> {
         roots = new HashSet<>();
         shared = new HashSet<>();
         currToken = startToken;
-        splitIntoDAG();
+    }
+
+    // Rewrites out of block side effects.
+    public void initializeStep1() {
+        List<Instruction> addToStart = new ArrayList<>();
+
+        for (Instruction instruction : block.getInstructions()) {
+            rewriteOutOfBlockSideEffects(instruction);
+            rewriteOutOfBlockOperands(addToStart, instruction);
+        }
+        for (Instruction instruction : addToStart.reversed()) {
+            block.getInstructions().addAfter(startToken, instruction);
+        }
+    }
+
+    // Separates this basic block from the whole function.
+    // After this, every value will be local to the basic block
+    // and cross block values will be handled with COPYFROMREG or COPYTOREG
+    // instructions.
+    public void initializeStep2() {
+        for (Instruction instruction : block.getInstructions()) {
+            if (!rewriteOutOfBlockUses(instruction)) {
+                rewriteSideEffectOutputs(instruction);
+            }
+        }
+    }
+
+    public void initializeStep3() {
         calculate();
     }
 
@@ -50,26 +77,6 @@ public class SSADAG implements DAG<Value> {
             tiles.add(new DAGTile(ruleNumber, ruleMap.get(ruleNumber), value));
         }
         return tiles;
-    }
-
-    // Separates this basic block from the whole function.
-    // After this, every value will be local to the basic block
-    // and cross block values will be handled with COPYFROMREG or COPYTOREG
-    // instructions.
-    private void splitIntoDAG() {
-        List<Instruction> addToStart = new ArrayList<>();
-
-        for (Instruction instruction : block.getInstructions()) {
-            rewriteOutOfBlockSideEffects(instruction);
-            rewriteOutOfBlockOperands(addToStart, instruction);
-            if (!rewriteOutOfBlockUses(instruction)) {
-                rewriteSideEffectOutputs(instruction);
-            }
-        }
-
-        for (Instruction instruction : addToStart.reversed()) {
-            block.getInstructions().addAfter(startToken, instruction);
-        }
     }
 
     private boolean rewriteOutOfBlockUses(Instruction instruction) {

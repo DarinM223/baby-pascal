@@ -4,21 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Debugging issues with nonexisting virtual registers in generated code which can be traced to the DAG splitting code">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/SideEffectToken.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/VoidType.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Adds type to Quad and passes side effect token types into SSA values">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Type.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Type.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Phi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/Phi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/Quad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/Quad.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/construct/InsertPhis.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/construct/InsertPhis.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/construct/UniqueRenamer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/construct/UniqueRenamer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/dom/DefinitionSites.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/dom/DefinitionSites.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PhiNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PhiNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/SsaConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -260,14 +250,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00154" summary="Update README.md with com.d_m.gen package">
-      <option name="closed" value="true" />
-      <created>1722009388413</created>
-      <option name="number" value="00154" />
-      <option name="presentableId" value="LOCAL-00154" />
-      <option name="project" value="LOCAL" />
-      <updated>1722009388413</updated>
     </task>
     <task id="LOCAL-00155" summary="Modifies lexer to handle operator rule names and fixes AlgorithmD to match on the sample rules">
       <option name="closed" value="true" />
@@ -653,14 +635,21 @@
       <option name="project" value="LOCAL" />
       <updated>1728754397880</updated>
     </task>
-    <option name="localTasksCounter" value="203" />
+    <task id="LOCAL-00203" summary="Adds type to Quad and passes side effect token types into SSA values">
+      <option name="closed" value="true" />
+      <created>1728837600709</created>
+      <option name="number" value="00203" />
+      <option name="presentableId" value="LOCAL-00203" />
+      <option name="project" value="LOCAL" />
+      <updated>1728837600709</updated>
+    </task>
+    <option name="localTasksCounter" value="204" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Terminator instructions go to the end of a block in instruction selection" />
     <MESSAGE value="Adds branch successor blocks to jump instructions" />
     <MESSAGE value="Match root nodes and add rules so that the example generates all the instructions" />
     <MESSAGE value="Emits tiles in order of rule number then value id and adds expectation based unit tests for code generation" />
@@ -685,7 +674,8 @@
     <MESSAGE value="Start failing linear scan unit test" />
     <MESSAGE value="Update README.md" />
     <MESSAGE value="Debugging issues with nonexisting virtual registers in generated code which can be traced to the DAG splitting code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Debugging issues with nonexisting virtual registers in generated code which can be traced to the DAG splitting code" />
+    <MESSAGE value="Adds type to Quad and passes side effect token types into SSA values" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adds type to Quad and passes side effect token types into SSA values" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -737,7 +727,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java</url>
-          <line>86</line>
+          <line>93</line>
           <option name="timeStamp" value="94" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
