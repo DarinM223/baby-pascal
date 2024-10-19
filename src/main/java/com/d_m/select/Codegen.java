@@ -78,7 +78,7 @@ public class Codegen {
             uses.add(new MachineOperand.Register(constrainedRegister));
             defs.add(new MachineOperand.Register(unconstrainedRegister));
             functionLoweringInfo.addRegister(argument, unconstrainedRegister);
-            machineFunction.addParameter(new MachineOperand.Register(unconstrainedRegister));
+            machineFunction.addParameter(new MachineOperand.Register(constrainedRegister));
         }
         functionEntryMove.getOperands().addAll(uses.stream().map(operand -> new MachineOperandPair(operand, MachineOperandKind.USE)).toList());
         functionEntryMove.getOperands().addAll(defs.stream().map(operand -> new MachineOperandPair(operand, MachineOperandKind.DEF)).toList());

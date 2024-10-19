@@ -34,6 +34,14 @@ public class BuildIntervals {
     }
 
     private void initializeVirtualRegisterMap(MachineFunction function) {
+        for (MachineOperand operand : function.getParams()) {
+            if (operand instanceof MachineOperand.Register(Register.Virtual(int n, _, _))) {
+                // If the virtual register was a constrained function argument register,
+                // then set its instruction to be the first instruction in the entry block of the function.
+                // TODO: This may not be correct, look into this later.
+                virtualRegisterToMachineInstructionMap.put(n, function.getBlocks().getFirst().getInstructions().getFirst());
+            }
+        }
         for (MachineBasicBlock block : function.getBlocks()) {
             for (MachineInstruction instruction : block.getInstructions()) {
                 for (MachineOperandPair pair : instruction.getOperands()) {

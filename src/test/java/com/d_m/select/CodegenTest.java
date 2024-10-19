@@ -91,7 +91,7 @@ class CodegenTest {
             matchedTilesMap.put(function.getName(), blockTilesMap);
         }
 
-        String expected = "{fibonacci={16=[17, 20, 22], 17=[2, 3, 4, 8, 9, 11, 14, 15, 16, 18, 20, 22], 11=[16, 20, 21], 12=[7, 15, 16, 18, 19, 20], 13=[13, 18, 20], 14=[6, 16, 20, 22], 15=[8, 15, 16, 17, 20, 22]}, main={0=[17, 20, 22], 1=[18, 20], 2=[1, 8, 15, 16, 17, 20, 22], 3=[20], 4=[0, 8, 15, 16, 17, 20, 22], 5=[8, 15, 18, 20, 22], 6=[17, 20, 22], 7=[18, 19, 20], 8=[5, 7, 15, 16, 20, 22], 9=[7, 15, 16, 18, 20], 10=[5, 16, 20, 22]}}";
+        String expected = "{fibonacci={16=[7, 15, 16, 18, 19, 20], 17=[18, 20], 11=[6, 16, 20, 22], 12=[8, 15, 16, 17, 20, 22], 13=[17, 20, 22], 14=[2, 3, 4, 8, 9, 11, 15, 16, 18, 20, 22], 15=[16, 20, 21]}, main={0=[8, 15, 18, 20, 22], 1=[17, 20, 22], 2=[18, 19, 20], 3=[5, 7, 15, 16, 20, 22], 4=[7, 15, 16, 18, 20], 5=[5, 16, 20, 22], 6=[17, 20, 22], 7=[18, 20], 8=[1, 8, 15, 16, 17, 20, 22], 9=[20], 10=[0, 8, 15, 16, 17, 20, 22]}}";
         assertEquals(matchedTilesMap.toString(), expected);
     }
 
@@ -196,48 +196,47 @@ class CodegenTest {
                     jmp [l12,USE]
                   }
                   block l12 [l11] {
-                    mov [%31any,USE], [%36any,DEF]
-                    cmp [%36any,USE], [1,USE]
+                    mov [%31any,USE], [%35any,DEF]
+                    cmp [%35any,USE], [1,USE]
                     jle [l13,USE]
                     jmp [l14,USE]
                   }
                   block l13 [l12] {
-                    mov [%31any,USE], [%37any,DEF]
-                    mov [%37any,USE], [%32any,DEF]
+                    mov [%31any,USE], [%36any,DEF]
+                    mov [%36any,USE], [%32any,DEF]
                     jmp [l15,USE]
                   }
                   block l14 [l12] {
                     jmp [l16,USE]
                   }
                   block l15 [l13, l16] {
+                    mov [%32any,USE], [%37any,DEF]
                     mov [%34any,USE], [%38any,DEF]
-                    mov [%32any,USE], [%39any,DEF]
-                    mov [%35any,USE], [%40any,DEF]
-                    phi [%39any,USE], [%40any,USE], [%41any,DEF]
-                    mov [%41any,USE], [%33any,DEF]
+                    phi [%37any,USE], [%38any,USE], [%39any,DEF]
+                    mov [%39any,USE], [%33any,DEF]
                     jmp [l17,USE]
                   }
                   block l16 [l14] {
-                    mov [%31any,USE], [%42any,DEF]
-                    mov [%42any,USE], [%43any,DEF]
-                    dec [%43any,USE]
-                    mov [%43any,USE], [%44rdi,DEF]
-                    call [fibonacci,USE], [%45rax,DEF], [%46rcx,DEF], [%47rdx,DEF], [%48rsi,DEF], [%49rdi,DEF], [%50r8,DEF], [%51r9,DEF], [%52r10,DEF], [%53r11,DEF]
-                    mov [%45rax,USE], [%54any,DEF]
-                    mov [%31any,USE], [%55any,DEF]
-                    mov [%55any,USE], [%56any,DEF]
-                    sub [%56any,USE], [2,USE]
-                    mov [%56any,USE], [%57rdi,DEF]
-                    call [fibonacci,USE], [%58rax,DEF], [%59rcx,DEF], [%60rdx,DEF], [%61rsi,DEF], [%62rdi,DEF], [%63r8,DEF], [%64r9,DEF], [%65r10,DEF], [%66r11,DEF]
-                    mov [%58rax,USE], [%67any,DEF]
-                    mov [%54any,USE], [%68any,DEF]
-                    add [%68any,USE], [%67any,USE]
-                    mov [%68any,USE], [%35any,DEF]
+                    mov [%31any,USE], [%40any,DEF]
+                    mov [%40any,USE], [%41any,DEF]
+                    dec [%41any,USE]
+                    mov [%41any,USE], [%42rdi,DEF]
+                    call [fibonacci,USE], [%43rax,DEF], [%44rcx,DEF], [%45rdx,DEF], [%46rsi,DEF], [%47rdi,DEF], [%48r8,DEF], [%49r9,DEF], [%50r10,DEF], [%51r11,DEF]
+                    mov [%43rax,USE], [%52any,DEF]
+                    mov [%31any,USE], [%53any,DEF]
+                    mov [%53any,USE], [%54any,DEF]
+                    sub [%54any,USE], [2,USE]
+                    mov [%54any,USE], [%55rdi,DEF]
+                    call [fibonacci,USE], [%56rax,DEF], [%57rcx,DEF], [%58rdx,DEF], [%59rsi,DEF], [%60rdi,DEF], [%61r8,DEF], [%62r9,DEF], [%63r10,DEF], [%64r11,DEF]
+                    mov [%56rax,USE], [%65any,DEF]
+                    mov [%52any,USE], [%66any,DEF]
+                    add [%66any,USE], [%65any,USE]
+                    mov [%66any,USE], [%34any,DEF]
                     jmp [l15,USE]
                   }
                   block l17 [l15] {
-                    mov [%33any,USE], [%69any,DEF]
-                    mov [%69any,USE], [%70rax,DEF]
+                    mov [%33any,USE], [%67any,DEF]
+                    mov [%67any,USE], [%68rax,DEF]
                   }
                 }
                 """;

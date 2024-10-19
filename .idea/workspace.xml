@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Adds type to Quad and passes side effect token types into SSA values">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Splits SSADAG initialization into three steps to prevent some issues with side effect rewriting">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" afterDir="false" />
@@ -250,14 +251,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00155" summary="Modifies lexer to handle operator rule names and fixes AlgorithmD to match on the sample rules">
-      <option name="closed" value="true" />
-      <created>1722082999680</created>
-      <option name="number" value="00155" />
-      <option name="presentableId" value="LOCAL-00155" />
-      <option name="project" value="LOCAL" />
-      <updated>1722082999680</updated>
     </task>
     <task id="LOCAL-00156" summary="Add fixed constant cost to rule syntax and start tile implementation">
       <option name="closed" value="true" />
@@ -643,14 +636,21 @@
       <option name="project" value="LOCAL" />
       <updated>1728837600709</updated>
     </task>
-    <option name="localTasksCounter" value="204" />
+    <task id="LOCAL-00204" summary="Splits SSADAG initialization into three steps to prevent some issues with side effect rewriting">
+      <option name="closed" value="true" />
+      <created>1728838759196</created>
+      <option name="number" value="00204" />
+      <option name="presentableId" value="LOCAL-00204" />
+      <option name="project" value="LOCAL" />
+      <updated>1728838759196</updated>
+    </task>
+    <option name="localTasksCounter" value="205" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Adds branch successor blocks to jump instructions" />
     <MESSAGE value="Match root nodes and add rules so that the example generates all the instructions" />
     <MESSAGE value="Emits tiles in order of rule number then value id and adds expectation based unit tests for code generation" />
     <MESSAGE value="Modifies README" />
@@ -675,7 +675,8 @@
     <MESSAGE value="Update README.md" />
     <MESSAGE value="Debugging issues with nonexisting virtual registers in generated code which can be traced to the DAG splitting code" />
     <MESSAGE value="Adds type to Quad and passes side effect token types into SSA values" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adds type to Quad and passes side effect token types into SSA values" />
+    <MESSAGE value="Splits SSADAG initialization into three steps to prevent some issues with side effect rewriting" />
+    <option name="LAST_COMMIT_MESSAGE" value="Splits SSADAG initialization into three steps to prevent some issues with side effect rewriting" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -705,13 +706,13 @@
         <line-breakpoint enabled="true" type="java-line">
           <condition expression="operandInstruction == null" language="JAVA" />
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java</url>
-          <line>94</line>
+          <line>102</line>
           <option name="timeStamp" value="80" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <condition expression="instruction == null" language="JAVA" />
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java</url>
-          <line>84</line>
+          <line>92</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -722,16 +723,16 @@
         <line-breakpoint enabled="true" type="java-line">
           <condition expression="numbering.getInstructionNumber(i) == null" language="JAVA" />
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java</url>
-          <line>108</line>
+          <line>116</line>
           <option name="timeStamp" value="89" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java</url>
-          <line>93</line>
+          <line>94</line>
           <option name="timeStamp" value="94" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <condition expression="fresh == 33" language="JAVA" />
+          <condition expression="fresh == 30" language="JAVA" />
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java</url>
           <line>37</line>
           <option name="timeStamp" value="95" />

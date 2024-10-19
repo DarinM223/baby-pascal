@@ -1,5 +1,6 @@
 package com.d_m.select;
 
+import com.d_m.ast.SideEffectToken;
 import com.d_m.code.Operator;
 import com.d_m.gen.Rule;
 import com.d_m.select.reg.Register;
@@ -168,19 +169,20 @@ public class SSADAG implements DAG<Value> {
     }
 
     // Rewrite side effect tokens inputs to out of block values to the start token.
-    // TODO: this doesn't work well with rewriteOutOfBlockUses because that goes off of a instruction's out of block uses
-    // instead of an instruction's out of block operands.
     private void rewriteOutOfBlockSideEffects(Instruction instruction) {
-        if (!instruction.getOperator().hasSideEffects() || instruction.getOperator() == Operator.START) {
-            return;
+        for (int i = 0; i < instruction.arity(); i++) {
+            if (instruction.getOperand(i).getValue() instanceof Instruction token &&
+                    token.getType() instanceof SideEffectToken() &&
+                    !token.getParent().equals(block)) {
+                token.removeUse(instruction);
+                Use use = new Use(currToken, instruction);
+                instruction.setOperand(i, use);
+                currToken.linkUse(use);
+            }
         }
 
-        // NOTE: Currently the side effect input is always in the operand at index 0.
-        if (instruction.getOperand(0).getValue() instanceof Instruction token && !token.getParent().equals(block)) {
-            token.removeUse(instruction);
-            Use use = new Use(currToken, instruction);
-            instruction.setOperand(0, use);
-            currToken.linkUse(use);
+        if (instruction.getType() instanceof SideEffectToken()) {
+            currToken = instruction;
         }
     }
 
