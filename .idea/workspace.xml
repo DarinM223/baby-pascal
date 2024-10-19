@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Splits SSADAG initialization into three steps to prevent some issues with side effect rewriting">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Rewrites side effect edges based off of type and fixes some issues with code generation creating virtual registers without definitions">
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/deconstruct/InsertParallelMovesTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/GenKillInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/GenKillInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineGenKillInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineGenKillInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachinePrettyPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachinePrettyPrinter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/DataflowTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/cfg/DataflowTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,8 +24,8 @@
         <option value="Record" />
         <option value="Enum" />
         <option value="Interface" />
-        <option value="JUnit5 Test Class" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -100,11 +102,11 @@
       <recent name="com.d_m.code.normalize" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.d_m.deconstruct" />
       <recent name="com.d_m.regalloc.linear" />
       <recent name="com.d_m.select.dag" />
       <recent name="com.d_m.select" />
       <recent name="com.d_m.pass" />
-      <recent name="com.d_m.dom" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.d_m.select.instr" />
@@ -251,14 +253,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00156" summary="Add fixed constant cost to rule syntax and start tile implementation">
-      <option name="closed" value="true" />
-      <created>1722092038748</created>
-      <option name="number" value="00156" />
-      <option name="presentableId" value="LOCAL-00156" />
-      <option name="project" value="LOCAL" />
-      <updated>1722092038749</updated>
     </task>
     <task id="LOCAL-00157" summary="Arity and label are overloaded methods of Value and runs DAGSelect in Codegen with tile matching">
       <option name="closed" value="true" />
@@ -644,14 +638,21 @@
       <option name="project" value="LOCAL" />
       <updated>1728838759196</updated>
     </task>
-    <option name="localTasksCounter" value="205" />
+    <task id="LOCAL-00205" summary="Rewrites side effect edges based off of type and fixes some issues with code generation creating virtual registers without definitions">
+      <option name="closed" value="true" />
+      <created>1729349169204</created>
+      <option name="number" value="00205" />
+      <option name="presentableId" value="LOCAL-00205" />
+      <option name="project" value="LOCAL" />
+      <updated>1729349169204</updated>
+    </task>
+    <option name="localTasksCounter" value="206" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Match root nodes and add rules so that the example generates all the instructions" />
     <MESSAGE value="Emits tiles in order of rule number then value id and adds expectation based unit tests for code generation" />
     <MESSAGE value="Modifies README" />
     <MESSAGE value="Number instructions for linear scan" />
@@ -676,7 +677,8 @@
     <MESSAGE value="Debugging issues with nonexisting virtual registers in generated code which can be traced to the DAG splitting code" />
     <MESSAGE value="Adds type to Quad and passes side effect token types into SSA values" />
     <MESSAGE value="Splits SSADAG initialization into three steps to prevent some issues with side effect rewriting" />
-    <option name="LAST_COMMIT_MESSAGE" value="Splits SSADAG initialization into three steps to prevent some issues with side effect rewriting" />
+    <MESSAGE value="Rewrites side effect edges based off of type and fixes some issues with code generation creating virtual registers without definitions" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rewrites side effect edges based off of type and fixes some issues with code generation creating virtual registers without definitions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -690,18 +692,13 @@
         <line-breakpoint enabled="true" type="java-line">
           <condition expression="operand == null" language="JAVA" />
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachinePrettyPrinter.java</url>
-          <line>84</line>
+          <line>86</line>
           <option name="timeStamp" value="69" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java</url>
           <line>56</line>
           <option name="timeStamp" value="74" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java</url>
-          <line>109</line>
-          <option name="timeStamp" value="76" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <condition expression="operandInstruction == null" language="JAVA" />
@@ -732,10 +729,19 @@
           <option name="timeStamp" value="94" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <condition expression="fresh == 30" language="JAVA" />
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java</url>
-          <line>37</line>
-          <option name="timeStamp" value="95" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java</url>
+          <line>120</line>
+          <option name="timeStamp" value="96" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java</url>
+          <line>105</line>
+          <option name="timeStamp" value="98" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java</url>
+          <line>97</line>
+          <option name="timeStamp" value="99" />
         </line-breakpoint>
         <breakpoint type="java-exception">
           <properties class="java.lang.NullPointerException" package="java.lang">

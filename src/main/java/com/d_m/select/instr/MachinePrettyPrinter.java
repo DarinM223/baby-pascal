@@ -63,7 +63,9 @@ public class MachinePrettyPrinter {
     private void writeInstruction(MachineInstruction instruction) throws IOException {
         start();
         out.write(instruction.getInstruction());
-        out.write(" ");
+        if (!instruction.getOperands().isEmpty()) {
+            out.write(" ");
+        }
         for (var it = instruction.getOperands().iterator(); it.hasNext(); ) {
             writeOperandPair(it.next());
             if (it.hasNext()) {

@@ -36,6 +36,7 @@ public class GenKillInfo {
             if (quad.result() instanceof NameAddress(int r, _)) {
                 kill.get(i).set(r);
             }
+            genBlock.andNot(kill.get(i));
             genBlock.or(gen.get(i));
             killBlock.andNot(gen.get(i));
             killBlock.or(kill.get(i));

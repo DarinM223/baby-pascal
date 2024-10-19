@@ -102,9 +102,7 @@ class LinearScanTest {
                 block.setLiveIn(new BitSet());
                 block.setLiveOut(new BitSet());
             }
-            for (MachineBasicBlock block : machineFunction.getBlocks()) {
-                block.runLiveness();
-            }
+            machineFunction.getBlocks().getFirst().runLiveness();
             InstructionNumbering numbering = new InstructionNumbering();
             numbering.numberInstructions(machineFunction);
             List<Interval> intervals = new BuildIntervals(numbering).runFunction(machineFunction);
@@ -118,5 +116,8 @@ class LinearScanTest {
 
             machinePrinter.writeFunction(machineFunction);
         }
+        String expected = """
+                """;
+        assertEquals(writer.toString(), expected);
     }
 }

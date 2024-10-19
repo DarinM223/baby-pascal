@@ -32,6 +32,7 @@ public class MachineGenKillInfo {
                     bitset.get(i).set(n);
                 }
             }
+            genBlock.andNot(kill.get(i));
             genBlock.or(gen.get(i));
             killBlock.andNot(gen.get(i));
             killBlock.or(kill.get(i));
