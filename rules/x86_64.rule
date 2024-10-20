@@ -88,8 +88,7 @@ COPYTOREG(_, _) => (1) {
 
 COPYFROMREG(_) => (0) {
     // For COPYFROMREG, the register name is the first parameter
-    mov [$1, use], [%1, def]
-    out [%1, use]
+    out [$1, use]
 }
 
 GOTO(_) => (1) {

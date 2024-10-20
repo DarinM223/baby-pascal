@@ -89,16 +89,6 @@ public class SSADAG implements DAG<Value> {
         for (Use use : instruction.uses()) {
             if (use.getUser() instanceof Instruction user && !user.getParent().equals(block)) {
                 changed = true;
-                // If the instruction is a start, link the use to the other block's start.
-                // TODO: this is a hack, instead it should be that if the instruction's type is a side effect type.
-                if (instruction.getOperator() == Operator.START) {
-                    Instruction userStartToken = functionLoweringInfo.getStartToken(user.getParent());
-                    instruction.removeUse(user);
-                    use.setValue(userStartToken);
-                    userStartToken.linkUse(use);
-                    continue;
-                }
-                // Otherwise: create matching COPYTOREG and COPYFROMREG instructions.
                 Register register = functionLoweringInfo.getRegister(instruction);
                 if (register == null) {
                     register = functionLoweringInfo.createRegister(RegisterClass.INT, new RegisterConstraint.Any());
