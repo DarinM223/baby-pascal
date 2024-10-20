@@ -99,7 +99,6 @@ class InsertParallelMovesTest {
         String expected = """
                 main {
                   block l0 [] {
-                    parmov
                     jmp [l1,USE]
                   }
                   block l1 [l0] {
@@ -116,19 +115,14 @@ class InsertParallelMovesTest {
                     mov [%11any,USE], [%4any,DEF]
                     cmp [%11any,USE], [100,USE]
                     jl [l4,USE]
-                    parmov
-                    parmov
                     jmp [l5,USE]
                   }
                   block l4 [l2] {
                     cmp [%3any,USE], [20,USE]
                     jl [l6,USE]
-                    parmov
-                    parmov
                     jmp [l7,USE]
                   }
                   block l5 [l2] {
-                    parmov
                     jmp [l8,USE]
                   }
                   block l6 [l4] {
@@ -140,11 +134,9 @@ class InsertParallelMovesTest {
                     jmp [l3,USE]
                   }
                   block l7 [l4] {
-                    parmov
                     jmp [l9,USE]
                   }
                   block l8 [l5] {
-                    parmov
                     jmp [l10,USE]
                   }
                   block l3 [l6, l9] {
@@ -169,14 +161,11 @@ class InsertParallelMovesTest {
                 fibonacci {
                   block l11 [] {
                     parmov [%17rdi,USE], [%18any,DEF]
-                    parmov
                     jmp [l12,USE]
                   }
                   block l12 [l11] {
                     cmp [%18any,USE], [1,USE]
                     jle [l13,USE]
-                    parmov
-                    parmov
                     jmp [l14,USE]
                   }
                   block l13 [l12] {
@@ -185,13 +174,11 @@ class InsertParallelMovesTest {
                     jmp [l15,USE]
                   }
                   block l14 [l12] {
-                    parmov
                     jmp [l16,USE]
                   }
                   block l15 [l13, l16] {
                     phi [%57any,USE], [%58any,USE], [%22any,DEF]
                     mov [%22any,USE], [%20any,DEF]
-                    parmov
                     jmp [l17,USE]
                   }
                   block l16 [l14] {

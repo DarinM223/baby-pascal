@@ -26,12 +26,6 @@ public class InsertParallelMoves {
         Map<MachineBasicBlock, MachineInstruction> blockParallelMoveMap = new HashMap<>();
         for (MachineBasicBlock predecessor : block.getPredecessors()) {
             MachineInstruction parallelMove = new MachineInstruction("parmov", new ArrayList<>());
-            // Add before terminator if it has one.
-            if (!predecessor.getInstructions().isEmpty() && info.isa.isBranch(predecessor.getInstructions().getLast().getInstruction())) {
-                predecessor.getInstructions().add(predecessor.getInstructions().size() - 1, parallelMove);
-            } else {
-                predecessor.getInstructions().add(parallelMove);
-            }
             blockParallelMoveMap.put(predecessor, parallelMove);
         }
 
@@ -43,9 +37,13 @@ public class InsertParallelMoves {
                     if (pair.kind() == MachineOperandKind.USE) {
                         // TODO: use the type of the operand for the register class
                         MachineOperand freshOperand = new MachineOperand.Register(info.createRegister(RegisterClass.INT, new RegisterConstraint.Any()));
-                        MachineInstruction parallelMove = blockParallelMoveMap.get(block.getPredecessors().get(predecessorIndex));
+                        MachineBasicBlock predecessor = block.getPredecessors().get(predecessorIndex);
+                        MachineInstruction parallelMove = blockParallelMoveMap.get(predecessor);
                         parallelMove.getOperands().add(new MachineOperandPair(pair.operand(), MachineOperandKind.USE));
                         parallelMove.getOperands().add(new MachineOperandPair(freshOperand, MachineOperandKind.DEF));
+                        if (!predecessor.getInstructions().contains(parallelMove)) {
+                            addParallelMoveToBlock(predecessor, parallelMove);
+                        }
                         // Replace operand with freshOperand in the PHI node.
                         instruction.getOperands().set(i, new MachineOperandPair(freshOperand, MachineOperandKind.USE));
 
@@ -53,6 +51,25 @@ public class InsertParallelMoves {
                     }
                 }
             }
+        }
+    }
+
+    private void addParallelMoveToBlock(MachineBasicBlock block, MachineInstruction parallelMove) {
+        // Add before terminator if it has one.
+        boolean foundCompareOrBranch = false;
+        int index = 0;
+        while (index < block.getInstructions().size()) {
+            String op = block.getInstructions().get(index).getInstruction();
+            if (info.isa.isCompare(op) || info.isa.isBranch(op)) {
+                foundCompareOrBranch = true;
+                break;
+            }
+            index++;
+        }
+        if (foundCompareOrBranch) {
+            block.getInstructions().add(index, parallelMove);
+        } else {
+            block.getInstructions().add(parallelMove);
         }
     }
 }

@@ -6,5 +6,6 @@ public interface ISA {
     Register.Physical physicalFromRegisterName(String registerName);
     RegisterConstraint constraintFromRegisterName(String registerName);
     String pretty(Register register);
+    boolean isCompare(String opName);
     boolean isBranch(String opName);
 }
