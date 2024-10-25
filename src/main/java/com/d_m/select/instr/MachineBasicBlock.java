@@ -18,6 +18,7 @@ public class MachineBasicBlock extends BlockLiveness<MachineBasicBlock> implemen
 
     private List<MachineInstruction> instructions;
     private int dominatorTreeLevel;
+    private int terminatorIndex;
     private MachineBasicBlock entry;
     private MachineBasicBlock exit;
     private MachineGenKillInfo info;
@@ -28,6 +29,7 @@ public class MachineBasicBlock extends BlockLiveness<MachineBasicBlock> implemen
         this.parent = parent;
         instructions = new ArrayList<>();
         dominatorTreeLevel = -1;
+        terminatorIndex = -1;
         entry = null;
         exit = null;
         info = null;
@@ -118,6 +120,23 @@ public class MachineBasicBlock extends BlockLiveness<MachineBasicBlock> implemen
 
     public void setEntry(MachineBasicBlock entry) {
         this.entry = entry;
+    }
+
+    protected int getTerminator() {
+        return terminatorIndex;
+    }
+
+    public void setTerminator() {
+        terminatorIndex = instructions.size();
+    }
+
+    public void addBeforeTerminator(MachineInstruction instruction) {
+        if (terminatorIndex == instructions.size()) {
+            instructions.add(instruction);
+        } else {
+            instructions.add(terminatorIndex, instruction);
+        }
+        terminatorIndex++;
     }
 
     @Override

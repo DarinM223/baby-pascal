@@ -42,7 +42,7 @@ public class InsertParallelMoves {
                         parallelMove.getOperands().add(new MachineOperandPair(pair.operand(), MachineOperandKind.USE));
                         parallelMove.getOperands().add(new MachineOperandPair(freshOperand, MachineOperandKind.DEF));
                         if (!predecessor.getInstructions().contains(parallelMove)) {
-                            addParallelMoveToBlock(predecessor, parallelMove);
+                            predecessor.addBeforeTerminator(parallelMove);
                         }
                         // Replace operand with freshOperand in the PHI node.
                         instruction.getOperands().set(i, new MachineOperandPair(freshOperand, MachineOperandKind.USE));
@@ -51,25 +51,6 @@ public class InsertParallelMoves {
                     }
                 }
             }
-        }
-    }
-
-    private void addParallelMoveToBlock(MachineBasicBlock block, MachineInstruction parallelMove) {
-        // Add before terminator if it has one.
-        boolean foundCompareOrBranch = false;
-        int index = 0;
-        while (index < block.getInstructions().size()) {
-            String op = block.getInstructions().get(index).getInstruction();
-            if (info.isa.isCompare(op) || info.isa.isBranch(op)) {
-                foundCompareOrBranch = true;
-                break;
-            }
-            index++;
-        }
-        if (foundCompareOrBranch) {
-            block.getInstructions().add(index, parallelMove);
-        } else {
-            block.getInstructions().add(parallelMove);
         }
     }
 }

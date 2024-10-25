@@ -142,11 +142,6 @@ public class X86_64_ISA implements ISA {
     }
 
     @Override
-    public boolean isCompare(String opName) {
-        return opName.equalsIgnoreCase("cmp");
-    }
-
-    @Override
     public boolean isBranch(String opName) {
         return switch (opName) {
             case "jmp", "jo", "jno", "js", "jns", "je", "jz", "jb", "jnae", "jc", "jnb", "jae", "jnc", "jbe", "jna",

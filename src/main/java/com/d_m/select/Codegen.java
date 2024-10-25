@@ -147,6 +147,7 @@ public class Codegen {
         for (DAGTile tile : matched) {
             bottomUpEmit(machineBlock, tileMapping, emitResultMapping, terminator, tile);
         }
+        machineBlock.setTerminator();
         machineBlock.getInstructions().addAll(terminator);
     }
 
