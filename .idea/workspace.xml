@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Adds parallel move before compare instruction in a branch and doesn't add empty parallel moves">
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/instr/MachineBasicBlockTest.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="MachineBasicBlock remembers terminator and parallel moves are inserted before terminator">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/deconstruct/InsertParallelMoves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/deconstruct/InsertParallelMoves.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/BlockLiveness.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/BlockLiveness.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/BlockLivenessInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/BlockLivenessInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/ISA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/ISA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/X86_64_ISA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/X86_64_ISA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineFunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineFunction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineGenKillInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineGenKillInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -254,14 +254,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00160" summary="Small fixes to get some tiles matching">
-      <option name="closed" value="true" />
-      <created>1722615596883</created>
-      <option name="number" value="00160" />
-      <option name="presentableId" value="LOCAL-00160" />
-      <option name="project" value="LOCAL" />
-      <updated>1722615596883</updated>
     </task>
     <task id="LOCAL-00161" summary="Properly hashes tokens and merges duplicate paths in automaton">
       <option name="closed" value="true" />
@@ -647,14 +639,21 @@
       <option name="project" value="LOCAL" />
       <updated>1729438254120</updated>
     </task>
-    <option name="localTasksCounter" value="209" />
+    <task id="LOCAL-00209" summary="MachineBasicBlock remembers terminator and parallel moves are inserted before terminator">
+      <option name="closed" value="true" />
+      <created>1729864675284</created>
+      <option name="number" value="00209" />
+      <option name="presentableId" value="LOCAL-00209" />
+      <option name="project" value="LOCAL" />
+      <updated>1729864675285</updated>
+    </task>
+    <option name="localTasksCounter" value="210" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Attempt sequentialize parallel moves" />
     <MESSAGE value="Sequentialize parallel moves in block" />
     <MESSAGE value="Thread block entries and exits to machine blocks and abstract liveness analysis to also run on machine blocks" />
     <MESSAGE value="Start lexing and parsing support for rules with any arity arguments" />
@@ -679,7 +678,8 @@
     <MESSAGE value="Modify block gen/kill calculations and add test for inserting parallel moves" />
     <MESSAGE value="Modify COPYFROMREG rule to output the virtual register without moves so that phis are always at the top of the generated machine instructions" />
     <MESSAGE value="Adds parallel move before compare instruction in a branch and doesn't add empty parallel moves" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adds parallel move before compare instruction in a branch and doesn't add empty parallel moves" />
+    <MESSAGE value="MachineBasicBlock remembers terminator and parallel moves are inserted before terminator" />
+    <option name="LAST_COMMIT_MESSAGE" value="MachineBasicBlock remembers terminator and parallel moves are inserted before terminator" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -731,13 +731,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java</url>
-          <line>105</line>
+          <line>102</line>
           <option name="timeStamp" value="98" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java</url>
-          <line>97</line>
-          <option name="timeStamp" value="99" />
         </line-breakpoint>
         <breakpoint type="java-exception">
           <properties class="java.lang.NullPointerException" package="java.lang">

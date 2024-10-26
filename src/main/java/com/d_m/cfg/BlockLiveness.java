@@ -23,10 +23,13 @@ public abstract class BlockLiveness<Block extends IBlock<Block> & BlockLivenessI
         BitSet liveIn = (BitSet) block.getLiveOut().clone();
         liveIn.andNot(block.getKillBlock());
         liveIn.or(block.getGenBlock());
+        liveIn.or(block.getPhiDefs());
         BitSet liveOut = new BitSet();
         for (Block successor : block.getSuccessors()) {
             liveOut.or(successor.getLiveIn());
+            liveOut.andNot(successor.getPhiDefs());
         }
+        liveOut.or(block.getPhiUses());
         boolean same = liveIn.equals(block.getLiveIn()) && liveOut.equals(block.getLiveOut());
         if (!same) {
             block.setLiveIn(liveIn);

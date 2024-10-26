@@ -1,6 +1,7 @@
 package com.d_m.select.instr;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,6 +16,15 @@ public class MachineFunction {
         this.name = name;
         this.blocks = new ArrayList<>();
         this.params = new ArrayList<>();
+    }
+
+    public void runLiveness() {
+        for (MachineBasicBlock block : blocks) {
+            block.calculateGenKillInfo();
+            block.setLiveIn(new BitSet());
+            block.setLiveOut(new BitSet());
+        }
+        blocks.getFirst().runLiveness();
     }
 
     public List<MachineBasicBlock> getBlocks() {

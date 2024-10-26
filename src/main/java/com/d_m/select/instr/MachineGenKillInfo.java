@@ -23,6 +23,11 @@ public class MachineGenKillInfo {
 
         for (int i = code.size() - 1; i >= 0; i--) {
             MachineInstruction instruction = code.get(i);
+            // Ignore phi nodes for now since they have different liveness characteristics
+            // than normal instructions.
+            if (instruction.getInstruction().equals("phi")) {
+                continue;
+            }
             for (MachineOperandPair pair : instruction.getOperands()) {
                 List<BitSet> bitset = switch (pair.kind()) {
                     case USE -> gen;

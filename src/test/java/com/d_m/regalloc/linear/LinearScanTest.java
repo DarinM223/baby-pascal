@@ -95,14 +95,11 @@ class LinearScanTest {
         MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(isa, writer);
         for (Function function : module.getFunctionList()) {
             MachineFunction machineFunction = codegen.getFunction(function);
+            machineFunction.runLiveness();
             new InsertParallelMoves(codegen.getFunctionLoweringInfo()).runFunction(machineFunction);
             for (MachineBasicBlock block : machineFunction.getBlocks()) {
                 SequentializeParallelMoves.sequentializeBlock(codegen.getFunctionLoweringInfo(), temp, block);
-                block.calculateGenKillInfo();
-                block.setLiveIn(new BitSet());
-                block.setLiveOut(new BitSet());
             }
-            machineFunction.getBlocks().getFirst().runLiveness();
             InstructionNumbering numbering = new InstructionNumbering();
             numbering.numberInstructions(machineFunction);
             List<Interval> intervals = new BuildIntervals(numbering).runFunction(machineFunction);

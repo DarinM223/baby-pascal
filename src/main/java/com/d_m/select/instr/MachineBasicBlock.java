@@ -3,6 +3,7 @@ package com.d_m.select.instr;
 import com.d_m.cfg.BlockLiveness;
 import com.d_m.cfg.BlockLivenessInfo;
 import com.d_m.cfg.IBlock;
+import com.d_m.select.reg.Register;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -137,6 +138,42 @@ public class MachineBasicBlock extends BlockLiveness<MachineBasicBlock> implemen
             instructions.add(terminatorIndex, instruction);
         }
         terminatorIndex++;
+    }
+
+    @Override
+    public BitSet getPhiUses() {
+        BitSet uses = new BitSet();
+        for (MachineBasicBlock successor : successors) {
+            int blockPredecessorIndex = successor.getPredecessors().indexOf(this);
+            for (MachineInstruction instruction : instructions) {
+                if (!instruction.getInstruction().equals("phi")) {
+                    break;
+                }
+                MachineOperandPair pairAtIndex = instruction.getOperands().get(blockPredecessorIndex);
+                if (pairAtIndex.kind() == MachineOperandKind.USE &&
+                        pairAtIndex.operand() instanceof MachineOperand.Register(Register.Virtual(int n, _, _))) {
+                    uses.set(n);
+                }
+            }
+        }
+        return uses;
+    }
+
+    @Override
+    public BitSet getPhiDefs() {
+        BitSet defs = new BitSet();
+        for (MachineInstruction instruction : instructions) {
+            if (!instruction.getInstruction().equals("phi")) {
+                break;
+            }
+            for (MachineOperandPair pair : instruction.getOperands()) {
+                if (pair.kind() == MachineOperandKind.DEF &&
+                        pair.operand() instanceof MachineOperand.Register(Register.Virtual(int n, _, _))) {
+                    defs.set(n);
+                }
+            }
+        }
+        return defs;
     }
 
     @Override
