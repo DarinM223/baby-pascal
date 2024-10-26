@@ -31,6 +31,8 @@ public class MachineBasicBlock extends BlockLiveness<MachineBasicBlock> implemen
         instructions = new ArrayList<>();
         dominatorTreeLevel = -1;
         terminatorIndex = -1;
+        predecessors = new ArrayList<>();
+        successors = new ArrayList<>();
         entry = null;
         exit = null;
         info = null;
@@ -145,7 +147,7 @@ public class MachineBasicBlock extends BlockLiveness<MachineBasicBlock> implemen
         BitSet uses = new BitSet();
         for (MachineBasicBlock successor : successors) {
             int blockPredecessorIndex = successor.getPredecessors().indexOf(this);
-            for (MachineInstruction instruction : instructions) {
+            for (MachineInstruction instruction : successor.getInstructions()) {
                 if (!instruction.getInstruction().equals("phi")) {
                     break;
                 }

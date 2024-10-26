@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="MachineBasicBlock remembers terminator and parallel moves are inserted before terminator">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Attempt modification to liveness equations to handle phi nodes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/BlockLiveness.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/BlockLiveness.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/BlockLivenessInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/cfg/BlockLivenessInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineFunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineFunction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineGenKillInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineGenKillInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/instr/MachineBasicBlockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/instr/MachineBasicBlockTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +44,7 @@
   "keyToString": {
     "Application.Gen.executor": "Run",
     "Application.Main.executor": "Run",
-    "JUnit.All tests.executor": "Run",
+    "JUnit.All tests.executor": "Debug",
     "JUnit.BlockTest.createBlocks.executor": "Run",
     "JUnit.BlockTest.executor": "Run",
     "JUnit.BuilderTest.convertFunction.executor": "Debug",
@@ -56,6 +52,7 @@
     "JUnit.DataflowTest.genKillAndLiveness.executor": "Run",
     "JUnit.LengauerTarjanTest.idom.executor": "Run",
     "JUnit.MachineBasicBlockTest.addBeforeTerminator.executor": "Run",
+    "JUnit.MachineBasicBlockTest.getPhiUses.executor": "Run",
     "JUnit.SSADAGTest.postorder.executor": "Run",
     "JUnit.ThreeAddressCodeTest.normalize.executor": "Run",
     "JUnit.UniqueRenamerTest.executor": "Run",
@@ -176,22 +173,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LengauerTarjanTest.idom" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="baby-pascal" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.d_m.dom.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.d_m.dom" />
-      <option name="MAIN_CLASS_NAME" value="com.d_m.dom.LengauerTarjanTest" />
-      <option name="METHOD_NAME" value="idom" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="MachineBasicBlockTest.addBeforeTerminator" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="baby-pascal" />
       <extension name="coverage">
@@ -204,6 +185,25 @@
       <option name="MAIN_CLASS_NAME" value="com.d_m.select.instr.MachineBasicBlockTest" />
       <option name="METHOD_NAME" value="addBeforeTerminator" />
       <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MachineBasicBlockTest.getPhiUses" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="baby-pascal" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.d_m.select.instr.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.d_m.select.instr" />
+      <option name="MAIN_CLASS_NAME" value="com.d_m.select.instr.MachineBasicBlockTest" />
+      <option name="METHOD_NAME" value="getPhiUses" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -231,18 +231,18 @@
       <item itemvalue="Application.Gen" />
       <item itemvalue="Application.Main" />
       <item itemvalue="JUnit.All tests" />
+      <item itemvalue="JUnit.MachineBasicBlockTest.getPhiUses" />
       <item itemvalue="JUnit.MachineBasicBlockTest.addBeforeTerminator" />
       <item itemvalue="JUnit.CodegenTest.postorder" />
-      <item itemvalue="JUnit.LengauerTarjanTest.idom" />
       <item itemvalue="JUnit.UniqueRenamerTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.MachineBasicBlockTest.getPhiUses" />
         <item itemvalue="JUnit.MachineBasicBlockTest.addBeforeTerminator" />
         <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.CodegenTest.postorder" />
         <item itemvalue="JUnit.UniqueRenamerTest" />
-        <item itemvalue="JUnit.LengauerTarjanTest.idom" />
       </list>
     </recent_temporary>
   </component>
@@ -254,14 +254,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00161" summary="Properly hashes tokens and merges duplicate paths in automaton">
-      <option name="closed" value="true" />
-      <created>1722632533966</created>
-      <option name="number" value="00161" />
-      <option name="presentableId" value="LOCAL-00161" />
-      <option name="project" value="LOCAL" />
-      <updated>1722632533967</updated>
     </task>
     <task id="LOCAL-00162" summary="Fixes wildcard path length and starts refactor towards counters">
       <option name="closed" value="true" />
@@ -647,14 +639,21 @@
       <option name="project" value="LOCAL" />
       <updated>1729864675285</updated>
     </task>
-    <option name="localTasksCounter" value="210" />
+    <task id="LOCAL-00210" summary="Attempt modification to liveness equations to handle phi nodes">
+      <option name="closed" value="true" />
+      <created>1729955149695</created>
+      <option name="number" value="00210" />
+      <option name="presentableId" value="LOCAL-00210" />
+      <option name="project" value="LOCAL" />
+      <updated>1729955149695</updated>
+    </task>
+    <option name="localTasksCounter" value="211" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Sequentialize parallel moves in block" />
     <MESSAGE value="Thread block entries and exits to machine blocks and abstract liveness analysis to also run on machine blocks" />
     <MESSAGE value="Start lexing and parsing support for rules with any arity arguments" />
     <MESSAGE value="Anyarity parameters add accepting child states up to a max limit, and handles multi-arity CALL patterns instead of rewriting call nodes into COPYTOREG" />
@@ -679,7 +678,8 @@
     <MESSAGE value="Modify COPYFROMREG rule to output the virtual register without moves so that phis are always at the top of the generated machine instructions" />
     <MESSAGE value="Adds parallel move before compare instruction in a branch and doesn't add empty parallel moves" />
     <MESSAGE value="MachineBasicBlock remembers terminator and parallel moves are inserted before terminator" />
-    <option name="LAST_COMMIT_MESSAGE" value="MachineBasicBlock remembers terminator and parallel moves are inserted before terminator" />
+    <MESSAGE value="Attempt modification to liveness equations to handle phi nodes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Attempt modification to liveness equations to handle phi nodes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
