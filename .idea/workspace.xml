@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Attempt modification to liveness equations to handle phi nodes">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add unit tests for getPhiUses() and getPhiDefs()">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/instr/MachineBasicBlockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/instr/MachineBasicBlockTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +44,7 @@
   "keyToString": {
     "Application.Gen.executor": "Run",
     "Application.Main.executor": "Run",
-    "JUnit.All tests.executor": "Debug",
+    "JUnit.All tests.executor": "Run",
     "JUnit.BlockTest.createBlocks.executor": "Run",
     "JUnit.BlockTest.executor": "Run",
     "JUnit.BuilderTest.convertFunction.executor": "Debug",
@@ -254,14 +254,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00162" summary="Fixes wildcard path length and starts refactor towards counters">
-      <option name="closed" value="true" />
-      <created>1722697593718</created>
-      <option name="number" value="00162" />
-      <option name="presentableId" value="LOCAL-00162" />
-      <option name="project" value="LOCAL" />
-      <updated>1722697593718</updated>
     </task>
     <task id="LOCAL-00163" summary="Attempt to print matched tiles in reverse order, add rules to match more nodes">
       <option name="closed" value="true" />
@@ -647,14 +639,21 @@
       <option name="project" value="LOCAL" />
       <updated>1729955149695</updated>
     </task>
-    <option name="localTasksCounter" value="211" />
+    <task id="LOCAL-00211" summary="Add unit tests for getPhiUses() and getPhiDefs()">
+      <option name="closed" value="true" />
+      <created>1729957035450</created>
+      <option name="number" value="00211" />
+      <option name="presentableId" value="LOCAL-00211" />
+      <option name="project" value="LOCAL" />
+      <updated>1729957035450</updated>
+    </task>
+    <option name="localTasksCounter" value="212" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Thread block entries and exits to machine blocks and abstract liveness analysis to also run on machine blocks" />
     <MESSAGE value="Start lexing and parsing support for rules with any arity arguments" />
     <MESSAGE value="Anyarity parameters add accepting child states up to a max limit, and handles multi-arity CALL patterns instead of rewriting call nodes into COPYTOREG" />
     <MESSAGE value="Update to JDK 23 and modifies pattern matching so that Eclipse compiles" />
@@ -679,7 +678,8 @@
     <MESSAGE value="Adds parallel move before compare instruction in a branch and doesn't add empty parallel moves" />
     <MESSAGE value="MachineBasicBlock remembers terminator and parallel moves are inserted before terminator" />
     <MESSAGE value="Attempt modification to liveness equations to handle phi nodes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Attempt modification to liveness equations to handle phi nodes" />
+    <MESSAGE value="Add unit tests for getPhiUses() and getPhiDefs()" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add unit tests for getPhiUses() and getPhiDefs()" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -719,26 +719,34 @@
           <option name="timeStamp" value="83" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <condition expression="numbering.getInstructionNumber(i) == null" language="JAVA" />
+          <url>file://$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java</url>
+          <line>102</line>
+          <option name="timeStamp" value="98" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java</url>
-          <line>116</line>
-          <option name="timeStamp" value="89" />
+          <line>32</line>
+          <option name="timeStamp" value="101" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java</url>
           <line>120</line>
-          <option name="timeStamp" value="96" />
+          <option name="timeStamp" value="104" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java</url>
-          <line>102</line>
-          <option name="timeStamp" value="98" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java</url>
+          <line>150</line>
+          <option name="timeStamp" value="106" />
         </line-breakpoint>
         <breakpoint type="java-exception">
           <properties class="java.lang.NullPointerException" package="java.lang">
             <option name="NOTIFY_CAUGHT" value="false" />
           </properties>
           <option name="timeStamp" value="72" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.util.ConcurrentModificationException" package="java.util" />
+          <option name="timeStamp" value="105" />
         </breakpoint>
       </breakpoints>
       <default-breakpoints>

@@ -1,10 +1,7 @@
 package com.d_m.regalloc.linear;
 
 import com.d_m.select.FunctionLoweringInfo;
-import com.d_m.select.instr.MachineInstruction;
-import com.d_m.select.instr.MachineOperand;
-import com.d_m.select.instr.MachineOperandKind;
-import com.d_m.select.instr.MachineOperandPair;
+import com.d_m.select.instr.*;
 import com.d_m.select.reg.Register;
 import com.google.common.collect.Iterables;
 
@@ -43,15 +40,17 @@ public class LinearScan {
             Set<Interval> fixedUnhandled = unhandled.stream().filter(Interval::isFixed).collect(Collectors.toSet());
 
             // Check for active intervals that have expired.
-            for (Interval interval : active) {
+            var it = active.iterator();
+            while (it.hasNext()) {
+                Interval interval = it.next();
                 if (interval.getEnd() < current.getStart()) {
-                    active.remove(interval);
+                    it.remove();
                     handled.add(interval);
                     if (interval.getReg() instanceof MachineOperand.Register(Register.Physical physical)) {
                         free.add(physical);
                     }
                 } else if (!interval.overlaps(current.getStart())) {
-                    active.remove(interval);
+                    it.remove();
                     inactive.add(interval);
                     if (interval.getReg() instanceof MachineOperand.Register(Register.Physical physical)) {
                         free.add(physical);
@@ -60,12 +59,14 @@ public class LinearScan {
             }
 
             // Check for inactive intervals that expired or become reactivated:
-            for (Interval interval : inactive) {
+            it = inactive.iterator();
+            while (it.hasNext()) {
+                Interval interval = it.next();
                 if (interval.getEnd() < current.getStart()) {
-                    inactive.remove(interval);
+                    it.remove();
                     handled.add(interval);
                 } else if (interval.overlaps(current.getStart())) {
-                    inactive.remove(interval);
+                    it.remove();
                     active.add(interval);
                     if (interval.getReg() instanceof MachineOperand.Register(Register.Physical physical)) {
                         free.remove(physical);
@@ -92,7 +93,7 @@ public class LinearScan {
             if (!f.isEmpty()) {
                 if (!(current.getReg() instanceof MachineOperand.Register(Register.Physical _))) {
                     Register.Physical taken = f.stream().findAny().get();
-                    current.setReg(new MachineOperand.Register(taken));
+                    setRegister(current, new MachineOperand.Register(taken));
                     free.remove(taken);
                 }
                 active.add(current);
@@ -148,18 +149,24 @@ public class LinearScan {
     // Also sets the machine instruction at the start of the interval.
     private void setRegister(Interval interval, MachineOperand registerOperand) {
         interval.setReg(registerOperand);
-        MachineInstruction instruction = numbering.getInstructionFromNumber(interval.getStart());
-        // Replace instruction's operand with the interval's virtual register with the new operand.
-        for (int i = 0; i < instruction.getOperands().size(); i++) {
-            MachineOperandPair pair = instruction.getOperands().get(i);
-            if (pair.kind() == MachineOperandKind.USE) {
+        for (int i = interval.getStart(); i <= interval.getEnd(); i++) {
+            MachineInstruction instruction = numbering.getInstructionFromNumber(i);
+            if (instruction == null) {
                 continue;
             }
+            // Replace instruction's operand with the interval's virtual register with the new operand.
+            for (int j = 0; j < instruction.getOperands().size(); j++) {
+                MachineOperandPair pair = instruction.getOperands().get(j);
+                // TODO: look into uses on the first instruction. Maybe they shouldn't be renamed.
+//                if (pair.kind() == MachineOperandKind.USE) {
+//                    continue;
+//                }
 
-            if (pair.operand() instanceof MachineOperand.Register(Register.Virtual(int n, _, _)) &&
-                    n == interval.getVirtualReg()) {
-                instruction.getOperands().set(i, new MachineOperandPair(registerOperand, MachineOperandKind.DEF));
-                break;
+                if (pair.operand() instanceof MachineOperand.Register(Register.Virtual(int n, _, _)) &&
+                        n == interval.getVirtualReg()) {
+                    instruction.getOperands().set(j, new MachineOperandPair(registerOperand, pair.kind()));
+                    break;
+                }
             }
         }
     }

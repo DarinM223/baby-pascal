@@ -126,6 +126,7 @@ public class BuildIntervals {
         List<Interval> intervals = intervalMap.get(ni);
         if (intervals == null) {
             intervals = new ArrayList<>();
+            intervalMap.put(ni, intervals);
             intervals.add(new Interval(start, end, 0, virtualRegister, false));
         } else {
             // Add into sorted list merging adjacent ranges
