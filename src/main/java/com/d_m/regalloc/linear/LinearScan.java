@@ -30,6 +30,8 @@ public class LinearScan {
      * @param intervals list of intervals sorted by the start position
      */
     public void scan(Set<Register.Physical> free, List<Interval> intervals) {
+        // TODO: unhandled is actually the set of all intervals not in the handled set, which means
+        // that using an increasing index is incorrect here.
         for (int unhandledIndex = 0; unhandledIndex < intervals.size(); unhandledIndex++) {
             Interval current = intervals.get(unhandledIndex);
             Set<Interval> unhandled = new HashSet<>(intervals.size());
@@ -93,7 +95,7 @@ public class LinearScan {
             if (!f.isEmpty()) {
                 if (!(current.getReg() instanceof MachineOperand.Register(Register.Physical _))) {
                     Register.Physical taken = f.stream().findAny().get();
-                    setRegister(current, new MachineOperand.Register(taken));
+                    current.setReg(new MachineOperand.Register(taken));
                     free.remove(taken);
                 }
                 active.add(current);
@@ -121,28 +123,38 @@ public class LinearScan {
         MachineOperand r = weightMap.keySet().stream().min(Comparator.comparingInt(weightMap::get)).get();
         if (current.getWeight() < weightMap.get(r)) {
             // Assign a memory location to current:
-            setRegister(current, info.createStackSlot(8));
+            current.setReg(info.createStackSlot(8));
             handled.add(current);
         } else {
             // Assign memory locations to the intervals occupied by r.
             // Move all active or inactive intervals to which r was assigned to handled
             // and assign memory locations to them.
-            for (Interval interval : active) {
+            var it = active.iterator();
+            while (it.hasNext()) {
+                Interval interval = it.next();
                 if (interval.getReg().equals(r)) {
-                    setRegister(interval, info.createStackSlot(8));
-                    active.remove(interval);
+                    interval.setReg(info.createStackSlot(8));
+                    it.remove();
                     handled.add(interval);
                 }
             }
-            for (Interval interval : inactive) {
+            it = inactive.iterator();
+            while (it.hasNext()) {
+                Interval interval = it.next();
                 if (interval.getReg().equals(r)) {
-                    setRegister(interval, info.createStackSlot(8));
-                    inactive.remove(interval);
+                    interval.setReg(info.createStackSlot(8));
+                    it.remove();
                     handled.add(interval);
                 }
             }
-            setRegister(current, r);
+            current.setReg(r);
             active.add(current);
+        }
+    }
+
+    public void rewriteIntervalsWithRegisters() {
+        for (Interval interval : handled) {
+            setRegister(interval, interval.getReg());
         }
     }
 

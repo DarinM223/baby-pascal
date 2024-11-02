@@ -2,6 +2,7 @@ package com.d_m.regalloc.linear;
 
 import com.d_m.select.instr.*;
 import com.d_m.select.reg.Register;
+import com.d_m.select.reg.RegisterConstraint;
 
 import java.util.*;
 
@@ -90,9 +91,15 @@ public class BuildIntervals {
         while (it.hasNext()) {
             int virtualRegister = it.next();
             MachineInstruction instruction = virtualRegisterToMachineInstructionMap.get(virtualRegister);
+            if (instruction.getInstruction().equals("phi")) {
+                continue;
+            }
             addRange(virtualRegister, instruction, block, numbering.getInstructionNumber(block.getInstructions().getLast()) + 1);
         }
         for (MachineInstruction instruction : block.getInstructions().reversed()) {
+            if (instruction.getInstruction().equals("phi")) {
+                continue;
+            }
             for (MachineOperandPair pair : instruction.getOperands()) {
                 switch (pair.kind()) {
                     case USE -> {
@@ -104,8 +111,15 @@ public class BuildIntervals {
                         }
                     }
                     case DEF -> {
-                        if (pair.operand() instanceof MachineOperand.Register(Register.Virtual(int n, _, _))) {
-                            live.clear(n);
+                        switch (pair.operand()) {
+                            // Intervals should be created for fixed virtual registers, even if they are not used.
+                            case MachineOperand.Register(
+                                    Register.Virtual(int n, _, RegisterConstraint.UsePhysical(_))
+                            ) when !live.get(n) ->
+                                    addRange(n, instruction, block, numbering.getInstructionNumber(instruction));
+                            case MachineOperand.Register(Register.Virtual(int n, _, _)) -> live.clear(n);
+                            default -> {
+                            }
                         }
                     }
                 }
@@ -118,30 +132,49 @@ public class BuildIntervals {
         int nbf = numbering.getInstructionNumber(b.getInstructions().getFirst());
         int start = Math.max(ni, nbf);
         if (start > end) {
-            System.err.println("Adding invalid range: " + start + " to " + end);
+            System.err.println("Adding invalid range: " + start + " to " + end + " for virtual register " + virtualRegister);
             return;
         }
+        Register.Physical fixed = getFixedRegister(virtualRegister, i);
 
         // Add (start, end) to interval[i.n] merging adjacent ranges
         List<Interval> intervals = intervalMap.get(ni);
         if (intervals == null) {
             intervals = new ArrayList<>();
             intervalMap.put(ni, intervals);
-            intervals.add(new Interval(start, end, 0, virtualRegister, false));
+            Interval interval = new Interval(start, end, 0, virtualRegister, fixed != null);
+            interval.setReg(new MachineOperand.Register(fixed));
+            intervals.add(interval);
         } else {
             // Add into sorted list merging adjacent ranges
+            // Only merge unfixed intervals.
             boolean merged = false;
-            for (Interval interval : intervals) {
-                if (start == interval.getEnd() + 1) {
-                    interval.setEnd(end);
-                    merged = true;
-                    break;
+            if (fixed == null) {
+                for (Interval interval : intervals) {
+                    if (!interval.isFixed() && start == interval.getEnd() + 1) {
+                        interval.setEnd(end);
+                        merged = true;
+                        break;
+                    }
                 }
             }
             if (!merged) {
-                intervals.add(new Interval(start, end, 0, virtualRegister, false));
+                Interval interval = new Interval(start, end, 0, virtualRegister, fixed != null);
+                interval.setReg(new MachineOperand.Register(fixed));
+                intervals.add(interval);
                 intervals.sort(null);
             }
         }
+    }
+
+    private Register.Physical getFixedRegister(int virtualRegister, MachineInstruction instruction) {
+        for (MachineOperandPair pair : instruction.getOperands()) {
+            if (pair.operand() instanceof MachineOperand.Register(
+                    Register.Virtual(int n, _, RegisterConstraint.UsePhysical(var reg))
+            ) && n == virtualRegister) {
+                return reg;
+            }
+        }
+        return null;
     }
 }
