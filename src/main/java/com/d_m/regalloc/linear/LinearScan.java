@@ -6,7 +6,6 @@ import com.d_m.select.reg.Register;
 import com.google.common.collect.Iterables;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class LinearScan {
     private final FunctionLoweringInfo info;
@@ -30,16 +29,9 @@ public class LinearScan {
      * @param intervals list of intervals sorted by the start position
      */
     public void scan(Set<Register.Physical> free, List<Interval> intervals) {
-        // TODO: unhandled is actually the set of all intervals not in the handled set, which means
-        // that using an increasing index is incorrect here.
-        for (int unhandledIndex = 0; unhandledIndex < intervals.size(); unhandledIndex++) {
-            Interval current = intervals.get(unhandledIndex);
-            Set<Interval> unhandled = new HashSet<>(intervals.size());
-            for (int index = unhandledIndex + 1; index < intervals.size(); index++) {
-                unhandled.add(intervals.get(index));
-            }
-
-            Set<Interval> fixedUnhandled = unhandled.stream().filter(Interval::isFixed).collect(Collectors.toSet());
+        TreeSet<Interval> unhandled = new TreeSet<>(intervals);
+        while (!unhandled.isEmpty()) {
+            Interval current = unhandled.removeFirst();
 
             // Check for active intervals that have expired.
             var it = active.iterator();
@@ -84,8 +76,9 @@ public class LinearScan {
                     f.remove(physical);
                 }
             }
-            for (Interval interval : fixedUnhandled) {
-                if (interval.overlaps(current) &&
+            for (Interval interval : unhandled) {
+                if (interval.isFixed() &&
+                        interval.overlaps(current) &&
                         interval.getReg() instanceof MachineOperand.Register(Register.Physical physical)) {
                     f.remove(physical);
                 }
@@ -100,20 +93,23 @@ public class LinearScan {
                 }
                 active.add(current);
             } else {
-                assignMemoryLocation(fixedUnhandled, current);
+                assignMemoryLocation(unhandled, current);
             }
         }
     }
 
-    private void assignMemoryLocation(Set<Interval> fixedUnhandled, Interval current) {
+    private void assignMemoryLocation(Set<Interval> unhandled, Interval current) {
         Map<MachineOperand, Integer> weightMap = new HashMap<>(Iterables.size(info.isa.allIntegerRegs()));
         for (Register.Physical physical : info.isa.allIntegerRegs()) {
             weightMap.put(new MachineOperand.Register(physical), 0);
         }
-
         Set<Interval> combined = new HashSet<>(active);
         combined.addAll(inactive);
-        combined.addAll((fixedUnhandled));
+        for (Interval interval : unhandled) {
+            if (interval.isFixed()) {
+                combined.add(interval);
+            }
+        }
         for (Interval interval : combined) {
             if (interval.overlaps(current) && interval.getReg() != null) {
                 weightMap.put(interval.getReg(), weightMap.get(interval.getReg()) + interval.getWeight());
@@ -154,12 +150,18 @@ public class LinearScan {
 
     public void rewriteIntervalsWithRegisters() {
         for (Interval interval : handled) {
-            setRegister(interval, interval.getReg());
+            rewriteRegister(interval, interval.getReg());
+        }
+        for (Interval interval : active) {
+            rewriteRegister(interval, interval.getReg());
+        }
+        for (Interval interval : inactive) {
+            rewriteRegister(interval, interval.getReg());
         }
     }
 
     // Also sets the machine instruction at the start of the interval.
-    private void setRegister(Interval interval, MachineOperand registerOperand) {
+    private void rewriteRegister(Interval interval, MachineOperand registerOperand) {
         interval.setReg(registerOperand);
         for (int i = interval.getStart(); i <= interval.getEnd(); i++) {
             MachineInstruction instruction = numbering.getInstructionFromNumber(i);

@@ -2,6 +2,7 @@ package com.d_m.regalloc.linear;
 
 import com.d_m.select.instr.MachineOperand;
 
+import java.util.Comparator;
 import java.util.Objects;
 
 public class Interval implements Comparable<Interval> {
@@ -61,18 +62,6 @@ public class Interval implements Comparable<Interval> {
         return fixed;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Interval interval)) return false;
-        return start == interval.start && end == interval.end;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(start, end);
-    }
-
     public boolean overlaps(int j) {
         return start <= j && j <= end;
     }
@@ -83,6 +72,22 @@ public class Interval implements Comparable<Interval> {
 
 	@Override
 	public int compareTo(Interval o) {
-		return Integer.compare(start, o.start);
+		return Comparator.comparingInt(Interval::getStart)
+                .thenComparingInt(Interval::getEnd)
+                .thenComparingInt(Interval::getWeight)
+                .thenComparingInt(Interval::getVirtualReg)
+                .compare(this, o);
 	}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Interval interval)) return false;
+        return start == interval.start && end == interval.end && weight == interval.weight && virtualReg == interval.virtualReg && fixed == interval.fixed && Objects.equals(reg, interval.reg);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(start, end, weight, virtualReg, fixed, reg);
+    }
 }

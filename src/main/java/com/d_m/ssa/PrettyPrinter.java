@@ -1,9 +1,6 @@
 package com.d_m.ssa;
 
-import com.d_m.ast.BooleanType;
-import com.d_m.ast.FunctionType;
-import com.d_m.ast.IntegerType;
-import com.d_m.ast.Type;
+import com.d_m.ast.*;
 import com.d_m.code.Operator;
 import com.d_m.util.Fresh;
 import com.d_m.util.FreshImpl;
@@ -85,6 +82,7 @@ public class PrettyPrinter {
             }
             case IntegerType() -> out.write("int");
             case BooleanType() -> out.write("bool");
+            case SideEffectToken(), VoidType() -> out.write("void");
             case null -> out.write("void");
         }
     }
