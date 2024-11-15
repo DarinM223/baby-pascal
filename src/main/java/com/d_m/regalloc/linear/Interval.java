@@ -22,6 +22,27 @@ public class Interval implements Comparable<Interval> {
         this.reg = null;
     }
 
+    /**
+     * Copy an interval from an existing interval.
+     * @param interval an existing interval to copy.
+     */
+    public Interval(Interval interval) {
+        this(interval, interval.virtualReg);
+    }
+
+    /**
+     * Copy an interval from an existing interval but with a new virtual register.
+     * @param interval an existing interval to copy.
+     * @param virtualReg a new virtual register for the new interval.
+     */
+    public Interval(Interval interval, int virtualReg) {
+        this.start = interval.start;
+        this.end = interval.end;
+        this.virtualReg = virtualReg;
+        this.fixed = interval.fixed;
+        this.reg = interval.reg;
+    }
+
     public int getStart() {
         return start;
     }

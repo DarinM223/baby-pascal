@@ -102,7 +102,10 @@ class LinearScanTest {
             }
             InstructionNumbering numbering = new InstructionNumbering();
             numbering.numberInstructions(machineFunction);
-            List<Interval> intervals = new BuildIntervals(numbering).runFunction(machineFunction);
+            BuildIntervals buildIntervals = new BuildIntervals(numbering);
+            buildIntervals.runFunction(machineFunction);
+            buildIntervals.joinIntervalsFunction(machineFunction);
+            List<Interval> intervals = buildIntervals.getIntervals();
             Set<Register.Physical> free = new HashSet<>();
             for (Register.Physical reg : codegen.getFunctionLoweringInfo().isa.allIntegerRegs()) {
                 if (!reg.equals(temp)) {

@@ -17,21 +17,20 @@ public class BuildIntervals {
         this.virtualRegisterToMachineInstructionMap = new HashMap<>();
     }
 
-    public List<Interval> runFunction(MachineFunction function) {
-        System.out.println("Function argument virtual registers: ");
-        for (MachineOperand operand : function.getParams()) {
-            System.out.println("Operand: " + operand.toString());
-        }
-        initializeVirtualRegisterMap(function);
-        for (MachineBasicBlock block : function.getBlocks()) {
-            runBlock(block);
-        }
+    public List<Interval> getIntervals() {
         List<Interval> finalIntervals = new ArrayList<>();
         for (List<Interval> intervals : intervalMap.values()) {
             finalIntervals.addAll(intervals);
         }
         finalIntervals.sort(null);
         return finalIntervals;
+    }
+
+    public void runFunction(MachineFunction function) {
+        initializeVirtualRegisterMap(function);
+        for (MachineBasicBlock block : function.getBlocks()) {
+            runBlock(block);
+        }
     }
 
     private void initializeVirtualRegisterMap(MachineFunction function) {
@@ -165,6 +164,99 @@ public class BuildIntervals {
                 intervals.sort(null);
             }
         }
+    }
+
+    public void joinIntervalsFunction(MachineFunction function) {
+        for (MachineBasicBlock block : function.getBlocks()) {
+            joinIntervalsBlock(block);
+        }
+    }
+
+    public void joinIntervalsBlock(MachineBasicBlock block) {
+        for (MachineInstruction instruction : block.getInstructions()) {
+            if (instruction.getInstruction().equals("phi") || instruction.getInstruction().equals("mov")) {
+                Register.Virtual defRegister = null;
+                for (MachineOperandPair pair : instruction.getOperands()) {
+                    if (pair.kind() == MachineOperandKind.DEF &&
+                            pair.operand() instanceof MachineOperand.Register(Register.Virtual virtual)) {
+                        defRegister = virtual;
+                        break;
+                    }
+                }
+                Objects.requireNonNull(defRegister, "Definition register doesn't exist for instruction " + instruction);
+
+                for (MachineOperandPair pair : instruction.getOperands()) {
+                    if (pair.kind() == MachineOperandKind.USE &&
+                            pair.operand() instanceof MachineOperand.Register(Register.Virtual virtual)) {
+                        join(virtual, defRegister);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Join two virtual registers together so that they use the same physical register.
+     * This will currently be called for phi nodes and mov instructions. They shouldn't
+     * be called on instructions which have more than one output.
+     *
+     * @param value1
+     * @param value2
+     */
+    public void join(Register.Virtual value1, Register.Virtual value2) {
+        MachineInstruction x = virtualRegisterToMachineInstructionMap.get(value1.registerNumber());
+        MachineInstruction y = virtualRegisterToMachineInstructionMap.get(value2.registerNumber());
+        Integer xNumber = numbering.getInstructionNumber(x.rep());
+        Integer yNumber = numbering.getInstructionNumber(y.rep());
+        List<Interval> xIntervals = intervalMap.get(xNumber);
+        List<Interval> yIntervals = intervalMap.get(yNumber);
+        Set<Interval> i = new HashSet<>(xIntervals == null ? List.of() : xIntervals);
+        Set<Interval> j = new HashSet<>(yIntervals == null ? List.of() : yIntervals);
+        Set<Interval> intersection = new HashSet<>(i);
+        intersection.retainAll(j);
+        if (intersection.isEmpty() && compatible(value1, value2)) {
+            i.addAll(j);
+            intervalMap.put(numbering.getInstructionNumber(y.rep()), i.stream().toList());
+            intervalMap.remove(numbering.getInstructionNumber(x.rep()));
+            x.setJoin(y.rep());
+        }
+    }
+
+    public boolean compatible(Register.Virtual value1, Register.Virtual value2) {
+        boolean bothAreNotInSpecificRegisters =
+                value1.constraint() instanceof RegisterConstraint.Any() &&
+                        value2.constraint() instanceof RegisterConstraint.Any();
+        boolean bothAreInSameSpecificRegister =
+                value1.constraint() instanceof RegisterConstraint.UsePhysical(var physical1) &&
+                        value2.constraint() instanceof RegisterConstraint.UsePhysical(var physical2) &&
+                        physical1.equals(physical2);
+        MachineInstruction x = virtualRegisterToMachineInstructionMap.get(value1.registerNumber());
+        MachineInstruction y = virtualRegisterToMachineInstructionMap.get(value2.registerNumber());
+        List<Interval> xIntervals = intervalMap.get(numbering.getInstructionNumber(x));
+        List<Interval> yIntervals = intervalMap.get(numbering.getInstructionNumber(y));
+        boolean xSpecificRegisterNoOverlap =
+                value1.constraint() instanceof RegisterConstraint.UsePhysical(var physical) &&
+                        specificRegisterHasOverlap(physical, xIntervals);
+        boolean ySpecificRegisterNoOverlap =
+                value2.constraint() instanceof RegisterConstraint.UsePhysical(var physical) &&
+                        specificRegisterHasOverlap(physical, yIntervals);
+        return bothAreNotInSpecificRegisters || bothAreInSameSpecificRegister || xSpecificRegisterNoOverlap || ySpecificRegisterNoOverlap;
+    }
+
+    private boolean specificRegisterHasOverlap(Register.Physical physical, List<Interval> noOverlaps) {
+        MachineOperand operand = new MachineOperand.Register(physical);
+        for (List<Interval> intervals : intervalMap.values()) {
+            for (Interval interval : intervals) {
+                if (interval.getReg().equals(operand)) {
+                    for (Interval noOverlap : noOverlaps) {
+                        if (noOverlap.overlaps(interval)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private Register.Physical getFixedRegister(int virtualRegister, MachineInstruction instruction) {

@@ -8,12 +8,14 @@ public class MachineInstruction {
     private final int id = IdGenerator.newId();
     private final String instruction;
     private final List<MachineOperandPair> operands;
+    private MachineInstruction join;
 
     private MachineBasicBlock parent;
 
     public MachineInstruction(String instruction, List<MachineOperandPair> operands) {
         this.instruction = instruction;
         this.operands = new ArrayList<>(operands);
+        this.join = this;
     }
 
     public String getInstruction() {
@@ -30,6 +32,17 @@ public class MachineInstruction {
 
     public void setParent(MachineBasicBlock parent) {
         this.parent = parent;
+    }
+
+    public void setJoin(MachineInstruction join) {
+        this.join = join;
+    }
+
+    public MachineInstruction rep() {
+        if (join == this) {
+            return this;
+        }
+        return join.rep();
     }
 
     @Override
