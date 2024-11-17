@@ -9,7 +9,7 @@ import java.util.*;
 public class BuildIntervals {
     private final InstructionNumbering numbering;
     private final Map<Integer, MachineInstruction> virtualRegisterToMachineInstructionMap;
-    private final Map<Integer, List<Interval>> intervalMap;
+    private final Map<Integer, Interval> intervalMap;
 
     public BuildIntervals(InstructionNumbering numbering) {
         this.numbering = numbering;
@@ -18,10 +18,7 @@ public class BuildIntervals {
     }
 
     public List<Interval> getIntervals() {
-        List<Interval> finalIntervals = new ArrayList<>();
-        for (List<Interval> intervals : intervalMap.values()) {
-            finalIntervals.addAll(intervals);
-        }
+        List<Interval> finalIntervals = new ArrayList<>(intervalMap.values());
         finalIntervals.sort(null);
         return finalIntervals;
     }
@@ -137,33 +134,9 @@ public class BuildIntervals {
         Register.Physical fixed = getFixedRegister(virtualRegister, i);
 
         // Add (start, end) to interval[i.n] merging adjacent ranges
-        List<Interval> intervals = intervalMap.get(ni);
-        if (intervals == null) {
-            intervals = new ArrayList<>();
-            intervalMap.put(ni, intervals);
-            Interval interval = new Interval(start, end, 0, virtualRegister, fixed != null);
-            interval.setReg(new MachineOperand.Register(fixed));
-            intervals.add(interval);
-        } else {
-            // Add into sorted list merging adjacent ranges
-            // Only merge unfixed intervals.
-            boolean merged = false;
-            if (fixed == null) {
-                for (Interval interval : intervals) {
-                    if (!interval.isFixed() && start == interval.getEnd() + 1) {
-                        interval.setEnd(end);
-                        merged = true;
-                        break;
-                    }
-                }
-            }
-            if (!merged) {
-                Interval interval = new Interval(start, end, 0, virtualRegister, fixed != null);
-                interval.setReg(new MachineOperand.Register(fixed));
-                intervals.add(interval);
-                intervals.sort(null);
-            }
-        }
+        Interval interval = intervalMap.computeIfAbsent(ni, _ -> new Interval(0, virtualRegister, fixed != null));
+        interval.addRange(new Range(start, end));
+        interval.setReg(new MachineOperand.Register(fixed));
     }
 
     public void joinIntervalsFunction(MachineFunction function) {
@@ -208,16 +181,17 @@ public class BuildIntervals {
         MachineInstruction y = virtualRegisterToMachineInstructionMap.get(value2.registerNumber());
         Integer xNumber = numbering.getInstructionNumber(x.rep());
         Integer yNumber = numbering.getInstructionNumber(y.rep());
-        List<Interval> xIntervals = intervalMap.get(xNumber);
-        List<Interval> yIntervals = intervalMap.get(yNumber);
-        Set<Interval> i = new HashSet<>(xIntervals == null ? List.of() : xIntervals);
-        Set<Interval> j = new HashSet<>(yIntervals == null ? List.of() : yIntervals);
-        Set<Interval> intersection = new HashSet<>(i);
+        Interval xInterval = intervalMap.get(xNumber);
+        Interval yInterval = intervalMap.get(yNumber);
+        Set<Range> i = new HashSet<>(xInterval == null ? List.of() : xInterval.getRanges());
+        Set<Range> j = new HashSet<>(yInterval == null ? List.of() : yInterval.getRanges());
+        Set<Range> intersection = new HashSet<>(i);
         intersection.retainAll(j);
-        if (intersection.isEmpty() && compatible(value1, value2)) {
+        if (yInterval != null && intersection.isEmpty() && compatible(value1, value2)) {
+            // TODO: instead of unioning the intervals, merge them
             i.addAll(j);
-            intervalMap.put(numbering.getInstructionNumber(y.rep()), i.stream().toList());
-            intervalMap.remove(numbering.getInstructionNumber(x.rep()));
+            yInterval.setRanges(i.stream().sorted().toList());
+            intervalMap.remove(xNumber);
             x.setJoin(y.rep());
         }
     }
@@ -232,27 +206,23 @@ public class BuildIntervals {
                         physical1.equals(physical2);
         MachineInstruction x = virtualRegisterToMachineInstructionMap.get(value1.registerNumber());
         MachineInstruction y = virtualRegisterToMachineInstructionMap.get(value2.registerNumber());
-        List<Interval> xIntervals = intervalMap.get(numbering.getInstructionNumber(x));
-        List<Interval> yIntervals = intervalMap.get(numbering.getInstructionNumber(y));
+        Interval xInterval = intervalMap.get(numbering.getInstructionNumber(x));
+        Interval yInterval = intervalMap.get(numbering.getInstructionNumber(y));
         boolean xSpecificRegisterNoOverlap =
                 value1.constraint() instanceof RegisterConstraint.UsePhysical(var physical) &&
-                        specificRegisterHasOverlap(physical, xIntervals);
+                        specificRegisterHasOverlap(physical, xInterval);
         boolean ySpecificRegisterNoOverlap =
                 value2.constraint() instanceof RegisterConstraint.UsePhysical(var physical) &&
-                        specificRegisterHasOverlap(physical, yIntervals);
+                        specificRegisterHasOverlap(physical, yInterval);
         return bothAreNotInSpecificRegisters || bothAreInSameSpecificRegister || xSpecificRegisterNoOverlap || ySpecificRegisterNoOverlap;
     }
 
-    private boolean specificRegisterHasOverlap(Register.Physical physical, List<Interval> noOverlaps) {
+    private boolean specificRegisterHasOverlap(Register.Physical physical, Interval noOverlap) {
         MachineOperand operand = new MachineOperand.Register(physical);
-        for (List<Interval> intervals : intervalMap.values()) {
-            for (Interval interval : intervals) {
-                if (interval.getReg().equals(operand)) {
-                    for (Interval noOverlap : noOverlaps) {
-                        if (noOverlap.overlaps(interval)) {
-                            return true;
-                        }
-                    }
+        for (Interval interval : intervalMap.values()) {
+            if (interval.getReg().equals(operand)) {
+                if (noOverlap.overlaps(interval)) {
+                    return true;
                 }
             }
         }

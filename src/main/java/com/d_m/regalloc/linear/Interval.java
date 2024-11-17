@@ -2,61 +2,53 @@ package com.d_m.regalloc.linear;
 
 import com.d_m.select.instr.MachineOperand;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 public class Interval implements Comparable<Interval> {
-    private int start;
-    private int end;
+    private List<Range> ranges;
     private int weight;
     private final int virtualReg;
     private final boolean fixed;
     private MachineOperand reg;
 
-    public Interval(int start, int end, int weight, int virtualReg, boolean fixed) {
-        this.start = start;
-        this.end = end;
+    public Interval(int weight, int virtualReg, boolean fixed) {
+        this.ranges = new ArrayList<>();
         this.weight = weight;
         this.virtualReg = virtualReg;
         this.fixed = fixed;
         this.reg = null;
     }
 
-    /**
-     * Copy an interval from an existing interval.
-     * @param interval an existing interval to copy.
-     */
-    public Interval(Interval interval) {
-        this(interval, interval.virtualReg);
+    public void setRanges(List<Range> ranges) {
+        this.ranges = ranges;
     }
 
-    /**
-     * Copy an interval from an existing interval but with a new virtual register.
-     * @param interval an existing interval to copy.
-     * @param virtualReg a new virtual register for the new interval.
-     */
-    public Interval(Interval interval, int virtualReg) {
-        this.start = interval.start;
-        this.end = interval.end;
-        this.virtualReg = virtualReg;
-        this.fixed = interval.fixed;
-        this.reg = interval.reg;
+    public void addRange(Range newRange) {
+        boolean merged = false;
+        if (!fixed) {
+            for (Range range : ranges) {
+                if (newRange.getStart() == range.getEnd() + 1) {
+                    range.setEnd(newRange.getEnd());
+                    merged = true;
+                    break;
+                }
+            }
+        }
+        if (!merged) {
+            ranges.add(newRange);
+            ranges.sort(null);
+        }
     }
 
     public int getStart() {
-        return start;
-    }
-
-    public void setStart(int start) {
-        this.start = start;
+        return ranges.getFirst().getStart();
     }
 
     public int getEnd() {
-        return end;
-    }
-
-    public void setEnd(int end) {
-        this.end = end;
+        return ranges.stream().mapToInt(Range::getEnd).max().getAsInt();
     }
 
     public int getWeight() {
@@ -79,36 +71,51 @@ public class Interval implements Comparable<Interval> {
         return virtualReg;
     }
 
+    public List<Range> getRanges() {
+        return ranges;
+    }
+
     public boolean isFixed() {
         return fixed;
     }
 
     public boolean overlaps(int j) {
-        return start <= j && j <= end;
+        for (Range range : ranges) {
+            if (range.overlaps(j)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean overlaps(Interval j) {
-        return Integer.max(start, j.start) <= Integer.min(end, j.end);
+        for (Range x : ranges) {
+            for (Range y : j.ranges) {
+                if (x.overlaps(y)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
-	@Override
-	public int compareTo(Interval o) {
-		return Comparator.comparingInt(Interval::getStart)
-                .thenComparingInt(Interval::getEnd)
+    @Override
+    public int compareTo(Interval o) {
+        return Comparator.comparingInt(Interval::getStart)
                 .thenComparingInt(Interval::getWeight)
                 .thenComparingInt(Interval::getVirtualReg)
                 .compare(this, o);
-	}
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Interval interval)) return false;
-        return start == interval.start && end == interval.end && weight == interval.weight && virtualReg == interval.virtualReg && fixed == interval.fixed && Objects.equals(reg, interval.reg);
+        return ranges.equals(interval.ranges) && weight == interval.weight && virtualReg == interval.virtualReg && fixed == interval.fixed && Objects.equals(reg, interval.reg);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(start, end, weight, virtualReg, fixed, reg);
+        return Objects.hash(ranges, weight, virtualReg, fixed, reg);
     }
 }

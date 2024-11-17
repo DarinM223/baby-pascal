@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Make unhandled a set and modify interval comparison function so TreeSet doesn't truncate intervals">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start attempt at joining intervals before linear scan">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/Range.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/Interval.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/Interval.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineInstruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineInstruction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -257,14 +256,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00166" summary="Start generating machine instructions from matched tiles (currently doesn't match numbers)">
-      <option name="closed" value="true" />
-      <created>1723302738589</created>
-      <option name="number" value="00166" />
-      <option name="presentableId" value="LOCAL-00166" />
-      <option name="project" value="LOCAL" />
-      <updated>1723302738590</updated>
     </task>
     <task id="LOCAL-00167" summary="Add pattern for matching constants and modify matching to allow this pattern for constants">
       <option name="closed" value="true" />
@@ -650,14 +641,21 @@
       <option name="project" value="LOCAL" />
       <updated>1730651435935</updated>
     </task>
-    <option name="localTasksCounter" value="215" />
+    <task id="LOCAL-00215" summary="Start attempt at joining intervals before linear scan">
+      <option name="closed" value="true" />
+      <created>1731686472229</created>
+      <option name="number" value="00215" />
+      <option name="presentableId" value="LOCAL-00215" />
+      <option name="project" value="LOCAL" />
+      <updated>1731686472229</updated>
+    </task>
+    <option name="localTasksCounter" value="216" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Modifies machine operands to create new registers for definitions and otherwise reuse constrained registers" />
     <MESSAGE value="Add a parallel move in the entry block of functions from constrained to unconstrained virtual registers" />
     <MESSAGE value="Remove PCOPY and refactor codegen test" />
     <MESSAGE value="Start stack slot handling" />
@@ -682,7 +680,8 @@
     <MESSAGE value="Small fixes to linear scan so that it assigns registers" />
     <MESSAGE value="Handle fixed intervals and more debugging on linear scan" />
     <MESSAGE value="Make unhandled a set and modify interval comparison function so TreeSet doesn't truncate intervals" />
-    <option name="LAST_COMMIT_MESSAGE" value="Make unhandled a set and modify interval comparison function so TreeSet doesn't truncate intervals" />
+    <MESSAGE value="Start attempt at joining intervals before linear scan" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start attempt at joining intervals before linear scan" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -711,52 +710,40 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java</url>
-          <line>133</line>
+          <line>125</line>
           <option name="timeStamp" value="104" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <condition expression="interval.fixed" language="JAVA" />
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java</url>
-          <line>40</line>
+          <line>41</line>
           <option name="timeStamp" value="115" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <condition expression="interval.fixed" language="JAVA" />
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java</url>
-          <line>59</line>
+          <line>60</line>
           <option name="timeStamp" value="116" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java</url>
-          <line>151</line>
+          <line>152</line>
           <option name="timeStamp" value="118" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java</url>
-          <line>95</line>
+          <line>96</line>
           <option name="timeStamp" value="119" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java</url>
-          <line>31</line>
-          <option name="timeStamp" value="122" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java</url>
-          <line>101</line>
+          <line>102</line>
           <option name="timeStamp" value="125" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <condition expression="xNumber == null" language="JAVA" />
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java</url>
-          <line>210</line>
-          <option name="timeStamp" value="128" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <condition expression="yNumber == null" language="JAVA" />
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java</url>
-          <line>211</line>
-          <option name="timeStamp" value="129" />
+          <line>185</line>
+          <option name="timeStamp" value="130" />
         </line-breakpoint>
         <breakpoint type="java-exception">
           <properties class="java.lang.NullPointerException" package="java.lang">
