@@ -162,24 +162,21 @@ public class LinearScan {
 
     // Also sets the machine instruction at the start of the interval.
     private void rewriteRegister(Interval interval, MachineOperand registerOperand) {
-        interval.setReg(registerOperand);
-        for (int i = interval.getStart(); i <= interval.getEnd(); i++) {
-            MachineInstruction instruction = numbering.getInstructionFromNumber(i);
-            if (instruction == null) {
-                continue;
-            }
-            // Replace instruction's operand with the interval's virtual register with the new operand.
-            for (int j = 0; j < instruction.getOperands().size(); j++) {
-                MachineOperandPair pair = instruction.getOperands().get(j);
-                // TODO: look into uses on the first instruction. Maybe they shouldn't be renamed.
-//                if (pair.kind() == MachineOperandKind.USE) {
-//                    continue;
-//                }
+        for (Range range : interval.getRanges()) {
+            for (int i = range.getStart(); i <= range.getEnd(); i++) {
+                MachineInstruction instruction = numbering.getInstructionFromNumber(i);
+                if (instruction == null) {
+                    continue;
+                }
+                // Replace instruction's operand with the interval's virtual register with the new operand.
+                for (int j = 0; j < instruction.getOperands().size(); j++) {
+                    MachineOperandPair pair = instruction.getOperands().get(j);
 
-                if (pair.operand() instanceof MachineOperand.Register(Register.Virtual(int n, _, _)) &&
-                        n == interval.getVirtualReg()) {
-                    instruction.getOperands().set(j, new MachineOperandPair(registerOperand, pair.kind()));
-                    break;
+                    if (pair.operand() instanceof MachineOperand.Register(Register.Virtual(int n, _, _)) &&
+                            n == interval.getVirtualReg()) {
+                        instruction.getOperands().set(j, new MachineOperandPair(registerOperand, pair.kind()));
+                        break;
+                    }
                 }
             }
         }

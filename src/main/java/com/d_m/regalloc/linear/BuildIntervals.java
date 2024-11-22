@@ -7,9 +7,12 @@ import com.d_m.select.reg.RegisterConstraint;
 import java.util.*;
 
 public class BuildIntervals {
+    private record IntervalKey(int instructionNumber, int virtualRegister) {
+    }
+
     private final InstructionNumbering numbering;
     private final Map<Integer, MachineInstruction> virtualRegisterToMachineInstructionMap;
-    private final Map<Integer, Interval> intervalMap;
+    private final Map<IntervalKey, Interval> intervalMap;
 
     public BuildIntervals(InstructionNumbering numbering) {
         this.numbering = numbering;
@@ -134,9 +137,12 @@ public class BuildIntervals {
         Register.Physical fixed = getFixedRegister(virtualRegister, i);
 
         // Add (start, end) to interval[i.n] merging adjacent ranges
-        Interval interval = intervalMap.computeIfAbsent(ni, _ -> new Interval(0, virtualRegister, fixed != null));
+        IntervalKey key = new IntervalKey(ni, virtualRegister);
+        Interval interval = intervalMap.computeIfAbsent(key, _ -> new Interval(0, virtualRegister, fixed != null));
         interval.addRange(new Range(start, end));
-        interval.setReg(new MachineOperand.Register(fixed));
+        if (fixed != null) {
+            interval.setReg(new MachineOperand.Register(fixed));
+        }
     }
 
     public void joinIntervalsFunction(MachineFunction function) {
@@ -220,7 +226,7 @@ public class BuildIntervals {
     private boolean specificRegisterHasOverlap(Register.Physical physical, Interval noOverlap) {
         MachineOperand operand = new MachineOperand.Register(physical);
         for (Interval interval : intervalMap.values()) {
-            if (interval.getReg().equals(operand)) {
+            if (interval.getReg() != null && interval.getReg().equals(operand)) {
                 if (noOverlap.overlaps(interval)) {
                     return true;
                 }
