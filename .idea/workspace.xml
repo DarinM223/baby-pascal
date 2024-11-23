@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start refactor of interval to include multiple ranges">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Use virtual register also as key in interval map to handle multiple output instructions">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -256,14 +255,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00168" summary="Block inherits Constant and lowers blocks and functions to machine operands">
-      <option name="closed" value="true" />
-      <created>1723821328241</created>
-      <option name="number" value="00168" />
-      <option name="presentableId" value="LOCAL-00168" />
-      <option name="project" value="LOCAL" />
-      <updated>1723821328242</updated>
     </task>
     <task id="LOCAL-00169" summary="COPYTOREG and COPYFROMREG puts register into first argument and stores mapping of temporary registers">
       <option name="closed" value="true" />
@@ -649,14 +640,21 @@
       <option name="project" value="LOCAL" />
       <updated>1731882873503</updated>
     </task>
-    <option name="localTasksCounter" value="217" />
+    <task id="LOCAL-00217" summary="Use virtual register also as key in interval map to handle multiple output instructions">
+      <option name="closed" value="true" />
+      <created>1732292120203</created>
+      <option name="number" value="00217" />
+      <option name="presentableId" value="LOCAL-00217" />
+      <option name="project" value="LOCAL" />
+      <updated>1732292120203</updated>
+    </task>
+    <option name="localTasksCounter" value="218" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Remove PCOPY and refactor codegen test" />
     <MESSAGE value="Start stack slot handling" />
     <MESSAGE value="Modify README.md" />
     <MESSAGE value="Start building live intervals" />
@@ -681,7 +679,8 @@
     <MESSAGE value="Make unhandled a set and modify interval comparison function so TreeSet doesn't truncate intervals" />
     <MESSAGE value="Start attempt at joining intervals before linear scan" />
     <MESSAGE value="Start refactor of interval to include multiple ranges" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start refactor of interval to include multiple ranges" />
+    <MESSAGE value="Use virtual register also as key in interval map to handle multiple output instructions" />
+    <option name="LAST_COMMIT_MESSAGE" value="Use virtual register also as key in interval map to handle multiple output instructions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -739,6 +738,20 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java</url>
           <line>31</line>
           <option name="timeStamp" value="133" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="virtualRegister == 50 || virtualRegister == 52" language="JAVA" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java</url>
+          <line>131</line>
+          <properties>
+            <option name="lambda-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="135" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java</url>
+          <line>94</line>
+          <option name="timeStamp" value="139" />
         </line-breakpoint>
         <breakpoint type="java-exception">
           <properties class="java.lang.NullPointerException" package="java.lang">

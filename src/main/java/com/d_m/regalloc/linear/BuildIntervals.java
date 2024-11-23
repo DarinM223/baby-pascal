@@ -57,16 +57,16 @@ public class BuildIntervals {
 
     public void runBlock(MachineBasicBlock block) {
         BitSet live = new BitSet();
-        for (int i = 0; i < block.getSuccessors().size(); i++) {
-            MachineBasicBlock successor = block.getSuccessors().get(i);
+        for (MachineBasicBlock successor : block.getSuccessors()) {
+            int predecessorIndex = successor.getPredecessors().indexOf(block);
             live.or(successor.getLiveIn());
-            for (MachineInstruction instruction : block.getInstructions()) {
+            for (MachineInstruction instruction : successor.getInstructions()) {
                 if (instruction.getInstruction().equals("phi")) {
                     List<MachineOperand> uses = instruction.getOperands().stream()
                             .filter(pair -> pair.kind() == MachineOperandKind.USE)
                             .map(MachineOperandPair::operand)
                             .toList();
-                    MachineOperand useAtIndex = uses.get(i);
+                    MachineOperand useAtIndex = uses.get(predecessorIndex);
                     MachineOperand def = instruction.getOperands().stream()
                             .filter(pair -> pair.kind() == MachineOperandKind.DEF)
                             .findFirst()
@@ -90,15 +90,9 @@ public class BuildIntervals {
         while (it.hasNext()) {
             int virtualRegister = it.next();
             MachineInstruction instruction = virtualRegisterToMachineInstructionMap.get(virtualRegister);
-            if (instruction.getInstruction().equals("phi")) {
-                continue;
-            }
             addRange(virtualRegister, instruction, block, numbering.getInstructionNumber(block.getInstructions().getLast()) + 1);
         }
         for (MachineInstruction instruction : block.getInstructions().reversed()) {
-            if (instruction.getInstruction().equals("phi")) {
-                continue;
-            }
             for (MachineOperandPair pair : instruction.getOperands()) {
                 switch (pair.kind()) {
                     case USE -> {
@@ -129,11 +123,8 @@ public class BuildIntervals {
     public void addRange(int virtualRegister, MachineInstruction i, MachineBasicBlock b, int end) {
         int ni = numbering.getInstructionNumber(i);
         int nbf = numbering.getInstructionNumber(b.getInstructions().getFirst());
-        int start = Math.max(ni, nbf);
-        if (start > end) {
-            System.err.println("Adding invalid range: " + start + " to " + end + " for virtual register " + virtualRegister);
-            return;
-        }
+        int nbl = numbering.getInstructionNumber(b.getInstructions().getLast());
+        int start = ni >= nbf && ni <= nbl ? ni : nbf;
         Register.Physical fixed = getFixedRegister(virtualRegister, i);
 
         // Add (start, end) to interval[i.n] merging adjacent ranges
