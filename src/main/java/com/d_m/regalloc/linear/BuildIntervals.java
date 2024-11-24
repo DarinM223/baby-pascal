@@ -178,18 +178,51 @@ public class BuildIntervals {
         MachineInstruction y = virtualRegisterToMachineInstructionMap.get(value2.registerNumber());
         Integer xNumber = numbering.getInstructionNumber(x.rep());
         Integer yNumber = numbering.getInstructionNumber(y.rep());
-        Interval xInterval = intervalMap.get(xNumber);
-        Interval yInterval = intervalMap.get(yNumber);
+        IntervalKey xKey = new IntervalKey(xNumber, value1.registerNumber());
+        IntervalKey yKey = new IntervalKey(yNumber, value2.registerNumber());
+        Interval xInterval = intervalMap.get(xKey);
+        Interval yInterval = intervalMap.get(yKey);
         Set<Range> i = new HashSet<>(xInterval == null ? List.of() : xInterval.getRanges());
         Set<Range> j = new HashSet<>(yInterval == null ? List.of() : yInterval.getRanges());
         Set<Range> intersection = new HashSet<>(i);
         intersection.retainAll(j);
-        if (yInterval != null && intersection.isEmpty() && compatible(value1, value2)) {
-            // TODO: instead of unioning the intervals, merge them
+        if (xInterval != null && yInterval != null && intersection.isEmpty() && compatible(value1, value2)) {
             i.addAll(j);
-            yInterval.setRanges(i.stream().sorted().toList());
-            intervalMap.remove(xNumber);
+            if (value1.constraint() instanceof RegisterConstraint.UsePhysical(_)) {
+                xInterval.setRanges(i.stream().sorted().toList());
+                renameRegistersRange(yInterval, value2, value1);
+                intervalMap.remove(yKey);
+            } else {
+                yInterval.setRanges(i.stream().sorted().toList());
+                renameRegistersRange(xInterval, value1, value2);
+                intervalMap.remove(xKey);
+            }
             x.setJoin(y.rep());
+        }
+    }
+
+    private void renameRegistersRange(Interval interval, Register.Virtual original, Register.Virtual replace) {
+        if (interval == null) {
+            return ;
+        }
+        for (Range range : interval.getRanges()) {
+            for (int i = range.getStart(); i <= range.getEnd(); i++) {
+                MachineInstruction instruction = numbering.getInstructionFromNumber(i);
+                renameRegistersInstruction(instruction, original, replace);
+            }
+        }
+    }
+
+    private void renameRegistersInstruction(MachineInstruction instruction, Register.Virtual original, Register.Virtual replace) {
+        if (instruction == null) {
+            return;
+        }
+        for (int i = 0; i < instruction.getOperands().size(); i++) {
+            MachineOperandPair pair = instruction.getOperands().get(i);
+            if (pair.operand() instanceof MachineOperand.Register(Register.Virtual v) && v.equals(original)) {
+                MachineOperandPair newPair = new MachineOperandPair(new MachineOperand.Register(replace), pair.kind());
+                instruction.getOperands().set(i, newPair);
+            }
         }
     }
 
@@ -203,18 +236,23 @@ public class BuildIntervals {
                         physical1.equals(physical2);
         MachineInstruction x = virtualRegisterToMachineInstructionMap.get(value1.registerNumber());
         MachineInstruction y = virtualRegisterToMachineInstructionMap.get(value2.registerNumber());
-        Interval xInterval = intervalMap.get(numbering.getInstructionNumber(x));
-        Interval yInterval = intervalMap.get(numbering.getInstructionNumber(y));
+        IntervalKey xKey = new IntervalKey(numbering.getInstructionNumber(x), value1.registerNumber());
+        IntervalKey yKey = new IntervalKey(numbering.getInstructionNumber(y), value2.registerNumber());
+        Interval xInterval = intervalMap.get(xKey);
+        Interval yInterval = intervalMap.get(yKey);
         boolean xSpecificRegisterNoOverlap =
                 value1.constraint() instanceof RegisterConstraint.UsePhysical(var physical) &&
-                        specificRegisterHasOverlap(physical, xInterval);
+                        !specificRegisterHasOverlap(physical, xInterval);
         boolean ySpecificRegisterNoOverlap =
                 value2.constraint() instanceof RegisterConstraint.UsePhysical(var physical) &&
-                        specificRegisterHasOverlap(physical, yInterval);
+                        !specificRegisterHasOverlap(physical, yInterval);
         return bothAreNotInSpecificRegisters || bothAreInSameSpecificRegister || xSpecificRegisterNoOverlap || ySpecificRegisterNoOverlap;
     }
 
     private boolean specificRegisterHasOverlap(Register.Physical physical, Interval noOverlap) {
+        if (noOverlap == null) {
+            return false;
+        }
         MachineOperand operand = new MachineOperand.Register(physical);
         for (Interval interval : intervalMap.values()) {
             if (interval.getReg() != null && interval.getReg().equals(operand)) {
