@@ -10,6 +10,7 @@ import com.d_m.dom.Examples;
 import com.d_m.gen.GeneratedAutomata;
 import com.d_m.gen.rules.DefaultAutomata;
 import com.d_m.pass.CriticalEdgeSplitting;
+import com.d_m.regalloc.common.CleanupAssembly;
 import com.d_m.select.Codegen;
 import com.d_m.select.instr.MachineBasicBlock;
 import com.d_m.select.instr.MachineFunction;
@@ -115,6 +116,7 @@ class LinearScanTest {
             LinearScan scan = new LinearScan(codegen.getFunctionLoweringInfo(), numbering);
             scan.scan(free, intervals);
             scan.rewriteIntervalsWithRegisters();
+            CleanupAssembly.removeRedundantMoves(machineFunction);
 
             machinePrinter.writeFunction(machineFunction);
         }
@@ -124,24 +126,20 @@ class LinearScanTest {
                     jmp [l1,USE]
                   }
                   block l1 [l0] {
-                    mov [1,USE], [%rsi,DEF]
-                    mov [1,USE], [%rbp,DEF]
-                    mov [0,USE], [%rsp,DEF]
-                    mov [%rsp,USE], [%rsp,DEF]
-                    mov [%rbp,USE], [%rbp,DEF]
+                    mov [1,USE], [%r15,DEF]
+                    mov [1,USE], [%r14,DEF]
+                    mov [0,USE], [%r13,DEF]
                     jmp [l2,USE]
                   }
                   block l2 [l1, l3] {
-                    phi [%rsp,USE], [%r8,USE], [%rsp,DEF]
-                    phi [%rbp,USE], [%rsi,USE], [%rbp,DEF]
-                    mov [%rbp,USE], [%rbp,DEF]
-                    mov [%rsp,USE], [%rsp,DEF]
-                    cmp [%rsp,USE], [100,USE]
+                    phi [%r13,USE], [%r9,USE], [%r13,DEF]
+                    phi [%r14,USE], [%r15,USE], [%r14,DEF]
+                    cmp [%r13,USE], [100,USE]
                     jl [l4,USE]
                     jmp [l5,USE]
                   }
                   block l4 [l2] {
-                    cmp [%rbp,USE], [20,USE]
+                    cmp [%r14,USE], [20,USE]
                     jl [l6,USE]
                     jmp [l7,USE]
                   }
@@ -149,12 +147,7 @@ class LinearScanTest {
                     jmp [l8,USE]
                   }
                   block l6 [l4] {
-                    mov [%rsp,USE], [%rsp,DEF]
-                    inc [%rsp,USE]
-                    mov [%rsi,USE], [%rsi,DEF]
-                    mov [%rsp,USE], [%rsp,DEF]
-                    mov [%rsi,USE], [%rsi,DEF]
-                    mov [%rsp,USE], [%rsp,DEF]
+                    inc [%r13,USE]
                     jmp [l3,USE]
                   }
                   block l7 [l4] {
@@ -164,21 +157,14 @@ class LinearScanTest {
                     jmp [l10,USE]
                   }
                   block l3 [l6, l9] {
-                    phi [%rsi,USE], [%rsp,USE], [%rsi,DEF]
-                    phi [%rsp,USE], [%rbp,USE], [%rsp,DEF]
-                    mov [%rsi,USE], [%rsi,DEF]
-                    mov [%rsp,USE], [%rsp,DEF]
-                    mov [%rsp,USE], [%r8,DEF]
-                    mov [%rsi,USE], [%rsi,DEF]
+                    phi [%r15,USE], [%r13,USE], [%r15,DEF]
+                    phi [%r13,USE], [%r14,USE], [%r13,DEF]
+                    mov [%r13,USE], [%r9,DEF]
                     jmp [l2,USE]
                   }
                   block l9 [l7] {
-                    mov [%rsp,USE], [%rsp,DEF]
-                    add [%rsp,USE], [2,USE]
-                    mov [%rsp,USE], [%rsp,DEF]
-                    mov [%rsp,USE], [%rsp,DEF]
-                    mov [%rsp,USE], [%rsp,DEF]
-                    mov [%rsp,USE], [%rbp,DEF]
+                    add [%r13,USE], [2,USE]
+                    mov [%r13,USE], [%r14,DEF]
                     jmp [l3,USE]
                   }
                   block l10 [l8] {
@@ -186,46 +172,38 @@ class LinearScanTest {
                 }
                 fibonacci {
                   block l11 [] {
-                    mov [%rdi,USE], [%rbp,DEF]
+                    mov [%rdi,USE], [%r15,DEF]
                     jmp [l12,USE]
                   }
                   block l12 [l11] {
-                    cmp [%rbp,USE], [1,USE]
+                    cmp [%r15,USE], [1,USE]
                     jle [l13,USE]
                     jmp [l14,USE]
                   }
                   block l13 [l12] {
-                    mov [%rbp,USE], [%rbp,DEF]
-                    mov [%rbp,USE], [%rbp,DEF]
                     jmp [l15,USE]
                   }
                   block l14 [l12] {
                     jmp [l16,USE]
                   }
                   block l15 [l13, l16] {
-                    phi [%rbp,USE], [%rsp,USE], [%rbp,DEF]
-                    mov [%rbp,USE], [%rbp,DEF]
+                    phi [%r15,USE], [%r14,USE], [%r15,DEF]
                     jmp [l17,USE]
                   }
                   block l16 [l14] {
-                    mov [%rbp,USE], [%rbp,DEF]
-                    dec [%rbp,USE]
-                    mov [%rbp,USE], [%rdi,DEF]
+                    dec [%r15,USE]
+                    mov [%r15,USE], [%rdi,DEF]
                     call [fibonacci,USE], [%rax,DEF], [%rcx,DEF], [%rdx,DEF], [%rsi,DEF], [%rdi,DEF], [%r8,DEF], [%r9,DEF], [%r10,DEF], [%r11,DEF]
-                    mov [%rax,USE], [%rsp,DEF]
-                    mov [%rbp,USE], [%rbp,DEF]
-                    sub [%rbp,USE], [2,USE]
-                    mov [%rbp,USE], [%rdi,DEF]
+                    mov [%rax,USE], [%r14,DEF]
+                    sub [%r15,USE], [2,USE]
+                    mov [%r15,USE], [%rdi,DEF]
                     call [fibonacci,USE], [%rax,DEF], [%rcx,DEF], [%rdx,DEF], [%rsi,DEF], [%rdi,DEF], [%r8,DEF], [%r9,DEF], [%r10,DEF], [%r11,DEF]
-                    mov [%rax,USE], [%rsi,DEF]
-                    mov [%rsp,USE], [%rsp,DEF]
-                    add [%rsp,USE], [%rsi,USE]
-                    mov [%rsp,USE], [%rsp,DEF]
-                    mov [%rsp,USE], [%rsp,DEF]
+                    mov [%rax,USE], [%r15,DEF]
+                    add [%r14,USE], [%r15,USE]
                     jmp [l15,USE]
                   }
                   block l17 [l15] {
-                    mov [%rbp,USE], [%rax,DEF]
+                    mov [%r15,USE], [%rax,DEF]
                   }
                 }
                 """;
