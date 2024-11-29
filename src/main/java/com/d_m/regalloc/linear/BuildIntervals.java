@@ -5,6 +5,7 @@ import com.d_m.select.reg.Register;
 import com.d_m.select.reg.RegisterConstraint;
 
 import java.util.*;
+import java.util.function.Function;
 
 public class BuildIntervals {
     private record IntervalKey(int instructionNumber, int virtualRegister) {
@@ -137,30 +138,39 @@ public class BuildIntervals {
     }
 
     public void joinIntervalsFunction(MachineFunction function) {
+        // First do phis first because they must be joined so that they can be eliminated.
+        // Moves don't have to be eliminated.
         for (MachineBasicBlock block : function.getBlocks()) {
-            joinIntervalsBlock(block);
+            joinIntervalsBlock(block, instruction -> instruction.getInstruction().equals("phi"));
+        }
+        for (MachineBasicBlock block : function.getBlocks()) {
+            joinIntervalsBlock(block, instruction -> instruction.getInstruction().equals("mov"));
         }
     }
 
-    public void joinIntervalsBlock(MachineBasicBlock block) {
+    public void joinIntervalsBlock(MachineBasicBlock block, Function<MachineInstruction, Boolean> instructionMatches) {
         for (MachineInstruction instruction : block.getInstructions()) {
-            if (instruction.getInstruction().equals("phi") || instruction.getInstruction().equals("mov")) {
-                Register.Virtual defRegister = null;
-                for (MachineOperandPair pair : instruction.getOperands()) {
-                    if (pair.kind() == MachineOperandKind.DEF &&
-                            pair.operand() instanceof MachineOperand.Register(Register.Virtual virtual)) {
-                        defRegister = virtual;
-                        break;
-                    }
-                }
-                Objects.requireNonNull(defRegister, "Definition register doesn't exist for instruction " + instruction);
+            if (instructionMatches.apply(instruction)) {
+                joinIntervalsInstruction(instruction);
+            }
+        }
+    }
 
-                for (MachineOperandPair pair : instruction.getOperands()) {
-                    if (pair.kind() == MachineOperandKind.USE &&
-                            pair.operand() instanceof MachineOperand.Register(Register.Virtual virtual)) {
-                        join(virtual, defRegister);
-                    }
-                }
+    private void joinIntervalsInstruction(MachineInstruction instruction) {
+        Register.Virtual defRegister = null;
+        for (MachineOperandPair pair : instruction.getOperands()) {
+            if (pair.kind() == MachineOperandKind.DEF &&
+                    pair.operand() instanceof MachineOperand.Register(Register.Virtual virtual)) {
+                defRegister = virtual;
+                break;
+            }
+        }
+        Objects.requireNonNull(defRegister, "Definition register doesn't exist for instruction " + instruction);
+
+        for (MachineOperandPair pair : instruction.getOperands()) {
+            if (pair.kind() == MachineOperandKind.USE &&
+                    pair.operand() instanceof MachineOperand.Register(Register.Virtual virtual)) {
+                join(virtual, defRegister);
             }
         }
     }
@@ -176,6 +186,8 @@ public class BuildIntervals {
     public void join(Register.Virtual value1, Register.Virtual value2) {
         MachineInstruction x = virtualRegisterToMachineInstructionMap.get(value1.registerNumber());
         MachineInstruction y = virtualRegisterToMachineInstructionMap.get(value2.registerNumber());
+        // TODO: this is a hack, remove this once we figure out why phis are not joining the second operand.
+        boolean isPhi = y.getInstruction().equals("phi");
         Integer xNumber = numbering.getInstructionNumber(x.rep());
         Integer yNumber = numbering.getInstructionNumber(y.rep());
         IntervalKey xKey = new IntervalKey(xNumber, value1.registerNumber());
@@ -186,7 +198,19 @@ public class BuildIntervals {
         Set<Range> j = new HashSet<>(yInterval == null ? List.of() : yInterval.getRanges());
         Set<Range> intersection = new HashSet<>(i);
         intersection.retainAll(j);
-        if (xInterval != null && yInterval != null && intersection.isEmpty() && compatible(value1, value2)) {
+        // TODO: for the second operand in a phi, the intersection is not empty after joining the first one.
+        // def: vreg11
+        //
+        // join: vreg49 with vreg11
+        // join: vreg50 with vreg11
+        //
+        // vreg49: (3, 4) (4, 7) (7, 7)
+        // vreg50: (7, 7) (38, 41)
+        //
+        // instruction 7: 11 <- phi(49, 50)
+        //
+        // vreg11: (7, 11)
+        if (xInterval != null && yInterval != null && (intersection.isEmpty() || isPhi) && compatible(value1, value2)) {
             i.addAll(j);
             if (value1.constraint() instanceof RegisterConstraint.UsePhysical(_)) {
                 xInterval.setRanges(i.stream().sorted().toList());
@@ -203,7 +227,7 @@ public class BuildIntervals {
 
     private void renameRegistersRange(Interval interval, Register.Virtual original, Register.Virtual replace) {
         if (interval == null) {
-            return ;
+            return;
         }
         for (Range range : interval.getRanges()) {
             for (int i = range.getStart(); i <= range.getEnd(); i++) {

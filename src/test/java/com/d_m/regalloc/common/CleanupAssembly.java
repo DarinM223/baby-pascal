@@ -11,7 +11,7 @@ public class CleanupAssembly {
             var it = block.getInstructions().iterator();
             while (it.hasNext()) {
                 MachineInstruction instruction = it.next();
-                if (instruction.getInstruction().equals("mov")) {
+                if (instruction.getInstruction().equals("mov") || instruction.getInstruction().equals("phi")) {
                     var operandIt = instruction.getOperands().iterator();
                     MachineOperand operand1 = operandIt.next().operand();
                     boolean allEqual = true;
