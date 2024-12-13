@@ -5,6 +5,24 @@ import com.d_m.ast.*;
 import java.util.List;
 
 public class Examples {
+    /**
+     * Figure 19.4 from Andrew Appel's Modern Compiler Implementation in ML.
+     * <pre>
+     * {@code
+     * i <- 1
+     * j <- 1
+     * k <- 0
+     * while k < 100:
+     *   if j < 20:
+     *     j <- i
+     *     k <- k + 1
+     *   else:
+     *     j <- k
+     *     k <- k + 2
+     * }
+     * </pre>
+     * @return
+     */
     public static List<Statement> figure_19_4() {
         return List.of(
                 new AssignStatement("i", new IntExpression(1)),

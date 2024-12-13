@@ -3,6 +3,9 @@ package com.d_m.regalloc.linear;
 import java.util.Comparator;
 import java.util.Objects;
 
+/**
+ * A range that is closed on the left side and open on the right side like [start, end).
+ */
 public class Range implements Comparable<Range> {
     private int start;
     private int end;
@@ -33,7 +36,7 @@ public class Range implements Comparable<Range> {
     }
 
     public boolean overlaps(Range j) {
-        return Integer.max(start, j.start) <= Integer.min(end, j.end);
+        return Integer.max(start, j.start) < Integer.min(end, j.end);
     }
 
     @Override

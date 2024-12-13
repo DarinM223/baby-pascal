@@ -30,8 +30,9 @@ public class Interval implements Comparable<Interval> {
         boolean merged = false;
         if (!fixed) {
             for (Range range : ranges) {
-                if (newRange.getStart() == range.getEnd() + 1) {
-                    range.setEnd(newRange.getEnd());
+                if (newRange.getStart() == range.getEnd() || range.getStart() == newRange.getEnd()) {
+                    range.setStart(Integer.min(newRange.getStart(), range.getStart()));
+                    range.setEnd(Integer.max(newRange.getEnd(), range.getEnd()));
                     merged = true;
                     break;
                 }

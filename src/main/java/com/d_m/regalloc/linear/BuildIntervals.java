@@ -141,22 +141,22 @@ public class BuildIntervals {
         // First do phis first because they must be joined so that they can be eliminated.
         // Moves don't have to be eliminated.
         for (MachineBasicBlock block : function.getBlocks()) {
-            joinIntervalsBlock(block, instruction -> instruction.getInstruction().equals("phi"));
+            joinIntervalsBlock(block, instruction -> instruction.getInstruction().equals("phi"), true);
         }
         for (MachineBasicBlock block : function.getBlocks()) {
-            joinIntervalsBlock(block, instruction -> instruction.getInstruction().equals("mov"));
+            joinIntervalsBlock(block, instruction -> instruction.getInstruction().equals("mov"), false);
         }
     }
 
-    public void joinIntervalsBlock(MachineBasicBlock block, Function<MachineInstruction, Boolean> instructionMatches) {
+    public void joinIntervalsBlock(MachineBasicBlock block, Function<MachineInstruction, Boolean> instructionMatches, boolean isPhi) {
         for (MachineInstruction instruction : block.getInstructions()) {
             if (instructionMatches.apply(instruction)) {
-                joinIntervalsInstruction(instruction);
+                joinIntervalsInstruction(instruction, isPhi);
             }
         }
     }
 
-    private void joinIntervalsInstruction(MachineInstruction instruction) {
+    private void joinIntervalsInstruction(MachineInstruction instruction, boolean isPhi) {
         Register.Virtual defRegister = null;
         for (MachineOperandPair pair : instruction.getOperands()) {
             if (pair.kind() == MachineOperandKind.DEF &&
@@ -170,7 +170,7 @@ public class BuildIntervals {
         for (MachineOperandPair pair : instruction.getOperands()) {
             if (pair.kind() == MachineOperandKind.USE &&
                     pair.operand() instanceof MachineOperand.Register(Register.Virtual virtual)) {
-                join(virtual, defRegister);
+                join(virtual, defRegister, isPhi);
             }
         }
     }
@@ -183,11 +183,9 @@ public class BuildIntervals {
      * @param value1
      * @param value2
      */
-    public void join(Register.Virtual value1, Register.Virtual value2) {
+    public void join(Register.Virtual value1, Register.Virtual value2, boolean isPhi) {
         MachineInstruction x = virtualRegisterToMachineInstructionMap.get(value1.registerNumber());
         MachineInstruction y = virtualRegisterToMachineInstructionMap.get(value2.registerNumber());
-        // TODO: this is a hack, remove this once we figure out why phis are not joining the second operand.
-        boolean isPhi = y.getInstruction().equals("phi");
         Integer xNumber = numbering.getInstructionNumber(x.rep());
         Integer yNumber = numbering.getInstructionNumber(y.rep());
         IntervalKey xKey = new IntervalKey(xNumber, value1.registerNumber());
@@ -196,8 +194,6 @@ public class BuildIntervals {
         Interval yInterval = intervalMap.get(yKey);
         Set<Range> i = new HashSet<>(xInterval == null ? List.of() : xInterval.getRanges());
         Set<Range> j = new HashSet<>(yInterval == null ? List.of() : yInterval.getRanges());
-        Set<Range> intersection = new HashSet<>(i);
-        intersection.retainAll(j);
         // TODO: for the second operand in a phi, the intersection is not empty after joining the first one.
         // def: vreg11
         //
@@ -210,17 +206,14 @@ public class BuildIntervals {
         // instruction 7: 11 <- phi(49, 50)
         //
         // vreg11: (7, 11)
-        if (xInterval != null && yInterval != null && (intersection.isEmpty() || isPhi) && compatible(value1, value2)) {
+        if (xInterval != null && yInterval != null && (isPhi || (!xInterval.overlaps(yInterval) && compatible(value1, value2)))) {
             i.addAll(j);
-            if (value1.constraint() instanceof RegisterConstraint.UsePhysical(_)) {
-                xInterval.setRanges(i.stream().sorted().toList());
-                renameRegistersRange(yInterval, value2, value1);
-                intervalMap.remove(yKey);
-            } else {
-                yInterval.setRanges(i.stream().sorted().toList());
-                renameRegistersRange(xInterval, value1, value2);
-                intervalMap.remove(xKey);
+            yInterval.getRanges().clear();
+            for (Range range : i) {
+                yInterval.addRange(range);
             }
+            renameRegistersRange(xInterval, value1, value2);
+            intervalMap.remove(xKey);
             x.setJoin(y.rep());
         }
     }

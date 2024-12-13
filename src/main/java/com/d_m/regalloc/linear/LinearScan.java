@@ -175,7 +175,6 @@ public class LinearScan {
                     if (pair.operand() instanceof MachineOperand.Register(Register.Virtual(int n, _, _)) &&
                             n == interval.getVirtualReg()) {
                         instruction.getOperands().set(j, new MachineOperandPair(registerOperand, pair.kind()));
-                        break;
                     }
                 }
             }

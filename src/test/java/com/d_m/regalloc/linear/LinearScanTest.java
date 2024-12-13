@@ -116,7 +116,7 @@ class LinearScanTest {
             LinearScan scan = new LinearScan(codegen.getFunctionLoweringInfo(), numbering);
             scan.scan(free, intervals);
             scan.rewriteIntervalsWithRegisters();
-            CleanupAssembly.removeRedundantMoves(machineFunction);
+//            CleanupAssembly.removeRedundantMoves(machineFunction);
 
             machinePrinter.writeFunction(machineFunction);
         }
