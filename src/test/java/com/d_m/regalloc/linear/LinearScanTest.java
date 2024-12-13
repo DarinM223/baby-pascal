@@ -116,7 +116,7 @@ class LinearScanTest {
             LinearScan scan = new LinearScan(codegen.getFunctionLoweringInfo(), numbering);
             scan.scan(free, intervals);
             scan.rewriteIntervalsWithRegisters();
-//            CleanupAssembly.removeRedundantMoves(machineFunction);
+            CleanupAssembly.removeRedundantMoves(machineFunction);
 
             machinePrinter.writeFunction(machineFunction);
         }
@@ -132,8 +132,7 @@ class LinearScanTest {
                     jmp [l2,USE]
                   }
                   block l2 [l1, l3] {
-                    phi [%r13,USE], [%r9,USE], [%r13,DEF]
-                    phi [%r14,USE], [%r15,USE], [%r14,DEF]
+                    mov [%r13,USE], [%r11,DEF]
                     cmp [%r13,USE], [100,USE]
                     jl [l4,USE]
                     jmp [l5,USE]
@@ -147,7 +146,8 @@ class LinearScanTest {
                     jmp [l8,USE]
                   }
                   block l6 [l4] {
-                    inc [%r13,USE]
+                    inc [%r11,USE]
+                    mov [%r15,USE], [%r14,DEF]
                     jmp [l3,USE]
                   }
                   block l7 [l4] {
@@ -157,14 +157,14 @@ class LinearScanTest {
                     jmp [l10,USE]
                   }
                   block l3 [l6, l9] {
-                    phi [%r15,USE], [%r13,USE], [%r15,DEF]
-                    phi [%r13,USE], [%r14,USE], [%r13,DEF]
-                    mov [%r13,USE], [%r9,DEF]
+                    mov [%r11,USE], [%r13,DEF]
                     jmp [l2,USE]
                   }
                   block l9 [l7] {
+                    mov [%r11,USE], [%r13,DEF]
                     add [%r13,USE], [2,USE]
-                    mov [%r13,USE], [%r14,DEF]
+                    mov [%r11,USE], [%r14,DEF]
+                    mov [%r13,USE], [%r11,DEF]
                     jmp [l3,USE]
                   }
                   block l10 [l8] {
@@ -187,19 +187,18 @@ class LinearScanTest {
                     jmp [l16,USE]
                   }
                   block l15 [l13, l16] {
-                    phi [%r15,USE], [%r14,USE], [%r15,DEF]
                     jmp [l17,USE]
                   }
                   block l16 [l14] {
-                    dec [%r15,USE]
                     mov [%r15,USE], [%rdi,DEF]
+                    dec [%rdi,USE]
                     call [fibonacci,USE], [%rax,DEF], [%rcx,DEF], [%rdx,DEF], [%rsi,DEF], [%rdi,DEF], [%r8,DEF], [%r9,DEF], [%r10,DEF], [%r11,DEF]
                     mov [%rax,USE], [%r14,DEF]
                     sub [%r15,USE], [2,USE]
                     mov [%r15,USE], [%rdi,DEF]
                     call [fibonacci,USE], [%rax,DEF], [%rcx,DEF], [%rdx,DEF], [%rsi,DEF], [%rdi,DEF], [%r8,DEF], [%r9,DEF], [%r10,DEF], [%r11,DEF]
-                    mov [%rax,USE], [%r15,DEF]
-                    add [%r14,USE], [%r15,USE]
+                    add [%r14,USE], [%rax,USE]
+                    mov [%r14,USE], [%r15,DEF]
                     jmp [l15,USE]
                   }
                   block l17 [l15] {

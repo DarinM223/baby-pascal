@@ -4,15 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Attempt debugging why phi intervals are not being joined properly">
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/IntervalTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/RangeTest.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fix range overlap checking and register rewriting">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/Interval.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/Interval.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/Range.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/Range.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/Examples.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/Examples.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -260,14 +254,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00173" summary="Deletes old selection dag types and moves register class types into regclass package">
-      <option name="closed" value="true" />
-      <created>1723997361852</created>
-      <option name="number" value="00173" />
-      <option name="presentableId" value="LOCAL-00173" />
-      <option name="project" value="LOCAL" />
-      <updated>1723997361852</updated>
     </task>
     <task id="LOCAL-00174" summary="Add projection syntax to rules and allow tiles to have multiple outputs">
       <option name="closed" value="true" />
@@ -653,14 +639,21 @@
       <option name="project" value="LOCAL" />
       <updated>1732858591238</updated>
     </task>
-    <option name="localTasksCounter" value="222" />
+    <task id="LOCAL-00222" summary="Fix range overlap checking and register rewriting">
+      <option name="closed" value="true" />
+      <created>1734098831742</created>
+      <option name="number" value="00222" />
+      <option name="presentableId" value="LOCAL-00222" />
+      <option name="project" value="LOCAL" />
+      <updated>1734098831742</updated>
+    </task>
+    <option name="localTasksCounter" value="223" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Start linear scan" />
     <MESSAGE value="More progress on finding live intervals and linear scan" />
     <MESSAGE value="Intervals track the original virtual register and linear scan modifies the interval's instruction operands" />
     <MESSAGE value="Start failing linear scan unit test" />
@@ -685,7 +678,8 @@
     <MESSAGE value="Fix some bugs in joining intervals and handle case where mov operand has a physical register constraint" />
     <MESSAGE value="Cleanup redundant moves" />
     <MESSAGE value="Attempt debugging why phi intervals are not being joined properly" />
-    <option name="LAST_COMMIT_MESSAGE" value="Attempt debugging why phi intervals are not being joined properly" />
+    <MESSAGE value="Fix range overlap checking and register rewriting" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix range overlap checking and register rewriting" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -728,41 +722,15 @@
           <option name="timeStamp" value="131" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <condition expression="virtualRegister == 50 || virtualRegister == 52" language="JAVA" />
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java</url>
-          <line>132</line>
-          <properties>
-            <option name="lambda-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="135" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java</url>
           <line>107</line>
           <option name="timeStamp" value="141" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java</url>
-          <line>265</line>
-          <option name="timeStamp" value="145" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <condition expression="isPhi" language="JAVA" />
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java</url>
-          <line>209</line>
-          <option name="timeStamp" value="148" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <condition expression="isPhi" language="JAVA" />
+          <condition expression="value1.registerNumber == 18 || value2.registerNumber == 18 || value2.registerNumber == 35" language="JAVA" />
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java</url>
           <line>208</line>
-          <option name="timeStamp" value="149" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <condition expression="instruction.getInstruction().equals(&quot;phi&quot;)" language="JAVA" />
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java</url>
-          <line>171</line>
-          <option name="timeStamp" value="152" />
+          <option name="timeStamp" value="157" />
         </line-breakpoint>
         <breakpoint type="java-exception">
           <properties class="java.lang.NullPointerException" package="java.lang">
