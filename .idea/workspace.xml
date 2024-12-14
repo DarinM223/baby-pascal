@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fix fixed ranges to be [n, n+1) instead of [n, n)">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="FunctionLoweringInfo is per function to allow for proper calculation of stack slots">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/Register.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/Register.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/deconstruct/InsertParallelMovesTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/deconstruct/InsertParallelMovesTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -256,14 +256,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00175" summary="Rework registers and register constraints and modify instructions to take in operand pairs (with use/def) instead of operands">
-      <option name="closed" value="true" />
-      <created>1724507966485</created>
-      <option name="number" value="00175" />
-      <option name="presentableId" value="LOCAL-00175" />
-      <option name="project" value="LOCAL" />
-      <updated>1724507966486</updated>
     </task>
     <task id="LOCAL-00176" summary="Better pretty printing of machine instructions">
       <option name="closed" value="true" />
@@ -649,14 +641,21 @@
       <option name="project" value="LOCAL" />
       <updated>1734105136183</updated>
     </task>
-    <option name="localTasksCounter" value="224" />
+    <task id="LOCAL-00224" summary="FunctionLoweringInfo is per function to allow for proper calculation of stack slots">
+      <option name="closed" value="true" />
+      <created>1734197672106</created>
+      <option name="number" value="00224" />
+      <option name="presentableId" value="LOCAL-00224" />
+      <option name="project" value="LOCAL" />
+      <updated>1734197672106</updated>
+    </task>
+    <option name="localTasksCounter" value="225" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Intervals track the original virtual register and linear scan modifies the interval's instruction operands" />
     <MESSAGE value="Start failing linear scan unit test" />
     <MESSAGE value="Update README.md" />
     <MESSAGE value="Debugging issues with nonexisting virtual registers in generated code which can be traced to the DAG splitting code" />
@@ -681,7 +680,8 @@
     <MESSAGE value="Attempt debugging why phi intervals are not being joined properly" />
     <MESSAGE value="Fix range overlap checking and register rewriting" />
     <MESSAGE value="Fix fixed ranges to be [n, n+1) instead of [n, n)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix fixed ranges to be [n, n+1) instead of [n, n)" />
+    <MESSAGE value="FunctionLoweringInfo is per function to allow for proper calculation of stack slots" />
+    <option name="LAST_COMMIT_MESSAGE" value="FunctionLoweringInfo is per function to allow for proper calculation of stack slots" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

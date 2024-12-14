@@ -69,7 +69,7 @@ public class LinearScan {
             }
 
             // Collect available registers in f:
-            Set<Register.Physical> f = new HashSet<>(free);
+            SortedSet<Register.Physical> f = new TreeSet<>(free);
             for (Interval interval : inactive) {
                 if (interval.overlaps(current) &&
                         interval.getReg() instanceof MachineOperand.Register(Register.Physical physical)) {
@@ -87,7 +87,7 @@ public class LinearScan {
             // Select a register from f:
             if (!f.isEmpty()) {
                 if (!(current.getReg() instanceof MachineOperand.Register(Register.Physical _))) {
-                    Register.Physical taken = f.stream().findAny().get();
+                    Register.Physical taken = f.stream().findFirst().get();
                     current.setReg(new MachineOperand.Register(taken));
                     free.remove(taken);
                 }
