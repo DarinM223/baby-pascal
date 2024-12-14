@@ -179,44 +179,44 @@ class CodegenTest {
                 }
                 fibonacci {
                   block l11 [] {
-                    parmov [%17rdi,USE], [%18any,DEF]
+                    parmov [%0rdi,USE], [%1any,DEF]
                     jmp [l12,USE]
                   }
                   block l12 [l11] {
-                    cmp [%18any,USE], [1,USE]
+                    cmp [%1any,USE], [1,USE]
                     jle [l13,USE]
                     jmp [l14,USE]
                   }
                   block l13 [l12] {
-                    mov [%18any,USE], [%19any,DEF]
+                    mov [%1any,USE], [%2any,DEF]
                     jmp [l15,USE]
                   }
                   block l14 [l12] {
                     jmp [l16,USE]
                   }
                   block l15 [l13, l16] {
-                    phi [%19any,USE], [%21any,USE], [%22any,DEF]
-                    mov [%22any,USE], [%20any,DEF]
+                    phi [%2any,USE], [%4any,USE], [%5any,DEF]
+                    mov [%5any,USE], [%3any,DEF]
                     jmp [l17,USE]
                   }
                   block l16 [l14] {
-                    mov [%18any,USE], [%23any,DEF]
-                    dec [%23any,USE]
-                    mov [%23any,USE], [%24rdi,DEF]
-                    call [fibonacci,USE], [%25rax,DEF], [%26rcx,DEF], [%27rdx,DEF], [%28rsi,DEF], [%29rdi,DEF], [%30r8,DEF], [%31r9,DEF], [%32r10,DEF], [%33r11,DEF]
-                    mov [%25rax,USE], [%34any,DEF]
-                    mov [%18any,USE], [%35any,DEF]
-                    sub [%35any,USE], [2,USE]
-                    mov [%35any,USE], [%36rdi,DEF]
-                    call [fibonacci,USE], [%37rax,DEF], [%38rcx,DEF], [%39rdx,DEF], [%40rsi,DEF], [%41rdi,DEF], [%42r8,DEF], [%43r9,DEF], [%44r10,DEF], [%45r11,DEF]
-                    mov [%37rax,USE], [%46any,DEF]
-                    mov [%34any,USE], [%47any,DEF]
-                    add [%47any,USE], [%46any,USE]
-                    mov [%47any,USE], [%21any,DEF]
+                    mov [%1any,USE], [%6any,DEF]
+                    dec [%6any,USE]
+                    mov [%6any,USE], [%7rdi,DEF]
+                    call [fibonacci,USE], [%8rax,DEF], [%9rcx,DEF], [%10rdx,DEF], [%11rsi,DEF], [%12rdi,DEF], [%13r8,DEF], [%14r9,DEF], [%15r10,DEF], [%16r11,DEF]
+                    mov [%8rax,USE], [%17any,DEF]
+                    mov [%1any,USE], [%18any,DEF]
+                    sub [%18any,USE], [2,USE]
+                    mov [%18any,USE], [%19rdi,DEF]
+                    call [fibonacci,USE], [%20rax,DEF], [%21rcx,DEF], [%22rdx,DEF], [%23rsi,DEF], [%24rdi,DEF], [%25r8,DEF], [%26r9,DEF], [%27r10,DEF], [%28r11,DEF]
+                    mov [%20rax,USE], [%29any,DEF]
+                    mov [%17any,USE], [%30any,DEF]
+                    add [%30any,USE], [%29any,USE]
+                    mov [%30any,USE], [%4any,DEF]
                     jmp [l15,USE]
                   }
                   block l17 [l15] {
-                    mov [%20any,USE], [%48rax,DEF]
+                    mov [%3any,USE], [%31rax,DEF]
                   }
                 }
                 """;

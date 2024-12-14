@@ -91,7 +91,7 @@ class InsertParallelMovesTest {
         MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(isa, writer);
         for (Function function : module.getFunctionList()) {
             MachineFunction machineFunction = codegen.getFunction(function);
-            new InsertParallelMoves(codegen.getFunctionLoweringInfo()).runFunction(machineFunction);
+            new InsertParallelMoves(codegen.getFunctionLoweringInfo(function)).runFunction(machineFunction);
             machinePrinter.writeFunction(machineFunction);
         }
 

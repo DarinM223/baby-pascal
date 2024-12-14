@@ -25,23 +25,30 @@ public class Codegen {
     // handled wrt duplication or sharing with the dag selection.
     // After this, the SSA graph should be split per block. Now we can do DAG instruction
     // selection without issues with cross-block sharing.
+    private final ISA isa;
     private final GeneratedAutomata automata;
-    private final FunctionLoweringInfo functionLoweringInfo;
+    private final Map<Function, FunctionLoweringInfo> functionLoweringInfoMap;
     private final Map<Function, MachineFunction> functionMap;
     private final Map<Block, MachineBasicBlock> blockMap;
     private final Map<Block, SSADAG> blockDagMap;
 
     public Codegen(ISA isa, GeneratedAutomata automata) {
+        this.isa = isa;
         this.automata = automata;
-        this.functionLoweringInfo = new FunctionLoweringInfo(isa);
+        this.functionLoweringInfoMap = new HashMap<>();
         this.functionMap = new HashMap<>();
         this.blockMap = new HashMap<>();
         this.blockDagMap = new HashMap<>();
     }
 
+    public ISA getISA() {
+        return isa;
+    }
+
     public void startFunction(Function function) {
         MachineFunction machineFunction = new MachineFunction(function.getName());
         functionMap.put(function, machineFunction);
+        functionLoweringInfoMap.put(function, new FunctionLoweringInfo(isa));
     }
 
     public Map<Block, Set<DAGTile>> matchTilesInBlocks(Function function) {
@@ -54,13 +61,15 @@ public class Codegen {
     }
 
     public void emitFunction(Function function, Map<Block, Set<DAGTile>> blockTilesMap) {
+        FunctionLoweringInfo info = functionLoweringInfoMap.get(function);
         for (Block block : function.getBlocks()) {
-            emitBlock(block, blockTilesMap.get(block));
+            emitBlock(info, block, blockTilesMap.get(block));
         }
     }
 
     private void populateBlockDagMap(Function function) {
         MachineFunction machineFunction = functionMap.get(function);
+        FunctionLoweringInfo functionLoweringInfo = functionLoweringInfoMap.get(function);
         blockMap.clear();
         blockDagMap.clear();
         MachineInstruction functionEntryMove = new MachineInstruction("parmov", new ArrayList<>());
@@ -128,7 +137,7 @@ public class Codegen {
         return dagSelection.matchedTiles();
     }
 
-    private void emitBlock(Block block, Set<DAGTile> matched) {
+    private void emitBlock(FunctionLoweringInfo info, Block block, Set<DAGTile> matched) {
         // Convert tiles from Set<DAGTile> to Map<Value, DAGTile> for mapping from tile root to tile.
         Map<Value, DAGTile> tileMapping = new HashMap<>(matched.size());
         Map<Value, MachineOperand[]> emitResultMapping = new HashMap<>();
@@ -145,7 +154,7 @@ public class Codegen {
         // with the machine operand result. if a node's result has already been computed,
         // skip it.
         for (DAGTile tile : matched) {
-            bottomUpEmit(machineBlock, tileMapping, emitResultMapping, terminator, tile);
+            bottomUpEmit(info, machineBlock, tileMapping, emitResultMapping, terminator, tile);
         }
         machineBlock.setTerminator();
         machineBlock.getInstructions().addAll(terminator);
@@ -155,11 +164,12 @@ public class Codegen {
         return functionMap.get(function);
     }
 
-    public FunctionLoweringInfo getFunctionLoweringInfo() {
-        return functionLoweringInfo;
+    public FunctionLoweringInfo getFunctionLoweringInfo(Function function) {
+        return functionLoweringInfoMap.get(function);
     }
 
-    private MachineOperand[] bottomUpEmit(MachineBasicBlock block,
+    private MachineOperand[] bottomUpEmit(FunctionLoweringInfo info,
+                                          MachineBasicBlock block,
                                           Map<Value, DAGTile> tileMapping,
                                           Map<Value, MachineOperand[]> emitResultMapping,
                                           List<MachineInstruction> terminator,
@@ -177,17 +187,17 @@ public class Codegen {
             args.add(arg);
         } else if (tile.root() instanceof Instruction instruction &&
                 (instruction.getOperator() == Operator.COPYTOREG || instruction.getOperator() == Operator.COPYFROMREG) &&
-                functionLoweringInfo.getRegister(tile.root()) instanceof Register register) {
+                info.getRegister(tile.root()) instanceof Register register) {
             MachineOperand[] arg = {new MachineOperand.Register(register)};
             args.add(arg);
         }
         for (Value edgeNode : tile.edgeNodes()) {
             DAGTile edgeTile = tileMapping.get(edgeNode);
-            MachineOperand[] arg = bottomUpEmit(block, tileMapping, emitResultMapping, terminator, edgeTile);
+            MachineOperand[] arg = bottomUpEmit(info, block, tileMapping, emitResultMapping, terminator, edgeTile);
             args.add(arg);
         }
 
-        MachineOperand[] result = tile.emit(functionLoweringInfo, block, args, terminator);
+        MachineOperand[] result = tile.emit(info, block, args, terminator);
         emitResultMapping.put(tile.root(), result);
         return result;
     }

@@ -12,6 +12,7 @@ import com.d_m.gen.rules.DefaultAutomata;
 import com.d_m.pass.CriticalEdgeSplitting;
 import com.d_m.regalloc.common.CleanupAssembly;
 import com.d_m.select.Codegen;
+import com.d_m.select.FunctionLoweringInfo;
 import com.d_m.select.instr.MachineBasicBlock;
 import com.d_m.select.instr.MachineFunction;
 import com.d_m.select.instr.MachinePrettyPrinter;
@@ -90,16 +91,17 @@ class LinearScanTest {
             var blockTilesMap = codegen.matchTilesInBlocks(function);
             codegen.emitFunction(function, blockTilesMap);
         }
-        Register.Physical temp = codegen.getFunctionLoweringInfo().isa.physicalFromRegisterName("r10");
+        Register.Physical temp = codegen.getISA().physicalFromRegisterName("r10");
 
         StringWriter writer = new StringWriter();
         MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(isa, writer);
         for (Function function : module.getFunctionList()) {
             MachineFunction machineFunction = codegen.getFunction(function);
+            FunctionLoweringInfo info = codegen.getFunctionLoweringInfo(function);
             machineFunction.runLiveness();
-            new InsertParallelMoves(codegen.getFunctionLoweringInfo()).runFunction(machineFunction);
+            new InsertParallelMoves(info).runFunction(machineFunction);
             for (MachineBasicBlock block : machineFunction.getBlocks()) {
-                SequentializeParallelMoves.sequentializeBlock(codegen.getFunctionLoweringInfo(), temp, block);
+                SequentializeParallelMoves.sequentializeBlock(info, temp, block);
             }
             InstructionNumbering numbering = new InstructionNumbering();
             numbering.numberInstructions(machineFunction);
@@ -108,12 +110,12 @@ class LinearScanTest {
             buildIntervals.joinIntervalsFunction(machineFunction);
             List<Interval> intervals = buildIntervals.getIntervals();
             Set<Register.Physical> free = new HashSet<>();
-            for (Register.Physical reg : codegen.getFunctionLoweringInfo().isa.allIntegerRegs()) {
+            for (Register.Physical reg : codegen.getISA().allIntegerRegs()) {
                 if (!reg.equals(temp)) {
                     free.add(reg);
                 }
             }
-            LinearScan scan = new LinearScan(codegen.getFunctionLoweringInfo(), numbering);
+            LinearScan scan = new LinearScan(info, numbering);
             scan.scan(free, intervals);
             scan.rewriteIntervalsWithRegisters();
             CleanupAssembly.removeRedundantMoves(machineFunction);
