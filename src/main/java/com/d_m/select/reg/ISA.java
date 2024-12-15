@@ -4,6 +4,7 @@ public interface ISA {
     Iterable<Register.Physical> allIntegerRegs();
     RegisterConstraint functionCallingConvention(RegisterClass registerClass, int param);
     Register.Physical physicalFromRegisterName(String registerName);
+    String physicalToRegisterName(Register.Physical register);
     RegisterConstraint constraintFromRegisterName(String registerName);
     String pretty(Register register);
     boolean isBranch(String opName);

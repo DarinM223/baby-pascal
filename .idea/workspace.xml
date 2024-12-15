@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Linear scan chooses registers deterministically so that unit tests can pass easier">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/asm/AssemblyWriter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/asm/IdMap.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start assembly writer">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/asm/AssemblyWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/asm/AssemblyWriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/ISA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/ISA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/X86_64_ISA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/X86_64_ISA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -255,14 +256,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00177" summary="Rename regclass package to reg">
-      <option name="closed" value="true" />
-      <created>1724597913545</created>
-      <option name="number" value="00177" />
-      <option name="presentableId" value="LOCAL-00177" />
-      <option name="project" value="LOCAL" />
-      <updated>1724597913545</updated>
     </task>
     <task id="LOCAL-00178" summary="Terminator instructions go to the end of a block in instruction selection">
       <option name="closed" value="true" />
@@ -648,14 +641,21 @@
       <option name="project" value="LOCAL" />
       <updated>1734198503482</updated>
     </task>
-    <option name="localTasksCounter" value="226" />
+    <task id="LOCAL-00226" summary="Start assembly writer">
+      <option name="closed" value="true" />
+      <created>1734277262563</created>
+      <option name="number" value="00226" />
+      <option name="presentableId" value="LOCAL-00226" />
+      <option name="project" value="LOCAL" />
+      <updated>1734277262563</updated>
+    </task>
+    <option name="localTasksCounter" value="227" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Update README.md" />
     <MESSAGE value="Debugging issues with nonexisting virtual registers in generated code which can be traced to the DAG splitting code" />
     <MESSAGE value="Adds type to Quad and passes side effect token types into SSA values" />
     <MESSAGE value="Splits SSADAG initialization into three steps to prevent some issues with side effect rewriting" />
@@ -680,7 +680,8 @@
     <MESSAGE value="Fix fixed ranges to be [n, n+1) instead of [n, n)" />
     <MESSAGE value="FunctionLoweringInfo is per function to allow for proper calculation of stack slots" />
     <MESSAGE value="Linear scan chooses registers deterministically so that unit tests can pass easier" />
-    <option name="LAST_COMMIT_MESSAGE" value="Linear scan chooses registers deterministically so that unit tests can pass easier" />
+    <MESSAGE value="Start assembly writer" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start assembly writer" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -698,7 +699,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java</url>
-          <line>105</line>
+          <line>109</line>
           <option name="timeStamp" value="98" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -719,12 +720,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java</url>
-          <line>111</line>
+          <line>115</line>
           <option name="timeStamp" value="131" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java</url>
-          <line>109</line>
+          <line>113</line>
           <option name="timeStamp" value="141" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">

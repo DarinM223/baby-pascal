@@ -2,6 +2,7 @@ package com.d_m.select.reg;
 
 import com.google.common.collect.ImmutableMap;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -90,6 +91,16 @@ public class X86_64_ISA implements ISA {
             .put("r15", r15())
             .build();
 
+    public static final Map<Register.Physical, String> REVERSE_INT_REGISTER_MAPPING;
+
+    static {
+        Map<Register.Physical, String> inverse = new HashMap<>(INT_REGISTER_MAPPING.size());
+        for (var entry : INT_REGISTER_MAPPING.entrySet()) {
+            inverse.put(entry.getValue(), entry.getKey());
+        }
+        REVERSE_INT_REGISTER_MAPPING = inverse;
+    }
+
     @Override
     public Iterable<Register.Physical> allIntegerRegs() {
         return INT_REGISTER_MAPPING.values();
@@ -106,6 +117,11 @@ public class X86_64_ISA implements ISA {
     @Override
     public Register.Physical physicalFromRegisterName(String registerName) {
         return INT_REGISTER_MAPPING.get(registerName);
+    }
+
+    @Override
+    public String physicalToRegisterName(Register.Physical register) {
+        return REVERSE_INT_REGISTER_MAPPING.get(register);
     }
 
     public RegisterConstraint functionIntegerCallingConvention(int param) {

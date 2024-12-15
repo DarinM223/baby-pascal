@@ -10,6 +10,8 @@ import com.d_m.dom.Examples;
 import com.d_m.gen.GeneratedAutomata;
 import com.d_m.gen.rules.DefaultAutomata;
 import com.d_m.pass.CriticalEdgeSplitting;
+import com.d_m.regalloc.asm.AssemblyWriter;
+import com.d_m.regalloc.asm.IdMap;
 import com.d_m.regalloc.common.CleanupAssembly;
 import com.d_m.select.Codegen;
 import com.d_m.select.FunctionLoweringInfo;
@@ -93,8 +95,10 @@ class LinearScanTest {
         }
         Register.Physical temp = codegen.getISA().physicalFromRegisterName("r10");
 
-        StringWriter writer = new StringWriter();
-        MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(isa, writer);
+        StringWriter prettyPrintWriter = new StringWriter();
+        StringWriter finalAssembly = new StringWriter();
+        MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(isa, prettyPrintWriter);
+        IdMap<MachineBasicBlock> blockIdMap = new IdMap<>();
         for (Function function : module.getFunctionList()) {
             MachineFunction machineFunction = codegen.getFunction(function);
             FunctionLoweringInfo info = codegen.getFunctionLoweringInfo(function);
@@ -121,6 +125,8 @@ class LinearScanTest {
             CleanupAssembly.removeRedundantMoves(machineFunction);
 
             machinePrinter.writeFunction(machineFunction);
+            AssemblyWriter assemblyWriter = new AssemblyWriter(blockIdMap, finalAssembly, info, machineFunction);
+            assemblyWriter.writeFunction();
         }
         String expected = """
                 main {
@@ -208,6 +214,78 @@ class LinearScanTest {
                   }
                 }
                 """;
-        assertEquals(writer.toString(), expected);
+        assertEquals(expected, prettyPrintWriter.toString());
+
+        expected = """
+                main:
+                l0:
+                  jmp l1
+                l1:
+                  mov $1, %rax
+                  mov $1, %rbx
+                  mov $0, %rcx
+                  jmp l2
+                l2:
+                  mov %rcx, %rdx
+                  cmp %rcx, $100
+                  jl l3
+                  jmp l4
+                l3:
+                  cmp %rbx, $20
+                  jl l5
+                  jmp l6
+                l4:
+                  jmp l7
+                l5:
+                  inc %rdx
+                  mov %rax, %rbx
+                  jmp l8
+                l6:
+                  jmp l9
+                l7:
+                  jmp l10
+                l8:
+                  mov %rdx, %rcx
+                  jmp l2
+                l9:
+                  mov %rdx, %rcx
+                  add %rcx, $2
+                  mov %rdx, %rbx
+                  mov %rcx, %rdx
+                  jmp l8
+                l10:
+                  ret
+                fibonacci:
+                  sub $8, %rsp
+                l11:
+                  mov %rdi, %rbx
+                  jmp l12
+                l12:
+                  cmp %rbx, $1
+                  jle l13
+                  jmp l14
+                l13:
+                  jmp l15
+                l14:
+                  jmp l16
+                l15:
+                  jmp l17
+                l16:
+                  mov %rbx, %rdi
+                  dec %rdi
+                  call fibonacci
+                  mov %rax, %rbp
+                  sub %rbx, $2
+                  mov %rbx, %rdi
+                  call fibonacci
+                  add %rbp, %rax
+                  mov %rbp, %rbx
+                  jmp l15
+                l17:
+                  mov %rbx, %rax
+                  add $8, %rsp
+                  ret
+                """;
+        assertEquals(expected, finalAssembly.toString());
     }
 }
