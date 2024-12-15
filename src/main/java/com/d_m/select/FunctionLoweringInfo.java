@@ -46,7 +46,7 @@ public class FunctionLoweringInfo {
     }
 
     public MachineOperand createStackSlot(int size) {
-        stackOffset -= size;
+        stackOffset += size;
         return new MachineOperand.StackSlot(stackOffset);
     }
 
@@ -64,5 +64,9 @@ public class FunctionLoweringInfo {
 
     public void setStartToken(Block block, Instruction startToken) {
         startTokenMap.put(block, startToken);
+    }
+
+    public int getStackOffset() {
+        return stackOffset;
     }
 }
