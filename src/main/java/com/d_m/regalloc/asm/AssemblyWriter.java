@@ -67,7 +67,11 @@ public class AssemblyWriter {
         writer.write(instruction.getInstruction());
         boolean first = true;
         if (instruction.getInstruction().equals("call")) {
-            for (MachineOperandPair pair : instruction.getOperands()) {
+            for (int i = 0; i < instruction.getOperands().size(); i++) {
+                if (instruction.isReusedOperand(i)) {
+                    continue;
+                }
+                MachineOperandPair pair = instruction.getOperands().get(i);
                 if (pair.kind() == MachineOperandKind.DEF) {
                     break;
                 }
@@ -80,7 +84,11 @@ public class AssemblyWriter {
                 writeOperand(pair.operand());
             }
         } else {
-            for (MachineOperandPair pair : instruction.getOperands()) {
+            for (int i = 0; i < instruction.getOperands().size(); i++) {
+                if (instruction.isReusedOperand(i)) {
+                    continue;
+                }
+                MachineOperandPair pair = instruction.getOperands().get(i);
                 if (first) {
                     first = false;
                     writer.write(" ");

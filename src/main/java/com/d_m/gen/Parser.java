@@ -107,15 +107,29 @@ public class Parser {
         return switch (operandToken.type()) {
             case HASH -> new Operand.AnyArity(parseOperand());
             case VARIABLE -> {
-                if (!operandToken.lexeme().equals("proj")) {
-                    throw new ParseError("Unknown variable name " + operandToken.lexeme() + " expected proj()");
+                switch (operandToken.lexeme()) {
+                    case "proj" -> {
+                        match(TokenType.LEFT_PAREN);
+                        Operand value = parseOperand();
+                        match(TokenType.COMMA);
+                        Operand index = parseOperand();
+                        match(TokenType.RIGHT_PAREN);
+                        yield new Operand.Projection(value, index);
+                    }
+                    case "reuse" -> {
+                        match(TokenType.LEFT_PAREN);
+                        int registerNumber = switch (parseOperand()) {
+                            case Operand.VirtualRegister(int register) -> register;
+                            default -> throw new ParseError("Expected virtual register as first parameter to reuse()");
+                        };
+                        match(TokenType.COMMA);
+                        int operandIndex = (int) advance().literal();
+                        match(TokenType.RIGHT_PAREN);
+                        yield new Operand.ReuseOperand(registerNumber, operandIndex);
+                    }
+                    default ->
+                            throw new ParseError("Unknown variable name " + operandToken.lexeme() + " expected proj()");
                 }
-                match(TokenType.LEFT_PAREN);
-                Operand value = parseOperand();
-                match(TokenType.COMMA);
-                Operand index = parseOperand();
-                match(TokenType.RIGHT_PAREN);
-                yield new Operand.Projection(value, index);
             }
             case NUMBER -> new Operand.Immediate((int) operandToken.literal());
             case VIRTUAL_REG -> new Operand.VirtualRegister((int) operandToken.literal());

@@ -2,6 +2,7 @@ package com.d_m.select;
 
 import com.d_m.gen.*;
 import com.d_m.select.instr.*;
+import com.d_m.select.reg.Register;
 import com.d_m.select.reg.RegisterClass;
 import com.d_m.select.reg.RegisterConstraint;
 import com.d_m.ssa.Instruction;
@@ -160,6 +161,20 @@ public class DAGTile implements Tile<Value>, Comparable<DAGTile> {
             }
             case Operand.Projection projection ->
                     throw new UnsupportedOperationException("Invalid projection operand: " + projection);
+            case Operand.ReuseOperand(int register, int operandIndex) -> {
+                RegisterConstraint reuseConstraint = new RegisterConstraint.ReuseOperand(operandIndex);
+                RegisterConstraint normalConstraint = new RegisterConstraint.Any();
+                Register reusedReg = info.createRegister(RegisterClass.INT, reuseConstraint);
+                Register normalReg = switch (reusedReg) {
+                    case Register.Virtual(int num, var registerClass, _) ->
+                            new Register.Virtual(num, registerClass, normalConstraint);
+                    default -> throw new UnsupportedOperationException("Expected virtual register");
+                };
+                MachineOperand reuseMachineOperand = new MachineOperand.Register(reusedReg);
+                MachineOperand normalMachineOperand = new MachineOperand.Register(normalReg);
+                tempRegisterMap.put(register, normalMachineOperand);
+                yield reuseMachineOperand;
+            }
             // TODO: implement any arity parameters
             case Operand.AnyArity _ ->
                     throw new UnsupportedOperationException("Any arity operand parameters not supported yet");

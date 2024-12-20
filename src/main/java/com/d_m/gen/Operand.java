@@ -59,5 +59,16 @@ public sealed interface Operand {
         }
     }
 
+    record ReuseOperand(int register, int operandIndex) implements Operand {
+        @Override
+        public void write(Writer writer) throws IOException {
+            writer.write("new Operand.ReuseOperand(");
+            writer.write(Integer.toString(register));
+            writer.write(", ");
+            writer.write(Integer.toString(operandIndex));
+            writer.write(")");
+        }
+    }
+
     void write(Writer writer) throws IOException;
 }

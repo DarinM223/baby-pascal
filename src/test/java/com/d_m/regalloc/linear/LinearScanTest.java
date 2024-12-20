@@ -141,12 +141,12 @@ class LinearScanTest {
                   }
                   block l2 [l1, l3] {
                     mov [%rcx,USE], [%rdx,DEF]
-                    cmp [%rcx,USE], [100,USE]
+                    cmp [%rcx,USE], [100,USE], [%rcx,DEF]
                     jl [l4,USE]
                     jmp [l5,USE]
                   }
                   block l4 [l2] {
-                    cmp [%rbx,USE], [20,USE]
+                    cmp [%rbx,USE], [20,USE], [%rbx,DEF]
                     jl [l6,USE]
                     jmp [l7,USE]
                   }
@@ -170,7 +170,7 @@ class LinearScanTest {
                   }
                   block l9 [l7] {
                     mov [%rdx,USE], [%rcx,DEF]
-                    add [%rcx,USE], [2,USE]
+                    add [%rcx,USE], [2,USE], [%rcx,DEF]
                     mov [%rdx,USE], [%rbx,DEF]
                     mov [%rcx,USE], [%rdx,DEF]
                     jmp [l3,USE]
@@ -184,7 +184,7 @@ class LinearScanTest {
                     jmp [l12,USE]
                   }
                   block l12 [l11] {
-                    cmp [%rbx,USE], [1,USE]
+                    cmp [%rbx,USE], [1,USE], [%rbx,DEF]
                     jle [l13,USE]
                     jmp [l14,USE]
                   }
@@ -202,10 +202,10 @@ class LinearScanTest {
                     dec [%rdi,USE]
                     call [fibonacci,USE], [%rax,DEF], [%rcx,DEF], [%rdx,DEF], [%rsi,DEF], [%rdi,DEF], [%r8,DEF], [%r9,DEF], [%r10,DEF], [%r11,DEF]
                     mov [%rax,USE], [%rbp,DEF]
-                    sub [%rbx,USE], [2,USE]
+                    sub [%rbx,USE], [2,USE], [%rbx,DEF]
                     mov [%rbx,USE], [%rdi,DEF]
                     call [fibonacci,USE], [%rax,DEF], [%rcx,DEF], [%rdx,DEF], [%rsi,DEF], [%rdi,DEF], [%r8,DEF], [%r9,DEF], [%r10,DEF], [%r11,DEF]
-                    add [%rbp,USE], [%rax,USE]
+                    add [%rbp,USE], [%rax,USE], [%rbp,DEF]
                     mov [%rbp,USE], [%rbx,DEF]
                     jmp [l15,USE]
                   }
@@ -227,11 +227,11 @@ class LinearScanTest {
                   jmp l2
                 l2:
                   mov %rcx, %rdx
-                  cmp %rcx, $100
+                  cmp $100, %rcx
                   jl l3
                   jmp l4
                 l3:
-                  cmp %rbx, $20
+                  cmp $20, %rbx
                   jl l5
                   jmp l6
                 l4:
@@ -249,7 +249,7 @@ class LinearScanTest {
                   jmp l2
                 l9:
                   mov %rdx, %rcx
-                  add %rcx, $2
+                  add $2, %rcx
                   mov %rdx, %rbx
                   mov %rcx, %rdx
                   jmp l8
@@ -261,7 +261,7 @@ class LinearScanTest {
                   mov %rdi, %rbx
                   jmp l12
                 l12:
-                  cmp %rbx, $1
+                  cmp $1, %rbx
                   jle l13
                   jmp l14
                 l13:
@@ -275,10 +275,10 @@ class LinearScanTest {
                   dec %rdi
                   call fibonacci
                   mov %rax, %rbp
-                  sub %rbx, $2
+                  sub $2, %rbx
                   mov %rbx, %rdi
                   call fibonacci
-                  add %rbp, %rax
+                  add %rax, %rbp
                   mov %rbp, %rbx
                   jmp l15
                 l17:

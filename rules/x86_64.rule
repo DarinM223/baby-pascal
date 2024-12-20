@@ -6,16 +6,16 @@
 
 +(_, 2) => (1) {
     mov [$1, use], [%1, def]
-    add [%1, use], [2, use] // TODO: add reuse operand
-    out [%1, use]
+    add [%1, use], [2, use], [reuse(%2, 0), def]
+    out [%2, use]
 }
 
 +(_, _) => (2) {
     // Move first parameter to virtual register and then
     // add the second parameter to it.
     mov [$1, use], [%1, def]
-    add [%1, use], [$2, use]
-    out [%1, use]
+    add [%1, use], [$2, use], [reuse(%2, 0), def]
+    out [%2, use]
 }
 
 -(_, 1) => (1) {
@@ -26,19 +26,19 @@
 
 -(_, 2) => (1) {
     mov [$1, use] [%1, def]
-    sub [%1, use], [2, use]
-    out [%1, use]
+    sub [%1, use], [2, use], [reuse(%2, 0), def]
+    out [%2, use]
 }
 
 <(_, _) => (2) {
     terminator // Marks terminator of block.
-    cmp [$1, use], [$2, use]
+    cmp [$1, use], [$2, use], [reuse(%1, 0), def]
     jl
 }
 
 <=(_, _) => (2) {
     terminator
-    cmp [$1, use], [$2, use]
+    cmp [$1, use], [$2, use], [reuse(%1, 0), def]
     jle
 }
 

@@ -3,6 +3,7 @@ package com.d_m.regalloc.linear;
 import com.d_m.select.instr.*;
 import com.d_m.select.reg.Register;
 import com.d_m.select.reg.RegisterConstraint;
+import com.d_m.util.Pair;
 
 import java.util.*;
 import java.util.function.Function;
@@ -46,9 +47,8 @@ public class BuildIntervals {
         for (MachineBasicBlock block : function.getBlocks()) {
             for (MachineInstruction instruction : block.getInstructions()) {
                 for (MachineOperandPair pair : instruction.getOperands()) {
-                    if (pair.kind() == MachineOperandKind.DEF && pair.operand() instanceof MachineOperand.Register(
-                            Register.Virtual(int n, _, _)
-                    )) {
+                    if (pair.kind() == MachineOperandKind.DEF &&
+                            pair.operand() instanceof MachineOperand.Register(Register.Virtual(int n, _, _))) {
                         virtualRegisterToMachineInstructionMap.put(n, instruction);
                     }
                 }
@@ -106,9 +106,13 @@ public class BuildIntervals {
                     }
                     case DEF -> {
                         switch (pair.operand()) {
-                            // Intervals should be created for fixed virtual registers, even if they are not used.
+                            // Intervals should be created for fixed virtual registers and reused virtual registers, even if they are not used.
                             case MachineOperand.Register(
                                     Register.Virtual(int n, _, RegisterConstraint.UsePhysical(_))
+                            ) when !live.get(n) ->
+                                    addRange(n, instruction, block, numbering.getInstructionNumber(instruction) + 1);
+                            case MachineOperand.Register(
+                                    Register.Virtual(int n, _, RegisterConstraint.ReuseOperand(_))
                             ) when !live.get(n) ->
                                     addRange(n, instruction, block, numbering.getInstructionNumber(instruction) + 1);
                             case MachineOperand.Register(Register.Virtual(int n, _, _)) -> live.clear(n);
@@ -142,6 +146,14 @@ public class BuildIntervals {
         // Moves don't have to be eliminated.
         for (MachineBasicBlock block : function.getBlocks()) {
             joinIntervalsBlock(block, instruction -> instruction.getInstruction().equals("phi"), true);
+        }
+        // Next join reuse operands since they must be joined.
+        for (MachineBasicBlock block : function.getBlocks()) {
+            for (MachineInstruction instruction : block.getInstructions()) {
+                for (Pair<Register.Virtual, Register.Virtual> pair : instruction.getReuseOperands()) {
+                    join(pair.a(), pair.b(), true);
+                }
+            }
         }
         for (MachineBasicBlock block : function.getBlocks()) {
             joinIntervalsBlock(block, instruction -> instruction.getInstruction().equals("mov"), false);
@@ -182,8 +194,11 @@ public class BuildIntervals {
      *
      * @param value1
      * @param value2
+     * @param forceJoin if true, then always join the intervals without checking for compatibility.
+     *                  This is only for things like phis and reuse operand constraints where it is
+     *                  guaranteed that the intervals should be joined.
      */
-    public void join(Register.Virtual value1, Register.Virtual value2, boolean isPhi) {
+    public void join(Register.Virtual value1, Register.Virtual value2, boolean forceJoin) {
         MachineInstruction x = virtualRegisterToMachineInstructionMap.get(value1.registerNumber());
         MachineInstruction y = virtualRegisterToMachineInstructionMap.get(value2.registerNumber());
         Integer xNumber = numbering.getInstructionNumber(x.rep());
@@ -194,19 +209,7 @@ public class BuildIntervals {
         Interval yInterval = intervalMap.get(yKey);
         Set<Range> i = new HashSet<>(xInterval == null ? List.of() : xInterval.getRanges());
         Set<Range> j = new HashSet<>(yInterval == null ? List.of() : yInterval.getRanges());
-        // TODO: for the second operand in a phi, the intersection is not empty after joining the first one.
-        // def: vreg11
-        //
-        // join: vreg49 with vreg11
-        // join: vreg50 with vreg11
-        //
-        // vreg49: (3, 4) (4, 7) (7, 7)
-        // vreg50: (7, 7) (38, 41)
-        //
-        // instruction 7: 11 <- phi(49, 50)
-        //
-        // vreg11: (7, 11)
-        if (xInterval != null && yInterval != null && (isPhi || (!xInterval.overlaps(yInterval) && compatible(value1, value2)))) {
+        if (xInterval != null && yInterval != null && (forceJoin || (!xInterval.overlaps(yInterval) && compatible(value1, value2)))) {
             i.addAll(j);
             // Special case where the first value has a constraint but the second value doesn't.
             // We want to preserve the register constraint, since it doesn't overlap.
@@ -234,10 +237,15 @@ public class BuildIntervals {
         if (interval == null) {
             return;
         }
+        Register.Virtual replaceWithoutConstraint = switch (replace) {
+            case Register.Virtual(int num, var registerClass, RegisterConstraint.ReuseOperand(_)) ->
+                    new Register.Virtual(num, registerClass, original.constraint());
+            default -> replace;
+        };
         for (Range range : interval.getRanges()) {
             for (int i = range.getStart(); i <= range.getEnd(); i++) {
                 MachineInstruction instruction = numbering.getInstructionFromNumber(i);
-                renameRegistersInstruction(instruction, original, replace);
+                renameRegistersInstruction(instruction, original, replaceWithoutConstraint);
             }
         }
     }
@@ -248,7 +256,8 @@ public class BuildIntervals {
         }
         for (int i = 0; i < instruction.getOperands().size(); i++) {
             MachineOperandPair pair = instruction.getOperands().get(i);
-            if (pair.operand() instanceof MachineOperand.Register(Register.Virtual v) && v.equals(original)) {
+            if (pair.operand() instanceof MachineOperand.Register(Register.Virtual v) &&
+                    v.registerNumber() == original.registerNumber()) {
                 MachineOperandPair newPair = new MachineOperandPair(new MachineOperand.Register(replace), pair.kind());
                 instruction.getOperands().set(i, newPair);
             }
@@ -263,6 +272,8 @@ public class BuildIntervals {
                 value1.constraint() instanceof RegisterConstraint.UsePhysical(var physical1) &&
                         value2.constraint() instanceof RegisterConstraint.UsePhysical(var physical2) &&
                         physical1.equals(physical2);
+        boolean oneIsReuseOperand = value1.constraint() instanceof RegisterConstraint.ReuseOperand(_) ||
+                value2.constraint() instanceof RegisterConstraint.ReuseOperand(_);
         MachineInstruction x = virtualRegisterToMachineInstructionMap.get(value1.registerNumber());
         MachineInstruction y = virtualRegisterToMachineInstructionMap.get(value2.registerNumber());
         IntervalKey xKey = new IntervalKey(numbering.getInstructionNumber(x), value1.registerNumber());
@@ -275,7 +286,7 @@ public class BuildIntervals {
         boolean ySpecificRegisterNoOverlap =
                 value2.constraint() instanceof RegisterConstraint.UsePhysical(var physical) &&
                         !specificRegisterHasOverlap(physical, xInterval);
-        return bothAreNotInSpecificRegisters || bothAreInSameSpecificRegister || xSpecificRegisterNoOverlap || ySpecificRegisterNoOverlap;
+        return bothAreNotInSpecificRegisters || bothAreInSameSpecificRegister || oneIsReuseOperand || xSpecificRegisterNoOverlap || ySpecificRegisterNoOverlap;
     }
 
     private boolean specificRegisterHasOverlap(Register.Physical physical, Interval noOverlap) {
