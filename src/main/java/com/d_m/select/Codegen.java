@@ -29,6 +29,7 @@ public class Codegen {
     private final GeneratedAutomata automata;
     private final Map<Function, FunctionLoweringInfo> functionLoweringInfoMap;
     private final Map<Function, MachineFunction> functionMap;
+    private final Map<Function, MachineInstruction> functionExitMoveMap;
     private final Map<Block, MachineBasicBlock> blockMap;
     private final Map<Block, SSADAG> blockDagMap;
 
@@ -37,6 +38,7 @@ public class Codegen {
         this.automata = automata;
         this.functionLoweringInfoMap = new HashMap<>();
         this.functionMap = new HashMap<>();
+        this.functionExitMoveMap = new HashMap<>();
         this.blockMap = new HashMap<>();
         this.blockDagMap = new HashMap<>();
     }
@@ -62,8 +64,13 @@ public class Codegen {
 
     public void emitFunction(Function function, Map<Block, Set<DAGTile>> blockTilesMap) {
         FunctionLoweringInfo info = functionLoweringInfoMap.get(function);
+        MachineInstruction functionExitMove = functionExitMoveMap.get(function);
         for (Block block : function.getBlocks()) {
             emitBlock(info, block, blockTilesMap.get(block));
+            if (block.equals(block.getExit()) && !functionExitMove.getOperands().isEmpty()) {
+                MachineBasicBlock machineBlock = blockMap.get(block);
+                machineBlock.addBeforeTerminator(functionExitMove);
+            }
         }
     }
 
@@ -73,10 +80,13 @@ public class Codegen {
         blockMap.clear();
         blockDagMap.clear();
         MachineInstruction functionEntryMove = new MachineInstruction("parmov", new ArrayList<>());
-        List<MachineOperand> uses = new ArrayList<>();
-        List<MachineOperand> defs = new ArrayList<>();
+        MachineInstruction functionExitMove = new MachineInstruction("parmov", new ArrayList<>());
+        List<MachineOperand> entryUses = new ArrayList<>();
+        List<MachineOperand> entryDefs = new ArrayList<>();
+        List<MachineOperand> exitUses = new ArrayList<>();
+        List<MachineOperand> exitDefs = new ArrayList<>();
         for (int argumentNumber = 0; argumentNumber < function.getArguments().size(); argumentNumber++) {
-            RegisterConstraint constraint = functionLoweringInfo.isa.functionCallingConvention(RegisterClass.INT, argumentNumber);
+            RegisterConstraint constraint = isa.functionCallingConvention(RegisterClass.INT, argumentNumber);
             Argument argument = function.getArguments().get(argumentNumber);
             // The constrained register is a virtual register constrained to a physical register.
             // It shouldn't be widely used in the function because the constraint will be forced in all uses
@@ -84,24 +94,35 @@ public class Codegen {
             // the constrained register to an unconstrained register that can be used inside the function.
             Register constrainedRegister = functionLoweringInfo.createRegister(RegisterClass.INT, constraint);
             Register unconstrainedRegister = functionLoweringInfo.createRegister(RegisterClass.INT, new RegisterConstraint.Any());
-            uses.add(new MachineOperand.Register(constrainedRegister));
-            defs.add(new MachineOperand.Register(unconstrainedRegister));
+            entryUses.add(new MachineOperand.Register(constrainedRegister));
+            entryDefs.add(new MachineOperand.Register(unconstrainedRegister));
             functionLoweringInfo.addRegister(argument, unconstrainedRegister);
             machineFunction.addParameter(new MachineOperand.Register(constrainedRegister));
         }
-        functionEntryMove.getOperands().addAll(uses.stream().map(operand -> new MachineOperandPair(operand, MachineOperandKind.USE)).toList());
-        functionEntryMove.getOperands().addAll(defs.stream().map(operand -> new MachineOperandPair(operand, MachineOperandKind.DEF)).toList());
+        for (Register.Physical calleeSave : isa.calleeSaveRegs()) {
+            MachineOperand constrained = new MachineOperand.Register(functionLoweringInfo.createRegister(RegisterClass.INT, new RegisterConstraint.UsePhysical(calleeSave)));
+            MachineOperand unconstrained = new MachineOperand.Register(functionLoweringInfo.createRegister(RegisterClass.INT, new RegisterConstraint.Any()));
+            entryUses.add(constrained);
+            entryDefs.add(unconstrained);
+            exitUses.add(unconstrained);
+            exitDefs.add(constrained);
+        }
+        functionEntryMove.getOperands().addAll(entryUses.stream().map(operand -> new MachineOperandPair(operand, MachineOperandKind.USE)).toList());
+        functionEntryMove.getOperands().addAll(entryDefs.stream().map(operand -> new MachineOperandPair(operand, MachineOperandKind.DEF)).toList());
+        functionExitMove.getOperands().addAll(exitUses.stream().map(operand -> new MachineOperandPair(operand, MachineOperandKind.USE)).toList());
+        functionExitMove.getOperands().addAll(exitDefs.stream().map(operand -> new MachineOperandPair(operand, MachineOperandKind.DEF)).toList());
+        functionExitMoveMap.put(function, functionExitMove);
+
         for (Block block : function.getBlocks()) {
             Instruction start = new Instruction(SymbolImpl.TOKEN_STRING, new SideEffectToken(), Operator.START);
             start.setParent(block);
             block.getInstructions().addToFront(start);
             functionLoweringInfo.setStartToken(block, start);
         }
-        for (int i = 0; i < function.getBlocks().size(); i++) {
-            Block block = function.getBlocks().get(i);
+        for (Block block : function.getBlocks()) {
             MachineBasicBlock machineBlock = new MachineBasicBlock(machineFunction);
             // Add the parallel move from constrained virtual registers -> unconstrained virtual registers into the function's entry block.
-            if (i == 0 && !functionEntryMove.getOperands().isEmpty()) {
+            if (block.equals(block.getEntry()) && !functionEntryMove.getOperands().isEmpty()) {
                 machineBlock.getInstructions().add(functionEntryMove);
             }
             SSADAG dag = new SSADAG(functionLoweringInfo, block);

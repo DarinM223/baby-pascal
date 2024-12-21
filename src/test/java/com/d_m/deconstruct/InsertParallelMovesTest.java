@@ -99,26 +99,27 @@ class InsertParallelMovesTest {
         String expected = """
                 main {
                   block l0 [] {
+                    parmov [%0r12,USE], [%2r13,USE], [%4r14,USE], [%6r15,USE], [%8rbx,USE], [%10rsp,USE], [%12rbp,USE], [%1any,DEF], [%3any,DEF], [%5any,DEF], [%7any,DEF], [%9any,DEF], [%11any,DEF], [%13any,DEF]
                     jmp [l1,USE]
                   }
                   block l1 [l0] {
-                    mov [1,USE], [%0any,DEF]
-                    mov [1,USE], [%1any,DEF]
-                    mov [0,USE], [%2any,DEF]
-                    parmov [%2any,USE], [%20any,DEF], [%1any,USE], [%22any,DEF]
+                    mov [1,USE], [%14any,DEF]
+                    mov [1,USE], [%15any,DEF]
+                    mov [0,USE], [%16any,DEF]
+                    parmov [%16any,USE], [%34any,DEF], [%15any,USE], [%36any,DEF]
                     jmp [l2,USE]
                   }
                   block l2 [l1, l3] {
-                    phi [%20any,USE], [%21any,USE], [%11any,DEF]
-                    phi [%22any,USE], [%23any,USE], [%13any,DEF]
-                    mov [%13any,USE], [%3any,DEF]
-                    mov [%11any,USE], [%4any,DEF]
-                    cmp [%11any,USE], [100,USE], [%12[reuse=0],DEF]
+                    phi [%34any,USE], [%35any,USE], [%25any,DEF]
+                    phi [%36any,USE], [%37any,USE], [%27any,DEF]
+                    mov [%27any,USE], [%17any,DEF]
+                    mov [%25any,USE], [%18any,DEF]
+                    cmp [%25any,USE], [100,USE], [%26[reuse=0],DEF]
                     jl [l4,USE]
                     jmp [l5,USE]
                   }
                   block l4 [l2] {
-                    cmp [%3any,USE], [20,USE], [%14[reuse=0],DEF]
+                    cmp [%17any,USE], [20,USE], [%28[reuse=0],DEF]
                     jl [l6,USE]
                     jmp [l7,USE]
                   }
@@ -126,11 +127,11 @@ class InsertParallelMovesTest {
                     jmp [l8,USE]
                   }
                   block l6 [l4] {
-                    mov [%4any,USE], [%15any,DEF]
-                    inc [%15any,USE]
-                    mov [%0any,USE], [%5any,DEF]
-                    mov [%15any,USE], [%6any,DEF]
-                    parmov [%5any,USE], [%24any,DEF], [%6any,USE], [%26any,DEF]
+                    mov [%18any,USE], [%29any,DEF]
+                    inc [%29any,USE]
+                    mov [%14any,USE], [%19any,DEF]
+                    mov [%29any,USE], [%20any,DEF]
+                    parmov [%19any,USE], [%38any,DEF], [%20any,USE], [%40any,DEF]
                     jmp [l3,USE]
                   }
                   block l7 [l4] {
@@ -140,66 +141,68 @@ class InsertParallelMovesTest {
                     jmp [l10,USE]
                   }
                   block l3 [l6, l9] {
-                    phi [%24any,USE], [%25any,USE], [%16any,DEF]
-                    phi [%26any,USE], [%27any,USE], [%17any,DEF]
-                    mov [%16any,USE], [%7any,DEF]
-                    mov [%17any,USE], [%8any,DEF]
-                    parmov [%8any,USE], [%21any,DEF], [%7any,USE], [%23any,DEF]
+                    phi [%38any,USE], [%39any,USE], [%30any,DEF]
+                    phi [%40any,USE], [%41any,USE], [%31any,DEF]
+                    mov [%30any,USE], [%21any,DEF]
+                    mov [%31any,USE], [%22any,DEF]
+                    parmov [%22any,USE], [%35any,DEF], [%21any,USE], [%37any,DEF]
                     jmp [l2,USE]
                   }
                   block l9 [l7] {
-                    mov [%4any,USE], [%18any,DEF]
-                    add [%18any,USE], [2,USE], [%19[reuse=0],DEF]
-                    mov [%4any,USE], [%9any,DEF]
-                    mov [%19any,USE], [%10any,DEF]
-                    parmov [%9any,USE], [%25any,DEF], [%10any,USE], [%27any,DEF]
+                    mov [%18any,USE], [%32any,DEF]
+                    add [%32any,USE], [2,USE], [%33[reuse=0],DEF]
+                    mov [%18any,USE], [%23any,DEF]
+                    mov [%33any,USE], [%24any,DEF]
+                    parmov [%23any,USE], [%39any,DEF], [%24any,USE], [%41any,DEF]
                     jmp [l3,USE]
                   }
                   block l10 [l8] {
+                    parmov [%1any,USE], [%3any,USE], [%5any,USE], [%7any,USE], [%9any,USE], [%11any,USE], [%13any,USE], [%0r12,DEF], [%2r13,DEF], [%4r14,DEF], [%6r15,DEF], [%8rbx,DEF], [%10rsp,DEF], [%12rbp,DEF]
                   }
                 }
                 fibonacci {
                   block l11 [] {
-                    parmov [%0rdi,USE], [%1any,DEF]
+                    parmov [%0rdi,USE], [%2r12,USE], [%4r13,USE], [%6r14,USE], [%8r15,USE], [%10rbx,USE], [%12rsp,USE], [%14rbp,USE], [%1any,DEF], [%3any,DEF], [%5any,DEF], [%7any,DEF], [%9any,DEF], [%11any,DEF], [%13any,DEF], [%15any,DEF]
                     jmp [l12,USE]
                   }
                   block l12 [l11] {
-                    cmp [%1any,USE], [1,USE], [%5[reuse=0],DEF]
+                    cmp [%1any,USE], [1,USE], [%19[reuse=0],DEF]
                     jle [l13,USE]
                     jmp [l14,USE]
                   }
                   block l13 [l12] {
-                    mov [%1any,USE], [%2any,DEF]
-                    parmov [%2any,USE], [%35any,DEF]
+                    mov [%1any,USE], [%16any,DEF]
+                    parmov [%16any,USE], [%49any,DEF]
                     jmp [l15,USE]
                   }
                   block l14 [l12] {
                     jmp [l16,USE]
                   }
                   block l15 [l13, l16] {
-                    phi [%35any,USE], [%36any,USE], [%6any,DEF]
-                    mov [%6any,USE], [%3any,DEF]
+                    phi [%49any,USE], [%50any,USE], [%20any,DEF]
+                    mov [%20any,USE], [%17any,DEF]
                     jmp [l17,USE]
                   }
                   block l16 [l14] {
-                    mov [%1any,USE], [%7any,DEF]
-                    dec [%7any,USE]
-                    mov [%7any,USE], [%8rdi,DEF]
-                    call [fibonacci,USE], [%9rax,DEF], [%10rcx,DEF], [%11rdx,DEF], [%12rsi,DEF], [%13rdi,DEF], [%14r8,DEF], [%15r9,DEF], [%16r10,DEF], [%17r11,DEF]
-                    mov [%9rax,USE], [%18any,DEF]
-                    mov [%1any,USE], [%19any,DEF]
-                    sub [%19any,USE], [2,USE], [%20[reuse=0],DEF]
-                    mov [%20any,USE], [%21rdi,DEF]
-                    call [fibonacci,USE], [%22rax,DEF], [%23rcx,DEF], [%24rdx,DEF], [%25rsi,DEF], [%26rdi,DEF], [%27r8,DEF], [%28r9,DEF], [%29r10,DEF], [%30r11,DEF]
-                    mov [%22rax,USE], [%31any,DEF]
-                    mov [%18any,USE], [%32any,DEF]
-                    add [%32any,USE], [%31any,USE], [%33[reuse=0],DEF]
-                    mov [%33any,USE], [%4any,DEF]
-                    parmov [%4any,USE], [%36any,DEF]
+                    mov [%1any,USE], [%21any,DEF]
+                    dec [%21any,USE]
+                    mov [%21any,USE], [%22rdi,DEF]
+                    call [fibonacci,USE], [%23rax,DEF], [%24rcx,DEF], [%25rdx,DEF], [%26rsi,DEF], [%27rdi,DEF], [%28r8,DEF], [%29r9,DEF], [%30r10,DEF], [%31r11,DEF]
+                    mov [%23rax,USE], [%32any,DEF]
+                    mov [%1any,USE], [%33any,DEF]
+                    sub [%33any,USE], [2,USE], [%34[reuse=0],DEF]
+                    mov [%34any,USE], [%35rdi,DEF]
+                    call [fibonacci,USE], [%36rax,DEF], [%37rcx,DEF], [%38rdx,DEF], [%39rsi,DEF], [%40rdi,DEF], [%41r8,DEF], [%42r9,DEF], [%43r10,DEF], [%44r11,DEF]
+                    mov [%36rax,USE], [%45any,DEF]
+                    mov [%32any,USE], [%46any,DEF]
+                    add [%46any,USE], [%45any,USE], [%47[reuse=0],DEF]
+                    mov [%47any,USE], [%18any,DEF]
+                    parmov [%18any,USE], [%50any,DEF]
                     jmp [l15,USE]
                   }
                   block l17 [l15] {
-                    mov [%3any,USE], [%34rax,DEF]
+                    parmov [%3any,USE], [%5any,USE], [%7any,USE], [%9any,USE], [%11any,USE], [%13any,USE], [%15any,USE], [%2r12,DEF], [%4r13,DEF], [%6r14,DEF], [%8r15,DEF], [%10rbx,DEF], [%12rsp,DEF], [%14rbp,DEF]
+                    mov [%17any,USE], [%48rax,DEF]
                   }
                 }
                 """;

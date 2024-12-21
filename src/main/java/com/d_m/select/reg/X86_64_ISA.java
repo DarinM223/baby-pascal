@@ -3,6 +3,7 @@ package com.d_m.select.reg;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -104,6 +105,11 @@ public class X86_64_ISA implements ISA {
     @Override
     public Iterable<Register.Physical> allIntegerRegs() {
         return INT_REGISTER_MAPPING.values();
+    }
+
+    @Override
+    public Iterable<Register.Physical> calleeSaveRegs() {
+        return List.of(r12(), r13(), r14(), r15(), rbx(), rsp(), rbp());
     }
 
     @Override
