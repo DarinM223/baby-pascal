@@ -2,10 +2,7 @@ package com.d_m.regalloc.linear;
 
 import com.d_m.select.instr.MachineOperand;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Interval implements Comparable<Interval> {
     private List<Range> ranges;
@@ -27,20 +24,25 @@ public class Interval implements Comparable<Interval> {
     }
 
     public void addRange(Range newRange) {
-        boolean merged = false;
-        if (!fixed) {
-            for (Range range : ranges) {
-                if (newRange.getStart() == range.getEnd() || range.getStart() == newRange.getEnd()) {
-                    range.setStart(Integer.min(newRange.getStart(), range.getStart()));
-                    range.setEnd(Integer.max(newRange.getEnd(), range.getEnd()));
-                    merged = true;
-                    break;
-                }
-            }
+        ranges.add(newRange);
+        mergeRanges();
+    }
+
+    private void mergeRanges() {
+        if (ranges.isEmpty()) {
+            return;
         }
-        if (!merged) {
-            ranges.add(newRange);
-            ranges.sort(null);
+        ranges.sort(null);
+        Iterator<Range> it = ranges.iterator();
+        Range prev = it.next();
+        while (it.hasNext()) {
+            Range curr = it.next();
+            if (curr.getStart() == prev.getEnd()) {
+                prev.setEnd(Integer.max(prev.getEnd(), curr.getEnd()));
+                it.remove();
+            } else {
+                prev = curr;
+            }
         }
     }
 

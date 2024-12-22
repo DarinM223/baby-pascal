@@ -86,11 +86,15 @@ public class LinearScan {
 
             // Select a register from f:
             if (!f.isEmpty()) {
-                if (!(current.getReg() instanceof MachineOperand.Register(Register.Physical _))) {
-                    Register.Physical taken = f.stream().findFirst().get();
-                    current.setReg(new MachineOperand.Register(taken));
-                    free.remove(taken);
-                }
+                Register.Physical physical = switch (current.getReg()) {
+                    case MachineOperand.Register(Register.Physical reg) -> reg;
+                    case null, default -> {
+                        Register.Physical taken = f.stream().findFirst().get();
+                        current.setReg(new MachineOperand.Register(taken));
+                        yield taken;
+                    }
+                };
+                free.remove(physical);
                 active.add(current);
             } else {
                 assignMemoryLocation(unhandled, current);
