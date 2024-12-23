@@ -103,7 +103,7 @@ class LoopPostbodyTest {
                 block -2 predecessors: [15] successors: [] {
                 }
                 """;
-        assertEquals(builder.toString(), expected);
+        assertEquals(expected, builder.toString());
 
         new InsertPhisPruned(symbol, defsites, frontier).run();
         new UniqueRenamer(symbol).rename(cfg);
@@ -167,6 +167,6 @@ class LoopPostbodyTest {
                   }
                 }
                 """;
-        assertEquals(writer.toString(), expected);
+        assertEquals(expected, writer.toString());
     }
 }

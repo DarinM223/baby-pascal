@@ -72,7 +72,7 @@ class LoopNestingTest {
                 11 -> []
                 12 -> []
                 """;
-        assertEquals(builder.toString(), expected);
+        assertEquals(expected, builder.toString());
 
         var loopNesting = new LoopNesting<>(dominators, blocks);
         builder = new StringBuilder();
@@ -106,6 +106,6 @@ class LoopNestingTest {
                 [8, 9] -> []
                 [2, 3, 4] -> []
                 """;
-        assertEquals(builder.toString(), expected);
+        assertEquals(expected, builder.toString());
     }
 }

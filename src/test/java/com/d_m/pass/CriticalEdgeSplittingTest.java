@@ -156,7 +156,7 @@ class CriticalEdgeSplittingTest {
                   }
                 }
                 """;
-        assertEquals(writer.toString(), expected);
+        assertEquals(expected, writer.toString());
 
         boolean changed = new CriticalEdgeSplitting().runFunction(example);
         assertTrue(changed);
@@ -187,7 +187,7 @@ class CriticalEdgeSplittingTest {
                   }
                 }
                 """;
-        assertEquals(writer.toString(), expected);
+        assertEquals(expected, writer.toString());
     }
 
     @Test
@@ -217,7 +217,7 @@ class CriticalEdgeSplittingTest {
                   }
                 }
                 """;
-        assertEquals(writer.toString(), expected);
+        assertEquals(expected, writer.toString());
 
         boolean changed = new CriticalEdgeSplitting().runFunction(example);
         assertTrue(changed);
@@ -248,6 +248,6 @@ class CriticalEdgeSplittingTest {
                   }
                 }
                 """;
-        assertEquals(writer.toString(), expected);
+        assertEquals(expected, writer.toString());
     }
 }

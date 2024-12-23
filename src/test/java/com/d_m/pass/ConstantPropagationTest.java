@@ -80,6 +80,6 @@ class ConstantPropagationTest {
                   }
                 }
                 """;
-        assertEquals(writer.toString(), expected);
+        assertEquals(expected, writer.toString());
     }
 }

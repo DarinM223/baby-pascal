@@ -19,10 +19,10 @@ class MachineBasicBlockTest {
         MachineInstruction instruction1 = new MachineInstruction("hello", List.of());
         MachineInstruction instruction2 = new MachineInstruction("world", List.of());
         block.addBeforeTerminator(instruction1);
-        assertEquals(block.getTerminator(), 1);
+        assertEquals(1, block.getTerminator());
         block.addBeforeTerminator(instruction2);
-        assertEquals(block.getTerminator(), 2);
-        assertEquals(block.getInstructions(), List.of(instruction1, instruction2));
+        assertEquals(2, block.getTerminator());
+        assertEquals(List.of(instruction1, instruction2), block.getInstructions());
 
         MachineInstruction instruction3 = new MachineInstruction("foo", List.of());
         MachineInstruction instruction4 = new MachineInstruction("bar", List.of());
@@ -30,8 +30,8 @@ class MachineBasicBlockTest {
         block.getInstructions().add(instruction3);
         block.getInstructions().add(instruction4);
         block.addBeforeTerminator(instruction5);
-        assertEquals(block.getTerminator(), 3);
-        assertEquals(block.getInstructions(), List.of(instruction1, instruction2, instruction5, instruction3, instruction4));
+        assertEquals(3, block.getTerminator());
+        assertEquals(List.of(instruction1, instruction2, instruction5, instruction3, instruction4), block.getInstructions());
     }
 
     @Test
@@ -110,7 +110,7 @@ class MachineBasicBlockTest {
         )));
 
         // phi uses should be {v0, w0, x1, y1}.
-        assertEquals(block.getPhiUses(), expected);
+        assertEquals(expected, block.getPhiUses());
     }
 
     @Test
@@ -147,6 +147,6 @@ class MachineBasicBlockTest {
                 new MachineOperandPair(r, MachineOperandKind.DEF)
         )));
         // phi definitions should be {v2, w2}.
-        assertEquals(block.getPhiDefs(), expected);
+        assertEquals(expected, block.getPhiDefs());
     }
 }

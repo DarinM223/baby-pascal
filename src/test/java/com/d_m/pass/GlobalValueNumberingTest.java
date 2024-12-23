@@ -121,7 +121,7 @@ class GlobalValueNumberingTest {
                   }
                 }
                 """;
-        assertEquals(writer.toString(), expected);
+        assertEquals(expected, writer.toString());
     }
 
     @Test
@@ -144,6 +144,6 @@ class GlobalValueNumberingTest {
                   }
                 }
                 """;
-        assertEquals(writer.toString(), expected);
+        assertEquals(expected, writer.toString());
     }
 }

@@ -50,6 +50,6 @@ class DominanceFrontierTest {
                 df(11) = [3]
                 df(15) = []
                 """;
-        assertEquals(result.toString(), expected);
+        assertEquals(expected, result.toString());
     }
 }

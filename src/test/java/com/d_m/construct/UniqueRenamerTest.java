@@ -90,7 +90,7 @@ class UniqueRenamerTest {
                 block -2 predecessors: [15] successors: [] {
                 }
                 """;
-        assertEquals(builder.toString(), expected);
+        assertEquals(expected, builder.toString());
     }
 
     @Test
@@ -141,7 +141,7 @@ class UniqueRenamerTest {
                 block -2 predecessors: [10] successors: [] {
                 }
                 """;
-        assertEquals(builder.toString(), expected);
+        assertEquals(expected, builder.toString());
     }
 
     private static List<Statement> prunedExample() {

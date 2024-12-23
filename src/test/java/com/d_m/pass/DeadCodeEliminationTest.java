@@ -123,6 +123,6 @@ class DeadCodeEliminationTest {
                   }
                 }
                 """;
-        assertEquals(writer.toString(), expected);
+        assertEquals(expected, writer.toString());
     }
 }

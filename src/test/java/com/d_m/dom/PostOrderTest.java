@@ -28,9 +28,9 @@ class PostOrderTest {
         block4.getPredecessors().add(block2);
         block4.getPredecessors().add(block3);
 
-        assertEquals(printTraversal(new PostOrder<SimpleBlock>().run(block1)), "[3, 1, 2, 0]");
-        assertEquals(printTraversal(new PostOrder<SimpleBlock>().run(block1).reversed()), "[0, 2, 1, 3]");
-        assertEquals(printTraversal(new PostOrder<SimpleBlock>().runBackwards(block4).reversed()), "[3, 2, 1, 0]");
+        assertEquals("[3, 1, 2, 0]", printTraversal(new PostOrder<SimpleBlock>().run(block1)));
+        assertEquals("[0, 2, 1, 3]", printTraversal(new PostOrder<SimpleBlock>().run(block1).reversed()));
+        assertEquals("[3, 2, 1, 0]", printTraversal(new PostOrder<SimpleBlock>().runBackwards(block4).reversed()));
     }
 
     static String printTraversal(Iterable<SimpleBlock> blocks) {

@@ -73,6 +73,6 @@ class BlockTest {
                   12 <- %1 <= 10
                 }
                 """;
-        assertEquals(builder.toString(), expected);
+        assertEquals(expected, builder.toString());
     }
 }

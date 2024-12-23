@@ -58,7 +58,7 @@ class LengauerTarjanTest {
                 idom(11) = 6
                 idom(15) = 4
                 """;
-        assertEquals(result.toString(), expected);
+        assertEquals(expected, result.toString());
     }
 
     @Test
@@ -89,7 +89,7 @@ class LengauerTarjanTest {
                 children(11) = []
                 children(15) = [-2]
                 """;
-        assertEquals(result.toString(), expected);
+        assertEquals(expected, result.toString());
     }
 
     @Test
@@ -114,6 +114,6 @@ class LengauerTarjanTest {
                 level(11) = 5
                 level(15) = 4
                 """;
-        assertEquals(result.toString(), expected);
+        assertEquals(expected, result.toString());
     }
 }

@@ -18,10 +18,10 @@ class InstructionTest {
         var two = Constants.get(2);
         Instruction instruction = new Instruction(null, new IntegerType(), Operator.ADD, List.of(one, two));
 
-        assertEquals(Iterables.size(instruction.operands()), 2);
+        assertEquals(2, Iterables.size(instruction.operands()));
         for (Use operand : instruction.operands()) {
-            assertEquals(Iterables.size(operand.getValue().uses()), 1);
-            assertEquals(operand.getValue().uses().iterator().next().getUser(), instruction);
+            assertEquals(1, Iterables.size(operand.getValue().uses()));
+            assertEquals(instruction, operand.getValue().uses().iterator().next().getUser());
         }
     }
 }

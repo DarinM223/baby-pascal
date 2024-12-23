@@ -101,7 +101,7 @@ class SsaConverterTest {
                   }
                 }
                 """;
-        assertEquals(writer.toString(), expected);
+        assertEquals(expected, writer.toString());
     }
 
     @Test
@@ -184,7 +184,7 @@ class SsaConverterTest {
                   }
                 }
                 """;
-        assertEquals(writer.toString(), expected);
+        assertEquals(expected, writer.toString());
     }
 
     @Test
@@ -220,6 +220,6 @@ class SsaConverterTest {
                   }
                 }
                 """;
-        assertEquals(writer.toString(), expected);
+        assertEquals(expected, writer.toString());
     }
 }

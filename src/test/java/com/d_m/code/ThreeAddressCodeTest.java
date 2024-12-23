@@ -46,6 +46,6 @@ class ThreeAddressCodeTest {
                 _ <- GOTO 16
                 result <- := 60
                 _ <- NOP()""";
-        assertEquals(resultString, expected);
+        assertEquals(expected, resultString);
     }
 }

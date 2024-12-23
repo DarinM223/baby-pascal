@@ -54,6 +54,6 @@ public class DataflowTest {
                 [{7}][{1}]{7}{1}{3, 7, 8}{3, 7, 8}
                 [{8}, {2}][{2}, {}]{8}{2}{3, 7, 8}{2, 3, 7, 8}
                 """;
-        assertEquals(builder.toString(), expected);
+        assertEquals(expected, builder.toString());
     }
 }
