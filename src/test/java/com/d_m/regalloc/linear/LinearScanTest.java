@@ -135,18 +135,18 @@ class LinearScanTest {
                   }
                   block l1 [l0] {
                     mov [1,USE], [%rax,DEF]
-                    mov [1,USE], [%rbx,DEF]
-                    mov [0,USE], [%rcx,DEF]
+                    mov [1,USE], [%rcx,DEF]
+                    mov [0,USE], [%rdx,DEF]
                     jmp [l2,USE]
                   }
                   block l2 [l1, l3] {
-                    mov [%rcx,USE], [%rdx,DEF]
-                    cmp [%rcx,USE], [100,USE], [%rcx,DEF]
+                    mov [%rdx,USE], [%rdi,DEF]
+                    cmp [%rdx,USE], [100,USE], [%rdx,DEF]
                     jl [l4,USE]
                     jmp [l5,USE]
                   }
                   block l4 [l2] {
-                    cmp [%rbx,USE], [20,USE], [%rbx,DEF]
+                    cmp [%rcx,USE], [20,USE], [%rcx,DEF]
                     jl [l6,USE]
                     jmp [l7,USE]
                   }
@@ -154,8 +154,8 @@ class LinearScanTest {
                     jmp [l8,USE]
                   }
                   block l6 [l4] {
-                    inc [%rdx,USE]
-                    mov [%rax,USE], [%rbx,DEF]
+                    inc [%rdi,USE]
+                    mov [%rax,USE], [%rcx,DEF]
                     jmp [l3,USE]
                   }
                   block l7 [l4] {
@@ -165,14 +165,14 @@ class LinearScanTest {
                     jmp [l10,USE]
                   }
                   block l3 [l6, l9] {
-                    mov [%rdx,USE], [%rcx,DEF]
+                    mov [%rdi,USE], [%rdx,DEF]
                     jmp [l2,USE]
                   }
                   block l9 [l7] {
-                    mov [%rdx,USE], [%rcx,DEF]
-                    add [%rcx,USE], [2,USE], [%rcx,DEF]
-                    mov [%rdx,USE], [%rbx,DEF]
-                    mov [%rcx,USE], [%rdx,DEF]
+                    mov [%rdi,USE], [%rdx,DEF]
+                    add [%rdx,USE], [2,USE], [%rdx,DEF]
+                    mov [%rdi,USE], [%rcx,DEF]
+                    mov [%rdx,USE], [%rdi,DEF]
                     jmp [l3,USE]
                   }
                   block l10 [l8] {
@@ -180,11 +180,11 @@ class LinearScanTest {
                 }
                 fibonacci {
                   block l11 [] {
-                    mov [%rdi,USE], [%rbx,DEF]
+                    mov [%rdi,USE], [slot8,DEF]
                     jmp [l12,USE]
                   }
                   block l12 [l11] {
-                    cmp [%rbx,USE], [1,USE], [%rbx,DEF]
+                    cmp [slot8,USE], [1,USE], [slot8,DEF]
                     jle [l13,USE]
                     jmp [l14,USE]
                   }
@@ -198,19 +198,19 @@ class LinearScanTest {
                     jmp [l17,USE]
                   }
                   block l16 [l14] {
-                    mov [%rbx,USE], [%rdi,DEF]
+                    mov [slot8,USE], [%rdi,DEF]
                     dec [%rdi,USE]
-                    call [fibonacci,USE], [%rax,DEF], [%rcx,DEF], [%rdx,DEF], [%rsi,DEF], [%rdi,DEF], [%r8,DEF], [%r9,DEF], [%r10,DEF], [%r11,DEF]
-                    mov [%rax,USE], [%rbp,DEF]
-                    sub [%rbx,USE], [2,USE], [%rbx,DEF]
-                    mov [%rbx,USE], [%rdi,DEF]
-                    call [fibonacci,USE], [%rax,DEF], [%rcx,DEF], [%rdx,DEF], [%rsi,DEF], [%rdi,DEF], [%r8,DEF], [%r9,DEF], [%r10,DEF], [%r11,DEF]
-                    add [%rbp,USE], [%rax,USE], [%rbp,DEF]
-                    mov [%rbp,USE], [%rbx,DEF]
+                    call [fibonacci,USE], [%rax,DEF], [%rcx,DEF], [%rdx,DEF], [%rsi,DEF], [slot24,DEF], [slot16,DEF], [%r9,DEF], [slot32,DEF], [%r11,DEF]
+                    mov [%rax,USE], [slot40,DEF]
+                    sub [slot8,USE], [2,USE], [slot8,DEF]
+                    mov [slot8,USE], [%rdi,DEF]
+                    call [fibonacci,USE], [%rax,DEF], [%rcx,DEF], [%rdx,DEF], [%rsi,DEF], [slot48,DEF], [slot56,DEF], [%r9,DEF], [%r8,DEF], [%r11,DEF]
+                    add [slot40,USE], [%rax,USE], [slot40,DEF]
+                    mov [slot40,USE], [slot8,DEF]
                     jmp [l15,USE]
                   }
                   block l17 [l15] {
-                    mov [%rbx,USE], [%rax,DEF]
+                    mov [slot8,USE], [%rax,DEF]
                   }
                 }
                 """;
