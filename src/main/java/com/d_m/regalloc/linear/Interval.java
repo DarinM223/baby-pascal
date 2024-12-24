@@ -55,6 +55,9 @@ public class Interval implements Comparable<Interval> {
     }
 
     public int getWeight() {
+        if (fixed) {
+            return Integer.MAX_VALUE;
+        }
         return weight;
     }
 

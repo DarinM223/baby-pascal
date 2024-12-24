@@ -116,7 +116,11 @@ public class LinearScan {
         }
         for (Interval interval : combined) {
             if (interval.overlaps(current) && interval.getReg() != null) {
-                weightMap.put(interval.getReg(), weightMap.get(interval.getReg()) + interval.getWeight());
+                if (interval.getWeight() == Integer.MAX_VALUE) {
+                    weightMap.put(interval.getReg(), Integer.MAX_VALUE);
+                } else {
+                    weightMap.put(interval.getReg(), weightMap.get(interval.getReg()) + interval.getWeight());
+                }
             }
         }
 
@@ -132,7 +136,7 @@ public class LinearScan {
             var it = active.iterator();
             while (it.hasNext()) {
                 Interval interval = it.next();
-                if (interval.getReg().equals(r)) {
+                if (interval.overlaps(current) && interval.getReg().equals(r)) {
                     interval.setReg(info.createStackSlot(8));
                     it.remove();
                     handled.add(interval);
@@ -141,7 +145,7 @@ public class LinearScan {
             it = inactive.iterator();
             while (it.hasNext()) {
                 Interval interval = it.next();
-                if (interval.getReg().equals(r)) {
+                if (interval.overlaps(current) && interval.getReg().equals(r)) {
                     interval.setReg(info.createStackSlot(8));
                     it.remove();
                     handled.add(interval);

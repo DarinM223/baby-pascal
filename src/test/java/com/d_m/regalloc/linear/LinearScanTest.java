@@ -200,13 +200,13 @@ class LinearScanTest {
                   block l16 [l14] {
                     mov [slot8,USE], [%rdi,DEF]
                     dec [%rdi,USE]
-                    call [fibonacci,USE], [%rax,DEF], [%rcx,DEF], [%rdx,DEF], [%rsi,DEF], [slot24,DEF], [slot16,DEF], [%r9,DEF], [slot32,DEF], [%r11,DEF]
-                    mov [%rax,USE], [slot40,DEF]
+                    call [fibonacci,USE], [%rax,DEF], [%rcx,DEF], [%rdx,DEF], [%rsi,DEF], [%rdi,DEF], [%r8,DEF], [%r9,DEF], [%r10,DEF], [%r11,DEF]
+                    mov [%rax,USE], [slot16,DEF]
                     sub [slot8,USE], [2,USE], [slot8,DEF]
                     mov [slot8,USE], [%rdi,DEF]
-                    call [fibonacci,USE], [%rax,DEF], [%rcx,DEF], [%rdx,DEF], [%rsi,DEF], [slot48,DEF], [slot56,DEF], [%r9,DEF], [%r8,DEF], [%r11,DEF]
-                    add [slot40,USE], [%rax,USE], [slot40,DEF]
-                    mov [slot40,USE], [slot8,DEF]
+                    call [fibonacci,USE], [%rax,DEF], [%rcx,DEF], [%rdx,DEF], [%rsi,DEF], [%rdi,DEF], [%r8,DEF], [%r9,DEF], [%r10,DEF], [%r11,DEF]
+                    add [slot16,USE], [%rax,USE], [slot16,DEF]
+                    mov [slot16,USE], [slot8,DEF]
                     jmp [l15,USE]
                   }
                   block l17 [l15] {
@@ -222,46 +222,46 @@ class LinearScanTest {
                   jmp l1
                 l1:
                   mov $1, %rax
-                  mov $1, %rbx
-                  mov $0, %rcx
+                  mov $1, %rcx
+                  mov $0, %rdx
                   jmp l2
                 l2:
-                  mov %rcx, %rdx
-                  cmp $100, %rcx
+                  mov %rdx, %rdi
+                  cmp $100, %rdx
                   jl l3
                   jmp l4
                 l3:
-                  cmp $20, %rbx
+                  cmp $20, %rcx
                   jl l5
                   jmp l6
                 l4:
                   jmp l7
                 l5:
-                  inc %rdx
-                  mov %rax, %rbx
+                  inc %rdi
+                  mov %rax, %rcx
                   jmp l8
                 l6:
                   jmp l9
                 l7:
                   jmp l10
                 l8:
-                  mov %rdx, %rcx
+                  mov %rdi, %rdx
                   jmp l2
                 l9:
-                  mov %rdx, %rcx
-                  add $2, %rcx
-                  mov %rdx, %rbx
-                  mov %rcx, %rdx
+                  mov %rdi, %rdx
+                  add $2, %rdx
+                  mov %rdi, %rcx
+                  mov %rdx, %rdi
                   jmp l8
                 l10:
                   ret
                 fibonacci:
-                  sub $8, %rsp
+                  sub $24, %rsp
                 l11:
-                  mov %rdi, %rbx
+                  mov %rdi, [8]
                   jmp l12
                 l12:
-                  cmp $1, %rbx
+                  cmp $1, [8]
                   jle l13
                   jmp l14
                 l13:
@@ -271,19 +271,19 @@ class LinearScanTest {
                 l15:
                   jmp l17
                 l16:
-                  mov %rbx, %rdi
+                  mov [8], %rdi
                   dec %rdi
                   call fibonacci
-                  mov %rax, %rbp
-                  sub $2, %rbx
-                  mov %rbx, %rdi
+                  mov %rax, [16]
+                  sub $2, [8]
+                  mov [8], %rdi
                   call fibonacci
-                  add %rax, %rbp
-                  mov %rbp, %rbx
+                  add %rax, [16]
+                  mov [16], [8]
                   jmp l15
                 l17:
-                  mov %rbx, %rax
-                  add $8, %rsp
+                  mov [8], %rax
+                  add $24, %rsp
                   ret
                 """;
         assertEquals(expected, finalAssembly.toString());

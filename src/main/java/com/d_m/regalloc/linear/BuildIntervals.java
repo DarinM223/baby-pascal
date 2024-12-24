@@ -134,7 +134,7 @@ public class BuildIntervals {
 
         // Add (start, end) to interval[i.n] merging adjacent ranges
         IntervalKey key = new IntervalKey(ni, virtualRegister);
-        Interval interval = intervalMap.computeIfAbsent(key, _ -> new Interval(0, virtualRegister, fixed != null));
+        Interval interval = intervalMap.computeIfAbsent(key, _ -> new Interval(1, virtualRegister, fixed != null));
         interval.addRange(new Range(start, end));
         if (fixed != null) {
             interval.setReg(new MachineOperand.Register(fixed));

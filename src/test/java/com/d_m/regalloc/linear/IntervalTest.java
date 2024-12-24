@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class IntervalTest {
     @Test
     void addRange() {
-        Interval interval = new Interval(0, 0, false);
+        Interval interval = new Interval(1, 0, false);
         interval.addRange(new Range(50, 70));
         interval.addRange(new Range(20, 60));
         interval.addRange(new Range(65, 80));
