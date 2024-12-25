@@ -258,10 +258,10 @@ class LinearScanTest {
                 fibonacci:
                   sub $24, %rsp
                 l11:
-                  mov %rdi, [8]
+                  mov %rdi, 16(%rsp)
                   jmp l12
                 l12:
-                  cmp $1, [8]
+                  cmp $1, 16(%rsp)
                   jle l13
                   jmp l14
                 l13:
@@ -271,18 +271,18 @@ class LinearScanTest {
                 l15:
                   jmp l17
                 l16:
-                  mov [8], %rdi
+                  mov 16(%rsp), %rdi
                   dec %rdi
                   call fibonacci
-                  mov %rax, [16]
-                  sub $2, [8]
-                  mov [8], %rdi
+                  mov %rax, 8(%rsp)
+                  sub $2, 16(%rsp)
+                  mov 16(%rsp), %rdi
                   call fibonacci
-                  add %rax, [16]
-                  mov [16], [8]
+                  add %rax, 8(%rsp)
+                  mov 8(%rsp), 16(%rsp)
                   jmp l15
                 l17:
-                  mov [8], %rax
+                  mov 16(%rsp), %rax
                   add $24, %rsp
                   ret
                 """;

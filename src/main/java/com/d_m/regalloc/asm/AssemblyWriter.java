@@ -110,8 +110,11 @@ public class AssemblyWriter {
                     throw new UnsupportedOperationException("Virtual register " + register.registerNumber() + " should have been eliminated");
             case MachineOperand.BasicBlock(MachineBasicBlock block) -> writer.write(blockLabel(block));
             case MachineOperand.Function(MachineFunction functionOperand) -> writer.write(functionOperand.getName());
-            // TODO: handle stack slots and memory addresses
-            case MachineOperand.StackSlot(int offset) -> writer.write("[" + offset + "]");
+            case MachineOperand.StackSlot(int offset) -> {
+                int relativeOffset = info.getStackOffset() - offset;
+                writer.write(relativeOffset + "(%rsp)");
+            }
+            // TODO: handle memory addresses
             default -> throw new UnsupportedOperationException("Unsupported operand " + operand);
         }
     }
