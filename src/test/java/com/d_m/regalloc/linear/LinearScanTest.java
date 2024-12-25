@@ -123,6 +123,7 @@ class LinearScanTest {
             scan.scan(free, intervals);
             scan.rewriteIntervalsWithRegisters();
             CleanupAssembly.removeRedundantMoves(machineFunction);
+            CleanupAssembly.expandMovesBetweenMemoryOperands(machineFunction, temp);
 
             machinePrinter.writeFunction(machineFunction);
             AssemblyWriter assemblyWriter = new AssemblyWriter(blockIdMap, finalAssembly, info, machineFunction);
@@ -206,7 +207,8 @@ class LinearScanTest {
                     mov [slot8,USE], [%rdi,DEF]
                     call [fibonacci,USE], [%rax,DEF], [%rcx,DEF], [%rdx,DEF], [%rsi,DEF], [%rdi,DEF], [%r8,DEF], [%r9,DEF], [%r10,DEF], [%r11,DEF]
                     add [slot16,USE], [%rax,USE], [slot16,DEF]
-                    mov [slot16,USE], [slot8,DEF]
+                    mov [slot16,USE], [%r10,DEF]
+                    mov [%r10,USE], [slot8,DEF]
                     jmp [l15,USE]
                   }
                   block l17 [l15] {
@@ -279,7 +281,8 @@ class LinearScanTest {
                   mov 16(%rsp), %rdi
                   call fibonacci
                   add %rax, 8(%rsp)
-                  mov 8(%rsp), 16(%rsp)
+                  mov 8(%rsp), %r10
+                  mov %r10, 16(%rsp)
                   jmp l15
                 l17:
                   mov 16(%rsp), %rax
