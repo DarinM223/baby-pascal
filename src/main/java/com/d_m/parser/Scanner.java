@@ -25,6 +25,9 @@ public class Scanner {
         keywords.put("and", TokenType.AND);
         keywords.put("or", TokenType.OR);
         keywords.put("not", TokenType.NOT);
+        keywords.put("true", TokenType.TRUE);
+        keywords.put("false", TokenType.FALSE);
+        keywords.put("void", TokenType.VOID);
     }
 
     private final String source;
@@ -55,6 +58,7 @@ public class Scanner {
         switch (c) {
             case '(' -> addToken(TokenType.LEFT_PAREN);
             case ')' -> addToken(TokenType.RIGHT_PAREN);
+            case ',' -> addToken(TokenType.COMMA);
             case ':' -> {
                 if (match('=')) {
                     addToken(TokenType.ASSIGN);

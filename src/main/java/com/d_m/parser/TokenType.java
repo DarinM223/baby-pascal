@@ -4,6 +4,7 @@ public enum TokenType {
     LEFT_PAREN, // '('
     RIGHT_PAREN, // ')'
     COLON, // ':'
+    COMMA, // ','
     ASSIGN, // ':='
     SEMICOLON, // ';'
     IDENTIFIER,
@@ -23,6 +24,9 @@ public enum TokenType {
     AND,
     OR,
     NOT,
+    TRUE,
+    FALSE,
+    VOID,
 
     EOF
 }
