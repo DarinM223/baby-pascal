@@ -7,6 +7,14 @@ public enum TokenType {
     COMMA, // ','
     ASSIGN, // ':='
     SEMICOLON, // ';'
+    PLUS, // '+'
+    MINUS, // '-'
+    EQ, // '='
+    NEQ, // '<>'
+    LT, // '<'
+    LE, // '<='
+    GT, // '>'
+    GE, // '>='
     IDENTIFIER,
     NUMBER,
     BEGIN,

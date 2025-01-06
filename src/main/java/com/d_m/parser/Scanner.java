@@ -66,6 +66,25 @@ public class Scanner {
                     addToken(TokenType.COLON);
                 }
             }
+            case '<' -> {
+                if (match('=')) {
+                    addToken(TokenType.LE);
+                } else if (match('>')) {
+                    addToken(TokenType.NEQ);
+                } else {
+                    addToken(TokenType.LT);
+                }
+            }
+            case '>' -> {
+                if (match('=')) {
+                    addToken(TokenType.GE);
+                } else {
+                    addToken(TokenType.GT);
+                }
+            }
+            case '+' -> addToken(TokenType.PLUS);
+            case '-' -> addToken(TokenType.MINUS);
+            case '=' -> addToken(TokenType.EQ);
             case ';' -> addToken(TokenType.SEMICOLON);
             case ' ', '\r', '\t' -> {
             }

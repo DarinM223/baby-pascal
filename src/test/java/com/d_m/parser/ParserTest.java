@@ -14,11 +14,11 @@ class ParserTest {
     void parseTypedName() {
         Scanner scanner = new Scanner("var hello : integer;");
         Parser parser = new Parser(scanner.scanTokens());
-        assertEquals(new TypedName("hello", new IntegerType()), parser.parseTypedName());
+        assertEquals(new TypedName("hello", new IntegerType()), parser.parseGlobalTypedName());
 
         scanner = new Scanner("var world : (integer, (integer, integer): boolean): void;");
         parser = new Parser(scanner.scanTokens());
-        assertEquals(new TypedName("world", new FunctionType(List.of(new IntegerType(), new FunctionType(List.of(new IntegerType(), new IntegerType()), Optional.of(new BooleanType()))), Optional.of(new VoidType()))), parser.parseTypedName());
+        assertEquals(new TypedName("world", new FunctionType(List.of(new IntegerType(), new FunctionType(List.of(new IntegerType(), new IntegerType()), Optional.of(new BooleanType()))), Optional.of(new VoidType()))), parser.parseGlobalTypedName());
     }
 
     @Test
