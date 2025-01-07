@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="More parsing for function declarations and statements">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Attempt parsing binary operator expressions with pratt parsing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/parser/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/parser/Scanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/parser/Scanner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/parser/TokenType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/parser/TokenType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/parser/ParserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/parser/ParserTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -29,11 +27,6 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="JavaAutoRunManager">
-    <enabled-run-configurations>
-      <run-configuration type="JUnit" name="ParserTest.parseBinaryExpression" />
-    </enabled-run-configurations>
   </component>
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="2" />
@@ -84,7 +77,7 @@
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default"
+    "settings.editor.selected.configurable": "project.propCompiler"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -127,7 +120,7 @@
       <command value="mvn clean compile exec:java" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.ParserTest.parseBinaryExpression">
+  <component name="RunManager" selected="JUnit.All tests">
     <configuration name="Gen" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.d_m.gen.Gen" />
       <module name="baby-pascal" />
@@ -265,14 +258,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00190" summary="Modifies machine operands to create new registers for definitions and otherwise reuse constrained registers">
-      <option name="closed" value="true" />
-      <created>1726851150893</created>
-      <option name="number" value="00190" />
-      <option name="presentableId" value="LOCAL-00190" />
-      <option name="project" value="LOCAL" />
-      <updated>1726851150893</updated>
     </task>
     <task id="LOCAL-00191" summary="Add a parallel move in the entry block of functions from constrained to unconstrained virtual registers">
       <option name="closed" value="true" />
@@ -658,14 +643,21 @@
       <option name="project" value="LOCAL" />
       <updated>1736127721029</updated>
     </task>
-    <option name="localTasksCounter" value="239" />
+    <task id="LOCAL-00239" summary="Attempt parsing binary operator expressions with pratt parsing">
+      <option name="closed" value="true" />
+      <created>1736282385474</created>
+      <option name="number" value="00239" />
+      <option name="presentableId" value="LOCAL-00239" />
+      <option name="project" value="LOCAL" />
+      <updated>1736282385474</updated>
+    </task>
+    <option name="localTasksCounter" value="240" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Make unhandled a set and modify interval comparison function so TreeSet doesn't truncate intervals" />
     <MESSAGE value="Start attempt at joining intervals before linear scan" />
     <MESSAGE value="Start refactor of interval to include multiple ranges" />
     <MESSAGE value="Use virtual register also as key in interval map to handle multiple output instructions" />
@@ -690,7 +682,8 @@
     <MESSAGE value="Start baby pascal scanner and parser" />
     <MESSAGE value="Parse types and typed names" />
     <MESSAGE value="More parsing for function declarations and statements" />
-    <option name="LAST_COMMIT_MESSAGE" value="More parsing for function declarations and statements" />
+    <MESSAGE value="Attempt parsing binary operator expressions with pratt parsing" />
+    <option name="LAST_COMMIT_MESSAGE" value="Attempt parsing binary operator expressions with pratt parsing" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

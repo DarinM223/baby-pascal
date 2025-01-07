@@ -53,6 +53,29 @@ class ParserTest {
                 ),
                 new IntExpression(4)
         );
-        assertEquals(expected, parser.parseBinaryExpression(0));
+        assertEquals(expected, parser.parseExpression());
+
+        scanner = new Scanner("1 + add(2 * 3 + 1, 5) - hello");
+        parser = new Parser(scanner.scanTokens());
+        expected = new BinaryOpExpression(
+                BinaryOp.SUB,
+                new BinaryOpExpression(
+                        BinaryOp.ADD,
+                        new IntExpression(1),
+                        new CallExpression(
+                                "add",
+                                List.of(
+                                        new BinaryOpExpression(
+                                                BinaryOp.ADD,
+                                                new BinaryOpExpression(BinaryOp.MUL, new IntExpression(2), new IntExpression(3)),
+                                                new IntExpression(1)
+                                        ),
+                                        new IntExpression(5)
+                                )
+                        )
+                ),
+                new VarExpression("hello")
+        );
+        assertEquals(expected, parser.parseExpression());
     }
 }

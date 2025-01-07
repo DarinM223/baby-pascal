@@ -126,11 +126,10 @@ public class Parser {
     }
 
     public Expression parseExpression() {
-        // TODO: fill this out
-        return null;
+        return parseBinaryExpression(0);
     }
 
-    public Expression parseBinaryExpression(int minBindingPower) {
+    private Expression parseBinaryExpression(int minBindingPower) {
         var token = advance();
         Expression lhs;
         if (token.type().equals(TokenType.LEFT_PAREN)) {
@@ -152,7 +151,17 @@ public class Parser {
                 case TRUE -> new BoolExpression(true);
                 case FALSE -> new BoolExpression(false);
                 case NUMBER -> new IntExpression((int) token.literal());
-                default -> new VarExpression(token.lexeme());
+                default -> {
+                    if (peek().type().equals(TokenType.LEFT_PAREN)) {
+                        List<Expression> args = new ArrayList<>();
+                        while (advance().type() != TokenType.RIGHT_PAREN) {
+                            args.add(parseBinaryExpression(0));
+                        }
+                        yield new CallExpression(token.lexeme(), args);
+                    } else {
+                        yield new VarExpression(token.lexeme());
+                    }
+                }
             };
         }
 
@@ -172,10 +181,8 @@ public class Parser {
                 } else {
                     return lhs;
                 }
-            } else if (token.type() == TokenType.EOF) {
-                return lhs;
             } else {
-                throw new ParseError("Bad token: " + token);
+                return lhs;
             }
         }
     }
