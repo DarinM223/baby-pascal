@@ -130,6 +130,56 @@ public class Parser {
         return null;
     }
 
+    public Expression parseBinaryExpression(int minBindingPower) {
+        var token = advance();
+        Expression lhs;
+        if (token.type().equals(TokenType.LEFT_PAREN)) {
+            lhs = parseBinaryExpression(0);
+            consume(TokenType.RIGHT_PAREN, "Expected right parenthesis in expression");
+        } else if (token.type().isOp()) {
+            // This is a prefix op
+            var rbp = token.type().prefixBp();
+            var rhs = parseBinaryExpression(rbp);
+            lhs = switch (token.type()) {
+                case PLUS -> rhs;
+                case MINUS -> new BinaryOpExpression(BinaryOp.SUB, new IntExpression(0), rhs);
+                case NOT -> new UnaryOpExpression(UnaryOp.NOT, rhs);
+                default -> throw new ParseError("Expected prefix token: " + token);
+            };
+        } else {
+            // If true or false, then Boolean, if number, then integer, otherwise if identifier, then var.
+            lhs = switch (token.type()) {
+                case TRUE -> new BoolExpression(true);
+                case FALSE -> new BoolExpression(false);
+                case NUMBER -> new IntExpression((int) token.literal());
+                default -> new VarExpression(token.lexeme());
+            };
+        }
+
+        while (true) {
+            token = peek();
+            if (token.type().isOp()) {
+                var infixBp = token.type().infixBp();
+                if (infixBp.isPresent()) {
+                    TokenType.BindingPower bindingPower = infixBp.get();
+                    if (bindingPower.left() < minBindingPower) {
+                        return lhs;
+                    }
+
+                    advance();
+                    Expression rhs = parseBinaryExpression(bindingPower.right());
+                    lhs = new BinaryOpExpression(token.type().toBinaryOp(), lhs, rhs);
+                } else {
+                    return lhs;
+                }
+            } else if (token.type() == TokenType.EOF) {
+                return lhs;
+            } else {
+                throw new ParseError("Bad token: " + token);
+            }
+        }
+    }
+
     private boolean match(TokenType... types) {
         for (TokenType type : types) {
             if (check(type)) {

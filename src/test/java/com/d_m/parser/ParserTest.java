@@ -39,4 +39,20 @@ class ParserTest {
         parser = new Parser(scanner.scanTokens());
         assertEquals(new FunctionType(List.of(new BooleanType(), new BooleanType()), Optional.of(new IntegerType())), parser.parseType());
     }
+
+    @Test
+    void parseBinaryExpression() {
+        Scanner scanner = new Scanner("1 + 2 * 3 - 4");
+        Parser parser = new Parser(scanner.scanTokens());
+        Expression expected = new BinaryOpExpression(
+                BinaryOp.SUB,
+                new BinaryOpExpression(
+                        BinaryOp.ADD,
+                        new IntExpression(1),
+                        new BinaryOpExpression(BinaryOp.MUL, new IntExpression(2), new IntExpression(3))
+                ),
+                new IntExpression(4)
+        );
+        assertEquals(expected, parser.parseBinaryExpression(0));
+    }
 }

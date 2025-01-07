@@ -82,6 +82,7 @@ public class Scanner {
                     addToken(TokenType.GT);
                 }
             }
+            case '*' -> addToken(TokenType.MUL);
             case '+' -> addToken(TokenType.PLUS);
             case '-' -> addToken(TokenType.MINUS);
             case '=' -> addToken(TokenType.EQ);
