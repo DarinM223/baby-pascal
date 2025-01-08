@@ -105,10 +105,23 @@ public class Parser {
 
     public Statement parseStatement() {
         Token token = advance();
+        // TODO: if statement parsing uses begin/end blocks but this can be verbose.
+        // In the future, it should be more like Pascal's normal if/else statements.
         if (token.type().equals(TokenType.IF)) {
-            return null;
+            Expression conditional = parseExpression();
+            consume(TokenType.THEN, "Expected then");
+            List<Statement> then = parseStatements();
+            List<Statement> els = new ArrayList<>();
+            if (peek().type() == TokenType.ELSE) {
+                advance();
+                els = parseStatements();
+            }
+            return new IfStatement(conditional, then, els);
         } else if (token.type().equals(TokenType.WHILE)) {
-            return null;
+            Expression conditional = parseExpression();
+            consume(TokenType.DO, "Expected do");
+            List<Statement> body = parseStatements();
+            return new WhileStatement(conditional, body);
         } else if (peek().type().equals(TokenType.ASSIGN)) {
             advance();
             Expression expression = parseExpression();
@@ -185,16 +198,6 @@ public class Parser {
                 return lhs;
             }
         }
-    }
-
-    private boolean match(TokenType... types) {
-        for (TokenType type : types) {
-            if (check(type)) {
-                advance();
-                return true;
-            }
-        }
-        return false;
     }
 
     private void consume(TokenType type, String message) {

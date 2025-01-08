@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Attempt parsing binary operator expressions with pratt parsing">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Parse call expressions">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/parser/Parser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/parser/ParserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/parser/ParserTest.java" afterDir="false" />
@@ -258,14 +258,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00191" summary="Add a parallel move in the entry block of functions from constrained to unconstrained virtual registers">
-      <option name="closed" value="true" />
-      <created>1726860109492</created>
-      <option name="number" value="00191" />
-      <option name="presentableId" value="LOCAL-00191" />
-      <option name="project" value="LOCAL" />
-      <updated>1726860109492</updated>
     </task>
     <task id="LOCAL-00192" summary="Remove PCOPY and refactor codegen test">
       <option name="closed" value="true" />
@@ -651,14 +643,21 @@
       <option name="project" value="LOCAL" />
       <updated>1736282385474</updated>
     </task>
-    <option name="localTasksCounter" value="240" />
+    <task id="LOCAL-00240" summary="Parse call expressions">
+      <option name="closed" value="true" />
+      <created>1736289765301</created>
+      <option name="number" value="00240" />
+      <option name="presentableId" value="LOCAL-00240" />
+      <option name="project" value="LOCAL" />
+      <updated>1736289765301</updated>
+    </task>
+    <option name="localTasksCounter" value="241" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Start attempt at joining intervals before linear scan" />
     <MESSAGE value="Start refactor of interval to include multiple ranges" />
     <MESSAGE value="Use virtual register also as key in interval map to handle multiple output instructions" />
     <MESSAGE value="Fix some bugs in the live interval building" />
@@ -683,7 +682,8 @@
     <MESSAGE value="Parse types and typed names" />
     <MESSAGE value="More parsing for function declarations and statements" />
     <MESSAGE value="Attempt parsing binary operator expressions with pratt parsing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Attempt parsing binary operator expressions with pratt parsing" />
+    <MESSAGE value="Parse call expressions" />
+    <option name="LAST_COMMIT_MESSAGE" value="Parse call expressions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

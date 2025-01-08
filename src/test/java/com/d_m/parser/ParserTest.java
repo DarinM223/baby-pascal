@@ -78,4 +78,62 @@ class ParserTest {
         );
         assertEquals(expected, parser.parseExpression());
     }
+
+    @Test
+    void parseIfStatement() {
+        String source = """
+                if a < 1 then
+                begin
+                    a := a + 1;
+                    print(a);
+                end
+                else
+                begin
+                    if a >= 0 then
+                    begin
+                        print(a);
+                    end
+                end
+                """;
+        Scanner scanner = new Scanner(source);
+        Parser parser = new Parser(scanner.scanTokens());
+        Statement statement = parser.parseStatement();
+        Statement expected = new IfStatement(
+                new BinaryOpExpression(BinaryOp.LT, new VarExpression("a"), new IntExpression(1)),
+                List.of(
+                        new AssignStatement("a", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("a"), new IntExpression(1))),
+                        new CallStatement("print", List.of(new VarExpression("a")))
+                ),
+                List.of(
+                        new IfStatement(
+                                new BinaryOpExpression(BinaryOp.GE, new VarExpression("a"), new IntExpression(0)),
+                                List.of(new CallStatement("print", List.of(new VarExpression("a")))),
+                                List.of()
+                        )
+                )
+        );
+        assertEquals(expected, statement);
+    }
+
+    @Test
+    void parseWhileStatement() {
+        String source = """
+                while a < 11 do
+                begin
+                    a := a + 1;
+                    print(a);
+                end
+                """;
+        Scanner scanner = new Scanner(source);
+        Parser parser = new Parser(scanner.scanTokens());
+        Statement statement = parser.parseStatement();
+        Statement expected = new WhileStatement(
+                new BinaryOpExpression(BinaryOp.LT, new VarExpression("a"), new IntExpression(11)),
+                List.of(
+                        new AssignStatement("a", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("a"), new IntExpression(1))),
+                        new CallStatement("print", List.of(new VarExpression("a")))
+                )
+        );
+        assertEquals(expected, statement);
+    }
 }
