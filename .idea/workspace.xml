@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Parse call expressions">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add simplistic parsing of if and while statements">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/parser/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/parser/ParserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/parser/ParserTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/common/CleanupAssembly.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/common/CleanupAssembly.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,6 +99,7 @@
       <recent name="com.d_m.ast" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.d_m.regalloc" />
       <recent name="com.d_m.select.instr" />
       <recent name="com.d_m.select" />
       <recent name="com.d_m.code" />
@@ -258,14 +260,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00192" summary="Remove PCOPY and refactor codegen test">
-      <option name="closed" value="true" />
-      <created>1726934673767</created>
-      <option name="number" value="00192" />
-      <option name="presentableId" value="LOCAL-00192" />
-      <option name="project" value="LOCAL" />
-      <updated>1726934673768</updated>
     </task>
     <task id="LOCAL-00193" summary="Start stack slot handling">
       <option name="closed" value="true" />
@@ -651,14 +645,21 @@
       <option name="project" value="LOCAL" />
       <updated>1736289765301</updated>
     </task>
-    <option name="localTasksCounter" value="241" />
+    <task id="LOCAL-00241" summary="Add simplistic parsing of if and while statements">
+      <option name="closed" value="true" />
+      <created>1736294819002</created>
+      <option name="number" value="00241" />
+      <option name="presentableId" value="LOCAL-00241" />
+      <option name="project" value="LOCAL" />
+      <updated>1736294819002</updated>
+    </task>
+    <option name="localTasksCounter" value="242" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Start refactor of interval to include multiple ranges" />
     <MESSAGE value="Use virtual register also as key in interval map to handle multiple output instructions" />
     <MESSAGE value="Fix some bugs in the live interval building" />
     <MESSAGE value="Fix some bugs in joining intervals and handle case where mov operand has a physical register constraint" />
@@ -683,7 +684,8 @@
     <MESSAGE value="More parsing for function declarations and statements" />
     <MESSAGE value="Attempt parsing binary operator expressions with pratt parsing" />
     <MESSAGE value="Parse call expressions" />
-    <option name="LAST_COMMIT_MESSAGE" value="Parse call expressions" />
+    <MESSAGE value="Add simplistic parsing of if and while statements" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add simplistic parsing of if and while statements" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

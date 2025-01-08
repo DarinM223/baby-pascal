@@ -20,6 +20,11 @@ public class Parser {
         this.tokens = tokens;
     }
 
+    public Program<List<Statement>> parseProgram() {
+        // TODO: fill this out
+        return null;
+    }
+
     public TypedName parseGlobalTypedName() {
         consume(TokenType.VAR, "Expected var in typed name");
         TypedName name = parseTypedName();
