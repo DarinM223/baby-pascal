@@ -21,8 +21,16 @@ public class Parser {
     }
 
     public Program<List<Statement>> parseProgram() {
-        // TODO: fill this out
-        return null;
+        List<TypedName> typedNames = new ArrayList<>();
+        List<Declaration<List<Statement>>> declarations = new ArrayList<>();
+        while (peek().type() == TokenType.VAR) {
+            typedNames.add(parseGlobalTypedName());
+        }
+        while (peek().type() != TokenType.BEGIN) {
+            declarations.add(parseFunctionDeclaration());
+        }
+        List<Statement> body = parseStatements();
+        return new Program<>(typedNames, declarations, body);
     }
 
     public TypedName parseGlobalTypedName() {

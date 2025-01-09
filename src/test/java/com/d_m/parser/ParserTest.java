@@ -136,4 +136,50 @@ class ParserTest {
         );
         assertEquals(expected, statement);
     }
+
+    @Test
+    void parseProgram() {
+        String source = """
+                var hello : integer;
+                
+                function add(a : integer, b : integer) : integer;
+                begin
+                    add := a + b;
+                end
+                
+                procedure foo(a : integer);
+                begin
+                    print(a);
+                end
+                
+                begin
+                    result := add(1, 2);
+                    foo(result);
+                end
+                """;
+        Scanner scanner = new Scanner(source);
+        Parser parser = new Parser(scanner.scanTokens());
+        Program<List<Statement>> program = parser.parseProgram();
+        List<Declaration<List<Statement>>> expectedDeclarations = List.of(
+                new FunctionDeclaration<>(
+                        "add",
+                        List.of(new TypedName("a", new IntegerType()), new TypedName("b", new IntegerType())),
+                        Optional.of(new IntegerType()),
+                        List.of(new AssignStatement("add", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("a"), new VarExpression("b"))))
+                ),
+                new FunctionDeclaration<>(
+                        "foo",
+                        List.of(new TypedName("a", new IntegerType())),
+                        Optional.empty(),
+                        List.of(new CallStatement("print", List.of(new VarExpression("a"))))
+                )
+        );
+        List<Statement> expectedBody = List.of(
+                new AssignStatement("result", new CallExpression("add", List.of(new IntExpression(1), new IntExpression(2)))),
+                new CallStatement("foo", List.of(new VarExpression("result")))
+        );
+        assertEquals(List.of(new TypedName("hello", new IntegerType())), program.getGlobals());
+        assertEquals(expectedDeclarations, program.getDeclarations());
+        assertEquals(expectedBody, program.getMain());
+    }
 }

@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Program<T> {
-    private List<TypedName> globals;
-    private List<Declaration<T>> declarations;
-    private T main;
+    private final List<TypedName> globals;
+    private final List<Declaration<T>> declarations;
+    private final T main;
 
     public Program(List<TypedName> globals, List<Declaration<T>> declarations, T main) {
         this.globals = globals;
