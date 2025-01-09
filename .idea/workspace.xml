@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start main function that compiles a file passed in as an argument">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Add method and tests for parsing program">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Program.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Program.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/parser/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/parser/ParserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/parser/ParserTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -260,14 +258,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00194" summary="Modify README.md">
-      <option name="closed" value="true" />
-      <created>1727036708915</created>
-      <option name="number" value="00194" />
-      <option name="presentableId" value="LOCAL-00194" />
-      <option name="project" value="LOCAL" />
-      <updated>1727036708916</updated>
     </task>
     <task id="LOCAL-00195" summary="Start building live intervals">
       <option name="closed" value="true" />
@@ -653,14 +643,21 @@
       <option name="project" value="LOCAL" />
       <updated>1736353030178</updated>
     </task>
-    <option name="localTasksCounter" value="243" />
+    <task id="LOCAL-00243" summary="Add method and tests for parsing program">
+      <option name="closed" value="true" />
+      <created>1736440939799</created>
+      <option name="number" value="00243" />
+      <option name="presentableId" value="LOCAL-00243" />
+      <option name="project" value="LOCAL" />
+      <updated>1736440939800</updated>
+    </task>
+    <option name="localTasksCounter" value="244" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix some bugs in the live interval building" />
     <MESSAGE value="Fix some bugs in joining intervals and handle case where mov operand has a physical register constraint" />
     <MESSAGE value="Cleanup redundant moves" />
     <MESSAGE value="Attempt debugging why phi intervals are not being joined properly" />
@@ -685,7 +682,8 @@
     <MESSAGE value="Parse call expressions" />
     <MESSAGE value="Add simplistic parsing of if and while statements" />
     <MESSAGE value="Start main function that compiles a file passed in as an argument" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start main function that compiles a file passed in as an argument" />
+    <MESSAGE value="Add method and tests for parsing program" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add method and tests for parsing program" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

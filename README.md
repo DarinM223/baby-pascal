@@ -14,13 +14,18 @@ Below is a listing of the packages in the project in the order that the compiler
 ### com.d_m.ast
 
 Defines the AST (abstract syntax tree)
-for [baby pascal](https://pauillac.inria.fr/~maranget/X/compil/poly/interprete.html), which
+for [Baby Pascal](https://pauillac.inria.fr/~maranget/X/compil/poly/interprete.html), which
 is a simplified variant of Pascal for teaching purposes.
 
 Expressions and statements have a `check()` method which, given a mapping of names to types and names to function types,
 throws a `CheckException` if the types do not match. The type checking is simple recursion and there is no type
 inference
 because type checking is not the goal of this project.
+
+### com.d_m.parser
+
+Contains a recursive descent Pratt parser for parsing code in a Pascal-like syntax into the
+Baby Pascal AST. Pratt parsing is covered by [this tutorial](https://matklad.github.io/2020/04/13/simple-but-powerful-pratt-parsing.html).
 
 ### com.d_m.util
 
