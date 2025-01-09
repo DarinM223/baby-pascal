@@ -59,15 +59,15 @@ public class Main {
 
         // Run optimization passes
         // TODO: use something like PassManager here instead.
-        FunctionPass<Boolean> deadCode = new DeadCodeElimination();
-        FunctionPass<Boolean> constPropagation = new ConstantPropagation();
+//        FunctionPass<Boolean> deadCode = new DeadCodeElimination();
+//        FunctionPass<Boolean> constPropagation = new ConstantPropagation();
         FunctionPass<Boolean> critEdgeSplit = new CriticalEdgeSplitting();
-        boolean changed1, changed2, changed3;
-        do {
-            changed1 = deadCode.runModule(module);
-            changed2 = critEdgeSplit.runModule(module);
-            changed3 = constPropagation.runModule(module);
-        } while (changed1 || changed2 || changed3);
+//        boolean changed1, changed2, changed3;
+//        do {
+//            changed1 = deadCode.runModule(module);
+//            changed2 = critEdgeSplit.runModule(module);
+//            changed3 = constPropagation.runModule(module);
+//        } while (changed1 || changed2 || changed3);
 
         critEdgeSplit.runModule(module);
         ISA isa = new X86_64_ISA();

@@ -26,9 +26,14 @@ public class SsaConverter {
     }
 
     public Module convertProgram(Program<com.d_m.cfg.Block> program) {
-        Module result = new Module("main", new ArrayList<>(), symbol);
+        Module result = new Module("main", new ArrayList<>(), new ArrayList<>(), symbol);
 
-        // TODO: ignoring globals for now
+        // Fill in starting globals in the environment.
+        for (TypedName name : program.getGlobals()) {
+            Global global = new Global(name.name(), name.type(), result);
+            env.put(new NameAddress(symbol.getSymbol(name.name())), global);
+            result.getGlobals().add(global);
+        }
         FunctionDeclaration<com.d_m.cfg.Block> mainDecl = new FunctionDeclaration<>("main", List.of(), Optional.empty(), program.getMain());
 
         initializeFunctionDeclaration(result, mainDecl);

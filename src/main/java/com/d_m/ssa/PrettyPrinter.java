@@ -177,7 +177,7 @@ public class PrettyPrinter {
         out.write(getName(function));
     }
 
-    public void writeArgument(Argument arg) throws IOException {
+    public void writeArgument(Value arg) throws IOException {
         out.write(getName(arg));
         out.write(" : ");
         writeType(arg.getType());
@@ -187,7 +187,7 @@ public class PrettyPrinter {
         out.write(getName(instruction));
     }
 
-    public void writeArgumentUse(Argument argument) throws IOException {
+    public void writeArgumentUse(Value argument) throws IOException {
         out.write(getName(argument));
     }
 

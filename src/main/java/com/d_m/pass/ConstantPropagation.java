@@ -294,9 +294,9 @@ public class ConstantPropagation extends BooleanFunctionPass {
                     }
                 }
             }
-            case NOP, STORE, RETURN -> {
+            case NOP, STORE, RETURN, PROJ -> {
             }
-            case COPYFROMREG, COPYTOREG, PROJ ->
+            case COPYFROMREG, COPYTOREG ->
                     throw new UnsupportedOperationException("Unimplemented case: " + instruction.getOperator());
         }
     }
