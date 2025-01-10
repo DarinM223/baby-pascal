@@ -50,7 +50,7 @@ public class ConstantPropagation extends BooleanFunctionPass {
                 continue;
             }
             changes |= removeSingleArgumentPhis(block);
-            if (isEmptyBlock(block)) {
+            if (isEmptyBlock(block) && !block.equals(block.getExit())) {
                 changes = true;
                 deleteEmptyBlock(block);
                 blocksToRemove.add(block);

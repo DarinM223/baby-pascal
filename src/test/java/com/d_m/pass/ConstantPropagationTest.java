@@ -75,7 +75,9 @@ class ConstantPropagationTest {
                     }
                     block l3 [l1] {
                       %4 <- NOP()
-                      %5 <- GOTO()
+                      %5 <- GOTO() [l4]
+                    }
+                    block l4 [l3] {
                     }
                   }
                 }
