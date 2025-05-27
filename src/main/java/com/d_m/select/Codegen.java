@@ -228,6 +228,7 @@ public class Codegen {
             case ConstantInt constantInt -> new MachineOperand.Immediate(constantInt.getValue());
             case Function function -> new MachineOperand.Function(functionMap.get(function));
             case Block block -> new MachineOperand.BasicBlock(blockMap.get(block));
+            case Global global -> new MachineOperand.Global(global.getName());
             default -> throw new IllegalStateException("Unexpected value: " + constant);
         };
     }

@@ -30,4 +30,7 @@ public sealed interface MachineOperand {
 
     record Function(MachineFunction function) implements MachineOperand {
     }
+
+    record Global(String label) implements MachineOperand {
+    }
 }

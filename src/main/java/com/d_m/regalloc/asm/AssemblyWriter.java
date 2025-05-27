@@ -114,6 +114,7 @@ public class AssemblyWriter {
                 int relativeOffset = info.getStackOffset() - offset;
                 writer.write(relativeOffset + "(%rsp)");
             }
+            case MachineOperand.Global(String label) -> writer.write(label);
             // TODO: handle memory addresses
             default -> throw new UnsupportedOperationException("Unsupported operand " + operand);
         }

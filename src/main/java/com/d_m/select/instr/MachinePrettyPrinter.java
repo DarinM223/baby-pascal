@@ -87,6 +87,7 @@ public class MachinePrettyPrinter {
         switch (operand) {
             case MachineOperand.BasicBlock(MachineBasicBlock block) -> out.write("l" + getBlockId(block));
             case MachineOperand.Function(MachineFunction function) -> out.write(function.getName());
+            case MachineOperand.Global(String label) -> out.write(label);
             case MachineOperand.Immediate(int immediate) -> out.write(Integer.toString(immediate));
             case MachineOperand.MemoryAddress(Register base, Register index, int scale, int displacement) ->
                     out.write("[" + base + " + " + index + " * " + scale + " + " + displacement + "]");

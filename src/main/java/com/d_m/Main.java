@@ -122,7 +122,7 @@ public class Main {
         } catch (Exception e) {
             automata = new DefaultAutomata();
         }
-        try (Writer writer = new FileWriter(outputPath)) {
+        try (Writer writer = new FileWriter(outputPath + ".s")) {
             compileFile(inputPath, automata, writer);
         }
     }

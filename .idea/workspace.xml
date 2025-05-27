@@ -5,8 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fix constant propagation to not delete the exit block of a function">
+      <change afterPath="$PROJECT_DIR$/examples/funswap.pas" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/ConstantPropagationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/ConstantPropagationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/asm/AssemblyWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/asm/AssemblyWriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineOperand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineOperand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachinePrettyPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachinePrettyPrinter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Global.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Global.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,51 +43,51 @@
   &quot;associatedIndex&quot;: 6
 }</component>
   <component name="ProjectId" id="2dPYgNbikAZxKnPRYHFlSV3j7U1" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Gen.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.All tests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BlockTest.createBlocks.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BlockTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BuilderTest.convertFunction.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.DataflowTest.genKill.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DataflowTest.genKillAndLiveness.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IntervalTest.addRange.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.LengauerTarjanTest.idom.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.MachineBasicBlockTest.addBeforeTerminator.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.MachineBasicBlockTest.getPhiUses.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ParserTest.parseBinaryExpression.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.RangeTest.overlaps.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.SSADAGTest.postorder.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ThreeAddressCodeTest.normalize.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UniqueRenamerTest.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [clean,compile,exec:java].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [org.codehaus.mojo:exec-maven-plugin:3.1.0:java].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/d/Documents/java/baby-pascal/target/classes&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propCompiler&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Fibonacci.executor": "Run",
+    "Application.Gen.executor": "Run",
+    "Application.Main.executor": "Run",
+    "JUnit.All tests.executor": "Run",
+    "JUnit.BlockTest.createBlocks.executor": "Run",
+    "JUnit.BlockTest.executor": "Run",
+    "JUnit.BuilderTest.convertFunction.executor": "Debug",
+    "JUnit.DataflowTest.genKill.executor": "Run",
+    "JUnit.DataflowTest.genKillAndLiveness.executor": "Run",
+    "JUnit.IntervalTest.addRange.executor": "Run",
+    "JUnit.LengauerTarjanTest.idom.executor": "Run",
+    "JUnit.MachineBasicBlockTest.addBeforeTerminator.executor": "Run",
+    "JUnit.MachineBasicBlockTest.getPhiUses.executor": "Run",
+    "JUnit.ParserTest.parseBinaryExpression.executor": "Debug",
+    "JUnit.RangeTest.overlaps.executor": "Run",
+    "JUnit.SSADAGTest.postorder.executor": "Run",
+    "JUnit.ThreeAddressCodeTest.normalize.executor": "Run",
+    "JUnit.UniqueRenamerTest.executor": "Run",
+    "Maven.baby-pascal [clean,compile,exec:java].executor": "Run",
+    "Maven.baby-pascal [clean].executor": "Run",
+    "Maven.baby-pascal [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor": "Run",
+    "Maven.baby-pascal [org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile].executor": "Run",
+    "Maven.baby-pascal [org.codehaus.mojo:exec-maven-plugin:3.1.0:java].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "master",
+    "ignore.preview.features.used": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/d/Documents/mirrored/baby-pascal",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "editor.preferences.tabs"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.d_m.ast" />
@@ -121,13 +130,13 @@
     </option>
   </component>
   <component name="RunManager" selected="JUnit.All tests">
-    <configuration name="Gen" type="Application" factoryName="Application" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.d_m.gen.Gen" />
+    <configuration name="Fibonacci" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.d_m.Main" />
       <module name="baby-pascal" />
-      <option name="PROGRAM_PARAMETERS" value="rules/x86_64.rule" />
+      <option name="PROGRAM_PARAMETERS" value="examples/fibonacci.pas examples/fibonacci" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.d_m.gen.*" />
+          <option name="PATTERN" value="com.d_m.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -135,13 +144,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.d_m.Main" />
+    <configuration name="Gen" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.d_m.gen.Gen" />
       <module name="baby-pascal" />
-      <option name="PROGRAM_PARAMETERS" value="examples/fibonacci.pas examples/fibonacci" />
+      <option name="PROGRAM_PARAMETERS" value="rules/x86_64.rule" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.d_m.*" />
+          <option name="PATTERN" value="com.d_m.gen.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -246,22 +255,22 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.Main" />
       <item itemvalue="Application.Gen" />
+      <item itemvalue="Application.Fibonacci" />
       <item itemvalue="JUnit.All tests" />
-      <item itemvalue="JUnit.ParserTest.parseBinaryExpression" />
       <item itemvalue="JUnit.IntervalTest.addRange" />
       <item itemvalue="JUnit.MachineBasicBlockTest.addBeforeTerminator" />
       <item itemvalue="JUnit.MachineBasicBlockTest.getPhiUses" />
+      <item itemvalue="JUnit.ParserTest.parseBinaryExpression" />
       <item itemvalue="JUnit.RangeTest.overlaps" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ParserTest.parseBinaryExpression" />
-        <item itemvalue="JUnit.IntervalTest.addRange" />
         <item itemvalue="JUnit.RangeTest.overlaps" />
+        <item itemvalue="JUnit.ParserTest.parseBinaryExpression" />
         <item itemvalue="JUnit.MachineBasicBlockTest.getPhiUses" />
         <item itemvalue="JUnit.MachineBasicBlockTest.addBeforeTerminator" />
+        <item itemvalue="JUnit.IntervalTest.addRange" />
       </list>
     </recent_temporary>
   </component>
@@ -670,6 +679,7 @@
     <servers />
   </component>
   <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.s" />
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
@@ -726,14 +736,9 @@
           <option name="timeStamp" value="171" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineFunction.java</url>
-          <line>21</line>
-          <option name="timeStamp" value="172" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/Main.java</url>
-          <line>72</line>
-          <option name="timeStamp" value="175" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java</url>
+          <line>159</line>
+          <option name="timeStamp" value="190" />
         </line-breakpoint>
         <breakpoint type="java-exception">
           <properties class="java.lang.NullPointerException" package="java.lang">
@@ -761,11 +766,13 @@
         <PinnedItemInfo parentTag="com.d_m.cfg.Block" memberName="successors" />
         <PinnedItemInfo parentTag="java.util.HashMap$Node" memberName="value" />
         <PinnedItemInfo parentTag="com.d_m.regalloc.linear.Interval" memberName="virtualReg" />
+        <PinnedItemInfo parentTag="com.d_m.select.instr.MachineBasicBlock" memberName="id" />
         <PinnedItemInfo parentTag="com.d_m.ssa.Instruction" memberName="id" />
         <PinnedItemInfo parentTag="com.d_m.cfg.Block" memberName="code" />
         <PinnedItemInfo parentTag="com.google.common.collect.ArrayListMultimap" memberName="map" />
         <PinnedItemInfo parentTag="com.d_m.select.DAGTile" memberName="edgeNodes" />
         <PinnedItemInfo parentTag="com.d_m.ssa.Instruction" memberName="operator" />
+        <PinnedItemInfo parentTag="com.d_m.select.instr.MachineBasicBlock" memberName="successors" />
       </pinned-members>
     </pin-to-top-manager>
     <watches-manager>

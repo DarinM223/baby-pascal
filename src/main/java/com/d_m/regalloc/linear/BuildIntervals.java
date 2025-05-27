@@ -115,7 +115,13 @@ public class BuildIntervals {
                                     Register.Virtual(int n, _, RegisterConstraint.ReuseOperand(_))
                             ) when !live.get(n) ->
                                     addRange(n, instruction, block, numbering.getInstructionNumber(instruction) + 1);
-                            case MachineOperand.Register(Register.Virtual(int n, _, _)) -> live.clear(n);
+                            case MachineOperand.Register(Register.Virtual(int n, _, _)) -> {
+                                if (!live.get(n)) {
+                                    addRange(n, instruction, block, numbering.getInstructionNumber(instruction) + 1);
+                                } else {
+                                    live.clear(n);
+                                }
+                            }
                             default -> {
                             }
                         }
