@@ -41,4 +41,6 @@ build/
 /src/main/java/com/d_m/gen/rules/X86_64.java
 
 ### Executables ###
+*.o
+examples/fibonacci
 examples/fibonacci.s

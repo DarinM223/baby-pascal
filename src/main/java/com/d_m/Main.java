@@ -81,6 +81,10 @@ public class Main {
         }
         Register.Physical temp = codegen.getISA().physicalFromRegisterName("r10");
 
+        // Write initial header to assembly file:
+        writer.write(".global main\n");
+        writer.write(".text\n");
+
         IdMap<MachineBasicBlock> blockIdMap = new IdMap<>();
         for (Function function : module.getFunctionList()) {
             MachineFunction machineFunction = codegen.getFunction(function);
