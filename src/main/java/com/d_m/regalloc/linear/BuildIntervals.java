@@ -14,12 +14,14 @@ public class BuildIntervals {
 
     private final InstructionNumbering numbering;
     private final Map<Integer, MachineInstruction> virtualRegisterToMachineInstructionMap;
+    private final Map<Integer, Register.Physical> functionParamToPhysicalMap;
     private final Map<IntervalKey, Interval> intervalMap;
 
     public BuildIntervals(InstructionNumbering numbering) {
         this.numbering = numbering;
         this.intervalMap = new HashMap<>();
         this.virtualRegisterToMachineInstructionMap = new HashMap<>();
+        this.functionParamToPhysicalMap = new HashMap<>();
     }
 
     public List<Interval> getIntervals() {
@@ -37,11 +39,13 @@ public class BuildIntervals {
 
     private void initializeVirtualRegisterMap(MachineFunction function) {
         for (MachineOperand operand : function.getParams()) {
-            if (operand instanceof MachineOperand.Register(Register.Virtual(int n, _, _))) {
+            if (operand instanceof MachineOperand.Register(Register.Virtual(int n, _, RegisterConstraint constraint))) {
                 // If the virtual register was a constrained function argument register,
                 // then set its instruction to be the first instruction in the entry block of the function.
-                // TODO: This may not be correct, look into this later.
                 virtualRegisterToMachineInstructionMap.put(n, function.getBlocks().getFirst().getInstructions().getFirst());
+                if (constraint instanceof RegisterConstraint.UsePhysical(Register.Physical register)) {
+                    functionParamToPhysicalMap.put(n, register);
+                }
             }
         }
         for (MachineBasicBlock block : function.getBlocks()) {
@@ -136,7 +140,11 @@ public class BuildIntervals {
         int nbf = numbering.getInstructionNumber(b.getInstructions().getFirst());
         int nbl = numbering.getInstructionNumber(b.getInstructions().getLast());
         int start = ni >= nbf && ni <= nbl ? ni : nbf;
-        Register.Physical fixed = getFixedRegister(virtualRegister, i);
+        // The numbering for function parameter virtual registers is always the very first instruction,
+        // which doesn't contain the register. In that case, use the mapping to find the physical register.
+        Register.Physical fixed = functionParamToPhysicalMap.containsKey(virtualRegister)
+                ? functionParamToPhysicalMap.get(virtualRegister)
+                : getFixedRegisterFromInstruction(virtualRegister, i);
 
         // Add (start, end) to interval[i.n] merging adjacent ranges
         IntervalKey key = new IntervalKey(ni, virtualRegister);
@@ -310,7 +318,7 @@ public class BuildIntervals {
         return false;
     }
 
-    private Register.Physical getFixedRegister(int virtualRegister, MachineInstruction instruction) {
+    private Register.Physical getFixedRegisterFromInstruction(int virtualRegister, MachineInstruction instruction) {
         for (MachineOperandPair pair : instruction.getOperands()) {
             if (pair.operand() instanceof MachineOperand.Register(
                     Register.Virtual(int n, _, RegisterConstraint.UsePhysical(var reg))

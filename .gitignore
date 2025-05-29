@@ -44,3 +44,5 @@ build/
 *.o
 examples/fibonacci
 examples/fibonacci.s
+examples/funswap
+examples/funswap.s
