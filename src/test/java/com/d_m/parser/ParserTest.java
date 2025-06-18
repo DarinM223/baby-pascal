@@ -82,34 +82,48 @@ class ParserTest {
     @Test
     void parseIfStatement() {
         String source = """
-                if a < 1 then
-                begin
+                if a < 1 then begin
                     a := a + 1;
-                    print(a);
-                end
-                else
-                begin
+                    print(a)
+                end else
                     if a >= 0 then
-                    begin
-                        print(a);
-                    end
-                end
+                        print(a)
                 """;
         Scanner scanner = new Scanner(source);
         Parser parser = new Parser(scanner.scanTokens());
         Statement statement = parser.parseStatement();
         Statement expected = new IfStatement(
                 new BinaryOpExpression(BinaryOp.LT, new VarExpression("a"), new IntExpression(1)),
-                List.of(
+                new GroupStatement(
                         new AssignStatement("a", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("a"), new IntExpression(1))),
                         new CallStatement("print", List.of(new VarExpression("a")))
                 ),
-                List.of(
-                        new IfStatement(
-                                new BinaryOpExpression(BinaryOp.GE, new VarExpression("a"), new IntExpression(0)),
-                                List.of(new CallStatement("print", List.of(new VarExpression("a")))),
-                                List.of()
-                        )
+                new IfStatement(
+                        new BinaryOpExpression(BinaryOp.GE, new VarExpression("a"), new IntExpression(0)),
+                        new CallStatement("print", List.of(new VarExpression("a"))),
+                        null
+                )
+        );
+        assertEquals(expected, statement);
+    }
+
+    @Test
+    void parseIfStatementSemicolons() {
+        String source = """
+                if a < 1 then begin ; ; ; ; ; ; ; end
+                else if a >= 0 then ;
+                else begin a := a + 1; print(a); end;
+                """;
+        Scanner scanner = new Scanner(source);
+        Parser parser = new Parser(scanner.scanTokens());
+        Statement statement = parser.parseStatement();
+        Statement expected = new IfStatement(
+                new BinaryOpExpression(BinaryOp.LT, new VarExpression("a"), new IntExpression(1)),
+                new GroupStatement(),
+                new IfStatement(
+                        new BinaryOpExpression(BinaryOp.GE, new VarExpression("a"), new IntExpression(0)),
+                        new GroupStatement(),
+                        new GroupStatement(new AssignStatement("a", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("a"), new IntExpression(1))), new CallStatement("print", List.of(new VarExpression("a"))))
                 )
         );
         assertEquals(expected, statement);
@@ -129,7 +143,7 @@ class ParserTest {
         Statement statement = parser.parseStatement();
         Statement expected = new WhileStatement(
                 new BinaryOpExpression(BinaryOp.LT, new VarExpression("a"), new IntExpression(11)),
-                List.of(
+                new GroupStatement(
                         new AssignStatement("a", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("a"), new IntExpression(1))),
                         new CallStatement("print", List.of(new VarExpression("a")))
                 )
@@ -154,28 +168,44 @@ class ParserTest {
                 
                 begin
                     result := add(1, 2);
+                    if result > 2 then
+                       print(result);
+                    if result <= 2 then
+                       result := result + 1
+                    else
+                       result := result + 2;
                     foo(result);
                 end
                 """;
         Scanner scanner = new Scanner(source);
         Parser parser = new Parser(scanner.scanTokens());
-        Program<List<Statement>> program = parser.parseProgram();
-        List<Declaration<List<Statement>>> expectedDeclarations = List.of(
+        Program<Statement> program = parser.parseProgram();
+        List<Declaration<Statement>> expectedDeclarations = List.of(
                 new FunctionDeclaration<>(
                         "add",
                         List.of(new TypedName("a", new IntegerType()), new TypedName("b", new IntegerType())),
                         Optional.of(new IntegerType()),
-                        List.of(new AssignStatement("add", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("a"), new VarExpression("b"))))
+                        new AssignStatement("add", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("a"), new VarExpression("b")))
                 ),
                 new FunctionDeclaration<>(
                         "foo",
                         List.of(new TypedName("a", new IntegerType())),
                         Optional.empty(),
-                        List.of(new CallStatement("print", List.of(new VarExpression("a"))))
+                        new CallStatement("print", List.of(new VarExpression("a")))
                 )
         );
-        List<Statement> expectedBody = List.of(
+        Statement expectedBody = new GroupStatement(
                 new AssignStatement("result", new CallExpression("add", List.of(new IntExpression(1), new IntExpression(2)))),
+                new IfStatement(
+                        new BinaryOpExpression(BinaryOp.GT, new VarExpression("result"), new IntExpression(2)),
+                        new CallStatement("print", List.of(new VarExpression("result"))),
+                        null
+                ),
+                new IfStatement(
+                        new BinaryOpExpression(BinaryOp.LE, new VarExpression("result"), new IntExpression(2)),
+                        new AssignStatement("result", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("result"), new IntExpression(1))),
+                        new AssignStatement("result", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("result"), new IntExpression(2)))
+                ),
                 new CallStatement("foo", List.of(new VarExpression("result")))
         );
         assertEquals(List.of(new TypedName("hello", new IntegerType())), program.getGlobals());

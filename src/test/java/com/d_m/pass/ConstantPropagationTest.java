@@ -35,7 +35,7 @@ class ConstantPropagationTest {
         symbol = new SymbolImpl(fresh);
     }
 
-    Program<Block> toCfg(Program<List<Statement>> program) throws ShortCircuitException {
+    Program<Block> toCfg(Program<Statement> program) throws ShortCircuitException {
         threeAddressCode = new ThreeAddressCode(fresh, symbol);
         Program<Block> cfg = threeAddressCode.normalizeProgram(program);
         new ConstructSSA(symbol).convertProgram(cfg);
@@ -44,7 +44,7 @@ class ConstantPropagationTest {
 
     @Test
     void testConstantPropagation_19_4() throws IOException, ShortCircuitException {
-        Program<List<Statement>> program = new Program<>(List.of(), List.of(), Examples.figure_19_4());
+        Program<Statement> program = new Program<>(List.of(), List.of(), Examples.figure_19_4());
         Program<Block> cfg = toCfg(program);
         SsaConverter converter = new SsaConverter(symbol);
         Module module = converter.convertProgram(cfg);

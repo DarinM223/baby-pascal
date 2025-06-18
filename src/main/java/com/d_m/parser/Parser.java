@@ -20,16 +20,16 @@ public class Parser {
         this.tokens = tokens;
     }
 
-    public Program<List<Statement>> parseProgram() {
+    public Program<Statement> parseProgram() {
         List<TypedName> typedNames = new ArrayList<>();
-        List<Declaration<List<Statement>>> declarations = new ArrayList<>();
+        List<Declaration<Statement>> declarations = new ArrayList<>();
         while (peek().type() == TokenType.VAR) {
             typedNames.add(parseGlobalTypedName());
         }
         while (peek().type() != TokenType.BEGIN) {
             declarations.add(parseFunctionDeclaration());
         }
-        List<Statement> body = parseStatements();
+        Statement body = parseStatements();
         return new Program<>(typedNames, declarations, body);
     }
 
@@ -75,7 +75,7 @@ public class Parser {
         };
     }
 
-    public FunctionDeclaration<List<Statement>> parseFunctionDeclaration() {
+    public FunctionDeclaration<Statement> parseFunctionDeclaration() {
         Token functionKeyword = advance();
         if (functionKeyword.type() != TokenType.PROCEDURE && functionKeyword.type() != TokenType.FUNCTION) {
             throw new ParseError("Expected function or procedure keyword");
@@ -102,50 +102,70 @@ public class Parser {
         }
         consume(TokenType.SEMICOLON, "Expected semicolon");
 
-        List<Statement> body = parseStatements();
+        Statement body = parseStatements();
         return new FunctionDeclaration<>(functionName, parameters, Optional.ofNullable(returnType), body);
     }
 
-    public List<Statement> parseStatements() {
-        consume(TokenType.BEGIN, "Expected begin");
+    public Statement parseStatements() {
         List<Statement> statements = new ArrayList<>();
-        while (peek().type() != TokenType.END) {
-            statements.add(parseStatement());
+        while (true) {
+            Statement parsed = parseStatement();
+            if (parsed instanceof GroupStatement(Statement[] group) && group.length == 0) {
+                while (peek().type() == TokenType.SEMICOLON) {
+                    advance();
+                }
+                if (peek().type() == TokenType.END) {
+                    break;
+                }
+                continue;
+            }
+            statements.add(parsed);
+            if (peek().type() != TokenType.SEMICOLON) {
+                break;
+            }
+            consume(TokenType.SEMICOLON, "Expected semicolon when parsing statements");
         }
-        consume(TokenType.END, "Expected end");
-        return statements;
+        if (statements.size() == 1) {
+            return statements.getFirst();
+        }
+        return new GroupStatement(statements.toArray(new Statement[0]));
     }
 
     public Statement parseStatement() {
         Token token = advance();
-        // TODO: if statement parsing uses begin/end blocks but this can be verbose.
-        // In the future, it should be more like Pascal's normal if/else statements.
         if (token.type().equals(TokenType.IF)) {
             Expression conditional = parseExpression();
             consume(TokenType.THEN, "Expected then");
-            List<Statement> then = parseStatements();
-            List<Statement> els = new ArrayList<>();
+            Statement then = parseStatement();
+            Statement els = null;
             if (peek().type() == TokenType.ELSE) {
                 advance();
-                els = parseStatements();
+                els = parseStatement();
             }
             return new IfStatement(conditional, then, els);
         } else if (token.type().equals(TokenType.WHILE)) {
             Expression conditional = parseExpression();
             consume(TokenType.DO, "Expected do");
-            List<Statement> body = parseStatements();
+            Statement body = parseStatement();
             return new WhileStatement(conditional, body);
+        } else if (token.type().equals(TokenType.BEGIN)) {
+            Statement statements = parseStatements();
+            consume(TokenType.END, "Expected END token after statements");
+            return statements;
+        } else if (token.type().equals(TokenType.SEMICOLON)) {
+            return new GroupStatement();
+        } else if (token.type().equals(TokenType.END)) {
+            backtrack();
+            return new GroupStatement();
         } else if (peek().type().equals(TokenType.ASSIGN)) {
             advance();
             Expression expression = parseExpression();
-            consume(TokenType.SEMICOLON, "Expected semicolon after statement");
             return new AssignStatement(token.lexeme(), expression);
         } else if (peek().type().equals(TokenType.LEFT_PAREN)) {
             List<Expression> expressions = new ArrayList<>();
             while (advance().type() != TokenType.RIGHT_PAREN) {
                 expressions.add(parseExpression());
             }
-            consume(TokenType.SEMICOLON, "Expected semicolon after statement");
             return new CallStatement(token.lexeme(), expressions);
         }
         throw new ParseError("Cannot parse statement");
@@ -234,6 +254,10 @@ public class Parser {
     private Token advance() {
         if (!isAtEnd()) current++;
         return previous();
+    }
+
+    private void backtrack() {
+        if (current > 0) current--;
     }
 
     private Token previous() {

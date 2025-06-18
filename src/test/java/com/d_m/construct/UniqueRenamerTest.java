@@ -27,7 +27,7 @@ class UniqueRenamerTest {
     DominanceFrontier<Block> frontier;
     DefinitionSites defsites;
 
-    Block toCfg(List<Statement> statements) throws ShortCircuitException {
+    Block toCfg(Statement statements) throws ShortCircuitException {
         fresh = new FreshImpl();
         symbol = new SymbolImpl(fresh);
         threeAddressCode = new ThreeAddressCode(fresh, symbol);
@@ -95,7 +95,7 @@ class UniqueRenamerTest {
 
     @Test
     void renamePruned() throws ShortCircuitException {
-        List<Statement> statements = prunedExample();
+        Statement statements = prunedExample();
         Block cfg = toCfg(statements);
         new InsertPhisPruned(symbol, defsites, frontier).run();
         new UniqueRenamer(symbol).rename(cfg);
@@ -144,18 +144,18 @@ class UniqueRenamerTest {
         assertEquals(expected, builder.toString());
     }
 
-    private static List<Statement> prunedExample() {
+    private static Statement prunedExample() {
         BinaryOpExpression cond = new BinaryOpExpression(BinaryOp.LT, new VarExpression("i"), new IntExpression(2));
-        return List.of(
+        return new GroupStatement(
                 new IfStatement(
                         cond,
-                        List.of(new AssignStatement("y", new IntExpression(1))),
-                        List.of(new AssignStatement("y", new VarExpression("x")))
+                        new GroupStatement(new AssignStatement("y", new IntExpression(1))),
+                        new GroupStatement(new AssignStatement("y", new VarExpression("x")))
                 ),
                 new IfStatement(
                         cond,
-                        List.of(new AssignStatement("z", new IntExpression(1))),
-                        List.of(new AssignStatement("z", new VarExpression("x")))
+                        new GroupStatement(new AssignStatement("z", new IntExpression(1))),
+                        new GroupStatement(new AssignStatement("z", new VarExpression("x")))
                 ),
                 new AssignStatement("result", new VarExpression("z"))
         );

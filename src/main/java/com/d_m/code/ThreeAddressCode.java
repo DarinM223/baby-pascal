@@ -27,9 +27,9 @@ public class ThreeAddressCode {
         return token;
     }
 
-    public Program<Block> normalizeProgram(Program<List<Statement>> program) throws ShortCircuitException {
+    public Program<Block> normalizeProgram(Program<Statement> program) throws ShortCircuitException {
         List<Declaration<Block>> declarations = new ArrayList<>(program.getDeclarations().size());
-        for (Declaration<List<Statement>> declaration : program.getDeclarations()) {
+        for (Declaration<Statement> declaration : program.getDeclarations()) {
             var newDeclaration =
                     switch (declaration) {
                         case FunctionDeclaration(var functionName, var parameters, var returnType, var body) -> {
@@ -54,14 +54,12 @@ public class ThreeAddressCode {
         return new Program<>(program.getGlobals(), declarations, main);
     }
 
-    public List<Quad> normalize(List<Statement> statements) throws ShortCircuitException {
-        this.results = new ArrayList<>(statements.size());
+    public List<Quad> normalize(Statement statements) throws ShortCircuitException {
+        this.results = new ArrayList<>();
         this.label = new Label(results);
-        for (Statement statement : statements) {
-            int next = label.fresh();
-            normalizeStatement(next, statement);
-            label.label(next);
-        }
+        int next = label.fresh();
+        normalizeStatement(next, statements);
+        label.label(next);
         for (int i = 0; i < results.size(); i++) {
             switch (results.get(i)) {
                 case Quad(
@@ -99,43 +97,46 @@ public class ThreeAddressCode {
                 results.add(new Quad(Operator.CALL, temp, operands));
                 results.add(new Quad(new SideEffectToken(), Operator.PROJ, new NameAddress(SymbolImpl.TOKEN), temp, new ConstantAddress(0)));
             }
-            case IfStatement(Expression predicate, List<Statement> then, List<Statement> els) -> {
+            case IfStatement(Expression predicate, Statement then, Statement els) -> {
                 int trueLabel = label.fresh();
-                if (els.isEmpty()) {
+                if (els == null) {
                     shortCircuit(trueLabel, nextLabel, predicate);
                     label.label(trueLabel);
-                    for (Statement statement : then) {
-                        normalizeStatement(nextLabel, statement);
-                    }
+                    normalizeStatement(nextLabel, then);
                 } else {
                     int falseLabel = label.fresh();
                     shortCircuit(trueLabel, falseLabel, predicate);
                     label.label(trueLabel);
-                    for (Statement statement : then) {
-                        normalizeStatement(nextLabel, statement);
-                    }
+                    normalizeStatement(nextLabel, then);
                     results.add(new Quad(Operator.GOTO, new EmptyAddress(), new ConstantAddress(nextLabel)));
                     label.label(falseLabel);
-                    for (Statement statement : els) {
-                        normalizeStatement(nextLabel, statement);
-                    }
+                    normalizeStatement(nextLabel, els);
                 }
             }
-            case WhileStatement(Expression test, List<Statement> body) -> {
+            case WhileStatement(Expression test, Statement body) -> {
                 int beginLabel = label.fresh();
                 int trueLabel = label.fresh();
                 label.label(beginLabel);
                 shortCircuit(trueLabel, nextLabel, test);
                 label.label(trueLabel);
-                for (Statement statement : body) {
-                    normalizeStatement(beginLabel, statement);
-                }
+                normalizeStatement(beginLabel, body);
                 results.add(new Quad(Operator.GOTO, new EmptyAddress(), new ConstantAddress(beginLabel)));
             }
             case StoreStatement(Type _, Expression addressExpr, Expression store) -> {
                 Address address = normalizeExpression(addressExpr);
                 Address storeAddress = normalizeExpression(store);
                 results.add(new Quad(Operator.STORE, new NameAddress(token), new NameAddress(token), address, storeAddress));
+            }
+            case GroupStatement(Statement[] statements) -> {
+                for (int i = 0; i < statements.length; i++) {
+                    if (i == statements.length - 1) {
+                        normalizeStatement(nextLabel, statements[i]);
+                    } else {
+                        int next = label.fresh();
+                        normalizeStatement(next, statements[i]);
+                        label.label(next);
+                    }
+                }
             }
         }
     }

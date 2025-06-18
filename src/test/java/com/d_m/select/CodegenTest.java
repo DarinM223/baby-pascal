@@ -42,13 +42,13 @@ class CodegenTest {
     }
 
     private Module initFibonacci() throws ShortCircuitException {
-        Declaration<List<Statement>> fibonacciDeclaration = new FunctionDeclaration<>(
+        Declaration<Statement> fibonacciDeclaration = new FunctionDeclaration<>(
                 "fibonacci",
                 List.of(new TypedName("n", new IntegerType())),
                 Optional.of(new IntegerType()),
                 Examples.fibonacci("fibonacci", "n")
         );
-        Program<List<Statement>> program = new Program<>(List.of(), List.of(fibonacciDeclaration), Examples.figure_19_4());
+        Program<Statement> program = new Program<>(List.of(), List.of(fibonacciDeclaration), Examples.figure_19_4());
         Program<com.d_m.cfg.Block> cfg = toCfg(program);
         SsaConverter converter = new SsaConverter(symbol);
         Module module = converter.convertProgram(cfg);
@@ -68,7 +68,7 @@ class CodegenTest {
         codegen = new Codegen(isa, automata);
     }
 
-    private Program<com.d_m.cfg.Block> toCfg(Program<List<Statement>> program) throws ShortCircuitException {
+    private Program<com.d_m.cfg.Block> toCfg(Program<Statement> program) throws ShortCircuitException {
         Program<com.d_m.cfg.Block> cfg = threeAddressCode.normalizeProgram(program);
         new ConstructSSA(symbol).convertProgram(cfg);
         return cfg;

@@ -35,7 +35,7 @@ class DeadCodeEliminationTest {
         symbol = new SymbolImpl(fresh);
     }
 
-    Program<Block> toCfg(Program<List<Statement>> program) throws ShortCircuitException {
+    Program<Block> toCfg(Program<Statement> program) throws ShortCircuitException {
         threeAddressCode = new ThreeAddressCode(fresh, symbol);
         Program<Block> cfg = threeAddressCode.normalizeProgram(program);
         new ConstructSSA(symbol).convertProgram(cfg);
@@ -44,17 +44,17 @@ class DeadCodeEliminationTest {
 
     @Test
     void testDeadCodeElimination() throws IOException, ShortCircuitException {
-        Declaration<List<Statement>> fibonacciDeclaration = new FunctionDeclaration<>(
+        Declaration<Statement> fibonacciDeclaration = new FunctionDeclaration<>(
                 "fibonacci",
                 List.of(new TypedName("n", new IntegerType())),
                 Optional.of(new IntegerType()),
                 Examples.fibonacci("fibonacci", "n")
         );
-        List<Statement> statements = List.of(
+        Statement statements = new GroupStatement(
                 new AssignStatement("number", new BinaryOpExpression(BinaryOp.ADD, new IntExpression(2), new IntExpression(3))),
                 new AssignStatement("result", new CallExpression("fibonacci", List.of(new VarExpression("number"))))
         );
-        Program<List<Statement>> program = new Program<>(List.of(), List.of(fibonacciDeclaration), statements);
+        Program<Statement> program = new Program<>(List.of(), List.of(fibonacciDeclaration), statements);
         Program<Block> cfg = toCfg(program);
 
         SsaConverter converter = new SsaConverter(symbol);

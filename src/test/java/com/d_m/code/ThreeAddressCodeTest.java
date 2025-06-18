@@ -17,11 +17,11 @@ class ThreeAddressCodeTest {
         BinaryOpExpression test = new BinaryOpExpression(BinaryOp.AND,
                 new BinaryOpExpression(BinaryOp.EQ, new VarExpression("a"), new IntExpression(1)),
                 new BinaryOpExpression(BinaryOp.LT, new VarExpression("a"), new IntExpression(5)));
-        List<Statement> stmts = List.of(
+        Statement stmts = new GroupStatement(
                 new AssignStatement("a", new BinaryOpExpression(BinaryOp.ADD, new IntExpression(1), new BinaryOpExpression(BinaryOp.MUL, new IntExpression(2), new IntExpression(3)))),
                 new IfStatement(test,
-                        List.of(new WhileStatement(test, List.of(new AssignStatement("a", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("a"), new IntExpression(1)))))),
-                        List.of(new AssignStatement("result", new IntExpression(60))))
+                        new GroupStatement(new WhileStatement(test, new GroupStatement(new AssignStatement("a", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("a"), new IntExpression(1)))))),
+                        new GroupStatement(new AssignStatement("result", new IntExpression(60))))
         );
         Fresh fresh = new FreshImpl();
         Symbol symbol = new SymbolImpl(fresh);

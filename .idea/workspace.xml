@@ -4,11 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Adds script that links generated assembly with utility functions">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fix parsing so that begin/end multiple statements can be used anywhere a statement is expected">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/GroupStatement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/funswap.pas" beforeDir="false" afterPath="$PROJECT_DIR$/examples/funswap.pas" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/fibonacci.pas" beforeDir="false" afterPath="$PROJECT_DIR$/examples/fibonacci.pas" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/IfStatement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/IfStatement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Statement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/Statement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ast/WhileStatement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ast/WhileStatement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/code/ThreeAddressCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/parser/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/code/ThreeAddressCodeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/code/ThreeAddressCodeTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/construct/UniqueRenamerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/construct/UniqueRenamerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/deconstruct/InsertParallelMovesTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/deconstruct/InsertParallelMovesTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/Examples.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/Examples.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LoopPostbodyTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/dom/LoopPostbodyTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/parser/ParserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/parser/ParserTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/ConstantPropagationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/ConstantPropagationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/pass/DeadCodeEliminationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/pass/DeadCodeEliminationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/SsaConverterTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/graphviz/SsaGraphTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/graphviz/SsaGraphTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +74,10 @@
     "JUnit.MachineBasicBlockTest.addBeforeTerminator.executor": "Run",
     "JUnit.MachineBasicBlockTest.getPhiUses.executor": "Run",
     "JUnit.ParserTest.parseBinaryExpression.executor": "Debug",
+    "JUnit.ParserTest.parseIfStatement.executor": "Run",
+    "JUnit.ParserTest.parseIfStatementSemicolons.executor": "Run",
+    "JUnit.ParserTest.parseProgram.executor": "Run",
+    "JUnit.ParserTest.parseWhileStatement.executor": "Run",
     "JUnit.RangeTest.overlaps.executor": "Run",
     "JUnit.SSADAGTest.postorder.executor": "Run",
     "JUnit.ThreeAddressCodeTest.normalize.executor": "Run",
@@ -179,58 +200,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="IntervalTest.addRange" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="baby-pascal" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.d_m.regalloc.linear.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.d_m.regalloc.linear" />
-      <option name="MAIN_CLASS_NAME" value="com.d_m.regalloc.linear.IntervalTest" />
-      <option name="METHOD_NAME" value="addRange" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MachineBasicBlockTest.addBeforeTerminator" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="baby-pascal" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.d_m.select.instr.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.d_m.select.instr" />
-      <option name="MAIN_CLASS_NAME" value="com.d_m.select.instr.MachineBasicBlockTest" />
-      <option name="METHOD_NAME" value="addBeforeTerminator" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MachineBasicBlockTest.getPhiUses" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="baby-pascal" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.d_m.select.instr.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.d_m.select.instr" />
-      <option name="MAIN_CLASS_NAME" value="com.d_m.select.instr.MachineBasicBlockTest" />
-      <option name="METHOD_NAME" value="getPhiUses" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="wholeProject" />
-      </option>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ParserTest.parseBinaryExpression" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ParserTest.parseIfStatement" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="baby-pascal" />
       <extension name="coverage">
         <pattern>
@@ -240,7 +210,61 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.d_m.parser" />
       <option name="MAIN_CLASS_NAME" value="com.d_m.parser.ParserTest" />
-      <option name="METHOD_NAME" value="parseBinaryExpression" />
+      <option name="METHOD_NAME" value="parseIfStatement" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ParserTest.parseIfStatementSemicolons" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="baby-pascal" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.d_m.parser.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.d_m.parser" />
+      <option name="MAIN_CLASS_NAME" value="com.d_m.parser.ParserTest" />
+      <option name="METHOD_NAME" value="parseIfStatementSemicolons" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ParserTest.parseProgram" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="baby-pascal" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.d_m.parser.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.d_m.parser" />
+      <option name="MAIN_CLASS_NAME" value="com.d_m.parser.ParserTest" />
+      <option name="METHOD_NAME" value="parseProgram" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ParserTest.parseWhileStatement" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="baby-pascal" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.d_m.parser.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.d_m.parser" />
+      <option name="MAIN_CLASS_NAME" value="com.d_m.parser.ParserTest" />
+      <option name="METHOD_NAME" value="parseWhileStatement" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -263,23 +287,23 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.Gen" />
       <item itemvalue="Application.Fibonacci" />
       <item itemvalue="Application.Funswap" />
+      <item itemvalue="Application.Gen" />
       <item itemvalue="JUnit.All tests" />
-      <item itemvalue="JUnit.IntervalTest.addRange" />
-      <item itemvalue="JUnit.MachineBasicBlockTest.addBeforeTerminator" />
-      <item itemvalue="JUnit.MachineBasicBlockTest.getPhiUses" />
-      <item itemvalue="JUnit.ParserTest.parseBinaryExpression" />
+      <item itemvalue="JUnit.ParserTest.parseIfStatement" />
+      <item itemvalue="JUnit.ParserTest.parseIfStatementSemicolons" />
+      <item itemvalue="JUnit.ParserTest.parseProgram" />
+      <item itemvalue="JUnit.ParserTest.parseWhileStatement" />
       <item itemvalue="JUnit.RangeTest.overlaps" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ParserTest.parseIfStatementSemicolons" />
+        <item itemvalue="JUnit.ParserTest.parseProgram" />
+        <item itemvalue="JUnit.ParserTest.parseWhileStatement" />
+        <item itemvalue="JUnit.ParserTest.parseIfStatement" />
         <item itemvalue="JUnit.RangeTest.overlaps" />
-        <item itemvalue="JUnit.ParserTest.parseBinaryExpression" />
-        <item itemvalue="JUnit.MachineBasicBlockTest.getPhiUses" />
-        <item itemvalue="JUnit.MachineBasicBlockTest.addBeforeTerminator" />
-        <item itemvalue="JUnit.IntervalTest.addRange" />
       </list>
     </recent_temporary>
   </component>
@@ -291,14 +315,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00200" summary="Start failing linear scan unit test">
-      <option name="closed" value="true" />
-      <created>1728146606369</created>
-      <option name="number" value="00200" />
-      <option name="presentableId" value="LOCAL-00200" />
-      <option name="project" value="LOCAL" />
-      <updated>1728146606369</updated>
     </task>
     <task id="LOCAL-00201" summary="Update README.md">
       <option name="closed" value="true" />
@@ -684,7 +700,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748444135842</updated>
     </task>
-    <option name="localTasksCounter" value="249" />
+    <task id="LOCAL-00249" summary="Add funswap program and fix retrieving physical registers from function parameter virtual registers">
+      <option name="closed" value="true" />
+      <created>1748478859666</created>
+      <option name="number" value="00249" />
+      <option name="presentableId" value="LOCAL-00249" />
+      <option name="project" value="LOCAL" />
+      <updated>1748478859666</updated>
+    </task>
+    <option name="localTasksCounter" value="250" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -692,7 +716,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="FunctionLoweringInfo is per function to allow for proper calculation of stack slots" />
     <MESSAGE value="Linear scan chooses registers deterministically so that unit tests can pass easier" />
     <MESSAGE value="Start assembly writer" />
     <MESSAGE value="Assembly writer handles some operands and adds assertion to linear scan test" />
@@ -717,7 +740,8 @@
     <MESSAGE value="Fix constant propagation to not delete the exit block of a function" />
     <MESSAGE value="Match globals as constants and fix interval building for dead virtual register" />
     <MESSAGE value="Adds script that links generated assembly with utility functions" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adds script that links generated assembly with utility functions" />
+    <MESSAGE value="Add funswap program and fix retrieving physical registers from function parameter virtual registers" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add funswap program and fix retrieving physical registers from function parameter virtual registers" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -743,17 +767,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java</url>
           <line>46</line>
           <option name="timeStamp" value="171" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <condition expression="virtualRegister == 2" language="JAVA" />
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java</url>
-          <line>321</line>
-          <option name="timeStamp" value="204" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/Main.java</url>
-          <line>99</line>
-          <option name="timeStamp" value="207" />
         </line-breakpoint>
         <breakpoint type="java-exception">
           <properties class="java.lang.NullPointerException" package="java.lang">

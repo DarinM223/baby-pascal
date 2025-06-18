@@ -51,7 +51,7 @@ public class Main {
         String content = Files.readString(path);
         Scanner scanner = new Scanner(content);
         Parser parser = new Parser(scanner.scanTokens());
-        Program<List<Statement>> program = parser.parseProgram();
+        Program<Statement> program = parser.parseProgram();
         Program<com.d_m.cfg.Block> cfg = threeAddressCode.normalizeProgram(program);
         new ConstructSSA(symbol).convertProgram(cfg);
         SsaConverter converter = new SsaConverter(symbol);

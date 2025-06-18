@@ -21,23 +21,24 @@ public class Examples {
      *     k <- k + 2
      * }
      * </pre>
+     *
      * @return
      */
-    public static List<Statement> figure_19_4() {
-        return List.of(
+    public static Statement figure_19_4() {
+        return new GroupStatement(
                 new AssignStatement("i", new IntExpression(1)),
                 new AssignStatement("j", new IntExpression(1)),
                 new AssignStatement("k", new IntExpression(0)),
                 new WhileStatement(
                         new BinaryOpExpression(BinaryOp.LT, new VarExpression("k"), new IntExpression(100)),
-                        List.of(
+                        new GroupStatement(
                                 new IfStatement(
                                         new BinaryOpExpression(BinaryOp.LT, new VarExpression("j"), new IntExpression(20)),
-                                        List.of(
+                                        new GroupStatement(
                                                 new AssignStatement("j", new VarExpression("i")),
                                                 new AssignStatement("k", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("k"), new IntExpression(1)))
                                         ),
-                                        List.of(
+                                        new GroupStatement(
                                                 new AssignStatement("j", new VarExpression("k")),
                                                 new AssignStatement("k", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("k"), new IntExpression(2)))
                                         )
@@ -47,16 +48,16 @@ public class Examples {
         );
     }
 
-    public static List<Statement> nestedLoops() {
-        return List.of(
+    public static Statement nestedLoops() {
+        return new GroupStatement(
                 new AssignStatement("i", new IntExpression(0)),
                 new WhileStatement(
                         new BinaryOpExpression(BinaryOp.LT, new VarExpression("i"), new IntExpression(100)),
-                        List.of(
+                        new GroupStatement(
                                 new AssignStatement("j", new VarExpression("i")),
                                 new WhileStatement(
                                         new BinaryOpExpression(BinaryOp.LT, new VarExpression("j"), new IntExpression(100)),
-                                        List.of(
+                                        new GroupStatement(
                                                 new AssignStatement("j", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("j"), new IntExpression(1))),
                                                 new AssignStatement("i", new BinaryOpExpression(BinaryOp.ADD, new VarExpression("i"), new IntExpression(1)))
                                         )
@@ -66,12 +67,12 @@ public class Examples {
         );
     }
 
-    public static List<Statement> fibonacci(String functionName, String varName) {
-        return List.of(
+    public static Statement fibonacci(String functionName, String varName) {
+        return new GroupStatement(
                 new IfStatement(
                         new BinaryOpExpression(BinaryOp.LE, new VarExpression(varName), new IntExpression(1)),
-                        List.of(new AssignStatement(functionName, new VarExpression(varName))),
-                        List.of(
+                        new GroupStatement(new AssignStatement(functionName, new VarExpression(varName))),
+                        new GroupStatement(
                                 new AssignStatement(
                                         functionName,
                                         new BinaryOpExpression(
@@ -85,9 +86,9 @@ public class Examples {
         );
     }
 
-    public static List<Statement> loadStore() {
+    public static Statement loadStore() {
         var address = new IntExpression(10);
-        return List.of(
+        return new GroupStatement(
                 new StoreStatement(new IntegerType(), address,
                         new BinaryOpExpression(
                                 BinaryOp.ADD,

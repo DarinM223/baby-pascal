@@ -37,7 +37,7 @@ class SsaGraphTest {
         symbol = new SymbolImpl(fresh);
     }
 
-    Block toCfg(List<Statement> statements) throws ShortCircuitException {
+    Block toCfg(Statement statements) throws ShortCircuitException {
         threeAddressCode = new ThreeAddressCode(fresh, symbol);
         List<Quad> code = threeAddressCode.normalize(statements);
         com.d_m.cfg.Block cfg = new Block(threeAddressCode.getTokenSymbol(), code);
