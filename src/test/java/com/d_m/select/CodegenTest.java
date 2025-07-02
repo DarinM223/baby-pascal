@@ -10,6 +10,7 @@ import com.d_m.gen.rules.DefaultAutomata;
 import com.d_m.pass.CriticalEdgeSplitting;
 import com.d_m.select.instr.MachineFunction;
 import com.d_m.select.instr.MachinePrettyPrinter;
+import com.d_m.select.reg.AARCH64_ISA;
 import com.d_m.select.reg.ISA;
 import com.d_m.select.reg.X86_64_ISA;
 import com.d_m.ssa.*;
@@ -41,7 +42,11 @@ class CodegenTest {
         threeAddressCode = new ThreeAddressCode(fresh, symbol);
     }
 
-    private Module initFibonacci() throws ShortCircuitException {
+    interface InitModule {
+        void accept(Module module) throws ShortCircuitException;
+    }
+
+    private Module initFibonacci(InitModule initModule) throws ShortCircuitException {
         Declaration<Statement> fibonacciDeclaration = new FunctionDeclaration<>(
                 "fibonacci",
                 List.of(new TypedName("n", new IntegerType())),
@@ -52,19 +57,28 @@ class CodegenTest {
         Program<com.d_m.cfg.Block> cfg = toCfg(program);
         SsaConverter converter = new SsaConverter(symbol);
         Module module = converter.convertProgram(cfg);
-        initModule(module);
+        initModule.accept(module);
         return module;
     }
 
-    private void initModule(Module module) throws ShortCircuitException {
+    private void initX86Module(Module module) throws ShortCircuitException {
+        isa = new X86_64_ISA();
+        initModule(module, "com.d_m.gen.rules.X86_64");
+    }
+
+    private void initAARCHModule(Module module) throws ShortCircuitException {
+        isa = new AARCH64_ISA();
+        initModule(module, "com.d_m.gen.rules.AARCH64");
+    }
+
+    private void initModule(Module module, String className) throws ShortCircuitException {
         new CriticalEdgeSplitting().runModule(module);
         GeneratedAutomata automata;
         try {
-            automata = (GeneratedAutomata) Class.forName("com.d_m.gen.rules.X86_64").getDeclaredConstructor().newInstance();
+            automata = (GeneratedAutomata) Class.forName(className).getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             automata = new DefaultAutomata();
         }
-        isa = new X86_64_ISA();
         codegen = new Codegen(isa, automata);
     }
 
@@ -76,7 +90,7 @@ class CodegenTest {
 
     @Test
     void matchedTiles() throws ShortCircuitException {
-        Module module = initFibonacci();
+        Module module = initFibonacci(this::initX86Module);
         for (Function function : module.getFunctionList()) {
             codegen.startFunction(function);
         }
@@ -96,8 +110,8 @@ class CodegenTest {
     }
 
     @Test
-    void codegen() throws IOException, ShortCircuitException {
-        Module module = initFibonacci();
+    void codegenX86() throws IOException, ShortCircuitException {
+        Module module = initFibonacci(this::initX86Module);
 
         StringWriter moduleWriter = new StringWriter();
         PrettyPrinter printer = new PrettyPrinter(moduleWriter);
@@ -220,6 +234,125 @@ class CodegenTest {
                   block l17 [l15] {
                     parmov [%3any,USE], [%5any,USE], [%7any,USE], [%9any,USE], [%11any,USE], [%13any,USE], [%15any,USE], [%2r12,DEF], [%4r13,DEF], [%6r14,DEF], [%8r15,DEF], [%10rbx,DEF], [%12rsp,DEF], [%14rbp,DEF]
                     mov [%17any,USE], [%48rax,DEF]
+                  }
+                }
+                """;
+        assertEquals(expected, writer.toString());
+    }
+
+    @Test
+    void codegenAARCH() throws IOException, ShortCircuitException {
+        Module module = initFibonacci(this::initAARCHModule);
+
+        StringWriter moduleWriter = new StringWriter();
+        PrettyPrinter printer = new PrettyPrinter(moduleWriter);
+
+        StringWriter writer = new StringWriter();
+        for (Function function : module.getFunctionList()) {
+            codegen.startFunction(function);
+        }
+        for (Function function : module.getFunctionList()) {
+            var blockTilesMap = codegen.matchTilesInBlocks(function);
+            printer.writeFunction(function);
+            codegen.emitFunction(function, blockTilesMap);
+        }
+        System.out.println(moduleWriter);
+
+        MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(isa, writer);
+        for (Function function : module.getFunctionList()) {
+            MachineFunction machineFunction = codegen.getFunction(function);
+            machinePrinter.writeFunction(machineFunction);
+        }
+
+        String expected = """
+                main {
+                  block l0 [] {
+                    parmov [%0x19,USE], [%2x20,USE], [%4x21,USE], [%6x22,USE], [%8x23,USE], [%10x24,USE], [%12x25,USE], [%14x26,USE], [%16x27,USE], [%18x28,USE], [%20x29,USE], [%22sp,USE], [%1any,DEF], [%3any,DEF], [%5any,DEF], [%7any,DEF], [%9any,DEF], [%11any,DEF], [%13any,DEF], [%15any,DEF], [%17any,DEF], [%19any,DEF], [%21any,DEF], [%23any,DEF]
+                  }
+                  block l1 [l0] {
+                    mov [%24any,DEF], [1,USE]
+                    mov [%25any,DEF], [1,USE]
+                    mov [%26any,DEF], [0,USE]
+                  }
+                  block l2 [l1, l3] {
+                    phi [%26any,USE], [%32any,USE], [%35any,DEF]
+                    phi [%25any,USE], [%31any,USE], [%36any,DEF]
+                    mov [%27any,DEF], [%36any,USE]
+                    mov [%28any,DEF], [%35any,USE]
+                    cmp [%35any,USE], [100,USE]
+                    blt [l4,USE]
+                    jmp [l5,USE]
+                  }
+                  block l4 [l2] {
+                    cmp [%27any,USE], [20,USE]
+                    blt [l6,USE]
+                    jmp [l7,USE]
+                  }
+                  block l5 [l2] {
+                    b [l8,USE]
+                  }
+                  block l6 [l4] {
+                    add [%37any,DEF], [%28any,USE], [1,USE]
+                    mov [%29any,DEF], [%24any,USE]
+                    mov [%30any,DEF], [%37any,USE]
+                    b [l3,USE]
+                  }
+                  block l7 [l4] {
+                    b [l9,USE]
+                  }
+                  block l8 [l5] {
+                  }
+                  block l3 [l6, l9] {
+                    phi [%29any,USE], [%33any,USE], [%38any,DEF]
+                    phi [%30any,USE], [%34any,USE], [%39any,DEF]
+                    mov [%31any,DEF], [%38any,USE]
+                    mov [%32any,DEF], [%39any,USE]
+                  }
+                  block l9 [l7] {
+                    add [%40any,DEF], [%28any,USE], [2,USE]
+                    mov [%33any,DEF], [%28any,USE]
+                    mov [%34any,DEF], [%40any,USE]
+                    b [l3,USE]
+                  }
+                  block l10 [l8] {
+                    parmov [%1any,USE], [%3any,USE], [%5any,USE], [%7any,USE], [%9any,USE], [%11any,USE], [%13any,USE], [%15any,USE], [%17any,USE], [%19any,USE], [%21any,USE], [%23any,USE], [%0x19,DEF], [%2x20,DEF], [%4x21,DEF], [%6x22,DEF], [%8x23,DEF], [%10x24,DEF], [%12x25,DEF], [%14x26,DEF], [%16x27,DEF], [%18x28,DEF], [%20x29,DEF], [%22sp,DEF]
+                  }
+                }
+                fibonacci {
+                  block l11 [] {
+                    parmov [%0x0,USE], [%2x19,USE], [%4x20,USE], [%6x21,USE], [%8x22,USE], [%10x23,USE], [%12x24,USE], [%14x25,USE], [%16x26,USE], [%18x27,USE], [%20x28,USE], [%22x29,USE], [%24sp,USE], [%1any,DEF], [%3any,DEF], [%5any,DEF], [%7any,DEF], [%9any,DEF], [%11any,DEF], [%13any,DEF], [%15any,DEF], [%17any,DEF], [%19any,DEF], [%21any,DEF], [%23any,DEF], [%25any,DEF]
+                  }
+                  block l12 [l11] {
+                    cmp [%1any,USE], [1,USE]
+                    ble [l13,USE]
+                    jmp [l14,USE]
+                  }
+                  block l13 [l12] {
+                    mov [%26any,DEF], [%1any,USE]
+                    b [l15,USE]
+                  }
+                  block l14 [l12] {
+                    b [l16,USE]
+                  }
+                  block l15 [l13, l16] {
+                    phi [%26any,USE], [%28any,USE], [%29any,DEF]
+                    mov [%27any,DEF], [%29any,USE]
+                  }
+                  block l16 [l14] {
+                    sub [%30any,DEF], [%1any,USE], [1,USE]
+                    mov [%30any,USE], [%31x0,DEF]
+                    bl [fibonacci,USE], [%32x0,DEF], [%33x1,DEF], [%34x2,DEF], [%35x3,DEF], [%36x4,DEF], [%37x5,DEF], [%38x6,DEF], [%39x7,DEF], [%40x8,DEF], [%41x9,DEF], [%42x10,DEF], [%43x11,DEF], [%44x12,DEF], [%45x13,DEF], [%46x14,DEF], [%47x15,DEF], [%48x16,DEF], [%49x17,DEF], [%50x18,DEF], [%51x30,DEF]
+                    mov [%32x0,USE], [%52any,DEF]
+                    sub [%53any,DEF], [%1any,USE], [2,USE]
+                    mov [%53any,USE], [%54x0,DEF]
+                    bl [fibonacci,USE], [%55x0,DEF], [%56x1,DEF], [%57x2,DEF], [%58x3,DEF], [%59x4,DEF], [%60x5,DEF], [%61x6,DEF], [%62x7,DEF], [%63x8,DEF], [%64x9,DEF], [%65x10,DEF], [%66x11,DEF], [%67x12,DEF], [%68x13,DEF], [%69x14,DEF], [%70x15,DEF], [%71x16,DEF], [%72x17,DEF], [%73x18,DEF], [%74x30,DEF]
+                    mov [%55x0,USE], [%75any,DEF]
+                    add [%76any,DEF], [%52any,USE], [%75any,USE]
+                    mov [%28any,DEF], [%76any,USE]
+                  }
+                  block l17 [l15] {
+                    parmov [%3any,USE], [%5any,USE], [%7any,USE], [%9any,USE], [%11any,USE], [%13any,USE], [%15any,USE], [%17any,USE], [%19any,USE], [%21any,USE], [%23any,USE], [%25any,USE], [%2x19,DEF], [%4x20,DEF], [%6x21,DEF], [%8x22,DEF], [%10x23,DEF], [%12x24,DEF], [%14x25,DEF], [%16x26,DEF], [%18x27,DEF], [%20x28,DEF], [%22x29,DEF], [%24sp,DEF]
+                    mov [%77x0,DEF], [%27any,USE]
                   }
                 }
                 """;

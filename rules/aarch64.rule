@@ -1,0 +1,93 @@
++(_, _) => (1) {
+    add [%1, def], [$1, use], [$2, use]
+    out [%1, use]
+}
+
+-(_, _) => (1) {
+    sub [%1, def], [$1, use], [$2, use]
+    out [%1, use]
+}
+
+<(_, _) => (2) {
+    terminator // Marks terminator of block.
+    cmp [$1, use], [$2, use]
+    blt
+}
+
+<=(_, _) => (2) {
+    terminator
+    cmp [$1, use], [$2, use]
+    ble
+}
+
+Φ(_, _) => (0) {
+    phi [$1, use], [$2, use], [%1, def]
+    out [%1, use]
+}
+
+:=(_) => (0) {
+    out [$1, use]
+}
+
+PROJ(_, _) => (1) {
+    out [proj($1, $2), use]
+}
+
+CALL(_, _, _) => (5) {
+    bl [$2, use], [%x0, def], [%x1, def], [%x2, def], [%x3, def], [%x4, def], [%x5, def], [%x6, def], [%x7, def], [%x8, def], [%x9, def], [%x10, def], [%x11, def], [%x12, def], [%x13, def], [%x14, def], [%x15, def], [%x16, def], [%x17, def], [%x18, def], [%x30, def]
+    mov [%x0, use], [%1, def]
+    out [$1, use], [%1, use]
+}
+CALL(_, _, _, _) => (5) {
+    mov [$4, use], [%x0, def]
+    bl [$2, use], [%x0, def], [%x1, def], [%x2, def], [%x3, def], [%x4, def], [%x5, def], [%x6, def], [%x7, def], [%x8, def], [%x9, def], [%x10, def], [%x11, def], [%x12, def], [%x13, def], [%x14, def], [%x15, def], [%x16, def], [%x17, def], [%x18, def], [%x30, def]
+    mov [%x0, use], [%1, def]
+    out [$1, use], [%1, use]
+}
+CALL(_, _, _, _, _) => (5) {
+    parmov [$4, use], [$5, use], [%x0, def], [%x1, def]
+    bl [$2, use], [%x0, def], [%x1, def], [%x2, def], [%x3, def], [%x4, def], [%x5, def], [%x6, def], [%x7, def], [%x8, def], [%x9, def], [%x10, def], [%x11, def], [%x12, def], [%x13, def], [%x14, def], [%x15, def], [%x16, def], [%x17, def], [%x18, def], [%x30, def]
+    mov [%x0, use], [%1, def]
+    out [$1, use], [%1, use]
+}
+// TODO: handle more parameters
+
+// Weird edge cases, don't emit anything in this case.
+COPYTOREG(_, START) => (0) {
+}
+// # is for arbitrary arity arguments.
+COPYTOREG(_, PROJ(CALL(_, _, _, #_), 0)) => (0) {
+}
+
+COPYTOREG(_, _) => (1) {
+    // For COPYTOREG, the register name is the first parameter.
+    mov [$1, def], [$3, use]
+}
+
+COPYFROMREG(_) => (0) {
+    // For COPYFROMREG, the register name is the first parameter
+    out [$1, use]
+}
+
+GOTO(_) => (1) {
+    terminator
+    b
+}
+
+NOP => (0) {
+}
+
+START => (0) {
+}
+
+RETURN(_, _) => (1) {
+    terminator
+    mov [%x0, def], [$2, use]
+    out [%x0, use]
+}
+
+// pattern for handling immediates.
+CONST => (1) {
+    // For CONST, the first parameter is itself as an immediate.
+    out [$1, use]
+}
