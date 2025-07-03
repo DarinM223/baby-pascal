@@ -174,6 +174,11 @@ public class X86_64_ISA implements ISA {
         };
     }
 
+    @Override
+    public String jumpOp() {
+        return "jmp";
+    }
+
     private String prettyPhysical(Register.Physical register) {
         Map<Register.Physical, String> oppositeMap = INT_REGISTER_MAPPING.entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
         String registerName = oppositeMap.get(register);

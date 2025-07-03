@@ -4,11 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fix parsing so that begin/end multiple statements can be used anywhere a statement is expected">
-      <change afterPath="$PROJECT_DIR$/rules/aarch64.rule" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/AARCH64_ISA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start AARCH64 codegen rules">
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ModuleInitializer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rules/aarch64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/aarch64.rule" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/AARCH64_ISA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/AARCH64_ISA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/ISA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/ISA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/X86_64_ISA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/X86_64_ISA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,53 +48,55 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Fibonacci.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Funswap.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Gen.executor&quot;: &quot;Run&quot;,
-    &quot;Application.GenAARCH64.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.All tests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BlockTest.createBlocks.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BlockTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BuilderTest.convertFunction.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.DataflowTest.genKill.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DataflowTest.genKillAndLiveness.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IntervalTest.addRange.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.LengauerTarjanTest.idom.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.MachineBasicBlockTest.addBeforeTerminator.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.MachineBasicBlockTest.getPhiUses.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ParserTest.parseBinaryExpression.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.ParserTest.parseIfStatement.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ParserTest.parseIfStatementSemicolons.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ParserTest.parseProgram.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ParserTest.parseWhileStatement.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RangeTest.overlaps.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.SSADAGTest.postorder.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ThreeAddressCodeTest.normalize.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UniqueRenamerTest.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [clean,compile,exec:java].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [org.codehaus.mojo:exec-maven-plugin:3.1.0:java].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/d/Documents/mirrored/baby-pascal&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.tabs&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Fibonacci.executor": "Run",
+    "Application.Funswap.executor": "Run",
+    "Application.Gen.executor": "Run",
+    "Application.GenAARCH64.executor": "Run",
+    "Application.Main.executor": "Run",
+    "JUnit.All tests.executor": "Run",
+    "JUnit.BlockTest.createBlocks.executor": "Run",
+    "JUnit.BlockTest.executor": "Run",
+    "JUnit.BuilderTest.convertFunction.executor": "Debug",
+    "JUnit.DataflowTest.genKill.executor": "Run",
+    "JUnit.DataflowTest.genKillAndLiveness.executor": "Run",
+    "JUnit.IntervalTest.addRange.executor": "Run",
+    "JUnit.LengauerTarjanTest.idom.executor": "Run",
+    "JUnit.LinearScanTest.scanAARCH64.executor": "Run",
+    "JUnit.LinearScanTest.scanX86.executor": "Debug",
+    "JUnit.MachineBasicBlockTest.addBeforeTerminator.executor": "Run",
+    "JUnit.MachineBasicBlockTest.getPhiUses.executor": "Run",
+    "JUnit.ParserTest.parseBinaryExpression.executor": "Debug",
+    "JUnit.ParserTest.parseIfStatement.executor": "Run",
+    "JUnit.ParserTest.parseIfStatementSemicolons.executor": "Run",
+    "JUnit.ParserTest.parseProgram.executor": "Run",
+    "JUnit.ParserTest.parseWhileStatement.executor": "Run",
+    "JUnit.RangeTest.overlaps.executor": "Run",
+    "JUnit.SSADAGTest.postorder.executor": "Run",
+    "JUnit.ThreeAddressCodeTest.normalize.executor": "Run",
+    "JUnit.UniqueRenamerTest.executor": "Run",
+    "Maven.baby-pascal [clean,compile,exec:java].executor": "Run",
+    "Maven.baby-pascal [clean].executor": "Run",
+    "Maven.baby-pascal [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor": "Run",
+    "Maven.baby-pascal [org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile].executor": "Run",
+    "Maven.baby-pascal [org.codehaus.mojo:exec-maven-plugin:3.1.0:java].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "master",
+    "ignore.preview.features.used": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/d/Documents/mirrored/baby-pascal",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "editor.preferences.tabs"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.d_m.ast" />
@@ -202,17 +208,33 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ParserTest.parseIfStatement" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="LinearScanTest.scanAARCH64" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="baby-pascal" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.d_m.parser.*" />
+          <option name="PATTERN" value="com.d_m.regalloc.linear.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.d_m.parser" />
-      <option name="MAIN_CLASS_NAME" value="com.d_m.parser.ParserTest" />
-      <option name="METHOD_NAME" value="parseIfStatement" />
+      <option name="PACKAGE_NAME" value="com.d_m.regalloc.linear" />
+      <option name="MAIN_CLASS_NAME" value="com.d_m.regalloc.linear.LinearScanTest" />
+      <option name="METHOD_NAME" value="scanAARCH64" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LinearScanTest.scanX86" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="baby-pascal" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.d_m.regalloc.linear.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.d_m.regalloc.linear" />
+      <option name="MAIN_CLASS_NAME" value="com.d_m.regalloc.linear.LinearScanTest" />
+      <option name="METHOD_NAME" value="scanX86" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -272,41 +294,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RangeTest.overlaps" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="baby-pascal" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.d_m.regalloc.linear.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.d_m.regalloc.linear" />
-      <option name="MAIN_CLASS_NAME" value="com.d_m.regalloc.linear.RangeTest" />
-      <option name="METHOD_NAME" value="overlaps" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <list>
       <item itemvalue="Application.Fibonacci" />
       <item itemvalue="Application.Funswap" />
       <item itemvalue="Application.GenX86_64" />
       <item itemvalue="Application.GenAARCH64" />
       <item itemvalue="JUnit.All tests" />
-      <item itemvalue="JUnit.ParserTest.parseIfStatement" />
+      <item itemvalue="JUnit.LinearScanTest.scanAARCH64" />
+      <item itemvalue="JUnit.LinearScanTest.scanX86" />
       <item itemvalue="JUnit.ParserTest.parseIfStatementSemicolons" />
       <item itemvalue="JUnit.ParserTest.parseProgram" />
       <item itemvalue="JUnit.ParserTest.parseWhileStatement" />
-      <item itemvalue="JUnit.RangeTest.overlaps" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.LinearScanTest.scanAARCH64" />
+        <item itemvalue="JUnit.LinearScanTest.scanX86" />
         <item itemvalue="JUnit.ParserTest.parseIfStatementSemicolons" />
         <item itemvalue="JUnit.ParserTest.parseProgram" />
         <item itemvalue="JUnit.ParserTest.parseWhileStatement" />
-        <item itemvalue="JUnit.ParserTest.parseIfStatement" />
-        <item itemvalue="JUnit.RangeTest.overlaps" />
       </list>
     </recent_temporary>
   </component>
@@ -318,14 +324,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00202" summary="Debugging issues with nonexisting virtual registers in generated code which can be traced to the DAG splitting code">
-      <option name="closed" value="true" />
-      <created>1728754397880</created>
-      <option name="number" value="00202" />
-      <option name="presentableId" value="LOCAL-00202" />
-      <option name="project" value="LOCAL" />
-      <updated>1728754397880</updated>
     </task>
     <task id="LOCAL-00203" summary="Adds type to Quad and passes side effect token types into SSA values">
       <option name="closed" value="true" />
@@ -711,7 +709,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750260374598</updated>
     </task>
-    <option name="localTasksCounter" value="251" />
+    <task id="LOCAL-00251" summary="Start AARCH64 codegen rules">
+      <option name="closed" value="true" />
+      <created>1751477343202</created>
+      <option name="number" value="00251" />
+      <option name="presentableId" value="LOCAL-00251" />
+      <option name="project" value="LOCAL" />
+      <updated>1751477343202</updated>
+    </task>
+    <option name="localTasksCounter" value="252" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -719,7 +725,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Start assembly writer" />
     <MESSAGE value="Assembly writer handles some operands and adds assertion to linear scan test" />
     <MESSAGE value="Add support for reuse operands in the parser and join intervals for reuse operands in instructions" />
     <MESSAGE value="Add parallel moves for callee save registers in prologue and epilogue of functions" />
@@ -744,7 +749,8 @@
     <MESSAGE value="Adds script that links generated assembly with utility functions" />
     <MESSAGE value="Add funswap program and fix retrieving physical registers from function parameter virtual registers" />
     <MESSAGE value="Fix parsing so that begin/end multiple statements can be used anywhere a statement is expected" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix parsing so that begin/end multiple statements can be used anywhere a statement is expected" />
+    <MESSAGE value="Start AARCH64 codegen rules" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start AARCH64 codegen rules" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -770,6 +776,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java</url>
           <line>46</line>
           <option name="timeStamp" value="171" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java</url>
+          <line>386</line>
+          <option name="timeStamp" value="172" />
         </line-breakpoint>
         <breakpoint type="java-exception">
           <properties class="java.lang.NullPointerException" package="java.lang">
@@ -815,12 +826,7 @@
     </pin-to-top-manager>
     <watches-manager>
       <configuration name="JUnit">
-        <watch expression="dagSelection.matchedTiles()" language="JAVA" />
-        <watch expression="matchingTiles.apply(n)" language="JAVA" />
-        <watch expression="dag.getTiles(dag.matches.keys().iterator().next())" language="JAVA" />
-        <watch expression="bestChoiceForNodeCost.get(n2)" language="JAVA" />
-        <watch expression="valueBitset" language="JAVA" />
-        <watch expression="interval.virtualReg" language="JAVA" />
+        <watch expression="numbering.getInstructionNumber(block.getInstructions().getLast())" language="JAVA" />
       </configuration>
       <configuration name="Application">
         <watch expression="block.getExit()" language="JAVA" />

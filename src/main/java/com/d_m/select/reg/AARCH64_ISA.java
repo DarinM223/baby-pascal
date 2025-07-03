@@ -1,6 +1,5 @@
 package com.d_m.select.reg;
 
-import com.d_m.gen.Operand;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.HashMap;
@@ -254,6 +253,11 @@ public class AARCH64_ISA implements ISA {
                  "bgt", "ble", "bal", "cbz", "cbnz", "tbz", "tbnz", "br" -> true;
             default -> false;
         };
+    }
+
+    @Override
+    public String jumpOp() {
+        return "b";
     }
 
     private String prettyPhysical(Register.Physical register) {

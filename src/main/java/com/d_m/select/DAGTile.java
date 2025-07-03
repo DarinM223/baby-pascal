@@ -84,7 +84,7 @@ public class DAGTile implements Tile<Value>, Comparable<DAGTile> {
                 for (int i = 0; i < successors.size(); i++) {
                     MachineBasicBlock successor = successors.get(i);
                     List<MachineOperandPair> operands = List.of(new MachineOperandPair(new MachineOperand.BasicBlock(successor), MachineOperandKind.USE));
-                    MachineInstruction converted = new MachineInstruction(i == 0 ? instruction.name() : "jmp", operands);
+                    MachineInstruction converted = new MachineInstruction(i == 0 ? instruction.name() : info.isa.jumpOp(), operands);
                     emitter.add(converted);
                 }
             } else {

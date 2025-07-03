@@ -1,34 +1,18 @@
 package com.d_m.regalloc.linear;
 
-import com.d_m.ast.*;
+import com.d_m.ModuleInitializer;
 import com.d_m.code.ShortCircuitException;
-import com.d_m.code.ThreeAddressCode;
-import com.d_m.construct.ConstructSSA;
 import com.d_m.deconstruct.InsertParallelMoves;
 import com.d_m.deconstruct.SequentializeParallelMoves;
-import com.d_m.dom.Examples;
-import com.d_m.gen.GeneratedAutomata;
-import com.d_m.gen.rules.DefaultAutomata;
-import com.d_m.pass.CriticalEdgeSplitting;
 import com.d_m.regalloc.asm.AssemblyWriter;
 import com.d_m.regalloc.asm.IdMap;
 import com.d_m.regalloc.common.CleanupAssembly;
-import com.d_m.select.Codegen;
 import com.d_m.select.FunctionLoweringInfo;
 import com.d_m.select.instr.MachineBasicBlock;
 import com.d_m.select.instr.MachineFunction;
 import com.d_m.select.instr.MachinePrettyPrinter;
-import com.d_m.select.reg.ISA;
 import com.d_m.select.reg.Register;
-import com.d_m.select.reg.X86_64_ISA;
 import com.d_m.ssa.Function;
-import com.d_m.ssa.Module;
-import com.d_m.ssa.SsaConverter;
-import com.d_m.util.Fresh;
-import com.d_m.util.FreshImpl;
-import com.d_m.util.Symbol;
-import com.d_m.util.SymbolImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -38,70 +22,23 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LinearScanTest {
-    private Symbol symbol;
-    private ThreeAddressCode threeAddressCode;
-    private ISA isa;
-    private Codegen codegen;
-
-    @BeforeEach
-    void setUp() {
-        Fresh fresh = new FreshImpl();
-        symbol = new SymbolImpl(fresh);
-        threeAddressCode = new ThreeAddressCode(fresh, symbol);
-    }
-
-    private com.d_m.ssa.Module initFibonacci() throws ShortCircuitException {
-        Declaration<Statement> fibonacciDeclaration = new FunctionDeclaration<>(
-                "fibonacci",
-                List.of(new TypedName("n", new IntegerType())),
-                Optional.of(new IntegerType()),
-                Examples.fibonacci("fibonacci", "n")
-        );
-        Program<Statement> program = new Program<>(List.of(), List.of(fibonacciDeclaration), Examples.figure_19_4());
-        Program<com.d_m.cfg.Block> cfg = toCfg(program);
-        SsaConverter converter = new SsaConverter(symbol);
-        com.d_m.ssa.Module module = converter.convertProgram(cfg);
-        initModule(module);
-        return module;
-    }
-
-    private void initModule(Module module) throws ShortCircuitException {
-        new CriticalEdgeSplitting().runModule(module);
-        GeneratedAutomata automata;
-        try {
-            automata = (GeneratedAutomata) Class.forName("com.d_m.gen.rules.X86_64").getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            automata = new DefaultAutomata();
+    void testRegAllocOutput(ModuleInitializer.FunctionResult fun, String expectedPrettyPrint, String expectedAssembly) throws IOException {
+        for (Function function : fun.module().getFunctionList()) {
+            fun.codegen().startFunction(function);
         }
-        isa = new X86_64_ISA();
-        codegen = new Codegen(isa, automata);
-    }
-
-    private Program<com.d_m.cfg.Block> toCfg(Program<Statement> program) throws ShortCircuitException {
-        Program<com.d_m.cfg.Block> cfg = threeAddressCode.normalizeProgram(program);
-        new ConstructSSA(symbol).convertProgram(cfg);
-        return cfg;
-    }
-
-    @Test
-    void scan() throws ShortCircuitException, IOException {
-        Module module = initFibonacci();
-        for (Function function : module.getFunctionList()) {
-            codegen.startFunction(function);
+        for (Function function : fun.module().getFunctionList()) {
+            var blockTilesMap = fun.codegen().matchTilesInBlocks(function);
+            fun.codegen().emitFunction(function, blockTilesMap);
         }
-        for (Function function : module.getFunctionList()) {
-            var blockTilesMap = codegen.matchTilesInBlocks(function);
-            codegen.emitFunction(function, blockTilesMap);
-        }
-        Register.Physical temp = codegen.getISA().physicalFromRegisterName("r10");
+        Register.Physical temp = fun.codegen().getISA().physicalFromRegisterName("r10");
 
         StringWriter prettyPrintWriter = new StringWriter();
         StringWriter finalAssembly = new StringWriter();
-        MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(isa, prettyPrintWriter);
+        MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(fun.codegen().getISA(), prettyPrintWriter);
         IdMap<MachineBasicBlock> blockIdMap = new IdMap<>();
-        for (Function function : module.getFunctionList()) {
-            MachineFunction machineFunction = codegen.getFunction(function);
-            FunctionLoweringInfo info = codegen.getFunctionLoweringInfo(function);
+        for (Function function : fun.module().getFunctionList()) {
+            MachineFunction machineFunction = fun.codegen().getFunction(function);
+            FunctionLoweringInfo info = fun.codegen().getFunctionLoweringInfo(function);
             machineFunction.runLiveness();
             new InsertParallelMoves(info).runFunction(machineFunction);
             for (MachineBasicBlock block : machineFunction.getBlocks()) {
@@ -114,7 +51,7 @@ class LinearScanTest {
             buildIntervals.joinIntervalsFunction(machineFunction);
             List<Interval> intervals = buildIntervals.getIntervals();
             Set<Register.Physical> free = new HashSet<>();
-            for (Register.Physical reg : codegen.getISA().allIntegerRegs()) {
+            for (Register.Physical reg : fun.codegen().getISA().allIntegerRegs()) {
                 if (!reg.equals(temp)) {
                     free.add(reg);
                 }
@@ -129,7 +66,15 @@ class LinearScanTest {
             AssemblyWriter assemblyWriter = new AssemblyWriter(blockIdMap, finalAssembly, info, machineFunction);
             assemblyWriter.writeFunction();
         }
-        String expected = """
+
+        assertEquals(expectedPrettyPrint, prettyPrintWriter.toString());
+        assertEquals(expectedAssembly, finalAssembly.toString());
+    }
+
+    @Test
+    void scanX86() throws ShortCircuitException, IOException {
+        var fib = ModuleInitializer.createX86_64().initFibonacci();
+        String expectedPrettyPrint = """
                 main {
                   block l0 [] {
                     jmp [l1,USE]
@@ -216,9 +161,7 @@ class LinearScanTest {
                   }
                 }
                 """;
-        assertEquals(expected, prettyPrintWriter.toString());
-
-        expected = """
+        String expectedAssembly = """
                 main:
                 l0:
                   jmp l1
@@ -289,6 +232,158 @@ class LinearScanTest {
                   add $24, %rsp
                   ret
                 """;
-        assertEquals(expected, finalAssembly.toString());
+        testRegAllocOutput(fib, expectedPrettyPrint, expectedAssembly);
+    }
+
+    @Test
+    void scanAARCH64() throws ShortCircuitException, IOException {
+        var fib = ModuleInitializer.createAARCH64().initFibonacci();
+        String expectedPrettyPrint =
+                """
+                        main {
+                          block l0 [] {
+                            b [l1,USE]
+                          }
+                          block l1 [l0] {
+                            mov [%x0,DEF], [1,USE]
+                            mov [%x1,DEF], [1,USE]
+                            mov [%x2,DEF], [0,USE]
+                            b [l2,USE]
+                          }
+                          block l2 [l1, l3] {
+                            mov [%x3,DEF], [%x2,USE]
+                            cmp [%x2,USE], [100,USE]
+                            blt [l4,USE]
+                            b [l5,USE]
+                          }
+                          block l4 [l2] {
+                            cmp [%x1,USE], [20,USE]
+                            blt [l6,USE]
+                            b [l7,USE]
+                          }
+                          block l5 [l2] {
+                            b [l8,USE]
+                          }
+                          block l6 [l4] {
+                            add [%x2,DEF], [%x3,USE], [1,USE]
+                            mov [%x1,DEF], [%x0,USE]
+                            b [l3,USE]
+                          }
+                          block l7 [l4] {
+                            b [l9,USE]
+                          }
+                          block l8 [l5] {
+                            b [l10,USE]
+                          }
+                          block l3 [l6, l9] {
+                            b [l2,USE]
+                          }
+                          block l9 [l7] {
+                            add [%x2,DEF], [%x3,USE], [2,USE]
+                            mov [%x3,USE], [%x1,DEF]
+                            b [l3,USE]
+                          }
+                          block l10 [l8] {
+                          }
+                        }
+                        fibonacci {
+                          block l11 [] {
+                            mov [%x0,USE], [slot8,DEF]
+                            b [l12,USE]
+                          }
+                          block l12 [l11] {
+                            cmp [slot8,USE], [1,USE]
+                            ble [l13,USE]
+                            b [l14,USE]
+                          }
+                          block l13 [l12] {
+                            b [l15,USE]
+                          }
+                          block l14 [l12] {
+                            b [l16,USE]
+                          }
+                          block l15 [l13, l16] {
+                            b [l17,USE]
+                          }
+                          block l16 [l14] {
+                            sub [%x0,DEF], [slot8,USE], [1,USE]
+                            bl [fibonacci,USE], [%x0,DEF], [%x1,DEF], [%x2,DEF], [%x3,DEF], [%x4,DEF], [%x5,DEF], [%x6,DEF], [%x7,DEF], [%x8,DEF], [%x9,DEF], [%x10,DEF], [%x11,DEF], [%x12,DEF], [%x13,DEF], [%x14,DEF], [%x15,DEF], [%x16,DEF], [%x17,DEF], [%x18,DEF], [%x30,DEF]
+                            mov [%x0,USE], [slot16,DEF]
+                            sub [%x0,DEF], [slot8,USE], [2,USE]
+                            bl [fibonacci,USE], [%x0,DEF], [%x1,DEF], [%x2,DEF], [%x3,DEF], [%x4,DEF], [%x5,DEF], [%x6,DEF], [%x7,DEF], [%x8,DEF], [%x9,DEF], [%x10,DEF], [%x11,DEF], [%x12,DEF], [%x13,DEF], [%x14,DEF], [%x15,DEF], [%x16,DEF], [%x17,DEF], [%x18,DEF], [%x30,DEF]
+                            add [slot8,DEF], [slot16,USE], [%x0,USE]
+                            b [l15,USE]
+                          }
+                          block l17 [l15] {
+                            mov [%x0,DEF], [slot8,USE]
+                          }
+                        }
+                        """;
+        String expectedAssembly =
+                """
+                        main:
+                        l0:
+                          b l1
+                        l1:
+                          mov %x0, $1
+                          mov %x1, $1
+                          mov %x2, $0
+                          b l2
+                        l2:
+                          mov %x3, %x2
+                          cmp %x2, $100
+                          blt l3
+                          b l4
+                        l3:
+                          cmp %x1, $20
+                          blt l5
+                          b l6
+                        l4:
+                          b l7
+                        l5:
+                          add %x2, %x3, $1
+                          mov %x1, %x0
+                          b l8
+                        l6:
+                          b l9
+                        l7:
+                          b l10
+                        l8:
+                          b l2
+                        l9:
+                          add %x2, %x3, $2
+                          mov %x3, %x1
+                          b l8
+                        l10:
+                          ret
+                        fibonacci:
+                          sub $16, %rsp
+                        l11:
+                          mov %x0, 8(%rsp)
+                          b l12
+                        l12:
+                          cmp 8(%rsp), $1
+                          ble l13
+                          b l14
+                        l13:
+                          b l15
+                        l14:
+                          b l16
+                        l15:
+                          b l17
+                        l16:
+                          sub %x0, 8(%rsp), $1
+                          bl fibonacci, %x0, %x1, %x2, %x3, %x4, %x5, %x6, %x7, %x8, %x9, %x10, %x11, %x12, %x13, %x14, %x15, %x16, %x17, %x18, %x30
+                          mov %x0, 0(%rsp)
+                          sub %x0, 8(%rsp), $2
+                          bl fibonacci, %x0, %x1, %x2, %x3, %x4, %x5, %x6, %x7, %x8, %x9, %x10, %x11, %x12, %x13, %x14, %x15, %x16, %x17, %x18, %x30
+                          add 8(%rsp), 0(%rsp), %x0
+                          b l15
+                        l17:
+                          mov %x0, 8(%rsp)
+                          add $16, %rsp
+                          ret
+                        """;
+        testRegAllocOutput(fib, expectedPrettyPrint, expectedAssembly);
     }
 }

@@ -74,6 +74,11 @@ GOTO(_) => (1) {
     b
 }
 
+GOTO => (1) {
+    terminator
+    b
+}
+
 NOP => (0) {
 }
 

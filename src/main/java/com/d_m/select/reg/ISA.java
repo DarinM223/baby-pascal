@@ -9,4 +9,5 @@ public interface ISA {
     RegisterConstraint constraintFromRegisterName(String registerName);
     String pretty(Register register);
     boolean isBranch(String opName);
+    String jumpOp();
 }

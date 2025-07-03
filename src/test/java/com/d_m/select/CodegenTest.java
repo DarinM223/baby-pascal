@@ -1,25 +1,11 @@
 package com.d_m.select;
 
-import com.d_m.ast.*;
+import com.d_m.ModuleInitializer;
 import com.d_m.code.ShortCircuitException;
-import com.d_m.code.ThreeAddressCode;
-import com.d_m.construct.ConstructSSA;
-import com.d_m.dom.Examples;
-import com.d_m.gen.GeneratedAutomata;
-import com.d_m.gen.rules.DefaultAutomata;
-import com.d_m.pass.CriticalEdgeSplitting;
 import com.d_m.select.instr.MachineFunction;
 import com.d_m.select.instr.MachinePrettyPrinter;
-import com.d_m.select.reg.AARCH64_ISA;
-import com.d_m.select.reg.ISA;
-import com.d_m.select.reg.X86_64_ISA;
 import com.d_m.ssa.*;
 import com.d_m.ssa.Module;
-import com.d_m.util.Fresh;
-import com.d_m.util.FreshImpl;
-import com.d_m.util.Symbol;
-import com.d_m.util.SymbolImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -30,67 +16,12 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CodegenTest {
-    private Symbol symbol;
-    private ThreeAddressCode threeAddressCode;
-    private ISA isa;
-    private Codegen codegen;
-
-    @BeforeEach
-    void setUp() throws ShortCircuitException {
-        Fresh fresh = new FreshImpl();
-        symbol = new SymbolImpl(fresh);
-        threeAddressCode = new ThreeAddressCode(fresh, symbol);
-    }
-
-    interface InitModule {
-        void accept(Module module) throws ShortCircuitException;
-    }
-
-    private Module initFibonacci(InitModule initModule) throws ShortCircuitException {
-        Declaration<Statement> fibonacciDeclaration = new FunctionDeclaration<>(
-                "fibonacci",
-                List.of(new TypedName("n", new IntegerType())),
-                Optional.of(new IntegerType()),
-                Examples.fibonacci("fibonacci", "n")
-        );
-        Program<Statement> program = new Program<>(List.of(), List.of(fibonacciDeclaration), Examples.figure_19_4());
-        Program<com.d_m.cfg.Block> cfg = toCfg(program);
-        SsaConverter converter = new SsaConverter(symbol);
-        Module module = converter.convertProgram(cfg);
-        initModule.accept(module);
-        return module;
-    }
-
-    private void initX86Module(Module module) throws ShortCircuitException {
-        isa = new X86_64_ISA();
-        initModule(module, "com.d_m.gen.rules.X86_64");
-    }
-
-    private void initAARCHModule(Module module) throws ShortCircuitException {
-        isa = new AARCH64_ISA();
-        initModule(module, "com.d_m.gen.rules.AARCH64");
-    }
-
-    private void initModule(Module module, String className) throws ShortCircuitException {
-        new CriticalEdgeSplitting().runModule(module);
-        GeneratedAutomata automata;
-        try {
-            automata = (GeneratedAutomata) Class.forName(className).getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            automata = new DefaultAutomata();
-        }
-        codegen = new Codegen(isa, automata);
-    }
-
-    private Program<com.d_m.cfg.Block> toCfg(Program<Statement> program) throws ShortCircuitException {
-        Program<com.d_m.cfg.Block> cfg = threeAddressCode.normalizeProgram(program);
-        new ConstructSSA(symbol).convertProgram(cfg);
-        return cfg;
-    }
 
     @Test
     void matchedTiles() throws ShortCircuitException {
-        Module module = initFibonacci(this::initX86Module);
+        var fib = ModuleInitializer.createX86_64().initFibonacci();
+        Codegen codegen = fib.codegen();
+        Module module = fib.module();
         for (Function function : module.getFunctionList()) {
             codegen.startFunction(function);
         }
@@ -111,7 +42,9 @@ class CodegenTest {
 
     @Test
     void codegenX86() throws IOException, ShortCircuitException {
-        Module module = initFibonacci(this::initX86Module);
+        var fib = ModuleInitializer.createX86_64().initFibonacci();
+        Codegen codegen = fib.codegen();
+        Module module = fib.module();
 
         StringWriter moduleWriter = new StringWriter();
         PrettyPrinter printer = new PrettyPrinter(moduleWriter);
@@ -127,7 +60,7 @@ class CodegenTest {
         }
         System.out.println(moduleWriter);
 
-        MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(isa, writer);
+        MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(codegen.getISA(), writer);
         for (Function function : module.getFunctionList()) {
             MachineFunction machineFunction = codegen.getFunction(function);
             machinePrinter.writeFunction(machineFunction);
@@ -242,7 +175,9 @@ class CodegenTest {
 
     @Test
     void codegenAARCH() throws IOException, ShortCircuitException {
-        Module module = initFibonacci(this::initAARCHModule);
+        var fib = ModuleInitializer.createAARCH64().initFibonacci();
+        Codegen codegen = fib.codegen();
+        Module module = fib.module();
 
         StringWriter moduleWriter = new StringWriter();
         PrettyPrinter printer = new PrettyPrinter(moduleWriter);
@@ -258,7 +193,7 @@ class CodegenTest {
         }
         System.out.println(moduleWriter);
 
-        MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(isa, writer);
+        MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(codegen.getISA(), writer);
         for (Function function : module.getFunctionList()) {
             MachineFunction machineFunction = codegen.getFunction(function);
             machinePrinter.writeFunction(machineFunction);
@@ -268,11 +203,13 @@ class CodegenTest {
                 main {
                   block l0 [] {
                     parmov [%0x19,USE], [%2x20,USE], [%4x21,USE], [%6x22,USE], [%8x23,USE], [%10x24,USE], [%12x25,USE], [%14x26,USE], [%16x27,USE], [%18x28,USE], [%20x29,USE], [%22sp,USE], [%1any,DEF], [%3any,DEF], [%5any,DEF], [%7any,DEF], [%9any,DEF], [%11any,DEF], [%13any,DEF], [%15any,DEF], [%17any,DEF], [%19any,DEF], [%21any,DEF], [%23any,DEF]
+                    b [l1,USE]
                   }
                   block l1 [l0] {
                     mov [%24any,DEF], [1,USE]
                     mov [%25any,DEF], [1,USE]
                     mov [%26any,DEF], [0,USE]
+                    b [l2,USE]
                   }
                   block l2 [l1, l3] {
                     phi [%26any,USE], [%32any,USE], [%35any,DEF]
@@ -281,12 +218,12 @@ class CodegenTest {
                     mov [%28any,DEF], [%35any,USE]
                     cmp [%35any,USE], [100,USE]
                     blt [l4,USE]
-                    jmp [l5,USE]
+                    b [l5,USE]
                   }
                   block l4 [l2] {
                     cmp [%27any,USE], [20,USE]
                     blt [l6,USE]
-                    jmp [l7,USE]
+                    b [l7,USE]
                   }
                   block l5 [l2] {
                     b [l8,USE]
@@ -301,12 +238,14 @@ class CodegenTest {
                     b [l9,USE]
                   }
                   block l8 [l5] {
+                    b [l10,USE]
                   }
                   block l3 [l6, l9] {
                     phi [%29any,USE], [%33any,USE], [%38any,DEF]
                     phi [%30any,USE], [%34any,USE], [%39any,DEF]
                     mov [%31any,DEF], [%38any,USE]
                     mov [%32any,DEF], [%39any,USE]
+                    b [l2,USE]
                   }
                   block l9 [l7] {
                     add [%40any,DEF], [%28any,USE], [2,USE]
@@ -321,11 +260,12 @@ class CodegenTest {
                 fibonacci {
                   block l11 [] {
                     parmov [%0x0,USE], [%2x19,USE], [%4x20,USE], [%6x21,USE], [%8x22,USE], [%10x23,USE], [%12x24,USE], [%14x25,USE], [%16x26,USE], [%18x27,USE], [%20x28,USE], [%22x29,USE], [%24sp,USE], [%1any,DEF], [%3any,DEF], [%5any,DEF], [%7any,DEF], [%9any,DEF], [%11any,DEF], [%13any,DEF], [%15any,DEF], [%17any,DEF], [%19any,DEF], [%21any,DEF], [%23any,DEF], [%25any,DEF]
+                    b [l12,USE]
                   }
                   block l12 [l11] {
                     cmp [%1any,USE], [1,USE]
                     ble [l13,USE]
-                    jmp [l14,USE]
+                    b [l14,USE]
                   }
                   block l13 [l12] {
                     mov [%26any,DEF], [%1any,USE]
@@ -337,6 +277,7 @@ class CodegenTest {
                   block l15 [l13, l16] {
                     phi [%26any,USE], [%28any,USE], [%29any,DEF]
                     mov [%27any,DEF], [%29any,USE]
+                    b [l17,USE]
                   }
                   block l16 [l14] {
                     sub [%30any,DEF], [%1any,USE], [1,USE]
@@ -349,6 +290,7 @@ class CodegenTest {
                     mov [%55x0,USE], [%75any,DEF]
                     add [%76any,DEF], [%52any,USE], [%75any,USE]
                     mov [%28any,DEF], [%76any,USE]
+                    b [l15,USE]
                   }
                   block l17 [l15] {
                     parmov [%3any,USE], [%5any,USE], [%7any,USE], [%9any,USE], [%11any,USE], [%13any,USE], [%15any,USE], [%17any,USE], [%19any,USE], [%21any,USE], [%23any,USE], [%25any,USE], [%2x19,DEF], [%4x20,DEF], [%6x21,DEF], [%8x22,DEF], [%10x23,DEF], [%12x24,DEF], [%14x25,DEF], [%16x26,DEF], [%18x27,DEF], [%20x28,DEF], [%22x29,DEF], [%24sp,DEF]
