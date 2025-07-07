@@ -11,7 +11,7 @@ import com.d_m.gen.rules.DefaultAutomata;
 import com.d_m.parser.Parser;
 import com.d_m.parser.Scanner;
 import com.d_m.pass.*;
-import com.d_m.regalloc.asm.AssemblyWriter;
+import com.d_m.regalloc.asm.AssemblyWriterFactory;
 import com.d_m.regalloc.asm.IdMap;
 import com.d_m.regalloc.common.CleanupAssembly;
 import com.d_m.regalloc.linear.BuildIntervals;
@@ -85,7 +85,7 @@ public class Main {
         writer.write(".global main\n");
         writer.write(".text\n");
 
-        IdMap<MachineBasicBlock> blockIdMap = new IdMap<>();
+        var factory = AssemblyWriterFactory.createX86(new IdMap<>(), writer);
         for (Function function : module.getFunctionList()) {
             MachineFunction machineFunction = codegen.getFunction(function);
             FunctionLoweringInfo info = codegen.getFunctionLoweringInfo(function);
@@ -112,8 +112,7 @@ public class Main {
             CleanupAssembly.removeRedundantMoves(machineFunction);
             CleanupAssembly.expandMovesBetweenMemoryOperands(machineFunction, temp);
 
-            AssemblyWriter assemblyWriter = new AssemblyWriter(blockIdMap, writer, info, machineFunction);
-            assemblyWriter.writeFunction();
+            factory.create(info, machineFunction).writeFunction();
         }
     }
 

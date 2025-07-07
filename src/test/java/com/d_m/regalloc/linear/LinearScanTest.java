@@ -4,8 +4,7 @@ import com.d_m.ModuleInitializer;
 import com.d_m.code.ShortCircuitException;
 import com.d_m.deconstruct.InsertParallelMoves;
 import com.d_m.deconstruct.SequentializeParallelMoves;
-import com.d_m.regalloc.asm.AssemblyWriter;
-import com.d_m.regalloc.asm.IdMap;
+import com.d_m.regalloc.asm.*;
 import com.d_m.regalloc.common.CleanupAssembly;
 import com.d_m.select.FunctionLoweringInfo;
 import com.d_m.select.instr.MachineBasicBlock;
@@ -22,7 +21,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LinearScanTest {
-    void testRegAllocOutput(ModuleInitializer.FunctionResult fun, String expectedPrettyPrint, String expectedAssembly) throws IOException {
+    void testRegAllocOutput(ModuleInitializer.FunctionResult fun, AssemblyWriterFactory factory, String expectedPrettyPrint) throws IOException {
         for (Function function : fun.module().getFunctionList()) {
             fun.codegen().startFunction(function);
         }
@@ -33,9 +32,7 @@ class LinearScanTest {
         Register.Physical temp = fun.codegen().getISA().physicalFromRegisterName("r10");
 
         StringWriter prettyPrintWriter = new StringWriter();
-        StringWriter finalAssembly = new StringWriter();
         MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(fun.codegen().getISA(), prettyPrintWriter);
-        IdMap<MachineBasicBlock> blockIdMap = new IdMap<>();
         for (Function function : fun.module().getFunctionList()) {
             MachineFunction machineFunction = fun.codegen().getFunction(function);
             FunctionLoweringInfo info = fun.codegen().getFunctionLoweringInfo(function);
@@ -63,12 +60,10 @@ class LinearScanTest {
             CleanupAssembly.expandMovesBetweenMemoryOperands(machineFunction, temp);
 
             machinePrinter.writeFunction(machineFunction);
-            AssemblyWriter assemblyWriter = new AssemblyWriter(blockIdMap, finalAssembly, info, machineFunction);
-            assemblyWriter.writeFunction();
+            factory.create(info, machineFunction).writeFunction();
         }
 
         assertEquals(expectedPrettyPrint, prettyPrintWriter.toString());
-        assertEquals(expectedAssembly, finalAssembly.toString());
     }
 
     @Test
@@ -232,7 +227,9 @@ class LinearScanTest {
                   add $24, %rsp
                   ret
                 """;
-        testRegAllocOutput(fib, expectedPrettyPrint, expectedAssembly);
+        var finalAssembly = new StringWriter();
+        testRegAllocOutput(fib, AssemblyWriterFactory.createX86(new IdMap<>(), finalAssembly), expectedPrettyPrint);
+        assertEquals(expectedAssembly, finalAssembly.toString());
     }
 
     @Test
@@ -384,6 +381,8 @@ class LinearScanTest {
                           add $16, %rsp
                           ret
                         """;
-        testRegAllocOutput(fib, expectedPrettyPrint, expectedAssembly);
+        var finalAssembly = new StringWriter();
+        testRegAllocOutput(fib, AssemblyWriterFactory.createX86(new IdMap<>(), finalAssembly), expectedPrettyPrint);
+        assertEquals(expectedAssembly, finalAssembly.toString());
     }
 }
