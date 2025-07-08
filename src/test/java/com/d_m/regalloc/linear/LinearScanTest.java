@@ -319,27 +319,29 @@ class LinearScanTest {
         String expectedAssembly =
                 """
                         main:
+                          stp x29, x30, [sp, #-16]!
+                          mov x29, sp
                         l0:
                           b l1
                         l1:
-                          mov %x0, $1
-                          mov %x1, $1
-                          mov %x2, $0
+                          mov x0, #1
+                          mov x1, #1
+                          mov x2, #0
                           b l2
                         l2:
-                          mov %x3, %x2
-                          cmp %x2, $100
+                          mov x3, x2
+                          cmp x2, #100
                           blt l3
                           b l4
                         l3:
-                          cmp %x1, $20
+                          cmp x1, #20
                           blt l5
                           b l6
                         l4:
                           b l7
                         l5:
-                          add %x2, %x3, $1
-                          mov %x1, %x0
+                          add x2, x3, #1
+                          mov x1, x0
                           b l8
                         l6:
                           b l9
@@ -348,18 +350,20 @@ class LinearScanTest {
                         l8:
                           b l2
                         l9:
-                          add %x2, %x3, $2
-                          mov %x3, %x1
+                          add x2, x3, #2
+                          mov x3, x1
                           b l8
                         l10:
+                          ldp x29, x30, [sp], 16
                           ret
                         fibonacci:
-                          sub $16, %rsp
+                          stp x29, x30, [sp, #-32]!
+                          mov x29, sp
                         l11:
-                          mov %x0, 8(%rsp)
+                          mov x0, [sp, 8]
                           b l12
                         l12:
-                          cmp 8(%rsp), $1
+                          cmp [sp, 8], #1
                           ble l13
                           b l14
                         l13:
@@ -369,20 +373,20 @@ class LinearScanTest {
                         l15:
                           b l17
                         l16:
-                          sub %x0, 8(%rsp), $1
-                          bl fibonacci, %x0, %x1, %x2, %x3, %x4, %x5, %x6, %x7, %x8, %x9, %x10, %x11, %x12, %x13, %x14, %x15, %x16, %x17, %x18, %x30
-                          mov %x0, 0(%rsp)
-                          sub %x0, 8(%rsp), $2
-                          bl fibonacci, %x0, %x1, %x2, %x3, %x4, %x5, %x6, %x7, %x8, %x9, %x10, %x11, %x12, %x13, %x14, %x15, %x16, %x17, %x18, %x30
-                          add 8(%rsp), 0(%rsp), %x0
+                          sub x0, [sp, 8], #1
+                          bl fibonacci
+                          mov x0, [sp, 0]
+                          sub x0, [sp, 8], #2
+                          bl fibonacci
+                          add [sp, 8], [sp, 0], x0
                           b l15
                         l17:
-                          mov %x0, 8(%rsp)
-                          add $16, %rsp
+                          mov x0, [sp, 8]
+                          ldp x29, x30, [sp], 32
                           ret
                         """;
         var finalAssembly = new StringWriter();
-        testRegAllocOutput(fib, AssemblyWriterFactory.createX86(new IdMap<>(), finalAssembly), expectedPrettyPrint);
+        testRegAllocOutput(fib, AssemblyWriterFactory.createAARCH64(new IdMap<>(), finalAssembly), expectedPrettyPrint);
         assertEquals(expectedAssembly, finalAssembly.toString());
     }
 }

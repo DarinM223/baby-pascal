@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Cleanup code generation unit tests and  start unit tests for AARCH64 register allocation">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/asm/AssemblyWriterFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/asm/X86AssemblyWriter.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Abstract code so that different targets can have different assembly writers">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/asm/AARCH64AssemblyWriter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/asm/AssemblyWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/asm/AssemblyWriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/asm/AssemblyWriterFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/asm/AssemblyWriterFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/asm/X86AssemblyWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/asm/X86AssemblyWriter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -135,7 +135,7 @@
       <command value="mvn clean compile exec:java" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Funswap">
+  <component name="RunManager" selected="JUnit.All tests">
     <configuration name="Fibonacci" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.d_m.Main" />
       <module name="baby-pascal" />
@@ -321,14 +321,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00204" summary="Splits SSADAG initialization into three steps to prevent some issues with side effect rewriting">
-      <option name="closed" value="true" />
-      <created>1728838759196</created>
-      <option name="number" value="00204" />
-      <option name="presentableId" value="LOCAL-00204" />
-      <option name="project" value="LOCAL" />
-      <updated>1728838759196</updated>
     </task>
     <task id="LOCAL-00205" summary="Rewrites side effect edges based off of type and fixes some issues with code generation creating virtual registers without definitions">
       <option name="closed" value="true" />
@@ -714,7 +706,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751567581855</updated>
     </task>
-    <option name="localTasksCounter" value="253" />
+    <task id="LOCAL-00253" summary="Abstract code so that different targets can have different assembly writers">
+      <option name="closed" value="true" />
+      <created>1751904264060</created>
+      <option name="number" value="00253" />
+      <option name="presentableId" value="LOCAL-00253" />
+      <option name="project" value="LOCAL" />
+      <updated>1751904264061</updated>
+    </task>
+    <option name="localTasksCounter" value="254" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -722,7 +722,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add support for reuse operands in the parser and join intervals for reuse operands in instructions" />
     <MESSAGE value="Add parallel moves for callee save registers in prologue and epilogue of functions" />
     <MESSAGE value="Linear scan takes register for fixed intervals, recursive function unit test uses stack slots for storing values" />
     <MESSAGE value="Revert fix for Eclipse with multiple wildcard patterns and flip order for assertEquals()" />
@@ -747,7 +746,8 @@
     <MESSAGE value="Fix parsing so that begin/end multiple statements can be used anywhere a statement is expected" />
     <MESSAGE value="Start AARCH64 codegen rules" />
     <MESSAGE value="Cleanup code generation unit tests and  start unit tests for AARCH64 register allocation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cleanup code generation unit tests and  start unit tests for AARCH64 register allocation" />
+    <MESSAGE value="Abstract code so that different targets can have different assembly writers" />
+    <option name="LAST_COMMIT_MESSAGE" value="Abstract code so that different targets can have different assembly writers" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
