@@ -1,5 +1,9 @@
 package com.d_m.select.reg;
 
+import com.d_m.select.instr.MachineInstruction;
+import com.d_m.select.instr.MachineOperand;
+import com.d_m.select.instr.MachineOperandKind;
+import com.d_m.select.instr.MachineOperandPair;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.HashMap;
@@ -172,6 +176,14 @@ public class X86_64_ISA implements ISA {
                  "jecxz" -> true;
             default -> false;
         };
+    }
+
+    @Override
+    public MachineInstruction createMoveInstruction(MachineOperand destination, MachineOperand source) {
+        return new MachineInstruction("mov", List.of(
+                new MachineOperandPair(source, MachineOperandKind.USE),
+                new MachineOperandPair(destination, MachineOperandKind.DEF)
+        ));
     }
 
     @Override

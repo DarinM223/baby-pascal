@@ -38,13 +38,6 @@ public class FunctionLoweringInfo {
         return new Register.Virtual(fresh, registerClass, constraint);
     }
 
-    public MachineInstruction createMoveInstruction(MachineOperand destination, MachineOperand source) {
-        return new MachineInstruction("mov", List.of(
-                new MachineOperandPair(source, MachineOperandKind.USE),
-                new MachineOperandPair(destination, MachineOperandKind.DEF)
-        ));
-    }
-
     public MachineOperand createStackSlot(int size) {
         stackOffset += size;
         return new MachineOperand.StackSlot(stackOffset);

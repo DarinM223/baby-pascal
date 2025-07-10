@@ -21,7 +21,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LinearScanTest {
-    void testRegAllocOutput(ModuleInitializer.FunctionResult fun, AssemblyWriterFactory factory, String expectedPrettyPrint) throws IOException {
+    void testX86RegAllocOutput(ModuleInitializer.FunctionResult fun, AssemblyWriterFactory factory, String expectedPrettyPrint) throws IOException {
         for (Function function : fun.module().getFunctionList()) {
             fun.codegen().startFunction(function);
         }
@@ -58,6 +58,54 @@ class LinearScanTest {
             scan.rewriteIntervalsWithRegisters();
             CleanupAssembly.removeRedundantMoves(machineFunction);
             CleanupAssembly.expandMovesBetweenMemoryOperands(machineFunction, temp);
+
+            machinePrinter.writeFunction(machineFunction);
+            factory.create(info, machineFunction).writeFunction();
+        }
+
+        assertEquals(expectedPrettyPrint, prettyPrintWriter.toString());
+    }
+
+    void testAARCHRegAllocOutput(ModuleInitializer.FunctionResult fun, AssemblyWriterFactory factory, String expectedPrettyPrint) throws IOException {
+        for (Function function : fun.module().getFunctionList()) {
+            fun.codegen().startFunction(function);
+        }
+        for (Function function : fun.module().getFunctionList()) {
+            var blockTilesMap = fun.codegen().matchTilesInBlocks(function);
+            fun.codegen().emitFunction(function, blockTilesMap);
+        }
+        Set<Register.Physical> temps = new LinkedHashSet<>();
+        temps.add(fun.codegen().getISA().physicalFromRegisterName("x13"));
+        temps.add(fun.codegen().getISA().physicalFromRegisterName("x14"));
+        temps.add(fun.codegen().getISA().physicalFromRegisterName("x15"));
+
+        StringWriter prettyPrintWriter = new StringWriter();
+        MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(fun.codegen().getISA(), prettyPrintWriter);
+        for (Function function : fun.module().getFunctionList()) {
+            MachineFunction machineFunction = fun.codegen().getFunction(function);
+            FunctionLoweringInfo info = fun.codegen().getFunctionLoweringInfo(function);
+            machineFunction.runLiveness();
+            new InsertParallelMoves(info).runFunction(machineFunction);
+            for (MachineBasicBlock block : machineFunction.getBlocks()) {
+                SequentializeParallelMoves.sequentializeBlock(info, temps.iterator().next(), block);
+            }
+            InstructionNumbering numbering = new InstructionNumbering();
+            numbering.numberInstructions(machineFunction);
+            BuildIntervals buildIntervals = new BuildIntervals(numbering);
+            buildIntervals.runFunction(machineFunction);
+            buildIntervals.joinIntervalsFunction(machineFunction);
+            List<Interval> intervals = buildIntervals.getIntervals();
+            Set<Register.Physical> free = new HashSet<>();
+            for (Register.Physical reg : fun.codegen().getISA().allIntegerRegs()) {
+                if (!temps.contains(reg)) {
+                    free.add(reg);
+                }
+            }
+            LinearScan scan = new LinearScan(info, numbering);
+            scan.scan(free, intervals);
+            scan.rewriteIntervalsWithRegisters();
+            CleanupAssembly.removeRedundantMoves(machineFunction);
+            CleanupAssembly.expandInstructionsWithMemoryOperands(machineFunction, temps);
 
             machinePrinter.writeFunction(machineFunction);
             factory.create(info, machineFunction).writeFunction();
@@ -228,7 +276,7 @@ class LinearScanTest {
                   ret
                 """;
         var finalAssembly = new StringWriter();
-        testRegAllocOutput(fib, AssemblyWriterFactory.createX86(new IdMap<>(), finalAssembly), expectedPrettyPrint);
+        testX86RegAllocOutput(fib, AssemblyWriterFactory.createX86(new IdMap<>(), finalAssembly), expectedPrettyPrint);
         assertEquals(expectedAssembly, finalAssembly.toString());
     }
 
@@ -277,7 +325,7 @@ class LinearScanTest {
                           }
                           block l9 [l7] {
                             add [%x2,DEF], [%x3,USE], [2,USE]
-                            mov [%x3,USE], [%x1,DEF]
+                            mov [%x1,DEF], [%x3,USE]
                             b [l3,USE]
                           }
                           block l10 [l8] {
@@ -285,11 +333,12 @@ class LinearScanTest {
                         }
                         fibonacci {
                           block l11 [] {
-                            mov [%x0,USE], [slot8,DEF]
+                            str [%x0,USE], [slot8,USE]
                             b [l12,USE]
                           }
                           block l12 [l11] {
-                            cmp [slot8,USE], [1,USE]
+                            ldr [%x13,DEF], [slot8,USE]
+                            cmp [%x13,USE], [1,USE]
                             ble [l13,USE]
                             b [l14,USE]
                           }
@@ -303,16 +352,20 @@ class LinearScanTest {
                             b [l17,USE]
                           }
                           block l16 [l14] {
-                            sub [%x0,DEF], [slot8,USE], [1,USE]
+                            ldr [%x13,DEF], [slot8,USE]
+                            sub [%x0,DEF], [%x13,USE], [1,USE]
                             bl [fibonacci,USE], [%x0,DEF], [%x1,DEF], [%x2,DEF], [%x3,DEF], [%x4,DEF], [%x5,DEF], [%x6,DEF], [%x7,DEF], [%x8,DEF], [%x9,DEF], [%x10,DEF], [%x11,DEF], [%x12,DEF], [%x13,DEF], [%x14,DEF], [%x15,DEF], [%x16,DEF], [%x17,DEF], [%x18,DEF], [%x30,DEF]
-                            mov [%x0,USE], [slot16,DEF]
-                            sub [%x0,DEF], [slot8,USE], [2,USE]
+                            str [%x0,USE], [slot16,USE]
+                            ldr [%x13,DEF], [slot8,USE]
+                            sub [%x0,DEF], [%x13,USE], [2,USE]
                             bl [fibonacci,USE], [%x0,DEF], [%x1,DEF], [%x2,DEF], [%x3,DEF], [%x4,DEF], [%x5,DEF], [%x6,DEF], [%x7,DEF], [%x8,DEF], [%x9,DEF], [%x10,DEF], [%x11,DEF], [%x12,DEF], [%x13,DEF], [%x14,DEF], [%x15,DEF], [%x16,DEF], [%x17,DEF], [%x18,DEF], [%x30,DEF]
-                            add [slot8,DEF], [slot16,USE], [%x0,USE]
+                            ldr [%x13,DEF], [slot16,USE]
+                            add [%x14,DEF], [%x13,USE], [%x0,USE]
+                            str [%x14,USE], [slot8,USE]
                             b [l15,USE]
                           }
                           block l17 [l15] {
-                            mov [%x0,DEF], [slot8,USE]
+                            ldr [%x0,DEF], [slot8,USE]
                           }
                         }
                         """;
@@ -351,7 +404,7 @@ class LinearScanTest {
                           b l2
                         l9:
                           add x2, x3, #2
-                          mov x3, x1
+                          mov x1, x3
                           b l8
                         l10:
                           ldp x29, x30, [sp], 16
@@ -360,10 +413,11 @@ class LinearScanTest {
                           stp x29, x30, [sp, #-32]!
                           mov x29, sp
                         l11:
-                          mov x0, [sp, 8]
+                          str x0, [sp, 8]
                           b l12
                         l12:
-                          cmp [sp, 8], #1
+                          ldr x13, [sp, 8]
+                          cmp x13, #1
                           ble l13
                           b l14
                         l13:
@@ -373,20 +427,24 @@ class LinearScanTest {
                         l15:
                           b l17
                         l16:
-                          sub x0, [sp, 8], #1
+                          ldr x13, [sp, 8]
+                          sub x0, x13, #1
                           bl fibonacci
-                          mov x0, [sp, 0]
-                          sub x0, [sp, 8], #2
+                          str x0, [sp, 0]
+                          ldr x13, [sp, 8]
+                          sub x0, x13, #2
                           bl fibonacci
-                          add [sp, 8], [sp, 0], x0
+                          ldr x13, [sp, 0]
+                          add x14, x13, x0
+                          str x14, [sp, 8]
                           b l15
                         l17:
-                          mov x0, [sp, 8]
+                          ldr x0, [sp, 8]
                           ldp x29, x30, [sp], 32
                           ret
                         """;
         var finalAssembly = new StringWriter();
-        testRegAllocOutput(fib, AssemblyWriterFactory.createAARCH64(new IdMap<>(), finalAssembly), expectedPrettyPrint);
+        testAARCHRegAllocOutput(fib, AssemblyWriterFactory.createAARCH64(new IdMap<>(), finalAssembly), expectedPrettyPrint);
         assertEquals(expectedAssembly, finalAssembly.toString());
     }
 }

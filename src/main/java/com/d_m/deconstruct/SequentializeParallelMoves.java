@@ -44,7 +44,7 @@ public class SequentializeParallelMoves {
 
             @Override
             public void emitMove(MachineOperand destination, MachineOperand source) {
-                newInstructions.add(info.createMoveInstruction(destination, source));
+                newInstructions.add(info.isa.createMoveInstruction(destination, source));
             }
         };
         for (MachineInstruction instruction : block.getInstructions()) {
