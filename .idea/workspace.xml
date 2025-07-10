@@ -4,16 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start assembly writer for AARCH64">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Cleanup instructions with memory operands (with special handling for movs) for AARCH64">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/compiler/AARCH64Compiler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/compiler/Compiler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/compiler/X86_64Compiler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ExampleModules.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/AARCH64CompilerWithPrettyPrinter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/X86_64CompilerWithPrettyPrinter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/deconstruct/SequentializeParallelMoves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/deconstruct/SequentializeParallelMoves.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/common/CleanupAssembly.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/common/CleanupAssembly.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineOperandPair.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineOperandPair.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/AARCH64_ISA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/AARCH64_ISA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/ISA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/ISA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/X86_64_ISA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/reg/X86_64_ISA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ModuleInitializer.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -297,8 +299,8 @@
     <list>
       <item itemvalue="Application.Fibonacci" />
       <item itemvalue="Application.Funswap" />
-      <item itemvalue="Application.GenAARCH64" />
       <item itemvalue="Application.GenX86_64" />
+      <item itemvalue="Application.GenAARCH64" />
       <item itemvalue="JUnit.All tests" />
       <item itemvalue="JUnit.LinearScanTest.scanAARCH64" />
       <item itemvalue="JUnit.LinearScanTest.scanX86" />
@@ -324,14 +326,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00206" summary="Modify block gen/kill calculations and add test for inserting parallel moves">
-      <option name="closed" value="true" />
-      <created>1729375963224</created>
-      <option name="number" value="00206" />
-      <option name="presentableId" value="LOCAL-00206" />
-      <option name="project" value="LOCAL" />
-      <updated>1729375963225</updated>
     </task>
     <task id="LOCAL-00207" summary="Modify COPYFROMREG rule to output the virtual register without moves so that phis are always at the top of the generated machine instructions">
       <option name="closed" value="true" />
@@ -717,7 +711,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751996237390</updated>
     </task>
-    <option name="localTasksCounter" value="255" />
+    <task id="LOCAL-00255" summary="Cleanup instructions with memory operands (with special handling for movs) for AARCH64">
+      <option name="closed" value="true" />
+      <created>1752108700160</created>
+      <option name="number" value="00255" />
+      <option name="presentableId" value="LOCAL-00255" />
+      <option name="project" value="LOCAL" />
+      <updated>1752108700160</updated>
+    </task>
+    <option name="localTasksCounter" value="256" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -725,7 +727,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Linear scan takes register for fixed intervals, recursive function unit test uses stack slots for storing values" />
     <MESSAGE value="Revert fix for Eclipse with multiple wildcard patterns and flip order for assertEquals()" />
     <MESSAGE value="Update linear scan unit test output (accidentally rewrites fixed registers with stack slots)" />
     <MESSAGE value="Fix accidental rewriting of fixed registers with stack slots" />
@@ -750,7 +751,8 @@
     <MESSAGE value="Cleanup code generation unit tests and  start unit tests for AARCH64 register allocation" />
     <MESSAGE value="Abstract code so that different targets can have different assembly writers" />
     <MESSAGE value="Start assembly writer for AARCH64" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start assembly writer for AARCH64" />
+    <MESSAGE value="Cleanup instructions with memory operands (with special handling for movs) for AARCH64" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cleanup instructions with memory operands (with special handling for movs) for AARCH64" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

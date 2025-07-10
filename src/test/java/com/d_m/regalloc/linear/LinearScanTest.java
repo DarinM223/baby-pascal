@@ -1,122 +1,19 @@
 package com.d_m.regalloc.linear;
 
-import com.d_m.ModuleInitializer;
+import com.d_m.ExampleModules;
 import com.d_m.code.ShortCircuitException;
-import com.d_m.deconstruct.InsertParallelMoves;
-import com.d_m.deconstruct.SequentializeParallelMoves;
-import com.d_m.regalloc.asm.*;
-import com.d_m.regalloc.common.CleanupAssembly;
-import com.d_m.select.FunctionLoweringInfo;
-import com.d_m.select.instr.MachineBasicBlock;
-import com.d_m.select.instr.MachineFunction;
-import com.d_m.select.instr.MachinePrettyPrinter;
-import com.d_m.select.reg.Register;
-import com.d_m.ssa.Function;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.*;
+import java.io.Writer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class LinearScanTest {
-    void testX86RegAllocOutput(ModuleInitializer.FunctionResult fun, AssemblyWriterFactory factory, String expectedPrettyPrint) throws IOException {
-        for (Function function : fun.module().getFunctionList()) {
-            fun.codegen().startFunction(function);
-        }
-        for (Function function : fun.module().getFunctionList()) {
-            var blockTilesMap = fun.codegen().matchTilesInBlocks(function);
-            fun.codegen().emitFunction(function, blockTilesMap);
-        }
-        Register.Physical temp = fun.codegen().getISA().physicalFromRegisterName("r10");
-
-        StringWriter prettyPrintWriter = new StringWriter();
-        MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(fun.codegen().getISA(), prettyPrintWriter);
-        for (Function function : fun.module().getFunctionList()) {
-            MachineFunction machineFunction = fun.codegen().getFunction(function);
-            FunctionLoweringInfo info = fun.codegen().getFunctionLoweringInfo(function);
-            machineFunction.runLiveness();
-            new InsertParallelMoves(info).runFunction(machineFunction);
-            for (MachineBasicBlock block : machineFunction.getBlocks()) {
-                SequentializeParallelMoves.sequentializeBlock(info, temp, block);
-            }
-            InstructionNumbering numbering = new InstructionNumbering();
-            numbering.numberInstructions(machineFunction);
-            BuildIntervals buildIntervals = new BuildIntervals(numbering);
-            buildIntervals.runFunction(machineFunction);
-            buildIntervals.joinIntervalsFunction(machineFunction);
-            List<Interval> intervals = buildIntervals.getIntervals();
-            Set<Register.Physical> free = new HashSet<>();
-            for (Register.Physical reg : fun.codegen().getISA().allIntegerRegs()) {
-                if (!reg.equals(temp)) {
-                    free.add(reg);
-                }
-            }
-            LinearScan scan = new LinearScan(info, numbering);
-            scan.scan(free, intervals);
-            scan.rewriteIntervalsWithRegisters();
-            CleanupAssembly.removeRedundantMoves(machineFunction);
-            CleanupAssembly.expandMovesBetweenMemoryOperands(machineFunction, temp);
-
-            machinePrinter.writeFunction(machineFunction);
-            factory.create(info, machineFunction).writeFunction();
-        }
-
-        assertEquals(expectedPrettyPrint, prettyPrintWriter.toString());
-    }
-
-    void testAARCHRegAllocOutput(ModuleInitializer.FunctionResult fun, AssemblyWriterFactory factory, String expectedPrettyPrint) throws IOException {
-        for (Function function : fun.module().getFunctionList()) {
-            fun.codegen().startFunction(function);
-        }
-        for (Function function : fun.module().getFunctionList()) {
-            var blockTilesMap = fun.codegen().matchTilesInBlocks(function);
-            fun.codegen().emitFunction(function, blockTilesMap);
-        }
-        Set<Register.Physical> temps = new LinkedHashSet<>();
-        temps.add(fun.codegen().getISA().physicalFromRegisterName("x13"));
-        temps.add(fun.codegen().getISA().physicalFromRegisterName("x14"));
-        temps.add(fun.codegen().getISA().physicalFromRegisterName("x15"));
-
-        StringWriter prettyPrintWriter = new StringWriter();
-        MachinePrettyPrinter machinePrinter = new MachinePrettyPrinter(fun.codegen().getISA(), prettyPrintWriter);
-        for (Function function : fun.module().getFunctionList()) {
-            MachineFunction machineFunction = fun.codegen().getFunction(function);
-            FunctionLoweringInfo info = fun.codegen().getFunctionLoweringInfo(function);
-            machineFunction.runLiveness();
-            new InsertParallelMoves(info).runFunction(machineFunction);
-            for (MachineBasicBlock block : machineFunction.getBlocks()) {
-                SequentializeParallelMoves.sequentializeBlock(info, temps.iterator().next(), block);
-            }
-            InstructionNumbering numbering = new InstructionNumbering();
-            numbering.numberInstructions(machineFunction);
-            BuildIntervals buildIntervals = new BuildIntervals(numbering);
-            buildIntervals.runFunction(machineFunction);
-            buildIntervals.joinIntervalsFunction(machineFunction);
-            List<Interval> intervals = buildIntervals.getIntervals();
-            Set<Register.Physical> free = new HashSet<>();
-            for (Register.Physical reg : fun.codegen().getISA().allIntegerRegs()) {
-                if (!temps.contains(reg)) {
-                    free.add(reg);
-                }
-            }
-            LinearScan scan = new LinearScan(info, numbering);
-            scan.scan(free, intervals);
-            scan.rewriteIntervalsWithRegisters();
-            CleanupAssembly.removeRedundantMoves(machineFunction);
-            CleanupAssembly.expandInstructionsWithMemoryOperands(machineFunction, temps);
-
-            machinePrinter.writeFunction(machineFunction);
-            factory.create(info, machineFunction).writeFunction();
-        }
-
-        assertEquals(expectedPrettyPrint, prettyPrintWriter.toString());
-    }
-
     @Test
     void scanX86() throws ShortCircuitException, IOException {
-        var fib = ModuleInitializer.createX86_64().initFibonacci();
+        var fib = ExampleModules.initFibonacci();
         String expectedPrettyPrint = """
                 main {
                   block l0 [] {
@@ -275,14 +172,15 @@ class LinearScanTest {
                   add $24, %rsp
                   ret
                 """;
-        var finalAssembly = new StringWriter();
-        testX86RegAllocOutput(fib, AssemblyWriterFactory.createX86(new IdMap<>(), finalAssembly), expectedPrettyPrint);
+        Writer prettyPrinter = new StringWriter(), finalAssembly = new StringWriter();
+        new X86_64CompilerWithPrettyPrinter(prettyPrinter).compile(fib, finalAssembly);
+        assertEquals(expectedPrettyPrint, prettyPrinter.toString());
         assertEquals(expectedAssembly, finalAssembly.toString());
     }
 
     @Test
     void scanAARCH64() throws ShortCircuitException, IOException {
-        var fib = ModuleInitializer.createAARCH64().initFibonacci();
+        var fib = ExampleModules.initFibonacci();
         String expectedPrettyPrint =
                 """
                         main {
@@ -443,8 +341,9 @@ class LinearScanTest {
                           ldp x29, x30, [sp], 32
                           ret
                         """;
-        var finalAssembly = new StringWriter();
-        testAARCHRegAllocOutput(fib, AssemblyWriterFactory.createAARCH64(new IdMap<>(), finalAssembly), expectedPrettyPrint);
+        Writer prettyPrinter = new StringWriter(), finalAssembly = new StringWriter();
+        new AARCH64CompilerWithPrettyPrinter(prettyPrinter).compile(fib, finalAssembly);
+        assertEquals(expectedPrettyPrint, prettyPrinter.toString());
         assertEquals(expectedAssembly, finalAssembly.toString());
     }
 }

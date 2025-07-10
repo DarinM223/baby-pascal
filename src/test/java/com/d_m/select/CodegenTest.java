@@ -1,7 +1,9 @@
 package com.d_m.select;
 
-import com.d_m.ModuleInitializer;
+import com.d_m.ExampleModules;
 import com.d_m.code.ShortCircuitException;
+import com.d_m.compiler.AARCH64Compiler;
+import com.d_m.compiler.X86_64Compiler;
 import com.d_m.select.instr.MachineFunction;
 import com.d_m.select.instr.MachinePrettyPrinter;
 import com.d_m.ssa.*;
@@ -19,9 +21,8 @@ class CodegenTest {
 
     @Test
     void matchedTiles() throws ShortCircuitException {
-        var fib = ModuleInitializer.createX86_64().initFibonacci();
-        Codegen codegen = fib.codegen();
-        Module module = fib.module();
+        Module module = ExampleModules.initFibonacci();
+        Codegen codegen = new X86_64Compiler().getCodegen();
         for (Function function : module.getFunctionList()) {
             codegen.startFunction(function);
         }
@@ -42,9 +43,8 @@ class CodegenTest {
 
     @Test
     void codegenX86() throws IOException, ShortCircuitException {
-        var fib = ModuleInitializer.createX86_64().initFibonacci();
-        Codegen codegen = fib.codegen();
-        Module module = fib.module();
+        Module module = ExampleModules.initFibonacci();
+        Codegen codegen = new X86_64Compiler().getCodegen();
 
         StringWriter moduleWriter = new StringWriter();
         PrettyPrinter printer = new PrettyPrinter(moduleWriter);
@@ -175,9 +175,8 @@ class CodegenTest {
 
     @Test
     void codegenAARCH() throws IOException, ShortCircuitException {
-        var fib = ModuleInitializer.createAARCH64().initFibonacci();
-        Codegen codegen = fib.codegen();
-        Module module = fib.module();
+        var module = ExampleModules.initFibonacci();
+        Codegen codegen = new AARCH64Compiler().getCodegen();
 
         StringWriter moduleWriter = new StringWriter();
         PrettyPrinter printer = new PrettyPrinter(moduleWriter);
