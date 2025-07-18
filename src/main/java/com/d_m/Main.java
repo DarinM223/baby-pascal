@@ -3,6 +3,7 @@ package com.d_m;
 import com.d_m.ast.*;
 import com.d_m.code.ShortCircuitException;
 import com.d_m.code.ThreeAddressCode;
+import com.d_m.compiler.AARCH64Compiler;
 import com.d_m.compiler.Compiler;
 import com.d_m.compiler.X86_64Compiler;
 import com.d_m.construct.ConstructSSA;
@@ -53,11 +54,23 @@ public class Main {
     }
 
     public static void main(String[] args) throws ShortCircuitException, IOException {
-        String inputPath = args[0];
-        String outputPath = args[1];
-        Compiler compiler = new X86_64Compiler();
+        if (args.length < 3) {
+            System.err.println("Expected at least three arguments, [-x86_64|-aarch64] [input_path] [output_path]");
+            return;
+        }
+        String compileMode = args[0];
+        String inputPath = args[1];
+        String outputPath = args[2];
         try (Writer writer = new FileWriter(outputPath + ".s")) {
+            Compiler compiler = switch (compileMode) {
+                case "-x86_64" -> new X86_64Compiler();
+                case "-aarch64" -> new AARCH64Compiler();
+                default ->
+                        throw new RuntimeException("Invalid compiler mode, expected -x86_64 or -aarch64 as first parameter");
+            };
             compileFile(inputPath, compiler, writer);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
     }
 }

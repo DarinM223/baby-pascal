@@ -51,6 +51,7 @@ public class AARCH64Compiler implements Compiler {
         Set<Register.Physical> temps = reservedRegisters(codegen);
         AssemblyWriterFactory factory = AssemblyWriterFactory.createAARCH64(new IdMap<>(), writer);
 
+        writeHeader(writer);
         for (Function function : module.getFunctionList()) {
             MachineFunction machineFunction = codegen.getFunction(function);
             FunctionLoweringInfo info = codegen.getFunctionLoweringInfo(function);

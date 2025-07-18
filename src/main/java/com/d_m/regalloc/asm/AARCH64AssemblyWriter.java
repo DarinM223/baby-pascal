@@ -21,13 +21,18 @@ public class AARCH64AssemblyWriter extends AssemblyWriter {
 
         writer.write(function.getName());
         writer.write(":\n");
-        int offset = 16 + info.getStackOffset();
-        writeWithIndent("stp x29, x30, [sp, #-" + offset + "]!");
+        writeWithIndent("stp x29, x30, [sp, #-16]!");
         writeWithIndent("mov x29, sp");
+        if (info.getStackOffset() != 0) {
+            writeWithIndent("sub sp, sp, #" + info.getStackOffset());
+        }
         for (MachineBasicBlock block : function.getBlocks()) {
             writeBlock(block);
         }
-        writeWithIndent("ldp x29, x30, [sp], " + offset);
+        if (info.getStackOffset() != 0) {
+            writeWithIndent("add sp, sp, #" + info.getStackOffset());
+        }
+        writeWithIndent("ldp x29, x30, [sp], #16");
         writeWithIndent("ret");
     }
 
