@@ -280,11 +280,11 @@ class CodegenTest {
                   }
                   block l16 [l14] {
                     sub [%30any,DEF], [%1any,USE], [1,USE]
-                    mov [%30any,USE], [%31x0,DEF]
+                    mov [%31x0,DEF], [%30any,USE]
                     bl [fibonacci,USE], [%32x0,DEF], [%33x1,DEF], [%34x2,DEF], [%35x3,DEF], [%36x4,DEF], [%37x5,DEF], [%38x6,DEF], [%39x7,DEF], [%40x8,DEF], [%41x9,DEF], [%42x10,DEF], [%43x11,DEF], [%44x12,DEF], [%45x13,DEF], [%46x14,DEF], [%47x15,DEF], [%48x16,DEF], [%49x17,DEF], [%50x18,DEF], [%51x30,DEF]
                     mov [%32x0,USE], [%52any,DEF]
                     sub [%53any,DEF], [%1any,USE], [2,USE]
-                    mov [%53any,USE], [%54x0,DEF]
+                    mov [%54x0,DEF], [%53any,USE]
                     bl [fibonacci,USE], [%55x0,DEF], [%56x1,DEF], [%57x2,DEF], [%58x3,DEF], [%59x4,DEF], [%60x5,DEF], [%61x6,DEF], [%62x7,DEF], [%63x8,DEF], [%64x9,DEF], [%65x10,DEF], [%66x11,DEF], [%67x12,DEF], [%68x13,DEF], [%69x14,DEF], [%70x15,DEF], [%71x16,DEF], [%72x17,DEF], [%73x18,DEF], [%74x30,DEF]
                     mov [%55x0,USE], [%75any,DEF]
                     add [%76any,DEF], [%52any,USE], [%75any,USE]

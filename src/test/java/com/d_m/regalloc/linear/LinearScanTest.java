@@ -305,11 +305,12 @@ class LinearScanTest {
                           mov x1, x3
                           b l8
                         l10:
-                          ldp x29, x30, [sp], 16
+                          ldp x29, x30, [sp], #16
                           ret
                         fibonacci:
-                          stp x29, x30, [sp, #-32]!
+                          stp x29, x30, [sp, #-16]!
                           mov x29, sp
+                          sub sp, sp, #16
                         l11:
                           str x0, [sp, 8]
                           b l12
@@ -338,7 +339,8 @@ class LinearScanTest {
                           b l15
                         l17:
                           ldr x0, [sp, 8]
-                          ldp x29, x30, [sp], 32
+                          add sp, sp, #16
+                          ldp x29, x30, [sp], #16
                           ret
                         """;
         Writer prettyPrinter = new StringWriter(), finalAssembly = new StringWriter();
