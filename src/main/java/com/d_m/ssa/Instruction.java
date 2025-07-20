@@ -91,14 +91,6 @@ public class Instruction extends Value implements Listable<Instruction> {
         return use;
     }
 
-    public void addSuccessor(Block successor) {
-        successors.add(successor);
-    }
-
-    public void removeSuccessor(Block successor) {
-        successors.remove(successor);
-    }
-
     public List<Block> getSuccessors() {
         return successors;
     }

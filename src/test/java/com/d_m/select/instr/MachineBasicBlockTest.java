@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import java.util.BitSet;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,19 +21,25 @@ class MachineBasicBlockTest {
         MachineInstruction instruction1 = new MachineInstruction("hello", List.of());
         MachineInstruction instruction2 = new MachineInstruction("world", List.of());
         block.addBeforeTerminator(instruction1);
-        assertEquals(1, block.getTerminator());
+        assertNull(block.getTerminator());
         block.addBeforeTerminator(instruction2);
-        assertEquals(2, block.getTerminator());
-        assertEquals(List.of(instruction1, instruction2), block.getInstructions());
+        assertNull(block.getTerminator());
+        assertEquals(
+                List.of(instruction1, instruction2),
+                StreamSupport.stream(block.getInstructions().spliterator(), false).collect(Collectors.toList())
+        );
 
         MachineInstruction instruction3 = new MachineInstruction("foo", List.of());
         MachineInstruction instruction4 = new MachineInstruction("bar", List.of());
         MachineInstruction instruction5 = new MachineInstruction("bob", List.of());
-        block.getInstructions().add(instruction3);
-        block.getInstructions().add(instruction4);
+        block.getInstructions().addToEnd(instruction3);
+        block.getInstructions().addToEnd(instruction4);
         block.addBeforeTerminator(instruction5);
-        assertEquals(3, block.getTerminator());
-        assertEquals(List.of(instruction1, instruction2, instruction5, instruction3, instruction4), block.getInstructions());
+        assertEquals(instruction3, block.getTerminator());
+        assertEquals(
+                List.of(instruction1, instruction2, instruction5, instruction3, instruction4),
+                StreamSupport.stream(block.getInstructions().spliterator(), false).collect(Collectors.toList())
+        );
     }
 
     @Test
@@ -77,33 +85,33 @@ class MachineBasicBlockTest {
         MachineOperand r2 = fresh.get();
 
         // Add phi nodes to both successors:
-        successor1.getInstructions().add(new MachineInstruction("phi", List.of(
+        successor1.getInstructions().addToEnd(new MachineInstruction("phi", List.of(
                 new MachineOperandPair(v0, MachineOperandKind.USE),
                 new MachineOperandPair(v1, MachineOperandKind.USE),
                 new MachineOperandPair(v2, MachineOperandKind.DEF)
         )));
-        successor1.getInstructions().add(new MachineInstruction("phi", List.of(
+        successor1.getInstructions().addToEnd(new MachineInstruction("phi", List.of(
                 new MachineOperandPair(w0, MachineOperandKind.USE),
                 new MachineOperandPair(w1, MachineOperandKind.USE),
                 new MachineOperandPair(w2, MachineOperandKind.DEF)
         )));
-        successor1.getInstructions().add(new MachineInstruction("hello", List.of(
+        successor1.getInstructions().addToEnd(new MachineInstruction("hello", List.of(
                 new MachineOperandPair(v2, MachineOperandKind.USE),
                 new MachineOperandPair(w2, MachineOperandKind.USE),
                 new MachineOperandPair(r1, MachineOperandKind.DEF)
         )));
 
-        successor2.getInstructions().add(new MachineInstruction("phi", List.of(
+        successor2.getInstructions().addToEnd(new MachineInstruction("phi", List.of(
                 new MachineOperandPair(x0, MachineOperandKind.USE),
                 new MachineOperandPair(x1, MachineOperandKind.USE),
                 new MachineOperandPair(x2, MachineOperandKind.DEF)
         )));
-        successor2.getInstructions().add(new MachineInstruction("phi", List.of(
+        successor2.getInstructions().addToEnd(new MachineInstruction("phi", List.of(
                 new MachineOperandPair(y0, MachineOperandKind.USE),
                 new MachineOperandPair(y1, MachineOperandKind.USE),
                 new MachineOperandPair(y2, MachineOperandKind.DEF)
         )));
-        successor2.getInstructions().add(new MachineInstruction("hello", List.of(
+        successor2.getInstructions().addToEnd(new MachineInstruction("hello", List.of(
                 new MachineOperandPair(x2, MachineOperandKind.USE),
                 new MachineOperandPair(y2, MachineOperandKind.USE),
                 new MachineOperandPair(r2, MachineOperandKind.DEF)
@@ -131,17 +139,17 @@ class MachineBasicBlockTest {
         MachineOperand w2 = fresh.get();
 
         MachineOperand r = fresh.get();
-        block.getInstructions().add(new MachineInstruction("phi", List.of(
+        block.getInstructions().addToEnd(new MachineInstruction("phi", List.of(
                 new MachineOperandPair(v0, MachineOperandKind.USE),
                 new MachineOperandPair(v1, MachineOperandKind.USE),
                 new MachineOperandPair(v2, MachineOperandKind.DEF)
         )));
-        block.getInstructions().add(new MachineInstruction("phi", List.of(
+        block.getInstructions().addToEnd(new MachineInstruction("phi", List.of(
                 new MachineOperandPair(w0, MachineOperandKind.USE),
                 new MachineOperandPair(w1, MachineOperandKind.USE),
                 new MachineOperandPair(w2, MachineOperandKind.DEF)
         )));
-        block.getInstructions().add(new MachineInstruction("hello", List.of(
+        block.getInstructions().addToEnd(new MachineInstruction("hello", List.of(
                 new MachineOperandPair(v2, MachineOperandKind.USE),
                 new MachineOperandPair(w2, MachineOperandKind.USE),
                 new MachineOperandPair(r, MachineOperandKind.DEF)

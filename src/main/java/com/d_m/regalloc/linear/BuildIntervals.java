@@ -42,7 +42,7 @@ public class BuildIntervals {
             if (operand instanceof MachineOperand.Register(Register.Virtual(int n, _, RegisterConstraint constraint))) {
                 // If the virtual register was a constrained function argument register,
                 // then set its instruction to be the first instruction in the entry block of the function.
-                virtualRegisterToMachineInstructionMap.put(n, function.getBlocks().getFirst().getInstructions().getFirst());
+                virtualRegisterToMachineInstructionMap.put(n, function.getBlocks().getFirst().getInstructions().first);
                 if (constraint instanceof RegisterConstraint.UsePhysical(Register.Physical register)) {
                     functionParamToPhysicalMap.put(n, register);
                 }
@@ -95,7 +95,7 @@ public class BuildIntervals {
         while (it.hasNext()) {
             int virtualRegister = it.next();
             MachineInstruction instruction = virtualRegisterToMachineInstructionMap.get(virtualRegister);
-            addRange(virtualRegister, instruction, block, numbering.getInstructionNumber(block.getInstructions().getLast()) + 1);
+            addRange(virtualRegister, instruction, block, numbering.getInstructionNumber(block.getInstructions().last) + 1);
         }
         for (MachineInstruction instruction : block.getInstructions().reversed()) {
             for (MachineOperandPair pair : instruction.getOperands()) {
@@ -137,8 +137,8 @@ public class BuildIntervals {
 
     public void addRange(int virtualRegister, MachineInstruction i, MachineBasicBlock b, int end) {
         int ni = numbering.getInstructionNumber(i);
-        int nbf = numbering.getInstructionNumber(b.getInstructions().getFirst());
-        int nbl = numbering.getInstructionNumber(b.getInstructions().getLast());
+        int nbf = numbering.getInstructionNumber(b.getInstructions().first);
+        int nbl = numbering.getInstructionNumber(b.getInstructions().last);
         int start = ni >= nbf && ni <= nbl ? ni : nbf;
         // The numbering for function parameter virtual registers is always the very first instruction,
         // which doesn't contain the register. In that case, use the mapping to find the physical register.

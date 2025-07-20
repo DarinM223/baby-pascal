@@ -2,6 +2,7 @@ package com.d_m.select.instr;
 
 import com.d_m.select.reg.Register;
 import com.d_m.select.reg.RegisterConstraint;
+import com.d_m.ssa.Listable;
 import com.d_m.util.Pair;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.Objects;
 
-public class MachineInstruction {
+public class MachineInstruction implements Listable<MachineInstruction> {
     private final int id = IdGenerator.newId();
     private final String instruction;
     private final List<MachineOperandPair> operands;
@@ -17,6 +18,8 @@ public class MachineInstruction {
     private MachineInstruction join;
 
     private MachineBasicBlock parent;
+    private MachineInstruction prev;
+    private MachineInstruction next;
 
     public MachineInstruction(String instruction, List<MachineOperandPair> operands) {
         this.instruction = instruction;
@@ -72,6 +75,7 @@ public class MachineInstruction {
 
     /**
      * This should be called only after getReuseOperands() has been called once.
+     *
      * @param operandIndex the index of the operand in the instruction
      */
     public boolean isReusedOperand(int operandIndex) {
@@ -96,5 +100,25 @@ public class MachineInstruction {
                 "instruction='" + instruction + '\'' +
                 ", operands=" + operands +
                 '}';
+    }
+
+    @Override
+    public MachineInstruction getPrev() {
+        return prev;
+    }
+
+    @Override
+    public void setPrev(MachineInstruction prev) {
+        this.prev = prev;
+    }
+
+    @Override
+    public MachineInstruction getNext() {
+        return next;
+    }
+
+    @Override
+    public void setNext(MachineInstruction next) {
+        this.next = next;
     }
 }

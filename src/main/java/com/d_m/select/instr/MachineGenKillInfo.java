@@ -1,6 +1,8 @@
 package com.d_m.select.instr;
 
 import com.d_m.select.reg.Register;
+import com.d_m.ssa.ListWrapper;
+import com.google.common.collect.Iterables;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -10,9 +12,10 @@ public class MachineGenKillInfo {
     public final BitSet genBlock;
     public final BitSet killBlock;
 
-    public MachineGenKillInfo(List<MachineInstruction> code) {
-        List<BitSet> gen = new ArrayList<>(code.size());
-        List<BitSet> kill = new ArrayList<>(code.size());
+    public MachineGenKillInfo(ListWrapper<MachineInstruction> code) {
+        int size = Iterables.size(code);
+        List<BitSet> gen = new ArrayList<>(size);
+        List<BitSet> kill = new ArrayList<>(size);
         for (MachineInstruction _ : code) {
             gen.add(new BitSet());
             kill.add(new BitSet());
@@ -21,8 +24,8 @@ public class MachineGenKillInfo {
         genBlock = new BitSet();
         killBlock = new BitSet();
 
-        for (int i = code.size() - 1; i >= 0; i--) {
-            MachineInstruction instruction = code.get(i);
+        int i = size - 1;
+        for (MachineInstruction instruction : code.reversed()) {
             // Ignore phi nodes for now since they have different liveness characteristics
             // than normal instructions.
             if (instruction.getInstruction().equals("phi")) {
@@ -41,6 +44,7 @@ public class MachineGenKillInfo {
             genBlock.or(gen.get(i));
             killBlock.andNot(gen.get(i));
             killBlock.or(kill.get(i));
+            i--;
         }
     }
 }

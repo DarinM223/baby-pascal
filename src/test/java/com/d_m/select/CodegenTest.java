@@ -165,8 +165,8 @@ class CodegenTest {
                     jmp [l15,USE]
                   }
                   block l17 [l15] {
-                    parmov [%3any,USE], [%5any,USE], [%7any,USE], [%9any,USE], [%11any,USE], [%13any,USE], [%15any,USE], [%2r12,DEF], [%4r13,DEF], [%6r14,DEF], [%8r15,DEF], [%10rbx,DEF], [%12rsp,DEF], [%14rbp,DEF]
                     mov [%17any,USE], [%48rax,DEF]
+                    parmov [%3any,USE], [%5any,USE], [%7any,USE], [%9any,USE], [%11any,USE], [%13any,USE], [%15any,USE], [%2r12,DEF], [%4r13,DEF], [%6r14,DEF], [%8r15,DEF], [%10rbx,DEF], [%12rsp,DEF], [%14rbp,DEF]
                   }
                 }
                 """;
@@ -292,8 +292,8 @@ class CodegenTest {
                     b [l15,USE]
                   }
                   block l17 [l15] {
-                    parmov [%3any,USE], [%5any,USE], [%7any,USE], [%9any,USE], [%11any,USE], [%13any,USE], [%15any,USE], [%17any,USE], [%19any,USE], [%21any,USE], [%23any,USE], [%25any,USE], [%2x19,DEF], [%4x20,DEF], [%6x21,DEF], [%8x22,DEF], [%10x23,DEF], [%12x24,DEF], [%14x25,DEF], [%16x26,DEF], [%18x27,DEF], [%20x28,DEF], [%22x29,DEF], [%24sp,DEF]
                     mov [%77x0,DEF], [%27any,USE]
+                    parmov [%3any,USE], [%5any,USE], [%7any,USE], [%9any,USE], [%11any,USE], [%13any,USE], [%15any,USE], [%17any,USE], [%19any,USE], [%21any,USE], [%23any,USE], [%25any,USE], [%2x19,DEF], [%4x20,DEF], [%6x21,DEF], [%8x22,DEF], [%10x23,DEF], [%12x24,DEF], [%14x25,DEF], [%16x26,DEF], [%18x27,DEF], [%20x28,DEF], [%22x29,DEF], [%24sp,DEF]
                   }
                 }
                 """;

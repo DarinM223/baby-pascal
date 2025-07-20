@@ -2,7 +2,7 @@ package com.d_m.ssa;
 
 import java.util.Iterator;
 
-public class ReverseLinkedIterator<T extends Listable<T>> implements Iterator<T> {
+public class ReverseLinkedIterator<T extends Listable<T>> implements Iterator<T>, Iterable<T> {
     private T next = null;
     private T curr = null;
 
@@ -36,5 +36,10 @@ public class ReverseLinkedIterator<T extends Listable<T>> implements Iterator<T>
             next.getNext().setPrev(next.getPrev());
         }
         next = next.getNext();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return this;
     }
 }

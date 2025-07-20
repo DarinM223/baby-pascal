@@ -1,10 +1,21 @@
 package com.d_m.ssa;
 
+import com.google.common.collect.Iterables;
+
 import java.util.Iterator;
 
 public class ListWrapper<T extends Listable<T>> implements Iterable<T> {
     public T first = null;
     public T last = null;
+
+    public void clear() {
+        this.first = null;
+        this.last = null;
+    }
+
+    public boolean contains(T node) {
+        return Iterables.contains(this, node);
+    }
 
     public void addToFront(T node) {
         node.setPrev(null);
@@ -25,6 +36,8 @@ public class ListWrapper<T extends Listable<T>> implements Iterable<T> {
         add.setNext(next);
         if (next != null) {
             next.setPrev(add);
+        } else {
+            last = add;
         }
     }
 
@@ -35,6 +48,8 @@ public class ListWrapper<T extends Listable<T>> implements Iterable<T> {
         add.setPrev(prev);
         if (prev != null) {
             prev.setNext(add);
+        } else {
+            first = add;
         }
     }
 
@@ -63,12 +78,28 @@ public class ListWrapper<T extends Listable<T>> implements Iterable<T> {
         last = node;
     }
 
-    @Override
-    public Iterator<T> iterator() {
-        return new LinkedIterator<>(first);
+    public void append(ListWrapper<T> list) {
+        if (last == null) {
+            first = list.first;
+        } else {
+            last.setNext(list.first);
+            if (list.first != null) {
+                list.first.setPrev(last);
+            }
+        }
+        last = list.last;
     }
 
-    public Iterator<T> reversed() {
+    public LinkedIterator<T> linkedIterator() {
+        return new LinkedIterator<>(first, (T node) -> first = node, (T node) -> last = node);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return linkedIterator();
+    }
+
+    public ReverseLinkedIterator<T> reversed() {
         return new ReverseLinkedIterator<>(last);
     }
 }

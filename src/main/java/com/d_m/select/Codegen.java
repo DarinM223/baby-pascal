@@ -123,7 +123,7 @@ public class Codegen {
             MachineBasicBlock machineBlock = new MachineBasicBlock(machineFunction);
             // Add the parallel move from constrained virtual registers -> unconstrained virtual registers into the function's entry block.
             if (block.equals(block.getEntry()) && !functionEntryMove.getOperands().isEmpty()) {
-                machineBlock.getInstructions().add(functionEntryMove);
+                machineBlock.getInstructions().addToEnd(functionEntryMove);
             }
             SSADAG dag = new SSADAG(functionLoweringInfo, block);
             machineFunction.addBlock(machineBlock);
@@ -170,7 +170,7 @@ public class Codegen {
         machineBlock.setPredecessors(block.getPredecessors().stream().map(blockMap::get).toList());
         machineBlock.setSuccessors(block.getSuccessors().stream().map(blockMap::get).toList());
 
-        List<MachineInstruction> terminator = new ArrayList<>();
+        ListWrapper<MachineInstruction> terminator = new ListWrapper<>();
         // For each tile, go bottom up emitting the code and marking the node
         // with the machine operand result. if a node's result has already been computed,
         // skip it.
@@ -178,7 +178,7 @@ public class Codegen {
             bottomUpEmit(info, machineBlock, tileMapping, emitResultMapping, terminator, tile);
         }
         machineBlock.setTerminator();
-        machineBlock.getInstructions().addAll(terminator);
+        machineBlock.getInstructions().append(terminator);
     }
 
     public MachineFunction getFunction(Function function) {
@@ -193,7 +193,7 @@ public class Codegen {
                                           MachineBasicBlock block,
                                           Map<Value, DAGTile> tileMapping,
                                           Map<Value, MachineOperand[]> emitResultMapping,
-                                          List<MachineInstruction> terminator,
+                                          ListWrapper<MachineInstruction> terminator,
                                           DAGTile tile) {
         if (emitResultMapping.containsKey(tile.root())) {
             return emitResultMapping.get(tile.root());
