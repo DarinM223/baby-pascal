@@ -5,8 +5,24 @@ import com.google.common.collect.Iterables;
 import java.util.Iterator;
 
 public class ListWrapper<T extends Listable<T>> implements Iterable<T> {
-    public T first = null;
-    public T last = null;
+    private T first = null;
+    private T last = null;
+
+    public T getFirst() {
+        return first;
+    }
+
+    public T getLast() {
+        return last;
+    }
+
+    void setFirst(T first) {
+        this.first = first;
+    }
+
+    void setLast(T last) {
+        this.last = last;
+    }
 
     public void clear() {
         this.first = null;

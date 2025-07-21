@@ -131,7 +131,7 @@ public class MachineBasicBlock extends BlockLiveness<MachineBasicBlock> implemen
     }
 
     public void setTerminator() {
-        instBeforeTerminator = instructions.last;
+        instBeforeTerminator = instructions.getLast();
     }
 
     public void addBeforeTerminator(MachineInstruction instruction) {

@@ -39,7 +39,7 @@ class BlockTest {
         ));
         instruction3.getSuccessors().add(new Block(function, List.of()));
         instruction3.getSuccessors().add(new Block(function, List.of()));
-        assertEquals(block.getInstructions().first, instruction1);
+        assertEquals(block.getInstructions().getFirst(), instruction1);
         assertEquals(block.getTerminator(), instruction3);
         assertEquals(2, block.getSuccessors().size());
         assertEquals(3, Iterables.size(block.getInstructions()));
@@ -54,12 +54,12 @@ class BlockTest {
         block.getInstructions().addToFront(instruction1);
         block.getInstructions().addBeforeLast(instruction2);
         assertEquals(2, Iterables.size(block.getInstructions()));
-        assertEquals(instruction2, block.getInstructions().first);
+        assertEquals(instruction2, block.getInstructions().getFirst());
         assertEquals(instruction1, block.getTerminator());
 
         block.getInstructions().addBeforeLast(instruction3);
         assertEquals(3, Iterables.size(block.getInstructions()));
-        assertEquals(instruction3, block.getInstructions().first.next);
+        assertEquals(instruction3, block.getInstructions().getFirst().getNext());
         assertEquals(instruction3, block.getTerminator().prev);
     }
 }

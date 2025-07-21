@@ -4,25 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fix expect test output">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Convert MachineInstructions in MachineBasicBlock to use linked representation instead of ArrayList">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/deconstruct/SequentializeParallelMoves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/deconstruct/SequentializeParallelMoves.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/common/CleanupAssembly.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/common/CleanupAssembly.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/pass/ConstantPropagation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/Codegen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/SSADAG.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineGenKillInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineGenKillInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineInstruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineInstruction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/LinkedIterator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/LinkedIterator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ListWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ListWrapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ReverseLinkedIterator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ReverseLinkedIterator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/deconstruct/InsertParallelMovesTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/deconstruct/InsertParallelMovesTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/instr/MachineBasicBlockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/instr/MachineBasicBlockTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/BlockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/BlockTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,62 +48,62 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Fibonacci.executor": "Run",
-    "Application.FibonacciAARCH64.executor": "Run",
-    "Application.FibonacciX86_64.executor": "Run",
-    "Application.Funswap.executor": "Run",
-    "Application.FunswapAARCH64.executor": "Run",
-    "Application.Gen.executor": "Run",
-    "Application.GenAARCH64.executor": "Run",
-    "Application.GenX86_64.executor": "Run",
-    "Application.Main.executor": "Run",
-    "JUnit.All tests.executor": "Run",
-    "JUnit.BlockTest.createBlocks.executor": "Run",
-    "JUnit.BlockTest.executor": "Run",
-    "JUnit.BuilderTest.convertFunction.executor": "Debug",
-    "JUnit.CodegenTest.codegenAARCH.executor": "Run",
-    "JUnit.CodegenTest.executor": "Run",
-    "JUnit.DataflowTest.genKill.executor": "Run",
-    "JUnit.DataflowTest.genKillAndLiveness.executor": "Run",
-    "JUnit.IntervalTest.addRange.executor": "Run",
-    "JUnit.LengauerTarjanTest.idom.executor": "Run",
-    "JUnit.LinearScanTest.scanAARCH64.executor": "Debug",
-    "JUnit.LinearScanTest.scanX86.executor": "Debug",
-    "JUnit.MachineBasicBlockTest.addBeforeTerminator.executor": "Run",
-    "JUnit.MachineBasicBlockTest.getPhiUses.executor": "Run",
-    "JUnit.ParserTest.parseBinaryExpression.executor": "Debug",
-    "JUnit.ParserTest.parseIfStatement.executor": "Run",
-    "JUnit.ParserTest.parseIfStatementSemicolons.executor": "Run",
-    "JUnit.ParserTest.parseProgram.executor": "Run",
-    "JUnit.ParserTest.parseWhileStatement.executor": "Run",
-    "JUnit.RangeTest.executor": "Run",
-    "JUnit.RangeTest.overlaps.executor": "Run",
-    "JUnit.SSADAGTest.postorder.executor": "Run",
-    "JUnit.ThreeAddressCodeTest.normalize.executor": "Run",
-    "JUnit.UniqueRenamerTest.executor": "Run",
-    "Maven.baby-pascal [clean,compile,exec:java].executor": "Run",
-    "Maven.baby-pascal [clean].executor": "Run",
-    "Maven.baby-pascal [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor": "Run",
-    "Maven.baby-pascal [org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile].executor": "Run",
-    "Maven.baby-pascal [org.codehaus.mojo:exec-maven-plugin:3.1.0:java].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "linked__machine__instructions",
-    "ignore.preview.features.used": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/d/Documents/mirrored/baby-pascal",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "editor.preferences.tabs"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Fibonacci.executor&quot;: &quot;Run&quot;,
+    &quot;Application.FibonacciAARCH64.executor&quot;: &quot;Run&quot;,
+    &quot;Application.FibonacciX86_64.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Funswap.executor&quot;: &quot;Run&quot;,
+    &quot;Application.FunswapAARCH64.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Gen.executor&quot;: &quot;Run&quot;,
+    &quot;Application.GenAARCH64.executor&quot;: &quot;Run&quot;,
+    &quot;Application.GenX86_64.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All tests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BlockTest.createBlocks.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BlockTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BuilderTest.convertFunction.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.CodegenTest.codegenAARCH.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CodegenTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.DataflowTest.genKill.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.DataflowTest.genKillAndLiveness.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.IntervalTest.addRange.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LengauerTarjanTest.idom.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LinearScanTest.scanAARCH64.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.LinearScanTest.scanX86.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.MachineBasicBlockTest.addBeforeTerminator.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MachineBasicBlockTest.getPhiUses.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ParserTest.parseBinaryExpression.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.ParserTest.parseIfStatement.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ParserTest.parseIfStatementSemicolons.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ParserTest.parseProgram.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ParserTest.parseWhileStatement.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.RangeTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.RangeTest.overlaps.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SSADAGTest.postorder.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ThreeAddressCodeTest.normalize.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UniqueRenamerTest.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.baby-pascal [clean,compile,exec:java].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.baby-pascal [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.baby-pascal [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.baby-pascal [org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.baby-pascal [org.codehaus.mojo:exec-maven-plugin:3.1.0:java].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;linked__machine__instructions&quot;,
+    &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/d/Documents/mirrored/baby-pascal&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.tabs&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.d_m.ast" />
@@ -373,14 +364,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00210" summary="Attempt modification to liveness equations to handle phi nodes">
-      <option name="closed" value="true" />
-      <created>1729955149695</created>
-      <option name="number" value="00210" />
-      <option name="presentableId" value="LOCAL-00210" />
-      <option name="project" value="LOCAL" />
-      <updated>1729955149695</updated>
     </task>
     <task id="LOCAL-00211" summary="Add unit tests for getPhiUses() and getPhiDefs()">
       <option name="closed" value="true" />
@@ -766,7 +749,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752965697472</updated>
     </task>
-    <option name="localTasksCounter" value="259" />
+    <task id="LOCAL-00259" summary="Convert MachineInstructions in MachineBasicBlock to use linked representation instead of ArrayList">
+      <option name="closed" value="true" />
+      <created>1753039713658</created>
+      <option name="number" value="00259" />
+      <option name="presentableId" value="LOCAL-00259" />
+      <option name="project" value="LOCAL" />
+      <updated>1753039713658</updated>
+    </task>
+    <option name="localTasksCounter" value="260" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -774,7 +765,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Writes stack slots in assembly" />
     <MESSAGE value="Use temporary register as middleman for moves between two memory operands" />
     <MESSAGE value="Start baby pascal scanner and parser" />
     <MESSAGE value="Parse types and typed names" />
@@ -799,7 +789,8 @@
     <MESSAGE value="Abstract out backend isa specific stuff into a Compiler interface" />
     <MESSAGE value="Build examples with AARCH64 and set up build scripts for AARCH64" />
     <MESSAGE value="Fix expect test output" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix expect test output" />
+    <MESSAGE value="Convert MachineInstructions in MachineBasicBlock to use linked representation instead of ArrayList" />
+    <option name="LAST_COMMIT_MESSAGE" value="Convert MachineInstructions in MachineBasicBlock to use linked representation instead of ArrayList" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

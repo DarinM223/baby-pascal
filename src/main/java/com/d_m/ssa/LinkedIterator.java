@@ -54,7 +54,7 @@ public class LinkedIterator<T extends Listable<T>> implements Iterator<T> {
         if (prev != null) {
             prev.setNext(node);
             node.setPrev(prev);
-        } else {
+        } else if (setHead != null) {
             setHead.accept(node);
         }
         node.setNext(curr);
