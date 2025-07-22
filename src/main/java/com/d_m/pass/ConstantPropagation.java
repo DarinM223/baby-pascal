@@ -127,8 +127,8 @@ public class ConstantPropagation extends BooleanFunctionPass {
 
     private boolean isEmptyBlock(Block block) {
         return !block.getPredecessors().isEmpty() &&
-                (block.getInstructions().first == null ||
-                        (block.getInstructions().first == block.getInstructions().last &&
+                (block.getInstructions().getFirst() == null ||
+                        (block.getInstructions().getFirst() == block.getInstructions().getLast() &&
                                 block.getSuccessors().size() == 1));
     }
 

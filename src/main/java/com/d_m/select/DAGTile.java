@@ -6,6 +6,7 @@ import com.d_m.select.reg.Register;
 import com.d_m.select.reg.RegisterClass;
 import com.d_m.select.reg.RegisterConstraint;
 import com.d_m.ssa.Instruction;
+import com.d_m.ssa.ListWrapper;
 import com.d_m.ssa.Value;
 
 import java.util.*;
@@ -62,10 +63,10 @@ public class DAGTile implements Tile<Value>, Comparable<DAGTile> {
     public MachineOperand[] emit(FunctionLoweringInfo info,
                                  MachineBasicBlock block,
                                  List<MachineOperand[]> arguments,
-                                 List<MachineInstruction> terminator) {
+                                 ListWrapper<MachineInstruction> terminator) {
         Map<String, MachineOperand> constrainedRegisterMap = new HashMap<>();
         Map<Integer, MachineOperand> tempRegisterMap = new HashMap<>();
-        List<MachineInstruction> emitter = block.getInstructions();
+        ListWrapper<MachineInstruction> emitter = block.getInstructions();
         for (com.d_m.gen.Instruction instruction : rule.getCode().instructions()) {
             if (instruction.name().equals("terminator")) {
                 terminator.clear();
@@ -85,7 +86,7 @@ public class DAGTile implements Tile<Value>, Comparable<DAGTile> {
                     MachineBasicBlock successor = successors.get(i);
                     List<MachineOperandPair> operands = List.of(new MachineOperandPair(new MachineOperand.BasicBlock(successor), MachineOperandKind.USE));
                     MachineInstruction converted = new MachineInstruction(i == 0 ? instruction.name() : info.isa.jumpOp(), operands);
-                    emitter.add(converted);
+                    emitter.addToEnd(converted);
                 }
             } else {
                 boolean validInstruction = true;
@@ -102,7 +103,7 @@ public class DAGTile implements Tile<Value>, Comparable<DAGTile> {
                 // For example: a phi node with side effect tokens as its operands.
                 if (validInstruction) {
                     MachineInstruction converted = new MachineInstruction(instruction.name(), operands);
-                    emitter.add(converted);
+                    emitter.addToEnd(converted);
                 }
             }
         }

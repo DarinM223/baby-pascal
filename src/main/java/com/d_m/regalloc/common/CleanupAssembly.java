@@ -2,10 +2,10 @@ package com.d_m.regalloc.common;
 
 import com.d_m.select.instr.*;
 import com.d_m.select.reg.Register;
+import com.d_m.ssa.LinkedIterator;
 import com.google.common.collect.Iterables;
 
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
 
 public class CleanupAssembly {
@@ -34,7 +34,7 @@ public class CleanupAssembly {
 
     public static void expandMovesBetweenMemoryOperands(MachineFunction function, Register.Physical temp) {
         for (MachineBasicBlock block : function.getBlocks()) {
-            var it = block.getInstructions().listIterator();
+            var it = block.getInstructions().linkedIterator();
             while (it.hasNext()) {
                 MachineInstruction instruction = it.next();
                 if (instruction.getInstruction().equals("mov") && allMemoryOperands(instruction)) {
@@ -69,7 +69,7 @@ public class CleanupAssembly {
     /// @param temps    temporary registers used for expanding memory operations
     public static void expandInstructionsWithMemoryOperands(MachineFunction function, Set<Register.Physical> temps) {
         for (MachineBasicBlock block : function.getBlocks()) {
-            var it = block.getInstructions().listIterator();
+            var it = block.getInstructions().linkedIterator();
             while (it.hasNext()) {
                 MachineInstruction instruction = it.next();
                 if (anyMemoryOperands(instruction)) {
@@ -84,7 +84,7 @@ public class CleanupAssembly {
         }
     }
 
-    private static void expandMoveInstruction(MachineInstruction instruction, ListIterator<MachineInstruction> it, Set<Register.Physical> temps) {
+    private static void expandMoveInstruction(MachineInstruction instruction, LinkedIterator<MachineInstruction> it, Set<Register.Physical> temps) {
         MachineOperandPair firstOperand = instruction.getOperands().get(0);
         MachineOperandPair secondOperand = instruction.getOperands().get(1);
         if (firstOperand.isMemoryOperand() && secondOperand.isMemoryOperand()) {
@@ -114,7 +114,7 @@ public class CleanupAssembly {
         }
     }
 
-    private static void expandNormalInstruction(MachineInstruction instruction, ListIterator<MachineInstruction> it, Set<Register.Physical> temps) {
+    private static void expandNormalInstruction(MachineInstruction instruction, LinkedIterator<MachineInstruction> it, Set<Register.Physical> temps) {
         var tempIterator = temps.iterator();
         for (int i = 0; i < instruction.getOperands().size(); i++) {
             MachineOperandPair pair = instruction.getOperands().get(i);

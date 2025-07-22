@@ -40,15 +40,11 @@ public class Block extends Constant implements IBlock<Block> {
     }
 
     public List<Block> getSuccessors() {
-        return instructions.last == null ? new ArrayList<>() : instructions.last.getSuccessors();
+        return instructions.getLast() == null ? new ArrayList<>() : instructions.getLast().getSuccessors();
     }
 
     public Instruction getTerminator() {
-        return instructions.last;
-    }
-
-    public void setTerminator(Instruction terminator) {
-        instructions.last = terminator;
+        return instructions.getLast();
     }
 
     @Override

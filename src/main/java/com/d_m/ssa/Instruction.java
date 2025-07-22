@@ -67,21 +67,21 @@ public class Instruction extends Value implements Listable<Instruction> {
                 // Set the successors of the new terminator to the deleted instruction's successors.
                 prev.getSuccessors().clear();
                 prev.getSuccessors().addAll(this.getSuccessors());
-                parent.getInstructions().last = prev;
+                parent.getInstructions().setLast(prev);
             }
         }
         if (next != null) {
             next.prev = prev;
-            if (this.equals(parent.getInstructions().first)) {
-                parent.getInstructions().first = next;
+            if (this.equals(parent.getInstructions().getFirst())) {
+                parent.getInstructions().setFirst(next);
             }
         }
         // Delete if there is only a single instruction left in the block by creating a GOTO statement.
         if (prev == null && next == null) {
             Instruction gotoInstruction = new Instruction(null, null, Operator.GOTO, List.of());
             gotoInstruction.getSuccessors().addAll(this.getSuccessors());
-            parent.getInstructions().first = gotoInstruction;
-            parent.getInstructions().last = gotoInstruction;
+            parent.getInstructions().setFirst(gotoInstruction);
+            parent.getInstructions().setLast(gotoInstruction);
         }
     }
 
@@ -89,14 +89,6 @@ public class Instruction extends Value implements Listable<Instruction> {
         Use use = new Use(operand, this);
         operand.linkUse(use);
         return use;
-    }
-
-    public void addSuccessor(Block successor) {
-        successors.add(successor);
-    }
-
-    public void removeSuccessor(Block successor) {
-        successors.remove(successor);
     }
 
     public List<Block> getSuccessors() {

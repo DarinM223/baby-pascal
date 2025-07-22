@@ -4,6 +4,7 @@ import com.d_m.cfg.BlockLiveness;
 import com.d_m.cfg.BlockLivenessInfo;
 import com.d_m.cfg.IBlock;
 import com.d_m.select.reg.Register;
+import com.d_m.ssa.ListWrapper;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -17,9 +18,9 @@ public class MachineBasicBlock extends BlockLiveness<MachineBasicBlock> implemen
     private List<MachineBasicBlock> predecessors;
     private List<MachineBasicBlock> successors;
 
-    private List<MachineInstruction> instructions;
+    private ListWrapper<MachineInstruction> instructions;
     private int dominatorTreeLevel;
-    private int terminatorIndex;
+    private MachineInstruction instBeforeTerminator;
     private MachineBasicBlock entry;
     private MachineBasicBlock exit;
     private MachineGenKillInfo info;
@@ -28,9 +29,9 @@ public class MachineBasicBlock extends BlockLiveness<MachineBasicBlock> implemen
 
     public MachineBasicBlock(MachineFunction parent) {
         this.parent = parent;
-        instructions = new ArrayList<>();
+        instructions = new ListWrapper<>();
         dominatorTreeLevel = -1;
-        terminatorIndex = -1;
+        instBeforeTerminator = null;
         predecessors = new ArrayList<>();
         successors = new ArrayList<>();
         entry = null;
@@ -45,8 +46,12 @@ public class MachineBasicBlock extends BlockLiveness<MachineBasicBlock> implemen
         info = new MachineGenKillInfo(this.instructions);
     }
 
-    public List<MachineInstruction> getInstructions() {
+    public ListWrapper<MachineInstruction> getInstructions() {
         return instructions;
+    }
+
+    public void setInstructions(ListWrapper<MachineInstruction> newInstructions) {
+        this.instructions = newInstructions;
     }
 
     public List<MachineBasicBlock> getPredecessors() {
@@ -65,10 +70,6 @@ public class MachineBasicBlock extends BlockLiveness<MachineBasicBlock> implemen
     @Override
     public void setDominatorTreeLevel(int level) {
         dominatorTreeLevel = level;
-    }
-
-    public void setInstructions(List<MachineInstruction> instructions) {
-        this.instructions = instructions;
     }
 
     public void setPredecessors(List<MachineBasicBlock> predecessors) {
@@ -125,21 +126,22 @@ public class MachineBasicBlock extends BlockLiveness<MachineBasicBlock> implemen
         this.entry = entry;
     }
 
-    protected int getTerminator() {
-        return terminatorIndex;
+    protected MachineInstruction getTerminator() {
+        return instBeforeTerminator != null ? instBeforeTerminator.getNext() : null;
     }
 
     public void setTerminator() {
-        terminatorIndex = instructions.size();
+        instBeforeTerminator = instructions.getLast();
     }
 
     public void addBeforeTerminator(MachineInstruction instruction) {
-        if (terminatorIndex == instructions.size()) {
-            instructions.add(instruction);
+        if (instBeforeTerminator == null) {
+            instBeforeTerminator = instruction;
+            instructions.addToEnd(instruction);
         } else {
-            instructions.add(terminatorIndex, instruction);
+            instructions.addAfter(instBeforeTerminator, instruction);
+            instBeforeTerminator = instruction;
         }
-        terminatorIndex++;
     }
 
     @Override

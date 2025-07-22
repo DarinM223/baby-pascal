@@ -201,8 +201,8 @@ class InsertParallelMovesTest {
                     jmp [l15,USE]
                   }
                   block l17 [l15] {
-                    parmov [%3any,USE], [%5any,USE], [%7any,USE], [%9any,USE], [%11any,USE], [%13any,USE], [%15any,USE], [%2r12,DEF], [%4r13,DEF], [%6r14,DEF], [%8r15,DEF], [%10rbx,DEF], [%12rsp,DEF], [%14rbp,DEF]
                     mov [%17any,USE], [%48rax,DEF]
+                    parmov [%3any,USE], [%5any,USE], [%7any,USE], [%9any,USE], [%11any,USE], [%13any,USE], [%15any,USE], [%2r12,DEF], [%4r13,DEF], [%6r14,DEF], [%8r15,DEF], [%10rbx,DEF], [%12rsp,DEF], [%14rbp,DEF]
                   }
                 }
                 """;

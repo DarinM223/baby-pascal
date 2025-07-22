@@ -58,7 +58,7 @@ public abstract class Value implements Comparable<Value> {
     private class UseIterable implements Iterable<Use> {
         @Override
         public Iterator<Use> iterator() {
-            return new LinkedIterator<>(uses);
+            return new LinkedIterator<>(uses, (Use use) -> uses = use, null);
         }
     }
 

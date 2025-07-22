@@ -4,8 +4,8 @@ import com.d_m.select.FunctionLoweringInfo;
 import com.d_m.select.instr.*;
 import com.d_m.select.reg.Register;
 import com.d_m.select.reg.RegisterConstraint;
+import com.d_m.ssa.ListWrapper;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class SequentializeParallelMoves {
     }
 
     public static void sequentializeBlock(FunctionLoweringInfo info, Register.Physical tmp, MachineBasicBlock block) {
-        List<MachineInstruction> newInstructions = new ArrayList<>(block.getInstructions().size());
+        ListWrapper<MachineInstruction> newInstructions = new ListWrapper<>();
         Emitter emitter = new Emitter() {
             @Override
             public MachineOperand makeTmp(Register.Physical register) {
@@ -44,7 +44,7 @@ public class SequentializeParallelMoves {
 
             @Override
             public void emitMove(MachineOperand destination, MachineOperand source) {
-                newInstructions.add(info.isa.createMoveInstruction(destination, source));
+                newInstructions.addToEnd(info.isa.createMoveInstruction(destination, source));
             }
         };
         for (MachineInstruction instruction : block.getInstructions()) {
@@ -52,7 +52,7 @@ public class SequentializeParallelMoves {
                 SequentializeParallelMoves sequentialize = new SequentializeParallelMoves(tmp, instruction.getOperands(), emitter);
                 sequentialize.sequentialize();
             } else {
-                newInstructions.add(instruction);
+                newInstructions.addToEnd(instruction);
             }
         }
         block.setInstructions(newInstructions);

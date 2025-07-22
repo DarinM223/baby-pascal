@@ -194,8 +194,7 @@ public class SSADAG implements DAG<Value> {
 
     private void calculate() {
         Set<Value> visited = new HashSet<>();
-        for (var it = block.getInstructions().reversed(); it.hasNext(); ) {
-            Instruction instruction = it.next();
+        for (Instruction instruction : block.getInstructions().reversed()) {
             if (!visited.contains(instruction)) {
                 roots.add(instruction);
             }

@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Build examples with AARCH64 and set up build scripts for AARCH64">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Better encapsulate ListWrapper fields">
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/ListWrapperTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/regalloc/linear/LinearScanTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/LinkedIterator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/LinkedIterator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ListWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ListWrapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ReverseLinkedIterator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ReverseLinkedIterator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/instr/MachineBasicBlockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/instr/MachineBasicBlockTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/BlockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/BlockTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,9 +23,9 @@
       <list>
         <option value="Enum" />
         <option value="Record" />
-        <option value="JUnit5 Test Class" />
         <option value="Interface" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -42,59 +46,65 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Fibonacci.executor&quot;: &quot;Run&quot;,
-    &quot;Application.FibonacciAARCH64.executor&quot;: &quot;Run&quot;,
-    &quot;Application.FibonacciX86_64.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Funswap.executor&quot;: &quot;Run&quot;,
-    &quot;Application.FunswapAARCH64.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Gen.executor&quot;: &quot;Run&quot;,
-    &quot;Application.GenAARCH64.executor&quot;: &quot;Run&quot;,
-    &quot;Application.GenX86_64.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.All tests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BlockTest.createBlocks.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BlockTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BuilderTest.convertFunction.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.DataflowTest.genKill.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DataflowTest.genKillAndLiveness.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IntervalTest.addRange.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.LengauerTarjanTest.idom.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.LinearScanTest.scanAARCH64.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.LinearScanTest.scanX86.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.MachineBasicBlockTest.addBeforeTerminator.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.MachineBasicBlockTest.getPhiUses.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ParserTest.parseBinaryExpression.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.ParserTest.parseIfStatement.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ParserTest.parseIfStatementSemicolons.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ParserTest.parseProgram.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ParserTest.parseWhileStatement.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RangeTest.overlaps.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.SSADAGTest.postorder.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ThreeAddressCodeTest.normalize.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UniqueRenamerTest.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [clean,compile,exec:java].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [org.codehaus.mojo:exec-maven-plugin:3.1.0:java].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/d/Documents/mirrored/baby-pascal&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.tabs&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Fibonacci.executor": "Run",
+    "Application.FibonacciAARCH64.executor": "Run",
+    "Application.FibonacciX86_64.executor": "Run",
+    "Application.Funswap.executor": "Run",
+    "Application.FunswapAARCH64.executor": "Run",
+    "Application.FunswapX86_64.executor": "Run",
+    "Application.Gen.executor": "Run",
+    "Application.GenAARCH64.executor": "Run",
+    "Application.GenX86_64.executor": "Run",
+    "Application.Main.executor": "Run",
+    "JUnit.All tests.executor": "Run",
+    "JUnit.BlockTest.createBlocks.executor": "Run",
+    "JUnit.BlockTest.executor": "Run",
+    "JUnit.BuilderTest.convertFunction.executor": "Debug",
+    "JUnit.CodegenTest.codegenAARCH.executor": "Run",
+    "JUnit.CodegenTest.executor": "Run",
+    "JUnit.DataflowTest.genKill.executor": "Run",
+    "JUnit.DataflowTest.genKillAndLiveness.executor": "Run",
+    "JUnit.IntervalTest.addRange.executor": "Run",
+    "JUnit.LengauerTarjanTest.idom.executor": "Run",
+    "JUnit.LinearScanTest.scanAARCH64.executor": "Debug",
+    "JUnit.LinearScanTest.scanX86.executor": "Debug",
+    "JUnit.ListWrapperTest.append.executor": "Run",
+    "JUnit.ListWrapperTest.reversed.executor": "Run",
+    "JUnit.MachineBasicBlockTest.addBeforeTerminator.executor": "Run",
+    "JUnit.MachineBasicBlockTest.getPhiUses.executor": "Run",
+    "JUnit.ParserTest.parseBinaryExpression.executor": "Debug",
+    "JUnit.ParserTest.parseIfStatement.executor": "Run",
+    "JUnit.ParserTest.parseIfStatementSemicolons.executor": "Run",
+    "JUnit.ParserTest.parseProgram.executor": "Run",
+    "JUnit.ParserTest.parseWhileStatement.executor": "Run",
+    "JUnit.RangeTest.executor": "Run",
+    "JUnit.RangeTest.overlaps.executor": "Run",
+    "JUnit.SSADAGTest.postorder.executor": "Run",
+    "JUnit.ThreeAddressCodeTest.normalize.executor": "Run",
+    "JUnit.UniqueRenamerTest.executor": "Run",
+    "Maven.baby-pascal [clean,compile,exec:java].executor": "Run",
+    "Maven.baby-pascal [clean].executor": "Run",
+    "Maven.baby-pascal [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor": "Run",
+    "Maven.baby-pascal [org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile].executor": "Run",
+    "Maven.baby-pascal [org.codehaus.mojo:exec-maven-plugin:3.1.0:java].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "linked__machine__instructions",
+    "ignore.preview.features.used": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/d/Documents/mirrored/baby-pascal",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "editor.preferences.tabs"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.d_m.ast" />
@@ -120,11 +130,11 @@
       <recent name="com.d_m.code.normalize" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.d_m.ssa" />
       <recent name="com.d_m.parser" />
       <recent name="com.d_m.regalloc.linear" />
       <recent name="com.d_m.select.instr" />
       <recent name="com.d_m.deconstruct" />
-      <recent name="com.d_m.select.dag" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.d_m.select.instr" />
@@ -234,49 +244,36 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LinearScanTest.scanAARCH64" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CodegenTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="baby-pascal" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.d_m.regalloc.linear.*" />
+          <option name="PATTERN" value="com.d_m.select.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.d_m.regalloc.linear" />
-      <option name="MAIN_CLASS_NAME" value="com.d_m.regalloc.linear.LinearScanTest" />
-      <option name="METHOD_NAME" value="scanAARCH64" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="com.d_m.select" />
+      <option name="MAIN_CLASS_NAME" value="com.d_m.select.CodegenTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LinearScanTest.scanX86" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CodegenTest.codegenAARCH" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="baby-pascal" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.d_m.regalloc.linear.*" />
+          <option name="PATTERN" value="com.d_m.select.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.d_m.regalloc.linear" />
-      <option name="MAIN_CLASS_NAME" value="com.d_m.regalloc.linear.LinearScanTest" />
-      <option name="METHOD_NAME" value="scanX86" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ParserTest.parseIfStatementSemicolons" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="baby-pascal" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.d_m.parser.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.d_m.parser" />
-      <option name="MAIN_CLASS_NAME" value="com.d_m.parser.ParserTest" />
-      <option name="METHOD_NAME" value="parseIfStatementSemicolons" />
+      <option name="PACKAGE_NAME" value="com.d_m.select" />
+      <option name="MAIN_CLASS_NAME" value="com.d_m.select.CodegenTest" />
+      <option name="METHOD_NAME" value="codegenAARCH" />
       <option name="TEST_OBJECT" value="method" />
       <option name="TEST_SEARCH_SCOPE">
         <value defaultName="wholeProject" />
@@ -285,37 +282,53 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ParserTest.parseProgram" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ListWrapperTest.append" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="baby-pascal" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.d_m.parser.*" />
+          <option name="PATTERN" value="com.d_m.ssa.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.d_m.parser" />
-      <option name="MAIN_CLASS_NAME" value="com.d_m.parser.ParserTest" />
-      <option name="METHOD_NAME" value="parseProgram" />
+      <option name="PACKAGE_NAME" value="com.d_m.ssa" />
+      <option name="MAIN_CLASS_NAME" value="com.d_m.ssa.ListWrapperTest" />
+      <option name="METHOD_NAME" value="append" />
       <option name="TEST_OBJECT" value="method" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="wholeProject" />
-      </option>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ParserTest.parseWhileStatement" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ListWrapperTest.reversed" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="baby-pascal" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.d_m.parser.*" />
+          <option name="PATTERN" value="com.d_m.ssa.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.d_m.parser" />
-      <option name="MAIN_CLASS_NAME" value="com.d_m.parser.ParserTest" />
-      <option name="METHOD_NAME" value="parseWhileStatement" />
+      <option name="PACKAGE_NAME" value="com.d_m.ssa" />
+      <option name="MAIN_CLASS_NAME" value="com.d_m.ssa.ListWrapperTest" />
+      <option name="METHOD_NAME" value="reversed" />
       <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RangeTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="baby-pascal" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.d_m.regalloc.linear.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.d_m.regalloc.linear" />
+      <option name="MAIN_CLASS_NAME" value="com.d_m.regalloc.linear.RangeTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -328,19 +341,19 @@
       <item itemvalue="Application.GenX86_64" />
       <item itemvalue="Application.GenAARCH64" />
       <item itemvalue="JUnit.All tests" />
-      <item itemvalue="JUnit.LinearScanTest.scanAARCH64" />
-      <item itemvalue="JUnit.LinearScanTest.scanX86" />
-      <item itemvalue="JUnit.ParserTest.parseIfStatementSemicolons" />
-      <item itemvalue="JUnit.ParserTest.parseProgram" />
-      <item itemvalue="JUnit.ParserTest.parseWhileStatement" />
+      <item itemvalue="JUnit.ListWrapperTest.append" />
+      <item itemvalue="JUnit.ListWrapperTest.reversed" />
+      <item itemvalue="JUnit.CodegenTest" />
+      <item itemvalue="JUnit.CodegenTest.codegenAARCH" />
+      <item itemvalue="JUnit.RangeTest" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.LinearScanTest.scanAARCH64" />
-        <item itemvalue="JUnit.LinearScanTest.scanX86" />
-        <item itemvalue="JUnit.ParserTest.parseIfStatementSemicolons" />
-        <item itemvalue="JUnit.ParserTest.parseProgram" />
-        <item itemvalue="JUnit.ParserTest.parseWhileStatement" />
+        <item itemvalue="JUnit.ListWrapperTest.reversed" />
+        <item itemvalue="JUnit.ListWrapperTest.append" />
+        <item itemvalue="JUnit.CodegenTest" />
+        <item itemvalue="JUnit.CodegenTest.codegenAARCH" />
+        <item itemvalue="JUnit.RangeTest" />
       </list>
     </recent_temporary>
   </component>
@@ -352,30 +365,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00209" summary="MachineBasicBlock remembers terminator and parallel moves are inserted before terminator">
-      <option name="closed" value="true" />
-      <created>1729864675284</created>
-      <option name="number" value="00209" />
-      <option name="presentableId" value="LOCAL-00209" />
-      <option name="project" value="LOCAL" />
-      <updated>1729864675285</updated>
-    </task>
-    <task id="LOCAL-00210" summary="Attempt modification to liveness equations to handle phi nodes">
-      <option name="closed" value="true" />
-      <created>1729955149695</created>
-      <option name="number" value="00210" />
-      <option name="presentableId" value="LOCAL-00210" />
-      <option name="project" value="LOCAL" />
-      <updated>1729955149695</updated>
-    </task>
-    <task id="LOCAL-00211" summary="Add unit tests for getPhiUses() and getPhiDefs()">
-      <option name="closed" value="true" />
-      <created>1729957035450</created>
-      <option name="number" value="00211" />
-      <option name="presentableId" value="LOCAL-00211" />
-      <option name="project" value="LOCAL" />
-      <updated>1729957035450</updated>
     </task>
     <task id="LOCAL-00212" summary="Small fixes to linear scan so that it assigns registers">
       <option name="closed" value="true" />
@@ -745,7 +734,31 @@
       <option name="project" value="LOCAL" />
       <updated>1752875013886</updated>
     </task>
-    <option name="localTasksCounter" value="258" />
+    <task id="LOCAL-00258" summary="Fix expect test output">
+      <option name="closed" value="true" />
+      <created>1752965697472</created>
+      <option name="number" value="00258" />
+      <option name="presentableId" value="LOCAL-00258" />
+      <option name="project" value="LOCAL" />
+      <updated>1752965697472</updated>
+    </task>
+    <task id="LOCAL-00259" summary="Convert MachineInstructions in MachineBasicBlock to use linked representation instead of ArrayList">
+      <option name="closed" value="true" />
+      <created>1753039713658</created>
+      <option name="number" value="00259" />
+      <option name="presentableId" value="LOCAL-00259" />
+      <option name="project" value="LOCAL" />
+      <updated>1753039713658</updated>
+    </task>
+    <task id="LOCAL-00260" summary="Better encapsulate ListWrapper fields">
+      <option name="closed" value="true" />
+      <created>1753110876488</created>
+      <option name="number" value="00260" />
+      <option name="presentableId" value="LOCAL-00260" />
+      <option name="project" value="LOCAL" />
+      <updated>1753110876488</updated>
+    </task>
+    <option name="localTasksCounter" value="261" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -753,9 +766,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix accidental rewriting of fixed registers with stack slots" />
-    <MESSAGE value="Writes stack slots in assembly" />
-    <MESSAGE value="Use temporary register as middleman for moves between two memory operands" />
     <MESSAGE value="Start baby pascal scanner and parser" />
     <MESSAGE value="Parse types and typed names" />
     <MESSAGE value="More parsing for function declarations and statements" />
@@ -778,7 +788,10 @@
     <MESSAGE value="Cleanup instructions with memory operands (with special handling for movs) for AARCH64" />
     <MESSAGE value="Abstract out backend isa specific stuff into a Compiler interface" />
     <MESSAGE value="Build examples with AARCH64 and set up build scripts for AARCH64" />
-    <option name="LAST_COMMIT_MESSAGE" value="Build examples with AARCH64 and set up build scripts for AARCH64" />
+    <MESSAGE value="Fix expect test output" />
+    <MESSAGE value="Convert MachineInstructions in MachineBasicBlock to use linked representation instead of ArrayList" />
+    <MESSAGE value="Better encapsulate ListWrapper fields" />
+    <option name="LAST_COMMIT_MESSAGE" value="Better encapsulate ListWrapper fields" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -791,7 +804,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java</url>
-          <line>57</line>
+          <line>58</line>
           <option name="timeStamp" value="74" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
