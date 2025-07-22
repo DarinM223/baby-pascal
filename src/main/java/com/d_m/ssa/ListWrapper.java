@@ -3,6 +3,9 @@ package com.d_m.ssa;
 import com.google.common.collect.Iterables;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class ListWrapper<T extends Listable<T>> implements Iterable<T> {
     private T first = null;
@@ -69,20 +72,6 @@ public class ListWrapper<T extends Listable<T>> implements Iterable<T> {
         }
     }
 
-    public void addBeforeLast(T node) {
-        if (last != null) {
-            if (last.getPrev() != null) {
-                last.getPrev().setNext(node);
-            }
-            node.setPrev(last.getPrev());
-            node.setNext(last);
-            last.setPrev(node);
-            if (last.equals(first)) {
-                first = node;
-            }
-        }
-    }
-
     public void addToEnd(T node) {
         if (last == null) {
             first = node;
@@ -103,7 +92,9 @@ public class ListWrapper<T extends Listable<T>> implements Iterable<T> {
                 list.first.setPrev(last);
             }
         }
-        last = list.last;
+        if (list.last != null) {
+            last = list.last;
+        }
     }
 
     public LinkedIterator<T> linkedIterator() {
@@ -116,6 +107,15 @@ public class ListWrapper<T extends Listable<T>> implements Iterable<T> {
     }
 
     public ReverseLinkedIterator<T> reversed() {
-        return new ReverseLinkedIterator<>(last);
+        return new ReverseLinkedIterator<>(last, (T node) -> first = node, (T node) -> last = node);
+    }
+
+    /**
+     * Converts a list wrapper to a list. Should only be used for testing.
+     *
+     * @return a list representation of the linked list.
+     */
+    public List<T> toList() {
+        return StreamSupport.stream(spliterator(), false).collect(Collectors.toList());
     }
 }

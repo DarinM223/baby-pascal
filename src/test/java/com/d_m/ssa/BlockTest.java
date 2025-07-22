@@ -44,22 +44,4 @@ class BlockTest {
         assertEquals(2, block.getSuccessors().size());
         assertEquals(3, Iterables.size(block.getInstructions()));
     }
-
-    @Test
-    void addInstructionBeforeTerminator() {
-        Block block = new Block(function, List.of());
-        block.getInstructions().addBeforeLast(instruction1);
-        assertEquals(0, Iterables.size(block.getInstructions()));
-
-        block.getInstructions().addToFront(instruction1);
-        block.getInstructions().addBeforeLast(instruction2);
-        assertEquals(2, Iterables.size(block.getInstructions()));
-        assertEquals(instruction2, block.getInstructions().getFirst());
-        assertEquals(instruction1, block.getTerminator());
-
-        block.getInstructions().addBeforeLast(instruction3);
-        assertEquals(3, Iterables.size(block.getInstructions()));
-        assertEquals(instruction3, block.getInstructions().getFirst().getNext());
-        assertEquals(instruction3, block.getTerminator().prev);
-    }
 }

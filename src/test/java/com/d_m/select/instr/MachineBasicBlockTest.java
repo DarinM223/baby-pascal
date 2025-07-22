@@ -24,10 +24,7 @@ class MachineBasicBlockTest {
         assertNull(block.getTerminator());
         block.addBeforeTerminator(instruction2);
         assertNull(block.getTerminator());
-        assertEquals(
-                List.of(instruction1, instruction2),
-                StreamSupport.stream(block.getInstructions().spliterator(), false).collect(Collectors.toList())
-        );
+        assertEquals(List.of(instruction1, instruction2), block.getInstructions().toList());
 
         MachineInstruction instruction3 = new MachineInstruction("foo", List.of());
         MachineInstruction instruction4 = new MachineInstruction("bar", List.of());
@@ -38,7 +35,7 @@ class MachineBasicBlockTest {
         assertEquals(instruction3, block.getTerminator());
         assertEquals(
                 List.of(instruction1, instruction2, instruction5, instruction3, instruction4),
-                StreamSupport.stream(block.getInstructions().spliterator(), false).collect(Collectors.toList())
+                block.getInstructions().toList()
         );
     }
 
