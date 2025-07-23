@@ -3,7 +3,6 @@ package com.d_m.ssa;
 import com.d_m.ast.Type;
 import com.d_m.code.Operator;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,13 +119,8 @@ public class Instruction extends Value implements Listable<Instruction> {
     }
 
     @Override
-    public void acceptDef(PrettyPrinter printer) throws IOException {
-        printer.writeInstructionDef(this);
-    }
-
-    @Override
-    public void acceptUse(PrettyPrinter printer) throws IOException {
-        printer.writeInstructionUse(this);
+    public <T, E extends Exception> T accept(ValueVisitor<T, E> visitor) throws E {
+        return visitor.visit(this);
     }
 
     public boolean hasSideEffects() {

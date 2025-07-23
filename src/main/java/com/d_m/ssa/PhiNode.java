@@ -3,7 +3,6 @@ package com.d_m.ssa;
 import com.d_m.ast.Type;
 import com.d_m.code.Operator;
 
-import java.io.IOException;
 import java.util.List;
 
 public class PhiNode extends Instruction {
@@ -34,7 +33,8 @@ public class PhiNode extends Instruction {
     }
 
     @Override
-    public void acceptDef(PrettyPrinter printer) throws IOException {
-        printer.writePhi(this);
+    public <T, E extends Exception> T accept(ValueVisitor<T, E> visitor) throws E {
+        return visitor.visit(this);
     }
+
 }

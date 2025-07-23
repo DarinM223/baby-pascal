@@ -3,8 +3,6 @@ package com.d_m.ssa;
 import com.d_m.ast.Type;
 import com.d_m.code.Operator;
 
-import java.io.IOException;
-
 public class Global extends Constant {
     private Module parent;
 
@@ -14,13 +12,8 @@ public class Global extends Constant {
     }
 
     @Override
-    public void acceptDef(PrettyPrinter printer) throws IOException {
-        printer.writeArgument(this);
-    }
-
-    @Override
-    public void acceptUse(PrettyPrinter printer) throws IOException {
-        printer.writeArgumentUse(this);
+    public <T, E extends Exception> T accept(ValueVisitor<T, E> visitor) throws E {
+        return visitor.visit(this);
     }
 
     public Module getParent() {

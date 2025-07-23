@@ -2,8 +2,6 @@ package com.d_m.ssa;
 
 import com.d_m.ast.Type;
 
-import java.io.IOException;
-
 public class Argument extends Value {
     private Function parent;
     private final int argumentNumber;
@@ -27,12 +25,7 @@ public class Argument extends Value {
     }
 
     @Override
-    public void acceptDef(PrettyPrinter printer) throws IOException {
-        printer.writeArgument(this);
-    }
-
-    @Override
-    public void acceptUse(PrettyPrinter printer) throws IOException {
-        printer.writeArgumentUse(this);
+    public <T, E extends Exception> T accept(ValueVisitor<T, E> visitor) throws E {
+        return visitor.visit(this);
     }
 }

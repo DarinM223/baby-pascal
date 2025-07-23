@@ -2,7 +2,6 @@ package com.d_m.ssa;
 
 import com.d_m.ast.Type;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.Objects;
 
@@ -83,9 +82,7 @@ public abstract class Value implements Comparable<Value> {
         return name;
     }
 
-    public abstract void acceptDef(PrettyPrinter printer) throws IOException;
-
-    public abstract void acceptUse(PrettyPrinter printer) throws IOException;
+    public abstract <T, E extends Exception> T accept(ValueVisitor<T, E> visitor) throws E;
 
     /**
      * The arity of the value.

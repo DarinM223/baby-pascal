@@ -4,14 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Better encapsulate ListWrapper fields">
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/ListWrapperTest.java" afterDir="false" />
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fix some bugs in ListWrapper and add unit tests">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ValueVisitor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/LinkedIterator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/LinkedIterator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ListWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ListWrapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ReverseLinkedIterator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ReverseLinkedIterator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/instr/MachineBasicBlockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/instr/MachineBasicBlockTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/BlockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/ssa/BlockTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Argument.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Argument.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ConstantInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ConstantInt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Function.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Function.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Global.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Global.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PhiNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PhiNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PrettyPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PrettyPrinter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,12 +28,17 @@
         <option value="Enum" />
         <option value="Record" />
         <option value="Interface" />
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="linked_machine_instructions" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProblemsViewState">
@@ -95,14 +104,14 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "linked__machine__instructions",
+    "git-widget-placeholder": "master",
     "ignore.preview.features.used": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/home/d/Documents/mirrored/baby-pascal",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "editor.preferences.tabs"
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -334,26 +343,26 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.FibonacciX86_64" />
       <item itemvalue="Application.FibonacciAARCH64" />
-      <item itemvalue="Application.FunswapX86_64" />
+      <item itemvalue="Application.FibonacciX86_64" />
       <item itemvalue="Application.FunswapAARCH64" />
-      <item itemvalue="Application.GenX86_64" />
+      <item itemvalue="Application.FunswapX86_64" />
       <item itemvalue="Application.GenAARCH64" />
+      <item itemvalue="Application.GenX86_64" />
       <item itemvalue="JUnit.All tests" />
-      <item itemvalue="JUnit.ListWrapperTest.append" />
-      <item itemvalue="JUnit.ListWrapperTest.reversed" />
       <item itemvalue="JUnit.CodegenTest" />
       <item itemvalue="JUnit.CodegenTest.codegenAARCH" />
+      <item itemvalue="JUnit.ListWrapperTest.append" />
+      <item itemvalue="JUnit.ListWrapperTest.reversed" />
       <item itemvalue="JUnit.RangeTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.RangeTest" />
         <item itemvalue="JUnit.ListWrapperTest.reversed" />
         <item itemvalue="JUnit.ListWrapperTest.append" />
-        <item itemvalue="JUnit.CodegenTest" />
         <item itemvalue="JUnit.CodegenTest.codegenAARCH" />
-        <item itemvalue="JUnit.RangeTest" />
+        <item itemvalue="JUnit.CodegenTest" />
       </list>
     </recent_temporary>
   </component>
@@ -365,14 +374,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00212" summary="Small fixes to linear scan so that it assigns registers">
-      <option name="closed" value="true" />
-      <created>1730470888911</created>
-      <option name="number" value="00212" />
-      <option name="presentableId" value="LOCAL-00212" />
-      <option name="project" value="LOCAL" />
-      <updated>1730470888912</updated>
     </task>
     <task id="LOCAL-00213" summary="Handle fixed intervals and more debugging on linear scan">
       <option name="closed" value="true" />
@@ -758,7 +759,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753110876488</updated>
     </task>
-    <option name="localTasksCounter" value="261" />
+    <task id="LOCAL-00261" summary="Fix some bugs in ListWrapper and add unit tests">
+      <option name="closed" value="true" />
+      <created>1753201402887</created>
+      <option name="number" value="00261" />
+      <option name="presentableId" value="LOCAL-00261" />
+      <option name="project" value="LOCAL" />
+      <updated>1753201402887</updated>
+    </task>
+    <option name="localTasksCounter" value="262" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -766,7 +775,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Start baby pascal scanner and parser" />
     <MESSAGE value="Parse types and typed names" />
     <MESSAGE value="More parsing for function declarations and statements" />
     <MESSAGE value="Attempt parsing binary operator expressions with pratt parsing" />
@@ -791,7 +799,8 @@
     <MESSAGE value="Fix expect test output" />
     <MESSAGE value="Convert MachineInstructions in MachineBasicBlock to use linked representation instead of ArrayList" />
     <MESSAGE value="Better encapsulate ListWrapper fields" />
-    <option name="LAST_COMMIT_MESSAGE" value="Better encapsulate ListWrapper fields" />
+    <MESSAGE value="Fix some bugs in ListWrapper and add unit tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix some bugs in ListWrapper and add unit tests" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

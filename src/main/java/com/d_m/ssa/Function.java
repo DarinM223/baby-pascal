@@ -4,7 +4,6 @@ import com.d_m.ast.Type;
 import com.d_m.code.Operator;
 import com.google.common.collect.Iterators;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,13 +33,8 @@ public class Function extends Constant {
     }
 
     @Override
-    public void acceptDef(PrettyPrinter printer) throws IOException {
-        printer.writeFunction(this);
-    }
-
-    @Override
-    public void acceptUse(PrettyPrinter printer) throws IOException {
-        printer.writeFunctionValue(this);
+    public <T, E extends Exception> T accept(ValueVisitor<T, E> visitor) throws E {
+        return visitor.visit(this);
     }
 
     public void remove() {

@@ -30,6 +30,105 @@ public class PrettyPrinter {
         this.indentationLevel = 0;
     }
 
+    public static class PrettyPrintUseVisitor implements ValueVisitor<Void, IOException> {
+        private final PrettyPrinter printer;
+
+        public PrettyPrintUseVisitor(PrettyPrinter printer) {
+            this.printer = printer;
+        }
+
+        @Override
+        public Void visit(ConstantInt constant) throws IOException {
+            printer.writeConstantInt(constant);
+            return null;
+        }
+
+        @Override
+        public Void visit(Global global) throws IOException {
+            printer.writeArgumentUse(global);
+            return null;
+        }
+
+        @Override
+        public Void visit(Block block) throws IOException {
+            printer.writeBlockValue(block);
+            return null;
+        }
+
+        @Override
+        public Void visit(Argument argument) throws IOException {
+            printer.writeArgumentUse(argument);
+            return null;
+        }
+
+        @Override
+        public Void visit(Instruction instruction) throws IOException {
+            printer.writeInstructionUse(instruction);
+            return null;
+        }
+
+        @Override
+        public Void visit(PhiNode phi) throws IOException {
+            return visit((Instruction) phi);
+        }
+
+        @Override
+        public Void visit(Function function) throws IOException {
+            printer.writeFunctionValue(function);
+            return null;
+        }
+    }
+
+    public static class PrettyPrintDefVisitor implements ValueVisitor<Void, IOException> {
+        private final PrettyPrinter printer;
+
+        public PrettyPrintDefVisitor(PrettyPrinter printer) {
+            this.printer = printer;
+        }
+
+        @Override
+        public Void visit(ConstantInt constant) throws IOException {
+            printer.writeConstantInt(constant);
+            return null;
+        }
+
+        @Override
+        public Void visit(Global global) throws IOException {
+            printer.writeArgument(global);
+            return null;
+        }
+
+        @Override
+        public Void visit(Block block) throws IOException {
+            printer.writeBlock(block);
+            return null;
+        }
+
+        @Override
+        public Void visit(Argument argument) throws IOException {
+            printer.writeArgument(argument);
+            return null;
+        }
+
+        @Override
+        public Void visit(Instruction instruction) throws IOException {
+            printer.writeInstructionDef(instruction);
+            return null;
+        }
+
+        @Override
+        public Void visit(PhiNode phi) throws IOException {
+            printer.writePhi(phi);
+            return null;
+        }
+
+        @Override
+        public Void visit(Function function) throws IOException {
+            printer.writeFunction(function);
+            return null;
+        }
+    }
+
     public void writeModule(Module module) throws IOException {
         start();
         out.write("module " + module.getModuleID() + " {\n");
@@ -102,8 +201,9 @@ public class PrettyPrinter {
         out.write("] {\n");
         indentationLevel++;
 
+        var printDefVisitor = new PrettyPrintDefVisitor(this);
         for (Instruction instruction : block.getInstructions()) {
-            instruction.acceptDef(this);
+            instruction.accept(printDefVisitor);
         }
 
         indentationLevel--;
@@ -119,8 +219,9 @@ public class PrettyPrinter {
         start();
         out.write(getName(phi));
         out.write(" <- Φ(");
+        var printUseVisitor = new PrettyPrintUseVisitor(this);
         for (var it = phi.operands().iterator(); it.hasNext(); ) {
-            it.next().getValue().acceptUse(this);
+            it.next().getValue().accept(printUseVisitor);
             if (it.hasNext()) {
                 out.write(", ");
             }
@@ -132,22 +233,23 @@ public class PrettyPrinter {
         start();
         out.write(getName(instruction));
         out.write(" <- ");
+        var printUseVisitor = new PrettyPrintUseVisitor(this);
         switch (Iterables.size(instruction.operands())) {
             case 2 -> {
-                instruction.getOperand(0).getValue().acceptUse(this);
+                instruction.getOperand(0).getValue().accept(printUseVisitor);
                 out.write(" " + instruction.getOperator().toString() + " ");
-                instruction.getOperand(1).getValue().acceptUse(this);
+                instruction.getOperand(1).getValue().accept(printUseVisitor);
             }
             case 1 -> {
                 if (instruction.getOperator() != Operator.ASSIGN) {
                     out.write(instruction.getOperator().toString() + " ");
                 }
-                instruction.getOperand(0).getValue().acceptUse(this);
+                instruction.getOperand(0).getValue().accept(printUseVisitor);
             }
             default -> {
                 out.write(instruction.getOperator().toString() + "(");
                 for (var it = instruction.operands().iterator(); it.hasNext(); ) {
-                    it.next().getValue().acceptUse(this);
+                    it.next().getValue().accept(printUseVisitor);
                     if (it.hasNext()) {
                         out.write(", ");
                     }

@@ -3,7 +3,6 @@ package com.d_m.ssa;
 import com.d_m.cfg.IBlock;
 import com.d_m.code.Operator;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -102,13 +101,8 @@ public class Block extends Constant implements IBlock<Block> {
     }
 
     @Override
-    public void acceptDef(PrettyPrinter printer) throws IOException {
-        printer.writeBlock(this);
-    }
-
-    @Override
-    public void acceptUse(PrettyPrinter printer) throws IOException {
-        printer.writeBlockValue(this);
+    public <T, E extends Exception> T accept(ValueVisitor<T, E> visitor) throws E {
+        return visitor.visit(this);
     }
 
     @Override

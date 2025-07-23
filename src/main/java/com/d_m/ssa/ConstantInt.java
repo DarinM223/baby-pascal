@@ -3,8 +3,6 @@ package com.d_m.ssa;
 import com.d_m.ast.IntegerType;
 import com.d_m.code.Operator;
 
-import java.io.IOException;
-
 public class ConstantInt extends Constant {
     private final int value;
 
@@ -23,13 +21,8 @@ public class ConstantInt extends Constant {
     }
 
     @Override
-    public void acceptDef(PrettyPrinter printer) throws IOException {
-        printer.writeConstantInt(this);
-    }
-
-    @Override
-    public void acceptUse(PrettyPrinter printer) throws IOException {
-        printer.writeConstantInt(this);
+    public <T, E extends Exception> T accept(ValueVisitor<T, E> visitor) throws E {
+        return visitor.visit(this);
     }
 
     @Override
