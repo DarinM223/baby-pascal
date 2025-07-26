@@ -5,17 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fix some bugs in ListWrapper and add unit tests">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ValueVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Argument.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Argument.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Block.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ConstantInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/ConstantInt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Function.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Function.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Global.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Global.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Instruction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PhiNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PhiNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PrettyPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/PrettyPrinter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/ssa/Value.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/funswap.pas" beforeDir="false" afterPath="$PROJECT_DIR$/examples/funswap.pas" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rules/aarch64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/aarch64.rule" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rules/x86_64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +32,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="linked_machine_instructions" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -155,7 +151,7 @@
       <command value="mvn clean compile exec:java" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.All tests">
+  <component name="RunManager" selected="Application.FibonacciAARCH64">
     <configuration name="FibonacciAARCH64" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.d_m.Main" />
       <module name="baby-pascal" />
@@ -374,22 +370,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00213" summary="Handle fixed intervals and more debugging on linear scan">
-      <option name="closed" value="true" />
-      <created>1730553373667</created>
-      <option name="number" value="00213" />
-      <option name="presentableId" value="LOCAL-00213" />
-      <option name="project" value="LOCAL" />
-      <updated>1730553373667</updated>
-    </task>
-    <task id="LOCAL-00214" summary="Make unhandled a set and modify interval comparison function so TreeSet doesn't truncate intervals">
-      <option name="closed" value="true" />
-      <created>1730651435934</created>
-      <option name="number" value="00214" />
-      <option name="presentableId" value="LOCAL-00214" />
-      <option name="project" value="LOCAL" />
-      <updated>1730651435935</updated>
     </task>
     <task id="LOCAL-00215" summary="Start attempt at joining intervals before linear scan">
       <option name="closed" value="true" />
@@ -767,7 +747,23 @@
       <option name="project" value="LOCAL" />
       <updated>1753201402887</updated>
     </task>
-    <option name="localTasksCounter" value="262" />
+    <task id="LOCAL-00262" summary="Add methods to dump machine functions and blocks in debugger">
+      <option name="closed" value="true" />
+      <created>1753544564000</created>
+      <option name="number" value="00262" />
+      <option name="presentableId" value="LOCAL-00262" />
+      <option name="project" value="LOCAL" />
+      <updated>1753544564000</updated>
+    </task>
+    <task id="LOCAL-00263" summary="Attempt to join intervals without rewriting instructions">
+      <option name="closed" value="true" />
+      <created>1753544608918</created>
+      <option name="number" value="00263" />
+      <option name="presentableId" value="LOCAL-00263" />
+      <option name="project" value="LOCAL" />
+      <updated>1753544608918</updated>
+    </task>
+    <option name="localTasksCounter" value="264" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -775,8 +771,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Parse types and typed names" />
-    <MESSAGE value="More parsing for function declarations and statements" />
     <MESSAGE value="Attempt parsing binary operator expressions with pratt parsing" />
     <MESSAGE value="Parse call expressions" />
     <MESSAGE value="Add simplistic parsing of if and while statements" />
@@ -800,34 +794,14 @@
     <MESSAGE value="Convert MachineInstructions in MachineBasicBlock to use linked representation instead of ArrayList" />
     <MESSAGE value="Better encapsulate ListWrapper fields" />
     <MESSAGE value="Fix some bugs in ListWrapper and add unit tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix some bugs in ListWrapper and add unit tests" />
+    <MESSAGE value="Add methods to dump machine functions and blocks in debugger" />
+    <MESSAGE value="Attempt to join intervals without rewriting instructions" />
+    <option name="LAST_COMMIT_MESSAGE" value="Attempt to join intervals without rewriting instructions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <condition expression="operand == null" language="JAVA" />
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachinePrettyPrinter.java</url>
-          <line>86</line>
-          <option name="timeStamp" value="69" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java</url>
-          <line>58</line>
-          <option name="timeStamp" value="74" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java</url>
-          <line>103</line>
-          <option name="timeStamp" value="119" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <condition expression="interval.isFixed()" language="JAVA" />
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java</url>
-          <line>46</line>
-          <option name="timeStamp" value="171" />
-        </line-breakpoint>
-        <breakpoint type="java-exception">
+        <breakpoint enabled="true" type="java-exception">
           <properties class="java.lang.NullPointerException" package="java.lang">
             <option name="NOTIFY_CAUGHT" value="false" />
           </properties>
@@ -836,6 +810,24 @@
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.util.ConcurrentModificationException" package="java.util" />
           <option name="timeStamp" value="105" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang">
+            <option name="class-filters-enabled" value="true" />
+            <class-filters>
+              <class-filter pattern="com.d_m.*" />
+            </class-filters>
+          </properties>
+          <option name="timeStamp" value="176" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.RuntimeException" package="java.lang">
+            <option name="class-filters-enabled" value="true" />
+            <class-filters>
+              <class-filter pattern="com.d_m.*" />
+            </class-filters>
+          </properties>
+          <option name="timeStamp" value="177" />
         </breakpoint>
       </breakpoints>
       <default-breakpoints>

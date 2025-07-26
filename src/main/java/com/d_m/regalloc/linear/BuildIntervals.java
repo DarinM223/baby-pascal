@@ -95,6 +95,9 @@ public class BuildIntervals {
         while (it.hasNext()) {
             int virtualRegister = it.next();
             MachineInstruction instruction = virtualRegisterToMachineInstructionMap.get(virtualRegister);
+            if (instruction == null) {
+                throw new RuntimeException("Virtual register " + virtualRegister + " doesn't exist in the instructions");
+            }
             addRange(virtualRegister, instruction, block, numbering.getInstructionNumber(block.getInstructions().getLast()) + 1);
         }
         for (MachineInstruction instruction : block.getInstructions().reversed()) {

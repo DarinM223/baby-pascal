@@ -61,7 +61,7 @@ public class Main {
         String compileMode = args[0];
         String inputPath = args[1];
         String outputPath = args[2];
-        try (Writer writer = new FileWriter(outputPath + ".s")) {
+        try (Writer writer = new FileWriter(outputPath + compileMode + ".s")) {
             Compiler compiler = switch (compileMode) {
                 case "-x86_64" -> new X86_64Compiler();
                 case "-aarch64" -> new AARCH64Compiler();
