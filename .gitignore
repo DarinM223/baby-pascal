@@ -43,7 +43,7 @@ build/
 
 ### Executables ###
 *.o
-examples/fibonacci
-examples/fibonacci.s
-examples/funswap
-examples/funswap.s
+examples/fibonacci-aarch64
+examples/fibonacci-x86_64
+examples/funswap-aarch64
+examples/funswap-x86_64

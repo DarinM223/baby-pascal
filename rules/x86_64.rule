@@ -72,6 +72,12 @@ CALL(_, _, _, _, _) => (5) {
     mov [%rax, use], [%1, def]
     out [$1, use], [%1, use]
 }
+CALL(_, _, _, _, _, _) => (5) {
+    parmov [$4, use], [$5, use], [$6, use], [%rdi, def], [%rsi, def], [%rdx, def]
+    call [$2, use], [%rax, def], [%rcx, def], [%rdx, def], [%rsi, def], [%rdi, def], [%r8, def], [%r9, def], [%r10, def], [%r11, def]
+    mov [%rax, use], [%1, def]
+    out [$1, use], [%1, use]
+}
 // TODO: handle more parameters
 
 // Weird edge cases, don't emit anything in this case.

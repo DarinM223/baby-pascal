@@ -5,17 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Fix some bugs in ListWrapper and add unit tests">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/compiler/AARCH64Compiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/compiler/AARCH64Compiler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/compiler/X86_64Compiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/compiler/X86_64Compiler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/funswap.pas" beforeDir="false" afterPath="$PROJECT_DIR$/examples/funswap.pas" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rules/aarch64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/aarch64.rule" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rules/x86_64.rule" beforeDir="false" afterPath="$PROJECT_DIR$/rules/x86_64.rule" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/BuildIntervals.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/FunctionLoweringInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineBasicBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineFunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineFunction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineInstruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachineInstruction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachinePrettyPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/select/instr/MachinePrettyPrinter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/util/FreshImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/util/FreshImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +32,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="linked_machine_instructions" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -55,66 +51,65 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Fibonacci.executor&quot;: &quot;Run&quot;,
-    &quot;Application.FibonacciAARCH64.executor&quot;: &quot;Run&quot;,
-    &quot;Application.FibonacciX86_64.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Funswap.executor&quot;: &quot;Run&quot;,
-    &quot;Application.FunswapAARCH64.executor&quot;: &quot;Run&quot;,
-    &quot;Application.FunswapX86_64.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Gen.executor&quot;: &quot;Run&quot;,
-    &quot;Application.GenAARCH64.executor&quot;: &quot;Run&quot;,
-    &quot;Application.GenX86_64.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.All tests.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BlockTest.createBlocks.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BlockTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BuilderTest.convertFunction.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.CodegenTest.codegenAARCH.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CodegenTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DataflowTest.genKill.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.DataflowTest.genKillAndLiveness.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.IntervalTest.addRange.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.LengauerTarjanTest.idom.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.LinearScanTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.LinearScanTest.scanAARCH64.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.LinearScanTest.scanX86.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.ListWrapperTest.append.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ListWrapperTest.reversed.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.MachineBasicBlockTest.addBeforeTerminator.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.MachineBasicBlockTest.getPhiUses.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ParserTest.parseBinaryExpression.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.ParserTest.parseIfStatement.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ParserTest.parseIfStatementSemicolons.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ParserTest.parseProgram.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ParserTest.parseWhileStatement.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RangeTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RangeTest.overlaps.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.SSADAGTest.postorder.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ThreeAddressCodeTest.normalize.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UniqueRenamerTest.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [clean,compile,exec:java].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.baby-pascal [org.codehaus.mojo:exec-maven-plugin:3.1.0:java].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/d/Documents/mirrored/baby-pascal&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Fibonacci.executor": "Run",
+    "Application.FibonacciAARCH64.executor": "Run",
+    "Application.FibonacciX86_64.executor": "Run",
+    "Application.Funswap.executor": "Run",
+    "Application.FunswapAARCH64.executor": "Run",
+    "Application.FunswapX86_64.executor": "Run",
+    "Application.Gen.executor": "Run",
+    "Application.GenAARCH64.executor": "Run",
+    "Application.GenX86_64.executor": "Run",
+    "Application.Main.executor": "Run",
+    "JUnit.All tests.executor": "Run",
+    "JUnit.BlockTest.createBlocks.executor": "Run",
+    "JUnit.BlockTest.executor": "Run",
+    "JUnit.BuilderTest.convertFunction.executor": "Debug",
+    "JUnit.CodegenTest.codegenAARCH.executor": "Run",
+    "JUnit.CodegenTest.executor": "Run",
+    "JUnit.DataflowTest.genKill.executor": "Run",
+    "JUnit.DataflowTest.genKillAndLiveness.executor": "Run",
+    "JUnit.IntervalTest.addRange.executor": "Run",
+    "JUnit.LengauerTarjanTest.idom.executor": "Run",
+    "JUnit.LinearScanTest.scanAARCH64.executor": "Debug",
+    "JUnit.LinearScanTest.scanX86.executor": "Debug",
+    "JUnit.ListWrapperTest.append.executor": "Run",
+    "JUnit.ListWrapperTest.reversed.executor": "Run",
+    "JUnit.MachineBasicBlockTest.addBeforeTerminator.executor": "Run",
+    "JUnit.MachineBasicBlockTest.getPhiUses.executor": "Run",
+    "JUnit.ParserTest.parseBinaryExpression.executor": "Debug",
+    "JUnit.ParserTest.parseIfStatement.executor": "Run",
+    "JUnit.ParserTest.parseIfStatementSemicolons.executor": "Run",
+    "JUnit.ParserTest.parseProgram.executor": "Run",
+    "JUnit.ParserTest.parseWhileStatement.executor": "Run",
+    "JUnit.RangeTest.executor": "Run",
+    "JUnit.RangeTest.overlaps.executor": "Run",
+    "JUnit.SSADAGTest.postorder.executor": "Run",
+    "JUnit.ThreeAddressCodeTest.normalize.executor": "Run",
+    "JUnit.UniqueRenamerTest.executor": "Run",
+    "Maven.baby-pascal [clean,compile,exec:java].executor": "Run",
+    "Maven.baby-pascal [clean].executor": "Run",
+    "Maven.baby-pascal [org.apache.maven.plugins:maven-clean-plugin:3.2.0:clean].executor": "Run",
+    "Maven.baby-pascal [org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile].executor": "Run",
+    "Maven.baby-pascal [org.codehaus.mojo:exec-maven-plugin:3.1.0:java].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "master",
+    "ignore.preview.features.used": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/d/Documents/mirrored/baby-pascal",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.d_m.ast" />
@@ -156,7 +151,7 @@
       <command value="mvn clean compile exec:java" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.FibonacciX86_64">
+  <component name="RunManager" selected="Application.FibonacciAARCH64">
     <configuration name="FibonacciAARCH64" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.d_m.Main" />
       <module name="baby-pascal" />
@@ -254,6 +249,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="CodegenTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="baby-pascal" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.d_m.select.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.d_m.select" />
+      <option name="MAIN_CLASS_NAME" value="com.d_m.select.CodegenTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="CodegenTest.codegenAARCH" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="baby-pascal" />
       <extension name="coverage">
@@ -266,25 +280,6 @@
       <option name="MAIN_CLASS_NAME" value="com.d_m.select.CodegenTest" />
       <option name="METHOD_NAME" value="codegenAARCH" />
       <option name="TEST_OBJECT" value="method" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="wholeProject" />
-      </option>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="LinearScanTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="baby-pascal" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.d_m.regalloc.linear.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.d_m.regalloc.linear" />
-      <option name="MAIN_CLASS_NAME" value="com.d_m.regalloc.linear.LinearScanTest" />
-      <option name="METHOD_NAME" value="" />
-      <option name="TEST_OBJECT" value="class" />
       <option name="TEST_SEARCH_SCOPE">
         <value defaultName="wholeProject" />
       </option>
@@ -351,7 +346,7 @@
       <item itemvalue="Application.GenAARCH64" />
       <item itemvalue="Application.GenX86_64" />
       <item itemvalue="JUnit.All tests" />
-      <item itemvalue="JUnit.LinearScanTest" />
+      <item itemvalue="JUnit.CodegenTest" />
       <item itemvalue="JUnit.CodegenTest.codegenAARCH" />
       <item itemvalue="JUnit.ListWrapperTest.append" />
       <item itemvalue="JUnit.ListWrapperTest.reversed" />
@@ -359,11 +354,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.LinearScanTest" />
         <item itemvalue="JUnit.RangeTest" />
         <item itemvalue="JUnit.ListWrapperTest.reversed" />
         <item itemvalue="JUnit.ListWrapperTest.append" />
         <item itemvalue="JUnit.CodegenTest.codegenAARCH" />
+        <item itemvalue="JUnit.CodegenTest" />
       </list>
     </recent_temporary>
   </component>
@@ -375,22 +370,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00213" summary="Handle fixed intervals and more debugging on linear scan">
-      <option name="closed" value="true" />
-      <created>1730553373667</created>
-      <option name="number" value="00213" />
-      <option name="presentableId" value="LOCAL-00213" />
-      <option name="project" value="LOCAL" />
-      <updated>1730553373667</updated>
-    </task>
-    <task id="LOCAL-00214" summary="Make unhandled a set and modify interval comparison function so TreeSet doesn't truncate intervals">
-      <option name="closed" value="true" />
-      <created>1730651435934</created>
-      <option name="number" value="00214" />
-      <option name="presentableId" value="LOCAL-00214" />
-      <option name="project" value="LOCAL" />
-      <updated>1730651435935</updated>
     </task>
     <task id="LOCAL-00215" summary="Start attempt at joining intervals before linear scan">
       <option name="closed" value="true" />
@@ -768,7 +747,23 @@
       <option name="project" value="LOCAL" />
       <updated>1753201402887</updated>
     </task>
-    <option name="localTasksCounter" value="262" />
+    <task id="LOCAL-00262" summary="Add methods to dump machine functions and blocks in debugger">
+      <option name="closed" value="true" />
+      <created>1753544564000</created>
+      <option name="number" value="00262" />
+      <option name="presentableId" value="LOCAL-00262" />
+      <option name="project" value="LOCAL" />
+      <updated>1753544564000</updated>
+    </task>
+    <task id="LOCAL-00263" summary="Attempt to join intervals without rewriting instructions">
+      <option name="closed" value="true" />
+      <created>1753544608918</created>
+      <option name="number" value="00263" />
+      <option name="presentableId" value="LOCAL-00263" />
+      <option name="project" value="LOCAL" />
+      <updated>1753544608918</updated>
+    </task>
+    <option name="localTasksCounter" value="264" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -776,8 +771,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Parse types and typed names" />
-    <MESSAGE value="More parsing for function declarations and statements" />
     <MESSAGE value="Attempt parsing binary operator expressions with pratt parsing" />
     <MESSAGE value="Parse call expressions" />
     <MESSAGE value="Add simplistic parsing of if and while statements" />
@@ -801,22 +794,14 @@
     <MESSAGE value="Convert MachineInstructions in MachineBasicBlock to use linked representation instead of ArrayList" />
     <MESSAGE value="Better encapsulate ListWrapper fields" />
     <MESSAGE value="Fix some bugs in ListWrapper and add unit tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix some bugs in ListWrapper and add unit tests" />
+    <MESSAGE value="Add methods to dump machine functions and blocks in debugger" />
+    <MESSAGE value="Attempt to join intervals without rewriting instructions" />
+    <option name="LAST_COMMIT_MESSAGE" value="Attempt to join intervals without rewriting instructions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/select/DAGTile.java</url>
-          <line>58</line>
-          <option name="timeStamp" value="74" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/d_m/regalloc/linear/LinearScan.java</url>
-          <line>103</line>
-          <option name="timeStamp" value="119" />
-        </line-breakpoint>
-        <breakpoint type="java-exception">
+        <breakpoint enabled="true" type="java-exception">
           <properties class="java.lang.NullPointerException" package="java.lang">
             <option name="NOTIFY_CAUGHT" value="false" />
           </properties>
@@ -825,6 +810,24 @@
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.util.ConcurrentModificationException" package="java.util" />
           <option name="timeStamp" value="105" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.NullPointerException" package="java.lang">
+            <option name="class-filters-enabled" value="true" />
+            <class-filters>
+              <class-filter pattern="com.d_m.*" />
+            </class-filters>
+          </properties>
+          <option name="timeStamp" value="176" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.RuntimeException" package="java.lang">
+            <option name="class-filters-enabled" value="true" />
+            <class-filters>
+              <class-filter pattern="com.d_m.*" />
+            </class-filters>
+          </properties>
+          <option name="timeStamp" value="177" />
         </breakpoint>
       </breakpoints>
       <default-breakpoints>

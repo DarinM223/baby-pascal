@@ -10,7 +10,25 @@ begin
   foo := bar(y, x);
 end
 
+function hello(x : integer, y : integer, z : integer) : integer;
+begin
+  a := world(y, z, x);
+  b := world(z, x, x);
+  c := world(z, z, y);
+  hello := a + b + c;
+end
+
+function world(x : integer, y : integer, z : integer) : integer;
+begin
+  a := foo(x, z);
+  b := foo(y, x);
+  c := foo(z, x);
+  world := a + b + c;
+end
+
 begin
     result := foo(3, 4);
     printInteger(result);
+    result2 := hello(1, 2, 3);
+    printInteger(result2);
 end
