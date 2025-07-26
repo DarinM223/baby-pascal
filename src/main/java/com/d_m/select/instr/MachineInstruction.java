@@ -15,7 +15,6 @@ public class MachineInstruction implements Listable<MachineInstruction> {
     private final String instruction;
     private final List<MachineOperandPair> operands;
     private final BitSet reusedOperands;
-    private MachineInstruction join;
 
     private MachineBasicBlock parent;
     private MachineInstruction prev;
@@ -25,7 +24,6 @@ public class MachineInstruction implements Listable<MachineInstruction> {
         this.instruction = instruction;
         this.operands = new ArrayList<>(operands);
         this.reusedOperands = new BitSet();
-        this.join = this;
     }
 
     public String getInstruction() {
@@ -42,17 +40,6 @@ public class MachineInstruction implements Listable<MachineInstruction> {
 
     public void setParent(MachineBasicBlock parent) {
         this.parent = parent;
-    }
-
-    public void setJoin(MachineInstruction join) {
-        this.join = join;
-    }
-
-    public MachineInstruction rep() {
-        if (join == this) {
-            return this;
-        }
-        return join.rep();
     }
 
     /**

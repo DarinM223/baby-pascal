@@ -1,5 +1,6 @@
 package com.d_m.regalloc.linear;
 
+import com.d_m.select.FunctionLoweringInfo;
 import com.d_m.select.instr.*;
 import com.d_m.select.reg.Register;
 import com.d_m.select.reg.RegisterConstraint;
@@ -13,14 +14,16 @@ public class BuildIntervals {
     }
 
     private final InstructionNumbering numbering;
-    private final Map<Integer, MachineInstruction> virtualRegisterToMachineInstructionMap;
+    private final MachineInstruction[] virtualRegisterToMachineInstructionMap;
+    private final Register.Virtual[] joinMapping;
     private final Map<Integer, Register.Physical> functionParamToPhysicalMap;
     private final Map<IntervalKey, Interval> intervalMap;
 
-    public BuildIntervals(InstructionNumbering numbering) {
+    public BuildIntervals(FunctionLoweringInfo info, InstructionNumbering numbering) {
         this.numbering = numbering;
         this.intervalMap = new HashMap<>();
-        this.virtualRegisterToMachineInstructionMap = new HashMap<>();
+        this.virtualRegisterToMachineInstructionMap = new MachineInstruction[info.numVirtualRegisters()];
+        this.joinMapping = new Register.Virtual[info.numVirtualRegisters()];
         this.functionParamToPhysicalMap = new HashMap<>();
     }
 
@@ -42,7 +45,7 @@ public class BuildIntervals {
             if (operand instanceof MachineOperand.Register(Register.Virtual(int n, _, RegisterConstraint constraint))) {
                 // If the virtual register was a constrained function argument register,
                 // then set its instruction to be the first instruction in the entry block of the function.
-                virtualRegisterToMachineInstructionMap.put(n, function.getBlocks().getFirst().getInstructions().getFirst());
+                virtualRegisterToMachineInstructionMap[n] = function.getBlocks().getFirst().getInstructions().getFirst();
                 if (constraint instanceof RegisterConstraint.UsePhysical(Register.Physical register)) {
                     functionParamToPhysicalMap.put(n, register);
                 }
@@ -53,7 +56,7 @@ public class BuildIntervals {
                 for (MachineOperandPair pair : instruction.getOperands()) {
                     if (pair.kind() == MachineOperandKind.DEF &&
                             pair.operand() instanceof MachineOperand.Register(Register.Virtual(int n, _, _))) {
-                        virtualRegisterToMachineInstructionMap.put(n, instruction);
+                        virtualRegisterToMachineInstructionMap[n] = instruction;
                     }
                 }
             }
@@ -94,7 +97,7 @@ public class BuildIntervals {
         var it = live.stream().iterator();
         while (it.hasNext()) {
             int virtualRegister = it.next();
-            MachineInstruction instruction = virtualRegisterToMachineInstructionMap.get(virtualRegister);
+            MachineInstruction instruction = virtualRegisterToMachineInstructionMap[virtualRegister];
             addRange(virtualRegister, instruction, block, numbering.getInstructionNumber(block.getInstructions().getLast()) + 1);
         }
         for (MachineInstruction instruction : block.getInstructions().reversed()) {
@@ -104,7 +107,7 @@ public class BuildIntervals {
                         if (pair.operand() instanceof MachineOperand.Register(Register.Virtual(int n, _, _)) &&
                                 !live.get(n)) {
                             live.set(n);
-                            MachineInstruction operandInstruction = virtualRegisterToMachineInstructionMap.get(n);
+                            MachineInstruction operandInstruction = virtualRegisterToMachineInstructionMap[n];
                             addRange(n, operandInstruction, block, numbering.getInstructionNumber(instruction));
                         }
                     }
@@ -202,6 +205,22 @@ public class BuildIntervals {
     }
 
     /**
+     * Get the union-find joined virtual register from a virtual register.
+     */
+    public Register.Virtual virtualRegisterRep(Register.Virtual reg) {
+        Register.Virtual rep = reg;
+        while (joinMapping[rep.registerNumber()] != null) {
+            rep = joinMapping[rep.registerNumber()];
+        }
+        // Cache following links so that subsequent calls can be faster.
+        if (reg.registerNumber() != rep.registerNumber() &&
+                joinMapping[reg.registerNumber()].registerNumber() != rep.registerNumber()) {
+            joinMapping[reg.registerNumber()] = rep;
+        }
+        return rep;
+    }
+
+    /**
      * Join two virtual registers together so that they use the same physical register.
      * This will currently be called for phi nodes and mov instructions. They shouldn't
      * be called on instructions which have more than one output.
@@ -213,12 +232,14 @@ public class BuildIntervals {
      *                  guaranteed that the intervals should be joined.
      */
     public void join(Register.Virtual value1, Register.Virtual value2, boolean forceJoin) {
-        MachineInstruction x = virtualRegisterToMachineInstructionMap.get(value1.registerNumber());
-        MachineInstruction y = virtualRegisterToMachineInstructionMap.get(value2.registerNumber());
-        Integer xNumber = numbering.getInstructionNumber(x.rep());
-        Integer yNumber = numbering.getInstructionNumber(y.rep());
-        IntervalKey xKey = new IntervalKey(xNumber, value1.registerNumber());
-        IntervalKey yKey = new IntervalKey(yNumber, value2.registerNumber());
+        Register.Virtual value1Rep = virtualRegisterRep(value1);
+        Register.Virtual value2Rep = virtualRegisterRep(value2);
+        MachineInstruction x = virtualRegisterToMachineInstructionMap[value1Rep.registerNumber()];
+        MachineInstruction y = virtualRegisterToMachineInstructionMap[value2Rep.registerNumber()];
+        Integer xNumber = numbering.getInstructionNumber(x);
+        Integer yNumber = numbering.getInstructionNumber(y);
+        IntervalKey xKey = new IntervalKey(xNumber, value1Rep.registerNumber());
+        IntervalKey yKey = new IntervalKey(yNumber, value2Rep.registerNumber());
         Interval xInterval = intervalMap.get(xKey);
         Interval yInterval = intervalMap.get(yKey);
         Set<Range> i = new HashSet<>(xInterval == null ? List.of() : xInterval.getRanges());
@@ -233,52 +254,30 @@ public class BuildIntervals {
                 for (Range range : i) {
                     xInterval.addRange(range);
                 }
-                renameRegistersRange(yInterval, value2, value1);
+                joinMapping[value2Rep.registerNumber()] = replaceWithoutConstraint(value2.constraint(), value1Rep);
                 intervalMap.remove(yKey);
             } else {
                 yInterval.getRanges().clear();
                 for (Range range : i) {
                     yInterval.addRange(range);
                 }
-                renameRegistersRange(xInterval, value1, value2);
+                joinMapping[value1Rep.registerNumber()] = replaceWithoutConstraint(value1.constraint(), value2Rep);
                 intervalMap.remove(xKey);
             }
-            x.setJoin(y.rep());
         }
     }
 
-    private void renameRegistersRange(Interval interval, Register.Virtual original, Register.Virtual replace) {
-        if (interval == null) {
-            return;
-        }
-        Register.Virtual replaceWithoutConstraint = switch (replace) {
+    private Register.Virtual replaceWithoutConstraint(RegisterConstraint constraint, Register.Virtual replace) {
+        return switch (replace) {
             case Register.Virtual(int num, var registerClass, RegisterConstraint.ReuseOperand(_)) ->
-                    new Register.Virtual(num, registerClass, original.constraint());
+                    new Register.Virtual(num, registerClass, constraint);
             default -> replace;
         };
-        for (Range range : interval.getRanges()) {
-            for (int i = range.getStart(); i <= range.getEnd(); i++) {
-                MachineInstruction instruction = numbering.getInstructionFromNumber(i);
-                renameRegistersInstruction(instruction, original, replaceWithoutConstraint);
-            }
-        }
-    }
-
-    private void renameRegistersInstruction(MachineInstruction instruction, Register.Virtual original, Register.Virtual replace) {
-        if (instruction == null) {
-            return;
-        }
-        for (int i = 0; i < instruction.getOperands().size(); i++) {
-            MachineOperandPair pair = instruction.getOperands().get(i);
-            if (pair.operand() instanceof MachineOperand.Register(Register.Virtual v) &&
-                    v.registerNumber() == original.registerNumber()) {
-                MachineOperandPair newPair = new MachineOperandPair(new MachineOperand.Register(replace), pair.kind());
-                instruction.getOperands().set(i, newPair);
-            }
-        }
     }
 
     public boolean compatible(Register.Virtual value1, Register.Virtual value2) {
+        Register.Virtual value1Rep = virtualRegisterRep(value1);
+        Register.Virtual value2Rep = virtualRegisterRep(value2);
         boolean bothAreNotInSpecificRegisters =
                 value1.constraint() instanceof RegisterConstraint.Any() &&
                         value2.constraint() instanceof RegisterConstraint.Any();
@@ -288,10 +287,10 @@ public class BuildIntervals {
                         physical1.equals(physical2);
         boolean oneIsReuseOperand = value1.constraint() instanceof RegisterConstraint.ReuseOperand(_) ||
                 value2.constraint() instanceof RegisterConstraint.ReuseOperand(_);
-        MachineInstruction x = virtualRegisterToMachineInstructionMap.get(value1.registerNumber());
-        MachineInstruction y = virtualRegisterToMachineInstructionMap.get(value2.registerNumber());
-        IntervalKey xKey = new IntervalKey(numbering.getInstructionNumber(x), value1.registerNumber());
-        IntervalKey yKey = new IntervalKey(numbering.getInstructionNumber(y), value2.registerNumber());
+        MachineInstruction x = virtualRegisterToMachineInstructionMap[value1Rep.registerNumber()];
+        MachineInstruction y = virtualRegisterToMachineInstructionMap[value2Rep.registerNumber()];
+        IntervalKey xKey = new IntervalKey(numbering.getInstructionNumber(x), value1Rep.registerNumber());
+        IntervalKey yKey = new IntervalKey(numbering.getInstructionNumber(y), value2Rep.registerNumber());
         Interval xInterval = intervalMap.get(xKey);
         Interval yInterval = intervalMap.get(yKey);
         boolean xSpecificRegisterNoOverlap =
