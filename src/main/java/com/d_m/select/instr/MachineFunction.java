@@ -1,5 +1,9 @@
 package com.d_m.select.instr;
 
+import com.d_m.select.reg.ISA;
+
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
@@ -45,6 +49,12 @@ public class MachineFunction {
 
     public List<MachineOperand> getParams() {
         return params;
+    }
+
+    public String dump(ISA isa) throws IOException {
+        var writer = new StringWriter();
+        new MachinePrettyPrinter(isa, writer).writeFunction(this);
+        return writer.toString();
     }
 
     @Override

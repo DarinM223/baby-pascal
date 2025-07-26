@@ -3,9 +3,12 @@ package com.d_m.select.instr;
 import com.d_m.cfg.BlockLiveness;
 import com.d_m.cfg.BlockLivenessInfo;
 import com.d_m.cfg.IBlock;
+import com.d_m.select.reg.ISA;
 import com.d_m.select.reg.Register;
 import com.d_m.ssa.ListWrapper;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
@@ -178,6 +181,12 @@ public class MachineBasicBlock extends BlockLiveness<MachineBasicBlock> implemen
             }
         }
         return defs;
+    }
+
+    public String dump(ISA isa) throws IOException {
+        var writer = new StringWriter();
+        new MachinePrettyPrinter(isa, writer).writeBlock(this);
+        return writer.toString();
     }
 
     @Override

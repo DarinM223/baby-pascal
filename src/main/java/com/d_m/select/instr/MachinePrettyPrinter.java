@@ -40,7 +40,7 @@ public class MachinePrettyPrinter {
         out.write("}\n");
     }
 
-    private void writeBlock(MachineBasicBlock block) throws IOException {
+    public void writeBlock(MachineBasicBlock block) throws IOException {
         start();
         out.write("block l" + getBlockId(block) + " [");
         for (var it = block.getPredecessors().iterator(); it.hasNext(); ) {
