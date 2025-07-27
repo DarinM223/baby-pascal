@@ -280,8 +280,6 @@ public class BuildIntervals {
     }
 
     public boolean compatible(Register.Virtual value1, Register.Virtual value2) {
-        Register.Virtual value1Rep = virtualRegisterRep(value1);
-        Register.Virtual value2Rep = virtualRegisterRep(value2);
         boolean bothAreNotInSpecificRegisters =
                 value1.constraint() instanceof RegisterConstraint.Any() &&
                         value2.constraint() instanceof RegisterConstraint.Any();
@@ -291,10 +289,10 @@ public class BuildIntervals {
                         physical1.equals(physical2);
         boolean oneIsReuseOperand = value1.constraint() instanceof RegisterConstraint.ReuseOperand(_) ||
                 value2.constraint() instanceof RegisterConstraint.ReuseOperand(_);
-        MachineInstruction x = virtualRegisterToMachineInstructionMap[value1Rep.registerNumber()];
-        MachineInstruction y = virtualRegisterToMachineInstructionMap[value2Rep.registerNumber()];
-        IntervalKey xKey = new IntervalKey(numbering.getInstructionNumber(x), value1Rep.registerNumber());
-        IntervalKey yKey = new IntervalKey(numbering.getInstructionNumber(y), value2Rep.registerNumber());
+        MachineInstruction x = virtualRegisterToMachineInstructionMap[value1.registerNumber()];
+        MachineInstruction y = virtualRegisterToMachineInstructionMap[value2.registerNumber()];
+        IntervalKey xKey = new IntervalKey(numbering.getInstructionNumber(x), value1.registerNumber());
+        IntervalKey yKey = new IntervalKey(numbering.getInstructionNumber(y), value2.registerNumber());
         Interval xInterval = intervalMap.get(xKey);
         Interval yInterval = intervalMap.get(yKey);
         boolean xSpecificRegisterNoOverlap =
