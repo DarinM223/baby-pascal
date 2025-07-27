@@ -235,12 +235,12 @@ public class BuildIntervals {
      *                  guaranteed that the intervals should be joined.
      */
     public void join(Register.Virtual value1, Register.Virtual value2, boolean forceJoin) {
+        MachineInstruction x = virtualRegisterToMachineInstructionMap[value1.registerNumber()];
+        MachineInstruction y = virtualRegisterToMachineInstructionMap[value2.registerNumber()];
+        Integer xNumber = numbering.getInstructionNumber(x.rep());
+        Integer yNumber = numbering.getInstructionNumber(y.rep());
         Register.Virtual value1Rep = virtualRegisterRep(value1);
         Register.Virtual value2Rep = virtualRegisterRep(value2);
-        MachineInstruction x = virtualRegisterToMachineInstructionMap[value1Rep.registerNumber()];
-        MachineInstruction y = virtualRegisterToMachineInstructionMap[value2Rep.registerNumber()];
-        Integer xNumber = numbering.getInstructionNumber(x);
-        Integer yNumber = numbering.getInstructionNumber(y);
         IntervalKey xKey = new IntervalKey(xNumber, value1Rep.registerNumber());
         IntervalKey yKey = new IntervalKey(yNumber, value2Rep.registerNumber());
         Interval xInterval = intervalMap.get(xKey);
@@ -267,6 +267,7 @@ public class BuildIntervals {
                 joinMapping[value1Rep.registerNumber()] = replaceWithoutConstraint(value1.constraint(), value2Rep);
                 intervalMap.remove(xKey);
             }
+            x.setJoin(y.rep());
         }
     }
 
