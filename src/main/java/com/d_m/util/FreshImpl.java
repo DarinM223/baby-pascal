@@ -11,6 +11,10 @@ public class FreshImpl implements Fresh {
         this.counter = counter;
     }
 
+    public int getCounter() {
+        return counter;
+    }
+
     @Override
     public int fresh() {
         return counter++;
