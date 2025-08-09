@@ -45,7 +45,7 @@ class LoopPostbodyTest {
         LengauerTarjan<Block> dominators = new LengauerTarjan<>(cfg.blocks(), cfg.getEntry());
         nesting = new LoopNesting<>(dominators, cfg.blocks());
         LoopPostbody postbody = new LoopPostbody(nesting, cfg.blocks());
-        for (Block block : cfg.blocks()) {
+        for (Block block : nesting.getLoopHeaders()) {
             postbody.run(block);
         }
         cfg.runLiveness();
@@ -71,7 +71,7 @@ class LoopPostbodyTest {
                   j <- := 1
                   k <- := 0
                 }
-                block 3 predecessors: [0, 17] successors: [5, 4] {
+                block 3 predecessors: [0, 16] successors: [5, 4] {
                   5 <- k < 100
                 }
                 block 5 predecessors: [3] successors: [7, 6] {
@@ -80,7 +80,7 @@ class LoopPostbodyTest {
                 block 4 predecessors: [3] successors: [15] {
                   _ <- GOTO 15
                 }
-                block 7 predecessors: [5] successors: [17] {
+                block 7 predecessors: [5] successors: [16] {
                   j <- := i
                   %4 <- k + 1
                   k <- := %4
@@ -92,9 +92,9 @@ class LoopPostbodyTest {
                 block 15 predecessors: [4] successors: [-2] {
                   _ <- NOP()
                 }
-                block 17 predecessors: [7, 11] successors: [3] {
+                block 16 predecessors: [7, 11] successors: [3] {
                 }
-                block 11 predecessors: [6] successors: [17] {
+                block 11 predecessors: [6] successors: [16] {
                   j <- := k
                   %5 <- k + 2
                   k <- := %5

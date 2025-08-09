@@ -34,6 +34,10 @@ public class LoopNesting<Block extends IBlock<Block> & Comparable<Block>> {
         dfs(blocks.getFirst(), stack);
     }
 
+    public Collection<Block> getLoopHeaders() {
+        return headers;
+    }
+
     public Collection<Block> getLoopNodes(Block block) {
         return loop.get(block);
     }

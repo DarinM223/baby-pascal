@@ -44,7 +44,7 @@ class SsaGraphTest {
         LengauerTarjan<Block> dominators = new LengauerTarjan<>(cfg.blocks(), cfg.getEntry());
         nesting = new LoopNesting<>(dominators, cfg.blocks());
         LoopPostbody postbody = new LoopPostbody(nesting, cfg.blocks());
-        for (Block block : cfg.blocks()) {
+        for (Block block : nesting.getLoopHeaders()) {
             postbody.run(block);
         }
         cfg.runLiveness();

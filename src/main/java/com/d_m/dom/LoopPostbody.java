@@ -26,7 +26,7 @@ public class LoopPostbody {
         }
     }
 
-    public void insertPostbody(Block header, List<Block> loopNodes) {
+    private void insertPostbody(Block header, List<Block> loopNodes) {
         // All nodes inside the loop with a successor to the header will point to the postbody node.
         // All edges from nodes inside the loop to nodes outside the loop will be changed to
         // be edges from the postbody node to nodes outside the loop.
