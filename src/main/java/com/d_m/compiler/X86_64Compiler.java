@@ -72,7 +72,7 @@ public class X86_64Compiler implements Compiler {
         }
         InstructionNumbering numbering = new InstructionNumbering();
         numbering.numberInstructions(machineFunction);
-        BuildIntervals buildIntervals = new BuildIntervals(numbering);
+        BuildIntervals buildIntervals = new BuildIntervals(info, numbering);
         buildIntervals.runFunction(machineFunction);
         buildIntervals.joinIntervalsFunction(machineFunction);
         List<Interval> intervals = buildIntervals.getIntervals();
@@ -84,7 +84,7 @@ public class X86_64Compiler implements Compiler {
         }
         LinearScan scan = new LinearScan(info, numbering);
         scan.scan(free, intervals);
-        scan.rewriteIntervalsWithRegisters();
+        scan.rewriteIntervalsWithRegisters(buildIntervals);
         CleanupAssembly.removeRedundantMoves(machineFunction);
         CleanupAssembly.expandMovesBetweenMemoryOperands(machineFunction, temp);
     }

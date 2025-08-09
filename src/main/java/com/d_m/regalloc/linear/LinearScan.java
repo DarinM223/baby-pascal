@@ -156,20 +156,20 @@ public class LinearScan {
         }
     }
 
-    public void rewriteIntervalsWithRegisters() {
+    public void rewriteIntervalsWithRegisters(BuildIntervals info) {
         for (Interval interval : handled) {
-            rewriteRegister(interval, interval.getReg());
+            rewriteRegister(info, interval, interval.getReg());
         }
         for (Interval interval : active) {
-            rewriteRegister(interval, interval.getReg());
+            rewriteRegister(info, interval, interval.getReg());
         }
         for (Interval interval : inactive) {
-            rewriteRegister(interval, interval.getReg());
+            rewriteRegister(info, interval, interval.getReg());
         }
     }
 
     // Also sets the machine instruction at the start of the interval.
-    private void rewriteRegister(Interval interval, MachineOperand registerOperand) {
+    private void rewriteRegister(BuildIntervals info, Interval interval, MachineOperand registerOperand) {
         for (Range range : interval.getRanges()) {
             for (int i = range.getStart(); i <= range.getEnd(); i++) {
                 MachineInstruction instruction = numbering.getInstructionFromNumber(i);
@@ -179,10 +179,13 @@ public class LinearScan {
                 // Replace instruction's operand with the interval's virtual register with the new operand.
                 for (int j = 0; j < instruction.getOperands().size(); j++) {
                     MachineOperandPair pair = instruction.getOperands().get(j);
-
-                    if (pair.operand() instanceof MachineOperand.Register(Register.Virtual(int n, _, _)) &&
-                            n == interval.getVirtualReg()) {
-                        instruction.getOperands().set(j, new MachineOperandPair(registerOperand, pair.kind()));
+                    if (pair.operand() instanceof MachineOperand.Register(Register.Virtual virtual)) {
+                        Register.Virtual rep = info.virtualRegisterRep(virtual);
+                        if (rep.registerNumber() == interval.getVirtualReg()) {
+                            instruction.getOperands().set(j, new MachineOperandPair(registerOperand, pair.kind()));
+                        } else if (rep.registerNumber() != virtual.registerNumber()) {
+                            instruction.getOperands().set(j, new MachineOperandPair(new MachineOperand.Register(rep), pair.kind()));
+                        }
                     }
                 }
             }
