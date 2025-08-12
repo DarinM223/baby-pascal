@@ -14,9 +14,9 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.Objects;
 
-public class MachineBasicBlock extends BlockLiveness<MachineBasicBlock> implements IBlock<MachineBasicBlock>, BlockLivenessInfo {
+public class MachineBasicBlock extends BlockLiveness<MachineBasicBlock> implements IBlock<MachineBasicBlock>, BlockLivenessInfo, Comparable<MachineBasicBlock> {
     private final int id = IdGenerator.newId();
-    private MachineFunction parent;
+    private final MachineFunction parent;
 
     private List<MachineBasicBlock> predecessors;
     private List<MachineBasicBlock> successors;
@@ -121,6 +121,10 @@ public class MachineBasicBlock extends BlockLiveness<MachineBasicBlock> implemen
         this.exit = exit;
     }
 
+    public MachineFunction getParent() {
+        return parent;
+    }
+
     public MachineBasicBlock getEntry() {
         return entry;
     }
@@ -199,5 +203,10 @@ public class MachineBasicBlock extends BlockLiveness<MachineBasicBlock> implemen
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    @Override
+    public int compareTo(MachineBasicBlock o) {
+        return Integer.compare(this.id, o.id);
     }
 }
