@@ -82,10 +82,13 @@ class ParserTest {
     @Test
     void parseIfStatement() {
         String source = """
-                if a < 1 then begin
+                // This is a comment
+                if a < 1 then // another comment
+                begin
                     a := a + 1;
                     print(a)
-                end else
+                end // this is another comment
+                    else
                     if a >= 0 then
                         print(a)
                 """;
@@ -132,7 +135,8 @@ class ParserTest {
     @Test
     void parseWhileStatement() {
         String source = """
-                while a < 11 do
+                while a < 11 // A while loop
+                do
                 begin
                     a := a + 1;
                     print(a);
@@ -156,11 +160,13 @@ class ParserTest {
         String source = """
                 var hello : integer;
                 
+                // adds two numbers
                 function add(a : integer, b : integer) : integer;
                 begin
                     add := a + b;
                 end
                 
+                // prints an integer
                 procedure foo(a : integer);
                 begin
                     print(a);

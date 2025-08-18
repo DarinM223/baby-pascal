@@ -86,6 +86,17 @@ public class Scanner {
             case '+' -> addToken(TokenType.PLUS);
             case '-' -> addToken(TokenType.MINUS);
             case '=' -> addToken(TokenType.EQ);
+            case '/' -> {
+                if (match('/')) {
+                    // Comment detected: eat characters until newline
+                    char eat;
+                    do {
+                        eat = advance();
+                    } while (!isAtEnd() && eat != '\n' && eat != '\r');
+                }
+                // TODO: otherwise this is probably division
+                // but we don't have division yet.
+            }
             case ';' -> addToken(TokenType.SEMICOLON);
             case ' ', '\r', '\t' -> {
             }

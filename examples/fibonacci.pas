@@ -10,5 +10,6 @@ end
 
 begin
     result := fibonacci(9);
+    // Should print "Result: 34"
     printInteger(result);
 end

@@ -45,4 +45,17 @@ class ScannerTest {
         List<Token> tokens = scanner.scanTokens();
         assertFalse(tokens.isEmpty());
     }
+
+    @Test
+    void noScanComments() {
+        String source = """
+                1 + // hello this is a comment
+                  2 * // another comment
+                      // another comment
+                      3 // final comment
+                """;
+        Scanner scanner = new Scanner(source);
+        List<TokenType> tokens = scanner.scanTokens().stream().map(Token::type).toList();
+        assertEquals(tokens, List.of(TokenType.NUMBER, TokenType.PLUS, TokenType.NUMBER, TokenType.MUL, TokenType.NUMBER, TokenType.EOF));
+    }
 }

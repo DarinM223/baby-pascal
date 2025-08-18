@@ -28,7 +28,9 @@ end
 
 begin
     result := foo(3, 4);
+    // Should print "Result: 7"
     printInteger(result);
     result2 := hello(1, 2, 3);
+    // Should print "Result: 39"
     printInteger(result2);
 end
