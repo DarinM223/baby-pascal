@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Start next use distance calculation">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Scanner ignores line comments">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/fibonacci.pas" beforeDir="false" afterPath="$PROJECT_DIR$/examples/fibonacci.pas" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/funswap.pas" beforeDir="false" afterPath="$PROJECT_DIR$/examples/funswap.pas" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/parser/Scanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/parser/Scanner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/parser/ParserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/parser/ParserTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/parser/ScannerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/parser/ScannerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/spill/MachineNextUseDistances.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/spill/MachineNextUseDistances.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -370,14 +366,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00217" summary="Use virtual register also as key in interval map to handle multiple output instructions">
-      <option name="closed" value="true" />
-      <created>1732292120203</created>
-      <option name="number" value="00217" />
-      <option name="presentableId" value="LOCAL-00217" />
-      <option name="project" value="LOCAL" />
-      <updated>1732292120203</updated>
     </task>
     <task id="LOCAL-00218" summary="Fix some bugs in the live interval building">
       <option name="closed" value="true" />
@@ -763,7 +751,15 @@
       <option name="project" value="LOCAL" />
       <updated>1754959012942</updated>
     </task>
-    <option name="localTasksCounter" value="266" />
+    <task id="LOCAL-00266" summary="Scanner ignores line comments">
+      <option name="closed" value="true" />
+      <created>1755533009284</created>
+      <option name="number" value="00266" />
+      <option name="presentableId" value="LOCAL-00266" />
+      <option name="project" value="LOCAL" />
+      <updated>1755533009284</updated>
+    </task>
+    <option name="localTasksCounter" value="267" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -771,7 +767,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add simplistic parsing of if and while statements" />
     <MESSAGE value="Start main function that compiles a file passed in as an argument" />
     <MESSAGE value="Add method and tests for parsing program" />
     <MESSAGE value="Mention the parser package in README.md" />
@@ -796,7 +791,8 @@
     <MESSAGE value="Attempt to join intervals without rewriting instructions" />
     <MESSAGE value="Add loop headers to loop nesting and only loop over headers for postbody pass" />
     <MESSAGE value="Start next use distance calculation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start next use distance calculation" />
+    <MESSAGE value="Scanner ignores line comments" />
+    <option name="LAST_COMMIT_MESSAGE" value="Scanner ignores line comments" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

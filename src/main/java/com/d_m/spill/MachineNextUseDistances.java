@@ -96,14 +96,20 @@ public class MachineNextUseDistances {
         int blockLength = blockLengths.get(block);
 
         Map<Register.Virtual, Integer> blockNextUseDistances = nextUseDistances.get(block);
+        boolean[] changed = {false};
         for (MachineBasicBlock successor : block.getSuccessors()) {
             // Join of two maps is defined by taking the minimum of
             // the variable's next-use distances.
             var successorNextUseDistances = nextUseDistances.get(successor);
             for (var entry : successorNextUseDistances.entrySet()) {
-                blockNextUseDistances.merge(entry.getKey(), entry.getValue(), Integer::min);
+                blockNextUseDistances.merge(entry.getKey(), entry.getValue(), (curr, next) -> {
+                    changed[0] |= !curr.equals(next);
+                    return Integer.min(curr, next);
+                });
             }
         }
+
+        boolean changed2 = changed[0];
         // For every variable v in next use distance map,
         // if list of uses for v > 0, then find first use with parent as
         // block with instruction number > v's defs instruction number
@@ -123,12 +129,14 @@ public class MachineNextUseDistances {
                 int newDistance = blockLength +
                         numbering.getInstructionNumber(firstUseInBlock.get()) -
                         numbering.getInstructionNumber(block.getInstructions().getFirst());
+                changed2 |= !entry.getValue().equals(newDistance);
                 entry.setValue(newDistance);
             } else {
-                entry.setValue(blockLength + numInstructions + entry.getValue());
+                int newDistance = blockLength + numInstructions + entry.getValue();
+                changed2 |= !entry.getValue().equals(newDistance);
+                entry.setValue(newDistance);
             }
         }
-        // TODO: check if map changed
-        return false;
+        return changed2;
     }
 }
