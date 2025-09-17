@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Scanner ignores line comments">
+    <list default="true" id="b4a611aa-440b-4a2d-be05-a0aea4955c6b" name="Changes" comment="Set changed for next use distances">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/spill/MachineNextUseDistances.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/spill/MachineNextUseDistances.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/d_m/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/d_m/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/d_m/select/CodegenTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +106,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -366,14 +369,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1709911294056</updated>
-    </task>
-    <task id="LOCAL-00218" summary="Fix some bugs in the live interval building">
-      <option name="closed" value="true" />
-      <created>1732378177669</created>
-      <option name="number" value="00218" />
-      <option name="presentableId" value="LOCAL-00218" />
-      <option name="project" value="LOCAL" />
-      <updated>1732378177669</updated>
     </task>
     <task id="LOCAL-00219" summary="Fix some bugs in joining intervals and handle case where mov operand has a physical register constraint">
       <option name="closed" value="true" />
@@ -759,7 +754,15 @@
       <option name="project" value="LOCAL" />
       <updated>1755533009284</updated>
     </task>
-    <option name="localTasksCounter" value="267" />
+    <task id="LOCAL-00267" summary="Set changed for next use distances">
+      <option name="closed" value="true" />
+      <created>1755639986565</created>
+      <option name="number" value="00267" />
+      <option name="presentableId" value="LOCAL-00267" />
+      <option name="project" value="LOCAL" />
+      <updated>1755639986566</updated>
+    </task>
+    <option name="localTasksCounter" value="268" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -767,7 +770,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.rule" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Start main function that compiles a file passed in as an argument" />
     <MESSAGE value="Add method and tests for parsing program" />
     <MESSAGE value="Mention the parser package in README.md" />
     <MESSAGE value="Add fibonacci example and handle globals when converting SSA" />
@@ -792,7 +794,8 @@
     <MESSAGE value="Add loop headers to loop nesting and only loop over headers for postbody pass" />
     <MESSAGE value="Start next use distance calculation" />
     <MESSAGE value="Scanner ignores line comments" />
-    <option name="LAST_COMMIT_MESSAGE" value="Scanner ignores line comments" />
+    <MESSAGE value="Set changed for next use distances" />
+    <option name="LAST_COMMIT_MESSAGE" value="Set changed for next use distances" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

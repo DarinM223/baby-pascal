@@ -53,7 +53,7 @@ public class Main {
         compiler.compile(module, writer);
     }
 
-    public static void main(String[] args) throws ShortCircuitException, IOException {
+    static void main(String[] args) {
         if (args.length < 3) {
             System.err.println("Expected at least three arguments, [-x86_64|-aarch64] [input_path] [output_path]");
             return;
