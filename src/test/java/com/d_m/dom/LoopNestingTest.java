@@ -41,6 +41,28 @@ class LoopNestingTest {
         return blocks;
     }
 
+    public static List<SimpleBlock> nested_loops() {
+        List<SimpleBlock> blocks = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            blocks.add(new SimpleBlock(i));
+        }
+        List<Pair<Integer, Integer>> edges = List.of(
+                new Pair<>(0, 6),
+                new Pair<>(6, 2),
+                new Pair<>(2, 1),
+                new Pair<>(2, 3),
+                new Pair<>(3, 4),
+                new Pair<>(4, 2),
+                new Pair<>(4, 5),
+                new Pair<>(5, 4)
+        );
+        for (var edge : edges) {
+            blocks.get(edge.a()).getSuccessors().add(blocks.get(edge.b()));
+            blocks.get(edge.b()).getPredecessors().add(blocks.get(edge.a()));
+        }
+        return blocks;
+    }
+
     @Test
     void testFigure_18_3() {
         var blocks = figure_18_3();
@@ -105,6 +127,44 @@ class LoopNestingTest {
                 [5, 10] -> [8]
                 [8, 9] -> []
                 [2, 3, 4] -> []
+                """;
+        assertEquals(expected, builder.toString());
+    }
+
+    @Test
+    void testNestedLoops() {
+        var blocks = nested_loops();
+        var dominators = new LengauerTarjan<>(blocks, blocks.getFirst());
+        var loopNesting = new LoopNesting<>(dominators, blocks);
+        var builder = new StringBuilder();
+        Stack<SimpleBlock> stack = new Stack<>();
+        stack.add(blocks.getFirst());
+        while (!stack.isEmpty()) {
+            SimpleBlock block = stack.pop();
+            builder.append("[");
+            List<SimpleBlock> loopNodes = new ArrayList<>(loopNesting.getLoopNodes(block));
+            loopNodes.addFirst(block);
+            for (var it = loopNodes.iterator(); it.hasNext(); ) {
+                builder.append(it.next().getId());
+                if (it.hasNext()) {
+                    builder.append(", ");
+                }
+            }
+            builder.append("] -> [");
+            for (var it = loopNesting.getLoopNestSuccessors(block).iterator(); it.hasNext(); ) {
+                SimpleBlock successor = it.next();
+                builder.append(successor.getId());
+                stack.add(successor);
+                if (it.hasNext()) {
+                    builder.append(", ");
+                }
+            }
+            builder.append("]\n");
+        }
+        String expected = """
+                [0, 6] -> [2]
+                [2, 1, 3] -> [4]
+                [4, 5] -> []
                 """;
         assertEquals(expected, builder.toString());
     }
